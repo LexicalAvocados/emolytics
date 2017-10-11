@@ -8,11 +8,9 @@ exports.getRelatedSection = function(req, res) {
     }
   })
     .then((sectionsArray) => {
-      console.log('*************', sectionsArray);
       res.send(sectionsArray);
     })
     .catch((err) => {
-      console.log('**********dfdfdf***', err);
       res.send('Error finding relevant projects!');
     })
 };
