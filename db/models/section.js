@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
-import sequelize from '../../db';
+// import sequelize from '../../db';
+const sequelize = require('../../db');
 
 const Section = sequelize.define('section', {
   name: Sequelize.STRING,

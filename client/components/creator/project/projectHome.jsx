@@ -14,7 +14,7 @@ class ProjectHome extends React.Component {
   }
 
   retrieveSections() {
-    axios.get('/api/getRelatedSections', { params: {goodies: 'HELLO THERE'}}) // send projectId, grab sections, use sectionid to grab options
+    axios.get('/api/getRelatedSections', { params: {goodies: 'HELLO THERE'}})
       .then((res) => {
         console.log('yay');
       })
@@ -33,6 +33,7 @@ class ProjectHome extends React.Component {
         <h2 onClick={this.testGet.bind(this)}>PROJECT NAME</h2>
         <p>PROJECT DESCRIPTION</p>
         <Link to="/projectCreate">Add option</Link>
+          {/* Pass sectionId */}
         <SectionList />
       </div>
     )
