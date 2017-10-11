@@ -1,15 +1,12 @@
-import sequelize from 'sequelize';
+import sequelize from 'sequelize'; 
 
-const Option = sequelize.define('option', {
+const Section = sequelize.define('section', {
   name: Sequelize.STRING,
-  description: Sequelize.TEXT,
-  youtubeUrl: Sequelize.TEXT,
-  thumbnail: Sequelize.TEXT,
-  length: Sequelize.INTEGER
+  description: Sequelize.TEXT
 });
 
-Option.belongsTo(Section);
+Section.belongsTo(Project);
 
-Option.sync({force: false});
+Section.sync({force: false});
 
-module.exports = Option;
+module.exports = Section;
