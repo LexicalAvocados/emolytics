@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -12,10 +12,9 @@ class ProjectHome extends React.Component {
 
     }
   }
-  // Should have projectId - need to use that to grab sections - need to use section id to grab options
-  // May need to query for the remainder of project information as well. 
+
   retrieveSections() {
-    axios.get('/api/getRelatedSections', { params: {goodies: 'HELLO THERE'}})
+    axios.get('/api/getRelatedSections', { params: {goodies: 'HELLO THERE'}}) // send projectId, grab sections, use sectionid to grab options
       .then((res) => {
         console.log('yay');
       })
@@ -24,7 +23,7 @@ class ProjectHome extends React.Component {
       })
   }
 
-  testGet() {
+  testGet() { // set to a component did mount
     this.retrieveSections();
   }
 
@@ -33,7 +32,7 @@ class ProjectHome extends React.Component {
       <div>
         <h2 onClick={this.testGet.bind(this)}>PROJECT NAME</h2>
         <p>PROJECT DESCRIPTION</p>
-        {/* <Link to='/optionsCreate'>Add option</Link> */}
+        <Link to="/projectCreate">Add option</Link>
         <SectionList />
       </div>
     )
@@ -44,6 +43,5 @@ export default ProjectHome;
 // Dynamically rendered secitons
   // Map through all related sections
     // For each section grab options, pass to section list
-// An add option button 
 
 
