@@ -28,8 +28,8 @@ class App extends React.Component {
         <button onClick={this.onClick}> test </button>
         <div>
           <Route exact path="/" component={Home}/>
-          <Route path="/new" component={Home}/>
-          <Route path="/testvideo" component={TesterVideo}/>
+          <Route exact path="/testvideo" component={TesterVideo}/>
+          <Route path="/signup" component={Signup}/>
         </div>
       </div>
     )
