@@ -30,7 +30,8 @@ class Home extends React.Component {
 const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
-
+    example: state.example,
+    router: state.router
   })
 }
 
@@ -40,9 +41,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 
-
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-  ) (Home)
+)(Home);
