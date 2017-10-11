@@ -23,7 +23,7 @@ console.log(store.getState());
 
 ReactDOM.render(
 	<Provider store={store}>
-    <ConnectedRouter history={history}>
-		  <App/>
-    </ConnectedRouter>
+	    <ConnectedRouter history={history}>
+			  <App/>
+	    </ConnectedRouter>
 	</Provider>, document.getElementById('app'));
