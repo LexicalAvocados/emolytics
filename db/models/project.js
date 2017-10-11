@@ -1,5 +1,6 @@
-import Sequelize from 'sequelize';
-import sequelize from '../../db';
+const Sequelize = require('sequelize');
+const sequelize = require('../index.js');
+const User = require('./user.js');
 
 const Project = sequelize.define('project', {
   name: Sequelize.STRING,
