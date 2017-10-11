@@ -13,10 +13,10 @@ class SectionList extends React.Component {
   componentDidMount() {
     axios.get('/api/getOptionsForSection', { params: {sectionId: 1}})
       .then((res) => {
-        console.log('yayay');
+        console.log('Request to get options for section sent to server', res);
       })
       .catch((err) => {
-        console.log('booboo');
+        console.log('Request to get options for section NOT sent to server');
       })
   }
 

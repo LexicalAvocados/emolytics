@@ -1,9 +1,7 @@
-// Import relevant things from db 
-const Options = require('../../../db/models/option.js');
-//getOptionsForSection
+const db = require('../../../db/index.js');
+const Options = db.Option;
+
 exports.getRelatedOptions = function(req, res) {
-  res.send('Oh my!');
-  // Query options with sectionId, send them all back
   Options.findAll({
     where: {
       sectionId: req.query.sectionId
@@ -13,6 +11,6 @@ exports.getRelatedOptions = function(req, res) {
       res.send(optionsArray);
     })
     .catch((err) => {
-      res.send('Error retrieving options!')
+      res.send('Error retrieving options!');
     })
 };

@@ -16,10 +16,10 @@ class ProjectHome extends React.Component {
   retrieveSections() {
     axios.get('/api/getRelatedSections', { params: {projectId: 1}})
       .then((res) => {
-        console.log('yay'); // The sections we get back should probably just go in local state.
+        console.log('Request to get relevant sections sent to server', res); // The sections we get back should probably just go in local state.
       })
       .catch((err) => {
-        console.log('boo');
+        console.log('Request to get relevant sections NOT sent to server!', err);
       })
   }
 
