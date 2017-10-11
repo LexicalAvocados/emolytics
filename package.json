@@ -61,7 +61,7 @@
     "react-toggle-display": "^2.2.0",
     "react-transition-group": "^2.2.0",
     "redux": "^3.7.2",
-    "sequelize": "^3.30.4",
+    "sequelize": "^4.3.18",
     "underscore": "^1.8.3"
   }
 }
