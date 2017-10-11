@@ -14,7 +14,7 @@ class ProjectHome extends React.Component {
   }
 
   retrieveSections() {
-    axios.get('/api/getRelatedSections', { params: {goodies: 'HELLO THERE'}})
+    axios.get('/api/getRelatedSections', { params: {projectId: 1}})
       .then((res) => {
         console.log('yay');
       })
