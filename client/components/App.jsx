@@ -27,6 +27,7 @@ class App extends React.Component {
         <button onClick={this.onClick}> test </button>
         <div>
           <Route exact path="/" component={Home}/>
+          <Route path="/new" component={Home}/>
         </div>
       </div>
     )
@@ -38,7 +39,8 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
-    example: state.example
+    example: state.example,
+    router: state.router
   })
 };
 
