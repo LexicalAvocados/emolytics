@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import { Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap';
+>>>>>>> with basic navbar and stylesheet
 
 const Navbar = (props) => {
 
@@ -7,6 +11,7 @@ const Navbar = (props) => {
     <div>
     { !props.isLoggedIn ?
       (
+<<<<<<< HEAD
         <div className='navContainer' style={navbarContainerStyle}>
           <Link to='/login' style={noUnderline}>
             <p className='navItem'>Log in </p>
@@ -26,6 +31,31 @@ const Navbar = (props) => {
             <Link to='/logout' style={noUnderline}>
               <p className='navItem'>Log out</p>
             </Link>
+=======
+        <div classID='NavOutside' style={navbarStyle}>
+          <ButtonToolbar>
+            <Link to='/login'>
+              <Button> Log in </Button>
+            </Link>
+            <Link to='/signup'>
+              <Button> Sign up </Button>
+            </Link>
+          </ButtonToolbar>
+        </div>
+      ) : (
+          <div classID='NavInside' style={navbarStyle}>
+          <ButtonToolbar>
+            <Link to='/'>
+              <Button bsStyle="primary">Home</Button>
+            </Link>
+            <Link to='/projects'>
+              <Button>Projects</Button>
+            </Link>
+            <Link to='/logout'>
+              <Button>Log out</Button>
+            </Link>
+          </ButtonToolbar>
+>>>>>>> with basic navbar and stylesheet
         </div>
       )
     }
@@ -33,6 +63,7 @@ const Navbar = (props) => {
   )
 };
 
+<<<<<<< HEAD
 const navbarContainerStyle = {
   float: "right",
   display: "flex",
@@ -42,6 +73,10 @@ const navbarContainerStyle = {
 
 const noUnderline = {
   textDecoration: "none"
+=======
+const navbarStyle = {
+  float: "right"
+>>>>>>> with basic navbar and stylesheet
 }
 
 export default Navbar;
