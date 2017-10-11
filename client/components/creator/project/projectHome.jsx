@@ -10,13 +10,13 @@ class ProjectHome extends React.Component {
     super(props);
     this.state = {
 
-    }
+    };
   }
 
   retrieveSections() {
     axios.get('/api/getRelatedSections', { params: {projectId: 1}})
       .then((res) => {
-        console.log('yay');
+        console.log('yay'); // The sections we get back should probably just go in local state.
       })
       .catch((err) => {
         console.log('boo');
@@ -33,8 +33,9 @@ class ProjectHome extends React.Component {
         <h2 onClick={this.testGet.bind(this)}>PROJECT NAME</h2>
         <p>PROJECT DESCRIPTION</p>
         <Link to="/projectCreate">Add option</Link>
-          {/* Pass sectionId */}
+          {/* Pass sectionId in link*/}
         <SectionList />
+        {/* Pass section information to each */}
       </div>
     )
   }

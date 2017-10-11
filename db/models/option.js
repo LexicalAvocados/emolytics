@@ -1,5 +1,6 @@
-import Sequelize from 'sequelize';
-import sequelize from '../../db';
+const Sequelize = require('sequelize');
+const sequelize = require('../index.js');
+const Section = require('./section.js');
 
 const Option = sequelize.define('option', {
   name: Sequelize.STRING,
