@@ -60,6 +60,6 @@
    "react-transition-group": "^2.2.0",
    "redux": "^3.7.2",
    "sequelize": "^3.30.4",
-   "underscore": "^1.8.3",
+   "underscore": "^1.8.3"
  }
 }
