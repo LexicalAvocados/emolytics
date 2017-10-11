@@ -28,5 +28,5 @@ dist/
 node_modules/
 bower_components/
 
-
 client/bundle.js
+package-lock.json
