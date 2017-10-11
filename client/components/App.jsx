@@ -6,7 +6,7 @@ import * as ChangeActions from '../actions';
 import { Route, Link } from 'react-router-dom';
 import Home from './Home.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
-
+import OptionHome from './creator/option/optionHome.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
           <Route path="/testvideo" component={TesterVideo}/>
+          <Route path="/testviz" component={OptionHome}/>
         </div>
       </div>
     )
