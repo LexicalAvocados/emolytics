@@ -29,7 +29,7 @@ class App extends React.Component {
         <div>
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
-          <Route exact path="/testvideo" component={TesterVideo}/>
+          <Route path="/testvideo" component={TesterVideo}/>
         </div>
       </div>
     )
