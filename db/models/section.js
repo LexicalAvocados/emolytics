@@ -1,4 +1,5 @@
-import sequelize from 'sequelize'; 
+import Sequelize from 'sequelize';
+import sequelize from '../../db';
 
 const Section = sequelize.define('section', {
   name: Sequelize.STRING,

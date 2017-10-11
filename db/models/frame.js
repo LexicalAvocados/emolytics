@@ -1,4 +1,5 @@
-import sequelize from 'sequelize';
+import Sequelize from 'sequelize';
+import sequelize from '../../db';
 
 const Frame = sequelize.define('frame', {
   time: Sequelize.INTEGER,
