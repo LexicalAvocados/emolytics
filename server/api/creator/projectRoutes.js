@@ -15,4 +15,3 @@ exports.getRelatedSection = function(req, res) {
       res.send('Error finding relevant projects!')
     })
 };
-    // options -- sectionId
