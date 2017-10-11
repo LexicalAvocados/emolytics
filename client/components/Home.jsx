@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { changeText} from '../actions'
 import { bindActionCreators } from 'redux'
 import * as ChangeActions from '../actions'
-
+import ProjectHome from './creator/project/ProjectHome.jsx' //REMOVE THIS
 
 
 class Home extends React.Component {
@@ -19,6 +19,7 @@ class Home extends React.Component {
     return (
       <div>
         <h2> Home </h2>
+        <ProjectHome />   {/*REMOVE THIS */}
       </div>
 
     )
