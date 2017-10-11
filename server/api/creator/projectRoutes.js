@@ -1,8 +1,18 @@
 // Import relevant things from db 
-const sections = require('../../../db/models/section.js')
+const Sections = require('../../../db/models/section.js')
 
 exports.getRelatedSection = function(req, res) {
   // send projectId, grab sections, use sectionid to grab options
-  console.log(req.query);
-  res.send('here we are');
+  Sections.findAll({
+    where: {
+      projectId: req.query.projectId
+    }
+  })
+    .then((sectionsArray) => {
+      res.send(sectionsArray);
+    })
+    .catch((err) => {
+      res.send('Error finding relevant projects!')
+    })
 };
+    // options -- sectionId
