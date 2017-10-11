@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions';
 import { Route, Link } from 'react-router-dom';
 import Home from './Home.jsx';
+import TesterVideo from './tester/testerVideo.jsx';
 
 
 class App extends React.Component {
@@ -28,6 +29,7 @@ class App extends React.Component {
         <div>
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
+          <Route exact path="/testvideo" component={TesterVideo}/>
         </div>
       </div>
     )

@@ -15,6 +15,10 @@ app.use(express.static(__dirname + '/client'));
 
 app.use('/api', router)
 
+app.get('*', (req, res) => {
+	res.sendfile(__dirname + '/client/index.html');
+})
+
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
