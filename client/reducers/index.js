@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-<<<<<<< HEAD
 import { routerReducer } from 'react-router-redux';
 import example from './example';
 
@@ -9,13 +8,3 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
-=======
-import example from './example';
-
-const app = combineReducers({
-  example
-});
-
-export default app;
-
->>>>>>> createProject
