@@ -1,14 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { changeText} from '../actions';
-import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../actions';
-import {
-  HashRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
-import Home from './Home.jsx';
+import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import App from './components/App.jsx';
+import rootReducer from './reducers';
+import { changeExample } from './actions';
 
 
 class App extends React.Component {
