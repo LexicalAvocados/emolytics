@@ -13,16 +13,6 @@ import { changeExample } from './actions';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
 
-=======
-import { connect } from 'react-redux';
-import { changeText} from '../actions';
-import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../actions';
-import { Route, Link } from 'react-router-dom';
-import Home from './Home.jsx';
-import TesterVideo from './tester/testerVideo.jsx';
-import OptionHome from './creator/option/optionHome.jsx';
->>>>>>> viz
 
 class App extends React.Component {
   constructor(props) {
@@ -47,12 +37,9 @@ class App extends React.Component {
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
           <Route path="/testvideo" component={TesterVideo}/>
-<<<<<<< HEAD
           <Route path="/project/:id" component={ProjectHome}/>
           <Route path="/section/:id" component={SectionHome}/>
-=======
           <Route path="/testviz" component={OptionHome}/>
->>>>>>> viz
         </div>
       </div>
     )
