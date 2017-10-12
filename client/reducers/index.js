@@ -7,10 +7,16 @@ import currentSection from './currentSection';
 
 const rootReducer = combineReducers({
 	example,
+<<<<<<< HEAD
   loggedInUser,
   currentProject,
   currentSection,
   router: routerReducer
+=======
+  router: routerReducer,
+  currentProject: currentProject,
+  currentSection: currentSection,
+>>>>>>> test
 });
 
 export default rootReducer;

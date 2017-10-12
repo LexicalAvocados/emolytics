@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions'
 import OptionList from './OptionList.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    this.onOptionClick = this.onOptionClick.bind(this);
   }
-
+  
+  onOptionClick(index) {
+    console.log(this.props.currentSection.options[index]);
+    this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+  }
 
   render() {
     return (
@@ -21,6 +25,8 @@ class SectionHome extends React.Component {
           <OptionList 
             option={option}
             key={i}
+            index={i}
+            onOptionClick={this.onOptionClick}
           />
         ))}
       </div>
@@ -30,14 +36,20 @@ class SectionHome extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log('LOG WITHIN SECTION HOME', state);
+  console.log('LOG WITHIN SECTION HOME', state);
   return ({
     currentProject: state.currentProject,
     currentSection: state.currentSection
-  })
+  });
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
 
 
 export default connect(
-  mapStateToProps
-  ) (SectionHome)
+  mapStateToProps,
+  mapDispatchToProps
+) (SectionHome);
