@@ -69,4 +69,3 @@ exports.getRelatedSection = function(req, res) {
 // const createProjectHandler = function(req, res) {
 //   console.log(req)
 // };
-
