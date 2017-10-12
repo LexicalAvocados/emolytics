@@ -27,7 +27,7 @@ app.use(session({
 app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', auth.logout);
-app.use(auth.checkUser);
+// app.use(auth.checkUser);
 
 app.get('*', (req, res) => {
 	res.sendFile(__dirname + '/client/index.html');

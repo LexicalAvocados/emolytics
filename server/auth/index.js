@@ -1,11 +1,10 @@
 const bcrypt = require('bcrypt');
-const db = require('../../db');
-const User = db.User;
+const User = require('../../db').User;
 
 exports.createAccount = (req, res) => {
   console.log('createAccount req.body:', req.body);
   const saltRounds = 10;
-  let {username, password, email} = req.body;
+  let {username, password, email, creator} = req.body;
 
   bcrypt.genSalt(saltRounds)
     .then(salt => {
@@ -15,7 +14,8 @@ exports.createAccount = (req, res) => {
       return User.create({
         username,
         password,
-        email
+        email,
+        creator
       });
     })
     .then(newUser => {
@@ -24,13 +24,10 @@ exports.createAccount = (req, res) => {
       console.log('New User inserted:', newUser);
       delete newUser.password;
 
-      let resObj = JSON.stringify({
+      res.send({
         loggedIn: true,
         userData: newUser,
       });
-
-      res.setHeader('Content-Type', 'application/json');
-      res.send(resObj);
     })
     .catch(err => console.log('Account creation error!'));
 };

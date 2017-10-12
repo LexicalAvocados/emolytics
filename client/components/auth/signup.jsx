@@ -1,22 +1,25 @@
 import React from 'react';
-import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      typedName: '',
+      typedUsername: '',
       typedPassword: '',
-      typedEmail: ''
+      typedEmail: '',
+      isCreator: false
     }
-    this.updateTypedName = this.updateTypedName.bind(this);
+    this.updateTypedUsername = this.updateTypedUsername.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
-    this.submitNewAccount = this.submitNewAccount.bind(this);
     this.updateTypedEmail = this.updateTypedEmail.bind(this);
+    this.updateIsCreator = this.updateIsCreator.bind(this);
+    this.submitNewAccount = this.submitNewAccount.bind(this);
   }
 
-  updateTypedName(e) {
-    this.setState({typedName: e.target.value});
+  updateTypedUsername(e) {
+    this.setState({typedUsername: e.target.value});
   }
 
   updateTypedPassword(e) {
@@ -27,8 +30,24 @@ class Signup extends React.Component {
     this.setState({typedEmail: e.target.value});
   }
 
+  updateIsCreator(e) {
+    this.setState({isCreator: !this.state.isCreator});
+  }
+
   submitNewAccount(e) {
-    console.log('e.target.value:', e.target.value);
+    e.preventDefault();
+    axios.post('/signup', {
+      username: this.state.typedUsername,
+      password: this.state.typedPassword,
+      email: this.state.typedEmail,
+      creator: this.state.isCreator
+    })
+      .then(res => {
+        console.log('response:', res);
+      })
+      .catch(err => {
+        console.log('submitNewAccount Error:', err);
+      })
   }
 
   render() {
@@ -36,12 +55,12 @@ class Signup extends React.Component {
       <div>
         <Form horizontal onSubmit={this.submitNewAccount}>
           <FormGroup>
-            <ControlLabel>Create New Account</ControlLabel><br/>
+            <ControlLabel>Create New Account</ControlLabel><br/><br/>
             <FormControl
               type='text'
-              value={this.state.typedName}
+              value={this.state.typedUsername}
               placeholder='Username'
-              onChange={this.updateTypedName}
+              onChange={this.updateTypedUsername}
             /><br/>
             <FormControl
               type='password'
@@ -54,7 +73,8 @@ class Signup extends React.Component {
               value={this.state.typedEmail}
               placeholder='Email'
               onChange={this.updateTypedEmail}
-            /><br/><br/>
+            /><br/>
+            <Checkbox onClick={this.updateIsCreator}>Register as a Creator</Checkbox><br/>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>
