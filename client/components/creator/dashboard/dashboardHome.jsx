@@ -30,8 +30,8 @@ class DashboardHome extends React.Component {
 
 
   onProjectClick(obj, sections) {
-    obj['sections'] = sections
-    this.props.actions.changeCurrentProject(obj)
+    obj['sections'] = sections;
+    this.props.actions.changeCurrentProject(obj);
   }
 
   render () {

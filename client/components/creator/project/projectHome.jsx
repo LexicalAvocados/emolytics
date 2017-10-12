@@ -13,27 +13,13 @@ class ProjectHome extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.retrieveSections();
-  }
-
-  retrieveSections() {
-    axios.get('/api/getRelatedSections', { params: {projectId: 1}})
-      .then((res) => {
-        console.log('Request to get relevant sections sent to server', res); 
-      })
-      .catch((err) => {
-        console.log('Request to get relevant sections NOT sent to server!', err);
-      })
-  }
-
   render() {
     return (
       <div>
-        <h2>PROJECT NAME</h2>
-        <p>PROJECT DESCRIPTION</p>
-        <Link to="/projectCreate">Add option</Link> {/* Pass sectionId in link*/}
-        {this.state.sections.map((section, i) => (
+        <h2>{this.props.currentProject.currentProject.name}</h2>
+        <p>{this.props.currentProject.currentProject.description}</p>
+        <Link to="/projectCreate">Add option</Link>
+        {this.props.currentProject.currentProject.sections.map((section, i) => (
           <SectionList 
             section={section}
             key={i}
@@ -44,5 +30,15 @@ class ProjectHome extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  console.log('LOG WITHIN PROJECTHOME', state);
+  return ({
+    currentProject: state.currentProject
+  })
+}
 
-export default ProjectHome;
+
+// export default ProjectHome;
+export default connect(
+  mapStateToProps
+  ) (ProjectHome)
