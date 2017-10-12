@@ -62,7 +62,6 @@ const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
     example: state.example,
-    setLoggedIn: state.setLoggedIn,
     router: state.router
   })
 };

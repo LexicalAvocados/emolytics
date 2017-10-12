@@ -31,10 +31,10 @@ const User = sequelize.define('user', {
   fbId: Sequelize.INTEGER,
   sex: Sequelize.STRING,
   age: Sequelize.INTEGER,
-  creator: Sequelize.BOOLEAN
+  isCreator: Sequelize.BOOLEAN
 });
 
-User.sync({force: false});
+User.sync({force: true});
 
 // ~~~~~~~~~~~~~~ //
 // Project Schema //
