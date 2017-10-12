@@ -5,44 +5,27 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 
-class ProjectHome extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sections: []
-    };
-  }
+const ProjectHome = (props) => (
+  <div>
+    <h2>{props.currentProject.name}</h2>
+    <p>{props.currentProject.description}</p>
+    <Link to="/projectCreate">Add option</Link>
+    {props.currentProject.sections.map((section, i) => (
+      <SectionList 
+        section={section}
+        key={i}
+      />
+    ))}
+  </div>
+);
 
-  componentDidMount() {
-    this.retrieveSections();
-  }
-
-  retrieveSections() {
-    axios.get('/api/getRelatedSections', { params: {projectId: 1}})
-      .then((res) => {
-        console.log('Request to get relevant sections sent to server', res); // The sections we get back should probably just go in local state.
-      })
-      .catch((err) => {
-        console.log('Request to get relevant sections NOT sent to server!', err);
-      })
-  }
-
-  render() {
-    return (
-      <div>
-        <h2>PROJECT NAME</h2>
-        <p>PROJECT DESCRIPTION</p>
-        <Link to="/projectCreate">Add option</Link> {/* Pass sectionId in link*/}
-        {this.state.sections.map((section, i) => (
-          <SectionList 
-            section={section}
-            key={i}
-          />
-        ))}
-      </div>
-    )
-  }
+const mapStateToProps = (state) => {
+  // console.log('LOG WITHIN PROJECTHOME', state);
+  return ({
+    currentProject: state.currentProject
+  })
 }
 
-
-export default ProjectHome;
+export default connect(
+  mapStateToProps
+  ) (ProjectHome)

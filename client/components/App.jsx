@@ -9,6 +9,8 @@ import App from './components/App.jsx';
 import rootReducer from './reducers';
 import { changeExample } from './actions';
 
+import ProjectHome from './creator/project/projectHome.jsx';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -33,6 +35,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
           <Route path="/testvideo" component={TesterVideo}/>
+          <Route path="/project/:id" component={ProjectHome}/>
         </div>
       </div>
     )
