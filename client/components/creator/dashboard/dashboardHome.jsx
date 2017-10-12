@@ -1,4 +1,5 @@
 import React from 'react';
+import ProjectList from './ProjectList.jsx';
 import axios from 'axios';
 
 class DashboardHome extends React.Component {
@@ -9,13 +10,14 @@ class DashboardHome extends React.Component {
       sections: []
     };
   }
-  // Request to db for all projects for that given user.
-    // Uxse id of project to get all sections
 
   componentDidMount() {
     axios.get('/api/getProjectsForUser', {params: { username: 'Bob' }})
       .then((response) => {
-        console.log('DA RESPONSE', response);
+        this.setState({
+          projects: response.data
+        })
+        console.log(this.state.projects);
       })
       .catch((err) => {
         console.log(err);
@@ -26,6 +28,13 @@ class DashboardHome extends React.Component {
     return (
       <div>
         <p>PROJECT HOME</p>
+        { this.state.projects.map((project, i) => (
+          <ProjectList 
+            project={project}
+            key={i}
+          />
+        ))}
+
       </div>
     );
   }
