@@ -9,12 +9,22 @@ import {
   Link
 } from 'react-router-dom';
 import Home from './Home.jsx';
+<<<<<<< HEAD
 
+=======
+>>>>>>> resolved merge conflicts
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> resolved merge conflicts
+>>>>>>> resolving conflicts
     };
     this.onClick = this.onClick.bind(this);
     console.log(this);

@@ -18,8 +18,12 @@ const store = createStore(rootReducer, applyMiddleware(historyMiddleware));
 console.log(store.getState());
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+>>>>>>> resolving conflicts
+=======
+
 >>>>>>> resolving conflicts
 store.dispatch(changeExample('Learn about actions'));
 console.log(store.getState());
