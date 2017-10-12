@@ -11,6 +11,6 @@ exports.getRelatedSection = function(req, res) {
       res.send(sectionsArray);
     })
     .catch((err) => {
-      res.send('Error finding relevant projects!');
+      res.send(err);
     })
 };
