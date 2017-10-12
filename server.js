@@ -25,6 +25,7 @@ app.use(session({
 }));
 
 app.post('/signup', (req, res) => auth.createAccount(req, res));
+app.post('/login', (req, res) => auth.attemptLogin(req, res));
 
 app.get('*', (req, res) => {
 	res.sendFile(__dirname + '/client/index.html');
