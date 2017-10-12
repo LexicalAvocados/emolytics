@@ -1,8 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../../../actions'
 import axios from 'axios';
 
 class SectionList extends React.Component {
@@ -45,19 +42,4 @@ class SectionList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log('LOG WITHIN SECTION LIST', state);
-  return ({
-    currentProject: state.currentProject
-  });
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(ChangeActions, dispatch)
-});
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-) (SectionList);
+export default SectionList;

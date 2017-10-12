@@ -27,7 +27,6 @@ class ProjectHome extends React.Component {
       <div>
         <h2>{this.props.currentProject.name}</h2>
         <p>{this.props.currentProject.description}</p>
-        <Link to="/projectCreate">Add option</Link>
         {this.props.currentProject.sections.map((section, i) => (
           <SectionList 
             onSectionClick={this.onSectionClick}
@@ -57,4 +56,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-  ) (ProjectHome)
+) (ProjectHome);
