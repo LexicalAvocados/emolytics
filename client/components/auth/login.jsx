@@ -28,6 +28,20 @@ class Login extends React.Component {
 
   submitLogin(e) {
     e.preventDefault();
+    axios.post('/login', {
+      username: this.state.typedUsername,
+      password: this.state.typedPassword
+    })
+      .then(res => {
+        if (res.data.loggedIn) {
+          this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
+        } else {
+          console.log(res.data.reason);
+        }
+      })
+      .catch(err => {
+        console.log('submitLogin Error:', err);
+      })
   }
 
   render() {

@@ -1,8 +1,8 @@
 export const CHANGE_EXAMPLE = 'CHANGE_EXAMPLE';
 export const SET_LOGGED_IN = 'SET_LOGGED_IN';
 export const SET_LOGGED_OUT = 'SET_LOGGED_OUT';
-export const CHANGE_CURRENTPROJECT = 'CHANGE_CURRENTPROJECT';
-export const CHANGE_CURRENTSECTION = 'CHANGE_CURRENTSECTION';
+export const CHANGE_CURRENTPROJECT = 'CHANGE_CURRENT_PROJECT';
+export const CHANGE_CURRENTSECTION = 'CHANGE_CURRENT_SECTION';
 
 export const changeExample = (text) => ({
 	type: CHANGE_EXAMPLE,
@@ -19,16 +19,12 @@ export const setLoggedOut = () => ({
   type: SET_LOGGED_OUT
 });
 
-export const changeCurrentProject = function(obj) {
-	return {
-		type: CHANGE_CURRENTPROJECT,
-		obj
-	}
-}
+export const changeCurrentProject = (obj) => ({
+	type: CHANGE_CURRENT_PROJECT,
+	obj
+});
 
-export const changeCurrentSection = function(obj) {
-	return {
-		type: CHANGE_CURRENTSECTION,
-		obj
-	}
-}
+export const changeCurrentSection = (ob) => ({
+	type: CHANGE_CURRENT_SECTION,
+	obj
+});
