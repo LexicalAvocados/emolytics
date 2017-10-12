@@ -1,15 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+import { Route } from 'react-router-dom'
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import rootReducer from './reducers';
-import { changeExample } from './actions';
+import rootReducer from '../reducers/index.js';
+import { changeExample } from '../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../actions'
 
+import Home from './Home.jsx';
+import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
+import OptionHome from './creator/option/OptionHome.jsx';
 
 
 class App extends React.Component {
@@ -38,6 +45,7 @@ class App extends React.Component {
           <Route path="/project/:id" component={ProjectHome}/>
           <Route path="/section/:id" component={SectionHome}/>
           <Route path="/testviz" component={OptionHome}/>
+          <Route path="/option/:id" component={OptionHome}/>
         </div>
       </div>
     )
