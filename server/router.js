@@ -12,5 +12,3 @@ router.get('/getOptionsForSection', sectionRoutes.getRelatedOptions);
 
 
 module.exports = router;
-
-
