@@ -6,13 +6,11 @@ const sectionRoutes = require('./api/creator/sectionRoutes.js')
 
 router.use('/tester', testerRoutes);
 
-
 router.get('/getRelatedSections', projectRoutes.getRelatedSection);
 
 router.get('/getOptionsForSection', sectionRoutes.getRelatedOptions);
 
 // router.post('/createProject', projectRoutes.createProjectHandler);
-
 
 router.post('/createProject', projectRoutes.createProject);
 
