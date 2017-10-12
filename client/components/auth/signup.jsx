@@ -6,11 +6,13 @@ class Signup extends React.Component {
     super(props);
     this.state = {
       typedName: '',
-      typedPassword: ''
+      typedPassword: '',
+      typedEmail: ''
     }
     this.updateTypedName = this.updateTypedName.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.submitNewAccount = this.submitNewAccount.bind(this);
+    this.updateTypedEmail = this.updateTypedEmail.bind(this);
   }
 
   updateTypedName(e) {
@@ -19,6 +21,10 @@ class Signup extends React.Component {
 
   updateTypedPassword(e) {
     this.setState({typedPassword: e.target.value});
+  }
+
+  updateTypedEmail(e) {
+    this.setState({typedEmail: e.target.value});
   }
 
   submitNewAccount(e) {
@@ -43,6 +49,12 @@ class Signup extends React.Component {
               placeholder='Password'
               onChange={this.updateTypedPassword}
             /><br/>
+            <FormControl
+              type='text'
+              value={this.state.typedEmail}
+              placeholder='Email'
+              onChange={this.updateTypedEmail}
+            /><br/><br/>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>

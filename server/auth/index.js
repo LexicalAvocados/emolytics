@@ -74,7 +74,7 @@ exports.attemptLogin = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  console.log('req.session before destroying:' req.session);
+  console.log('req.session before destroying:', req.session);
   req.session.destroy();
   console.log('req.session after destroying:', req.session);
   res.redirect('/');
