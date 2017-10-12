@@ -13,9 +13,9 @@ class DashboardHome extends React.Component {
     // Uxse id of project to get all sections
 
   componentDidMount() {
-    axios.get('/getProjectsForUser')
+    axios.get('/api/getProjectsForUser', {params: { username: 'Bob' }})
       .then((response) => {
-        console.log(response);
+        console.log('DA RESPONSE', response);
       })
       .catch((err) => {
         console.log(err);
@@ -25,13 +25,10 @@ class DashboardHome extends React.Component {
   render () {
     return (
       <div>
-        
+        <p>PROJECT HOME</p>
       </div>
     );
   }
 }
 
 export default DashboardHome;
-
-// Map through projects 
-  // 
