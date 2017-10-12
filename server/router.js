@@ -14,6 +14,8 @@ router.get('/getOptionsForSection', sectionRoutes.getRelatedOptions);
 // router.post('/createProject', projectRoutes.createProjectHandler);
 
 
+router.post('/createProject', projectRoutes.createProject);
+
 // router.get('/', function(req, res) {
 //   console.log('testing');
 //   res.send('testing');

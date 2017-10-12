@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize');
 
-console.log('testing');
-
 const sequelize = new Sequelize('reactionsync', 'pengcheng95', 'passwordmajing', {
   host: 'reaction.csm1qfcrhywi.us-east-2.rds.amazonaws.com',
   dialect: 'postgres',
@@ -92,3 +90,4 @@ module.exports = {
   Frame: Frame
 };
 
+module.exports = sequelize;

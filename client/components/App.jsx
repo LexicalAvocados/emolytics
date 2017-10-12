@@ -10,10 +10,12 @@ import {
 } from 'react-router-dom';
 import Home from './Home.jsx';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+
     };
     this.onClick = this.onClick.bind(this);
     console.log(this);
