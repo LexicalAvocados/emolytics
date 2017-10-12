@@ -8,4 +8,7 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+<<<<<<< HEAD
 
+=======
+>>>>>>> resolved merge conflicts

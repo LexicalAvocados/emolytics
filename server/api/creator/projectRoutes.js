@@ -17,4 +17,3 @@ exports.getRelatedSection = function(req, res) {
     })
 };
 
-
