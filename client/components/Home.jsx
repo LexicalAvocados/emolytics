@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux'
 import * as ChangeActions from '../actions'
 import Navbar from './Navbar.jsx';
 
-import DashboardHome from './creator/dashboard/dashboardHome.jsx'
-
 class Home extends React.Component {
 
   constructor(props) {
@@ -21,7 +19,6 @@ class Home extends React.Component {
       <div>
         <Navbar />
         <h2> Home </h2>
-        <DashboardHome />
       </div>
 
     )
