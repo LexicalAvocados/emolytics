@@ -34,7 +34,7 @@ const User = sequelize.define('user', {
   isCreator: Sequelize.BOOLEAN
 });
 
-User.sync({force: true});
+User.sync({force: false});
 
 // ~~~~~~~~~~~~~~ //
 // Project Schema //

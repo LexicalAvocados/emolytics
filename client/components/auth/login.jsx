@@ -11,11 +11,13 @@ class Login extends React.Component {
     super(props);
     this.state = {
       typedUsername: '',
-      typedPassword: ''
+      typedPassword: '',
+      loginError: null
     }
     this.updateTypedUsername = this.updateTypedUsername.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
+    this.resetInputForms = this.resetInputForms.bind(this);
   }
 
   updateTypedUsername(e) {
@@ -36,12 +38,17 @@ class Login extends React.Component {
         if (res.data.loggedIn) {
           this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
         } else {
-          console.log(res.data.reason);
+          this.setState({loginError: res.data.reason});
+          this.resetInputForms();
         }
       })
       .catch(err => {
         console.log('submitLogin Error:', err);
-      })
+      });
+  }
+
+  resetInputForms() {
+    this.setState({typedUsername: '', typedPassword: ''});
   }
 
   render() {
@@ -49,7 +56,8 @@ class Login extends React.Component {
       <div>
         <Form horizontal onSubmit={this.submitLogin}>
           <FormGroup>
-            <ControlLabel>Log In</ControlLabel>
+            {<div>this.state.loginError</div> && this.state.loginError}<br/><br/>
+            <ControlLabel>Log In</ControlLabel><br/>
             <FormControl
               type='text'
               value={this.state.typedUsername}
