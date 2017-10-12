@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import OptionList from './OptionList.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -13,18 +14,26 @@ class SectionHome extends React.Component {
   render() {
     return (
       <div>
-        <p>SECTION HOME</p>
+        <h3>{this.props.currentProject.name}</h3>
+        <p>{this.props.currentProject.description}</p>
+        <p>{this.props.currentSection.name}</p>
+        { this.props.currentSection.options.map((option, i) => (
+          <OptionList 
+            option={option}
+            key={i}
+          />
+        ))}
       </div>
     );
   }
 }
 
 
-// export default SectionHome;
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN SECTION HOME', state);
   return ({
-    currentProject: state.currentProject
+    currentProject: state.currentProject,
+    currentSection: state.currentSection
   })
 };
 

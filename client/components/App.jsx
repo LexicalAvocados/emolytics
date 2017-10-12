@@ -9,6 +9,7 @@ import TesterVideo from './tester/testerVideo.jsx';
 
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
+import OptionHome from './creator/option/OptionHome.jsx';
 
 
 class App extends React.Component {
@@ -35,6 +36,7 @@ class App extends React.Component {
           <Route path="/testvideo" component={TesterVideo}/>
           <Route path="/project/:id" component={ProjectHome}/>
           <Route path="/section/:id" component={SectionHome}/>
+          <Route path="/option/:id" component={OptionHome}/>
         </div>
       </div>
     )
