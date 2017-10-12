@@ -38,6 +38,7 @@ class App extends React.Component {
           <Route path="/testvideo" component={TesterVideo}/>
           <Route path="/project/:id" component={ProjectHome}/>
           <Route path="/section/:id" component={SectionHome}/>
+          <Route path="/testviz" component={OptionHome}/>
         </div>
       </div>
     )
