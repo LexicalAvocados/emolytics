@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as ChangeActions from '../actions'
 import Navbar from './Navbar.jsx';
 
+
 class Home extends React.Component {
 
   constructor(props) {
