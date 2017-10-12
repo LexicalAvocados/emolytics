@@ -25,7 +25,7 @@ export const changeCurrentProject = (obj) => ({
 	obj
 });
 
-export const changeCurrentSection = (ob) => ({
+export const changeCurrentSection = (obj) => ({
 	type: CHANGE_CURRENT_SECTION,
 	obj
 })
