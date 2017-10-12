@@ -44,10 +44,10 @@ class Signup extends React.Component {
       username: this.state.typedUsername,
       password: this.state.typedPassword,
       email: this.state.typedEmail,
-      creator: this.state.isCreator
+      isCreator: this.state.isCreator
     })
       .then(res => {
-        this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.creator);
+        this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
       })
       .catch(err => {
         console.log('submitNewAccount Error:', err);
