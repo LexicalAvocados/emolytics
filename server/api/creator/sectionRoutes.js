@@ -1,16 +1,17 @@
 const db = require('../../../db/index.js');
-const Options = db.Option;
+const Sections = db.Section;
 
-exports.getRelatedOptions = function(req, res) {
-  Options.findAll({
+exports.getRelatedSection = function(req, res) {
+  Sections.findAll({
     where: {
-      sectionId: req.query.sectionId
+      projectId: req.query.projectId
     }
   })
-    .then((optionsArray) => {
-      res.send(optionsArray);
+    .then((sectionsArray) => {
+      res.send(sectionsArray);
     })
     .catch((err) => {
-      res.send('Error retrieving options!');
+      res.send(err);
     })
 };
+
