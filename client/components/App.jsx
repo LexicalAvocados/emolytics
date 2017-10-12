@@ -32,7 +32,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
           <Route path="/testvideo" component={TesterVideo}/>
-          <Route path="/project:id" component={ProjectHome}/>
+          <Route path="/project/:id" component={ProjectHome}/>
         </div>
       </div>
     )

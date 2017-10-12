@@ -33,7 +33,7 @@ class ProjectList extends React.Component {
   render() {
     return (
       <div>
-        <Link to={'/project' + this.props.project.id}>
+        <Link to={'/project/' + this.props.project.id}>
           <p onClick={this.onClickCallback}>{this.props.project.name}</p>
         </Link>
         <p>{this.props.project.description}</p>

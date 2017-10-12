@@ -53,19 +53,19 @@ class DashboardHome extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  console.log('LOG WITHIN DASHBOARD', state);
+  // console.log('LOG WITHIN DASHBOARD', state);
   return ({
     example: state.example,
     router: state.router,
     currentProject: state.currentProject
-  })
-}
+  });
+};
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-  ) (DashboardHome)
+) (DashboardHome);
