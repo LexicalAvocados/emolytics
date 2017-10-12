@@ -21,7 +21,7 @@ class DashboardHome extends React.Component {
         this.setState({
           projects: response.data
         })
-        // console.log(this.state.projects);
+        console.log('MY REQUEST', this.state.projects);
       })
       .catch((err) => {
         console.log(err);
@@ -53,7 +53,7 @@ class DashboardHome extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log('LOG WITHIN DASHBOARD', state);
+  console.log('LOG WITHIN DASHBOARD', state);
   return ({
     example: state.example,
     router: state.router,

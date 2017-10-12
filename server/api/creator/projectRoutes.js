@@ -12,6 +12,7 @@ exports.getProjectsForUser = function(req, res) {
     }
   })
     .then((user) => {
+      console.log(user);
       Projects.findAll({
         where: {
           id: user.id

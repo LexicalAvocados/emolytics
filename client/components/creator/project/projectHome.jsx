@@ -42,7 +42,7 @@ class ProjectHome extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log('LOG WITHIN PROJECTHOME', state);
+  console.log('LOG WITHIN PROJECTHOME', state);
   return ({
     currentProject: state.currentProject
   });

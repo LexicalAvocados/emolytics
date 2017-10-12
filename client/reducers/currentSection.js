@@ -1,7 +1,11 @@
 const currentSection = (state = {}, action) => {
     switch (action.type) {
-      case 'CHANGE_CURRENTSECTION':
+      case 'CHANGE_CURRENT_SECTION':
         return Object.assign({}, state, action.obj);
+        // return { ...state, currentSection: action.obj};
+      case 'CHANGE_CURRENT_OPTION':
+        // return Object.assign({}, state, action.obj)
+        return { ...state, option: action.optionObj};
       default:
         return state;
     }

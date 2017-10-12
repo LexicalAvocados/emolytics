@@ -1,9 +1,9 @@
 const currentProject = (state = {}, action) => {
     switch (action.type) {
-      case 'CHANGE_CURRENTPROJECT':
+      case 'CHANGE_CURRENT_PROJECT':
         return Object.assign({}, state, action.obj);
       default:
-        return state
+        return state;
     }
   }
   
