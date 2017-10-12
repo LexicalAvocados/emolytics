@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import { changeText} from '../actions';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions';
-import { Route, Link } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 import Home from './Home.jsx';
-import TesterVideo from './tester/testerVideo.jsx';
-
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    }
+    };
     this.onClick = this.onClick.bind(this);
     console.log(this);
   }

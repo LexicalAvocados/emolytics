@@ -84,10 +84,11 @@ Frame.belongsTo(Option);
 Frame.sync({force: false});
 
 module.exports = {
-	sequelize: sequelize,
-	User: User,
-	Project: Project,
-	Section: Section,
-	Option: Option,
-	Frame: Frame
-}
+  sequelize: sequelize,
+  User: User,
+  Project: Project,
+  Section: Section,
+  Option: Option,
+  Frame: Frame
+};
+
