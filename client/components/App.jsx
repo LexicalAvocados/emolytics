@@ -13,6 +13,8 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions'
 
 import Home from './Home.jsx';
+import Signup from './auth/signup.jsx';
+import Login from './auth/login.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
@@ -26,7 +28,7 @@ class App extends React.Component {
 
     };
     this.onClick = this.onClick.bind(this);
-    console.log(this);
+    console.log('App: this:', this);
   }
 
   onClick() {
@@ -37,10 +39,12 @@ class App extends React.Component {
     return (
       <div>
         {this.props.example.text}
-        <button onClick={this.onClick}> test </button>
+        <button onClick={this.onClick}> test </button><br/><br/>
         <div>
           <Route exact path="/" component={Home}/>
           <Route path="/new" component={Home}/>
+          <Route path="/signup" component={Signup}/>
+          <Route path="/login" component={Login}/>
           <Route path="/testvideo" component={TesterVideo}/>
           <Route path="/project/:id" component={ProjectHome}/>
           <Route path="/section/:id" component={SectionHome}/>
@@ -58,11 +62,12 @@ const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
     example: state.example,
+    setLoggedIn: state.setLoggedIn,
     router: state.router
   })
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
 });
 

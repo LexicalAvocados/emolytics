@@ -13,7 +13,11 @@ const history = createHistory();
 
 const historyMiddleware = routerMiddleware(history);
 
-const store = createStore(rootReducer, applyMiddleware(historyMiddleware));
+const store = createStore(
+  rootReducer,
+  applyMiddleware(historyMiddleware),
+  (window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+);
 
 console.log(store.getState());
 
@@ -23,8 +27,7 @@ console.log(store.getState());
 
 ReactDOM.render(
 	<Provider store={store}>
-	    <ConnectedRouter history={history}>
-			  <App/>
-	    </ConnectedRouter>
+    <ConnectedRouter history={history}>
+		  <App/>
+    </ConnectedRouter>
 	</Provider>, document.getElementById('app'));
-

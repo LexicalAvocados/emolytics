@@ -12,17 +12,22 @@ const sequelize = new Sequelize('reactionsync', 'pengcheng95', 'passwordmajing',
 });
 
 sequelize
-.authenticate()
-.then(() => {
-console.log('Connection has been established successfully with reactionsync');
-})
-.catch(err => {
-console.error('Unable to connect to the database:', err);
-});
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully with reactionsync');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+// ~~~~~~~~~~~ //
+// User Schema //
+// ~~~~~~~~~~~ //
 
 const User = sequelize.define('user', {
   username: Sequelize.STRING,
   password: Sequelize.STRING,
+  email: Sequelize.STRING,
   fbId: Sequelize.INTEGER,
   sex: Sequelize.STRING,
   age: Sequelize.INTEGER,
@@ -30,6 +35,10 @@ const User = sequelize.define('user', {
 });
 
 User.sync({force: false});
+
+// ~~~~~~~~~~~~~~ //
+// Project Schema //
+// ~~~~~~~~~~~~~~ //
 
 const Project = sequelize.define('project', {
   name: Sequelize.STRING,
@@ -40,6 +49,10 @@ Project.belongsTo(User);
 
 Project.sync({force: false});
 
+// ~~~~~~~~~~~~~~ //
+// Section Schema //
+// ~~~~~~~~~~~~~~ //
+
 const Section = sequelize.define('section', {
   name: Sequelize.STRING,
   description: Sequelize.TEXT
@@ -48,6 +61,10 @@ const Section = sequelize.define('section', {
 Section.belongsTo(Project);
 
 Section.sync({force: false});
+
+// ~~~~~~~~~~~~~ //
+// Option Schema //
+// ~~~~~~~~~~~~~ //
 
 const Option = sequelize.define('option', {
   name: Sequelize.STRING,
@@ -60,6 +77,10 @@ const Option = sequelize.define('option', {
 Option.belongsTo(Section);
 
 Option.sync({force: false});
+
+// ~~~~~~~~~~~~ //
+// Frame Schema //
+// ~~~~~~~~~~~~ //
 
 const Frame = sequelize.define('frame', {
   time: Sequelize.INTEGER,
