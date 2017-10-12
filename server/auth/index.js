@@ -73,6 +73,13 @@ exports.attemptLogin = (req, res) => {
     });
 };
 
+exports.logout = (req, res) => {
+  console.log('req.session before destroying:' req.session);
+  req.session.destroy();
+  console.log('req.session after destroying:', req.session);
+  res.redirect('/');
+}
+
 exports.checkUser = (req, res, next) => {
   if (req.session.username === undefined) {
     console.log('Not authorized, logging out');
