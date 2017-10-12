@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
 	example,
   router: routerReducer,
   currentProject: currentProject,
-  currentSection: currentSection
+  currentSection: currentSection,
 });
 
 export default rootReducer;

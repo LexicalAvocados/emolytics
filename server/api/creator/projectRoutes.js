@@ -14,7 +14,7 @@ exports.getProjectsForUser = function(req, res) {
     .then((user) => {
       Projects.findAll({
         where: {
-          id: user.id
+          userId: user.id
         }
       })
         .then((projects) => {
