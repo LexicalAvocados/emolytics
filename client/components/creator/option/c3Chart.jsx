@@ -12,7 +12,8 @@ class c3Chart extends React.Component {
 
   componentDidMount() {
     //axios GET request for attention
-    let chart = c3.generate({
+    console.log('hey')
+    var chart = c3.generate({
       bindto: '.chart',
       data: {
         // x: 'x',
