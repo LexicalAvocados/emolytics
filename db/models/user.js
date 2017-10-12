@@ -1,5 +1,5 @@
-import Sequelize from 'sequelize';
-import sequelize from '../../db';
+const Sequelize = require('sequelize');
+const sequelize = require('../index.js');
 
 const User = sequelize.define('user', {
   username: Sequelize.STRING,

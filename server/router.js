@@ -1,9 +1,8 @@
 const express = require('express');
 const router = require('express').Router();
-const projectRoutes = require('./api/creator/projectRoutes.js');
+const projectRoutesHandler = require('./api/creator/projectRoutes.js');
 
-// router.post('/createProject', projectRoutes.createProjectHandler);
-
+router.post('/createProject', projectRoutesHandler.createProject);
 
 // router.get('/', function(req, res) {
 //   console.log('testing');
