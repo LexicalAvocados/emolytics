@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 class ProjectList extends React.Component {
@@ -7,6 +8,7 @@ class ProjectList extends React.Component {
     this.state = {
       sections: []
     };
+    this.onClickCallback = this.onClickCallback.bind(this)
   }
   
   // Uxse id of project to get all sections
@@ -17,19 +19,23 @@ class ProjectList extends React.Component {
         this.setState({
           sections: sections.data
         })
-        console.log(this.state.sections);
+        // console.log(this.state.sections);
       })
       .catch((err) => {
         console.log('Request to get relevant sections NOT sent to server!', err);
       })
   }
 
-
+  onClickCallback() {
+    this.props.onProjectClick(this.props.project, this.state.sections)
+  }
 
   render() {
     return (
       <div>
-        <p>{this.props.project.name}</p>
+        <Link to={'/project' + this.props.project.id}>
+          <p onClick={this.onClickCallback}>{this.props.project.name}</p>
+        </Link>
         <p>{this.props.project.description}</p>
         { this.state.sections.map((section, i) => {
           return (
