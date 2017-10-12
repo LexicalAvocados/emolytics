@@ -11,3 +11,44 @@ body {
 .navItem:hover {
   text-decoration: underline;
 }
+
+.optionAnalyticsContainer {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 50% 50%;
+  border: solid black 1px;
+  padding: 10px;
+  grid-row-gap: 15px;
+}
+
+.optionPlayer {
+  grid-column: 1;
+  grid-row: 1;
+  margin-left: 3%
+}
+
+.testerDetails {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.emotionChart {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.optionChart {
+  grid-column: 1;
+  grid-row: 2;
+  width: 78%;
+}
+
+.lapseInFocus {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.testerNameHeader, .chartHeader {
+  text-align: center;
+}
