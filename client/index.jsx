@@ -17,6 +17,7 @@ const store = createStore(rootReducer, applyMiddleware(historyMiddleware));
 
 console.log(store.getState());
 
+
 store.dispatch(changeExample('Learn about actions'));
 console.log(store.getState());
 

@@ -89,5 +89,3 @@ module.exports = {
   Option: Option,
   Frame: Frame
 };
-
-module.exports = sequelize;

@@ -9,6 +9,7 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+<<<<<<< HEAD
 =======
 import example from './example';
 
@@ -19,3 +20,5 @@ const app = combineReducers({
 export default app;
 
 >>>>>>> createProject
+=======
+>>>>>>> resolved merge conflicts

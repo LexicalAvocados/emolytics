@@ -65,3 +65,7 @@ exports.getRelatedSection = function(req, res) {
 // };
 
 // module.exports.createProject = createProject;
+
+// const createProjectHandler = function(req, res) {
+//   console.log(req)
+// };
