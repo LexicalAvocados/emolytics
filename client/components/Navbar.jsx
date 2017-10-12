@@ -5,7 +5,7 @@ const Navbar = (props) => {
 
   return (
     <div>
-    { !props.isLoggedIn ?
+    { !props.loggedIn ?
       (
         <div className='navContainer' style={navbarContainerStyle}>
           <Link to='/login' style={noUnderline}>

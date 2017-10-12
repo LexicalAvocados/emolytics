@@ -1,5 +1,9 @@
 import React from 'react';
 import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { store, bindActionCreators } from 'redux';
+import * as ChangeActions from '../../actions';
 import axios from 'axios';
 
 class Signup extends React.Component {
@@ -43,7 +47,7 @@ class Signup extends React.Component {
       creator: this.state.isCreator
     })
       .then(res => {
-        console.log('response:', res);
+        this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.creator);
       })
       .catch(err => {
         console.log('submitNewAccount Error:', err);
@@ -83,4 +87,19 @@ class Signup extends React.Component {
   }
 }
 
-export default Signup;
+const mapStateToProps = (state) => {
+  return ({
+    example: state.example,
+    setLoggedIn: state.setLoggedIn,
+    router: state.router
+  })
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Signup);

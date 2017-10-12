@@ -1,5 +1,9 @@
 import React from 'react';
 import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { store, bindActionCreators } from 'redux';
+import * as ChangeActions from '../../actions';
 import axios from 'axios';
 
 class Login extends React.Component {
@@ -52,4 +56,19 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return ({
+    example: state.example,
+    setLoggedIn: state.setLoggedIn,
+    router: state.router
+  })
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
