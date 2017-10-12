@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-<<<<<<< HEAD
 import { render } from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -18,34 +17,14 @@ const store = createStore(rootReducer, applyMiddleware(historyMiddleware));
 
 console.log(store.getState());
 
-
-=======
-import { render } from 'react-dom';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import App from './components/App.jsx';
-import reducer from './reducers';
-import {changeExample} from './actions';
-
-const store = createStore(reducer);
-
-console.log(store.getState());
-
->>>>>>> createProject
 store.dispatch(changeExample('Learn about actions'));
 console.log(store.getState());
 
 
 ReactDOM.render(
-<<<<<<< HEAD
 	<Provider store={store}>
 	    <ConnectedRouter history={history}>
 			  <App/>
 	    </ConnectedRouter>
 	</Provider>, document.getElementById('app'));
 
-=======
-  <Provider store={store}>
-    <App/>
-  </Provider>, document.getElementById('app'));
->>>>>>> createProject
