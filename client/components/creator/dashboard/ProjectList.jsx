@@ -39,7 +39,7 @@ class ProjectList extends React.Component {
         <p>{this.props.project.description}</p>
         { this.state.sections.map((section, i) => {
           return (
-            <p>{section.name}</p>
+            <p key={i}>{section.name}</p>
           );
         })}
       </div>

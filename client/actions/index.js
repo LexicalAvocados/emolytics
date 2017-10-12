@@ -1,6 +1,6 @@
 export const CHANGE_EXAMPLE = 'CHANGE_EXAMPLE'
 export const CHANGE_CURRENTPROJECT = 'CHANGE_CURRENTPROJECT'
-export const ADD_OPTION_TO_CURRENTPROJECT = 'ADD_OPTION_TO_CURRENTPROJECT'
+export const CHANGE_CURRENTSECTION = 'CHANGE_CURRENTSECTION'
 
 
 export const changeExample = function(text) {
@@ -17,9 +17,9 @@ export const changeCurrentProject = function(obj) {
 	}
 }
 
-export const addOptionToCurrentProject = function(arr) {
+export const changeCurrentSection = function(obj) {
 	return {
-		type: ADD_OPTION_TO_CURRENTPROJECT,
-		arr
+		type: CHANGE_CURRENTSECTION,
+		obj
 	}
 }

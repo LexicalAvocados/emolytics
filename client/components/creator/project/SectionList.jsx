@@ -8,9 +8,10 @@ import axios from 'axios';
 class SectionList extends React.Component {
   constructor(props) {
     super(props)
-    this.state ={
+    this.state = {
       options: [] // I suppose just keep these in local state because they are just here to display thumbnails
     };
+    this.onClickCallback = this.onClickCallback.bind(this);
   }
 
   componentDidMount() {
@@ -19,7 +20,6 @@ class SectionList extends React.Component {
         this.setState({
           options: res.data
         })
-        console.log(this.state.options);
         this.props.actions.addOptionToCurrentProject(res.data);
       })
       .catch((err) => {
@@ -27,15 +27,19 @@ class SectionList extends React.Component {
       })
   }
 
+  onClickCallback() {
+    this.props.onSectionClick(this.props.section, this.state.options)
+  }
+
   render () {
     return (
       <div>
-        <Link to="/section"> 
-          <p>{this.props.section.name}</p>
-          { this.state.options.map((option) => {
-            return <img src={option.thumbnail} alt="" />
-          })}
+        <Link to={'/section/' + this.props.section.id}> 
+          <p onClick={this.onClickCallback}>{this.props.section.name}</p>
         </Link>
+        { this.state.options.map((option, i) => {
+          return <img src={option.thumbnail} alt="" key={i}/>
+        })}
       </div>
     );
   }
