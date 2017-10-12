@@ -12,9 +12,10 @@ exports.getProjectsForUser = function(req, res) {
     }
   })
     .then((user) => {
+      console.log(user);
       Projects.findAll({
         where: {
-          userId: user.id
+          id: user.id
         }
       })
         .then((projects) => {
