@@ -22,4 +22,3 @@ exports.getRelatedSection = function(req, res) {
 //   console.log(req)
 // };
 
-
