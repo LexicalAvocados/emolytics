@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -64,25 +64,28 @@ class Signup extends React.Component {
         <Form horizontal onSubmit={this.submitNewAccount}>
           <FormGroup>
             <ControlLabel>Create New Account</ControlLabel><br/><br/>
+            <Col sm={2}>
             <FormControl
               type='text'
               value={this.state.typedUsername}
               placeholder='Username'
               onChange={this.updateTypedUsername}
-            /><br/>
+            /></Col><br/><br/>
+          <Col sm={2}>
             <FormControl
               type='password'
               value={this.state.typedPassword}
               placeholder='Password'
               onChange={this.updateTypedPassword}
-            /><br/>
+            /></Col><br/><br/>
+            <Col sm={2}>
             <FormControl
               type='text'
               value={this.state.typedEmail}
               placeholder='Email'
               onChange={this.updateTypedEmail}
-            /><br/>
-            <Checkbox onClick={this.updateIsCreator}>Register as a Creator</Checkbox><br/>
+            /></Col><br/><br/>
+            <Checkbox onClick={this.updateIsCreator}>Register as a Creator</Checkbox><br/><br/>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>
