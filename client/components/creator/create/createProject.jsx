@@ -2,6 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions';
+
 class CreateProject extends React.Component {
   constructor(props) {
     super(props);
@@ -9,16 +13,12 @@ class CreateProject extends React.Component {
       name: '',
       description: ''
     };
-    this.addProjectClick = this.addProjectClick.bind(this);
+    this.submitProjectClick = this.submitProjectClick.bind(this);
   }
 }
 
-componentDidMount() {
-  this.addProjectClick();
-}
-
 // function that gets invoked when add new project button is clicked
-addProjectClick() {
+submitProjectClick() {
   axios.post('/api/createProject', {
     name: this.state.name,
     description: this.state.description
@@ -28,6 +28,9 @@ addProjectClick() {
         name: response.data.name,
         description: response.data.description
       })
+      // redux
+      this.props.actions.submitProject(project)
+      // this.state.actions.submitProject(project)
     })
     .catch((err) => {
       console.error('Request to create new project NOT sent to server!', err);
@@ -35,17 +38,29 @@ addProjectClick() {
 }
 
 render () {
-  // return (
-  //   <div>
-  //     <Link to={}>
-  //       <p onClick{}></p>
-  //     </Link>
-  //     <p>{this.state.name}</p>
-  //     <p>{this.state.description}</p>
-
-  //   </div>
-  // )
+  return (
+    <div>
+      <Link to={'/project/' + this.state.name}>
+        <p onClick{this.submitProjectClick}>{this.state.name}</p>
+      </Link>
+      <p>{this.state.description}</p>
+    </div>
+  )
 }
 
+const mapStateToProps = (state) => {
+  return({
+    router: state.router,
+    submitProject: state.submitProject
+  });
+};
 
-export default CreateProject;
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(changeActions, dispatch)
+});
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+) (CreateProject);

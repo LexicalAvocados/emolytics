@@ -10,3 +10,4 @@ const example = (state = {
 };
 
 export default example;
+
