@@ -35,7 +35,6 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
-    "0s": "^1.0.0",
     "atob": "^2.0.3",
     "aws-sdk": "^2.133.0",
     "axios": "^0.16.2",
@@ -45,6 +44,7 @@
     "body-parser": "^1.18.1",
     "c3": "^0.4.18",
     "cloudinary": "^1.9.0",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
