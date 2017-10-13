@@ -16,17 +16,9 @@ class Navbar extends React.Component {
   render() {
     return (
       <div>
-        { !this.props.loggedInUser.username ?
-          (
-            <div className='navContainer' style={navbarContainerStyle}>
-              <Link to='/login' style={noUnderline}>
-                <p className='navItem'>Log in </p>
-              </Link>
-              <Link to='/signup' style={noUnderline}>
-                <p className='navItem'>Sign up</p>
-              </Link>
-            </div>
-          ) : (
+        {
+          this.props.loggedInUser.username ? (
+            this.props.loggedInUser.isCreator ? (
               <div className='navContainer' style={navbarContainerStyle}>
                 <Link to='/' style={noUnderline}>
                   <p className='navItem'>Home</p>
@@ -37,6 +29,25 @@ class Navbar extends React.Component {
                 <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
                   <p className='navItem'>Log out</p>
                 </Link>
+              </div>
+            ) : (
+              <div className='navContainer' style={navbarContainerStyle}>
+                <Link to='/' style={noUnderline}>
+                  <p className='navItem'>Home</p>
+                </Link>
+                <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
+                  <p className='navItem'>Log Out</p>
+                </Link>
+              </div>
+            )
+          ) : (
+            <div className='navContainer' style={navbarContainerStyle}>
+              <Link to='/login' style={noUnderline}>
+                <p className='navItem'>Log in</p>
+              </Link>
+              <Link to='/signup' style={noUnderline}>
+                <p className='navItem'>Sign up</p>
+              </Link>
             </div>
           )
         }

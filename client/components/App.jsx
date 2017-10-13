@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { Route, Switch } from 'react-router-dom'
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
@@ -16,6 +15,7 @@ import DashboardHome from './creator/dashboard/dashboardHome.jsx';
 import Navbar from './Navbar.jsx';
 import Signup from './auth/signup.jsx';
 import Login from './auth/login.jsx';
+import TesterHome from './tester/TesterHome.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
@@ -41,24 +41,35 @@ class App extends React.Component {
       <div>
         <Navbar />
         {this.props.example.text}
-        { this.props.loggedInUser.username ? (
-          <Switch>
-            <Route exact path="/" component={DashboardHome}/>
-            <Route path="/new" component={DashboardHome}/>
-            <Route path="/testvideo" component={TesterVideo}/>
-            <Route path="/project/:id" component={ProjectHome}/>
-            <Route path="/section/:id" component={SectionHome}/>
-            <Route path="/testviz" component={OptionHome}/>
-            <Route path="/option/:id" component={OptionHome}/>
-          </Switch>
-        ) : (
-          <Switch>
-            <Route exact path="/" component={Login}/>
-            <Route path="/login" component={Login}/>
-            <Route path="/signup" component={Signup}/>
-          </Switch>
-        )}
         <button onClick={this.onClick}> test </button><br/><br/>
+
+        {
+          this.props.loggedInUser.username ? (
+            this.props.loggedInUser.isCreator ? (
+              <Switch>
+                <Route exact path="/" component={DashboardHome}/>
+                <Route path="/new" component={DashboardHome}/>
+                <Route path="/testvideo" component={TesterVideo}/>
+                <Route path="/project/:id" component={ProjectHome}/>
+                <Route path="/section/:id" component={SectionHome}/>
+                <Route path="/testviz" component={OptionHome}/>
+                <Route path="/option/:id" component={OptionHome}/>
+              </Switch>
+            ) : (
+              <Switch>
+                <Route exact path="/" component={TesterHome}/>
+                <Route path="/video/:id" component={TesterVideo}/>
+              </Switch>
+            )
+          ) : (
+            <Switch>
+              <Route exact path="/" component={Login}/>
+              <Route path="/login" component={Login}/>
+              <Route path="/signup" component={Signup}/>
+            </Switch>
+          )
+        }
+
       </div>
     )
   }
