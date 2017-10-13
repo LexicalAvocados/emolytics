@@ -3,7 +3,8 @@ const currentSection = (state = {}, action) => {
     case 'CHANGE_CURRENT_SECTION':
       return Object.assign({}, state, action.obj);
     case 'CHANGE_CURRENT_OPTION':
-      return Object.assign({}, state, action.optionObj);
+      // return Object.assign({}, state, action.optionObj);
+      return { ...state, option: action.optionObj }
     default:
       return state;
   }

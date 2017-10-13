@@ -11,7 +11,7 @@ class SectionHome extends React.Component {
   }
   
   onOptionClick(index) {
-    console.log(this.props.currentSection.options[index]);
+    // console.log('OPTION CLICKED', this.props.currentSection.options[index]);
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
   }
 
@@ -21,6 +21,7 @@ class SectionHome extends React.Component {
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
+        <p>Invite testers to view options!</p>
         { this.props.currentSection.options.map((option, i) => (
           <OptionList 
             option={option}

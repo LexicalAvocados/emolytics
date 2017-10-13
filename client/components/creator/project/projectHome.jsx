@@ -9,10 +9,7 @@ import axios from 'axios';
 
 class ProjectHome extends React.Component {
   constructor(props) {
-    super(props) 
-    this.state = {
-
-    }
+    super(props);
     this.onSectionClick = this.onSectionClick.bind(this);
   }
 
