@@ -26,7 +26,7 @@ class Navbar extends React.Component {
                 <Link to='/createProject' style={noUnderline}>
                   <p className='navItem'>Create Project</p>
                 </Link>
-                <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
+                <Link to='/' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
                   <p className='navItem'>Log out</p>
                 </Link>
               </div>
