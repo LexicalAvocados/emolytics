@@ -40,19 +40,27 @@ class SectionHome extends React.Component {
   }
 
   addInvitee(index) {
-    this.setState({
-      invited: [...this.state.invited, this.state.testers[index]]
-    });
+    if (this.state.invited.length >= 0 && this.state.invited.indexOf(this.state.testers[index]) === -1) {
+      this.setState({
+        invited: [...this.state.invited, this.state.testers[index]]
+      });
+    } else {
+      alert('You\'ve already invited this person.');
+    }
   }
 
   submitInvites() { // After this is clicked give some feedback to creator - collapse the thing, says sent
     axios.post('/api/sendEmails', { invitedArr: this.state.invited })
       .then((success) => {
-        console.log('Invites sent');
+        // console.log(success);
+        this.setState({
+          invited: []
+        })
       })
       .catch((failure) => {
         console.log('Invites NOT sent', failure);
       })
+
   }
 
   render() {

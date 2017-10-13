@@ -22,7 +22,8 @@ exports.sendEmails = function(req, res) {
       if (error) {
         return console.log(error);
       } else {
-        return console.log('I think the email was sent.', info);
+        console.log('I think the email was sent.', info);
+        res.send('Success');
       }
     })
   });
