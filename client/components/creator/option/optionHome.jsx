@@ -82,6 +82,7 @@ class OptionHome extends React.Component {
 
 const mapStateToProps = (state) => {
   return ({
+    router: state.router,
     currentProject: state.currentProject,
     currentSection: state.currentSection
   });
