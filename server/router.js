@@ -14,9 +14,14 @@ router.get('/getRelatedSections', sectionRoutes.getRelatedSection);
 
 router.get('/getOptionsForSection', optionRoutes.getRelatedOptions);
 
+router.get('/getTesters', sectionRoutes.getTesters);
+
 router.post('/createProject', projectRoutes.createProject);
 
 router.post('/getFrames', frameRoutes.getRelevantFrames);
+
+router.post('/sendEmails', indexRoutes.sendEmails);
+
 
 
 module.exports = router;
