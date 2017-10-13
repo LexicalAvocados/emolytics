@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { store, bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
@@ -48,11 +48,14 @@ class Signup extends React.Component {
     })
       .then(res => {
         this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
+        this.props.history.push('/');
       })
       .catch(err => {
         console.log('submitNewAccount Error:', err);
       })
   }
+
+//this.props.history.push('/signin');
 
   render() {
     return (
@@ -99,7 +102,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Signup);
+)(Signup));
