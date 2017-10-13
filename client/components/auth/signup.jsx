@@ -1,10 +1,13 @@
 import React from 'react';
 import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
-import { Redirect, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { store, bindActionCreators } from 'redux';
-import * as ChangeActions from '../../actions';
 import axios from 'axios';
+
+// React-Redux connect() boilerplate
+// NOTE: you may have to modify the filepath for ChangeActions
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../actions';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -55,8 +58,6 @@ class Signup extends React.Component {
       })
   }
 
-//this.props.history.push('/signin');
-
   render() {
     return (
       <div>
@@ -90,6 +91,9 @@ class Signup extends React.Component {
   }
 }
 
+// React-Redux connect() boilerplate
+// 1. Include the properties in the Store you want this component to have access to
+// 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
   return ({
     example: state.example,
