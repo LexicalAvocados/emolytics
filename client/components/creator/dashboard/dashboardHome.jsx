@@ -39,7 +39,7 @@ class DashboardHome extends React.Component {
       <div>
         <p>PROJECT HOME</p>
         { this.state.projects.map((project, i) => (
-          <ProjectList 
+          <ProjectList
             onProjectClick={this.onProjectClick}
             project={project}
             key={i}
