@@ -75,4 +75,3 @@ export const submitCurrentProjectToList = (obj) => ({
 	obj
 });
 
-

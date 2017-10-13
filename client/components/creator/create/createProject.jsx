@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions';
+
 class CreateProject extends React.Component {
   constructor(props) {
     super(props);
