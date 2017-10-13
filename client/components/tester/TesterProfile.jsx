@@ -16,29 +16,41 @@ class TesterProfile extends React.Component {
       editingAge: false,
       editingSex: false
     }
-    this.toggleEditingAge = this.toggleEditingAge.bind(this);
-    this.updateTypedAge = this.updateTypedAge.bind(this);
+    this.startEditingAge = this.startEditingAge.bind(this);
+    this.stopEditingAge = this.stopEditingAge.bind(this);
+    this.updateAge = this.updateAge.bind(this);
   }
 
-  updateTypedAge(e) {
-    this.setState({typedAge: e.target.value})
+  startEditingAge() {
+    this.setState({editingAge: true});
   }
 
-  toggleEditingAge() {
-    this.setState({editingAge: !this.state.editingAge});
+  stopEditingAge(e) {
+    e.preventDefault();
+    this.setState({editingAge: false});
+  }
+
+  updateAge(e) {
+    if (e.target.value === '') {
+      this.props.actions.setAge(undefined);
+    } else if (Number.isNaN(Number(e.target.value))) {
+      return;
+    } else {
+      this.props.actions.setAge(parseInt(e.target.value));
+    }
   }
 
   render() {
     return (
       <div>
-        <form>
+        <form onSubmit={this.stopEditingAge}>
           <FormGroup>
             <ListGroup>
-              <ListGroupItem>
+              <ListGroupItem onClick={this.startEditingAge}>
                 Age: {this.state.editingAge ? 
-                  <FormControl type='text' value={this.state.typedAge} onChange={this.props.actions.setAge} />
+                  <FormControl type='text' value={this.props.loggedInUser.age} onChange={this.updateAge} />
                 :
-                  <span onClick={this.toggleEditingAge}>{this.props.loggedInUser.age}</span>}
+                  <span>{this.props.loggedInUser.age}</span>}
               </ListGroupItem>
               <ListGroupItem>Sex</ListGroupItem>
               <ListGroupItem>Race</ListGroupItem>

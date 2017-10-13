@@ -16,6 +16,7 @@ import Navbar from './Navbar.jsx';
 import Signup from './auth/signup.jsx';
 import Login from './auth/login.jsx';
 import TesterHome from './tester/TesterHome.jsx';
+import TesterProfile from './tester/TesterProfile.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
@@ -60,6 +61,7 @@ class App extends React.Component {
             ) : (
               <Switch>
                 <Route exact path="/" component={TesterHome}/>
+                <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>
               </Switch>
             )

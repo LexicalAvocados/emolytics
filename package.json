@@ -4,7 +4,7 @@
   "description": "Thesis project",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "compile": "webpack -w"
   },
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/LexicalAvocados/reactionsync.git"
   },
-  "author": "",
+  "author": "Lexical Avocados",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/LexicalAvocados/reactionsync/issues"
