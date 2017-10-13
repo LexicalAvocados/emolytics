@@ -23,7 +23,7 @@ class TesterVideo extends React.Component {
       complete: false,
       time: [0],
       img: []
-      
+
     }
 
     this.getWebcam = this.getWebcam.bind(this);
@@ -110,7 +110,7 @@ class TesterVideo extends React.Component {
       // var byteArr = new Uint8Array(buf);
       // axios.post('https://requestb.in/wpray0wp', byteArr);
       // console.log(data);
-      fetch(data) 
+      fetch(data)
         .then(res => res.blob())
         .then(data => this.state.img.push(data));
       var photo = this.refs.photo;
@@ -197,7 +197,7 @@ class TesterVideo extends React.Component {
         // .fail(function(jqXHR, textStatus, errorThrown) {
         //     // Display error message.
         //     var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-        //     errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
+        //     errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
         //         jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
         //     alert(errorString);
         // });
@@ -218,7 +218,7 @@ class TesterVideo extends React.Component {
 
         // pure base64 data
         var realData = data.replace(/^data:image\/(png|jpg);base64,/, "")
-        
+
         // blob data
         var blobData = this.state.img[0];
 
@@ -338,7 +338,7 @@ class TesterVideo extends React.Component {
         .fail(function(jqXHR, textStatus, errorThrown) {
             // Display error message.
             var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-            errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
+            errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
                 jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
             alert(errorString);
         });
@@ -362,7 +362,7 @@ class TesterVideo extends React.Component {
       // s3Upload.uploadBase64(data, 'test.png');
 
 
-        
+
     };
 
   render() {
@@ -379,7 +379,7 @@ class TesterVideo extends React.Component {
           <video id="video">Video stream not available.</video>
           <button onClick={this.takePicture} id="startbutton">Take photo</button>
         </div>
-      
+
 
         <canvas style={imgStyle} ref="canvas" id="canvas">
         </canvas>

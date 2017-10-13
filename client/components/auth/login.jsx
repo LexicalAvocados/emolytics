@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -63,18 +63,20 @@ class Login extends React.Component {
           <FormGroup>
             {<div>this.state.loginError</div> && this.state.loginError}<br/><br/>
             <ControlLabel>Log In</ControlLabel><br/>
+            <Col sm={2}>
             <FormControl
               type='text'
               value={this.state.typedUsername}
               placeholder='Username'
               onChange={this.updateTypedUsername}
-            /><br/>
+            /></Col><br/><br/>
+            <Col sm={2}>
             <FormControl
               type='password'
               value={this.state.typedPassword}
               placeholder='Password'
               onChange={this.updateTypedPassword}
-            /><br/>
+            /></Col><br/><br/>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>
