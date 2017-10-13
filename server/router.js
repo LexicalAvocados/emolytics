@@ -13,4 +13,7 @@ router.get('/getRelatedSections', sectionRoutes.getRelatedSection);
 
 router.get('/getOptionsForSection', optionRoutes.getRelatedOptions);
 
+router.post('/createProject', projectRoutes.createProject);
+
+
 module.exports = router;
