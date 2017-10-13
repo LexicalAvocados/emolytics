@@ -4,7 +4,8 @@ import ReactPlayer from 'react-player';
 import DetailsPanel from './detailsPanel.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../../../actions'
+import * as ChangeActions from '../../../actions';
+import axios from 'axios';
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -16,40 +17,77 @@ class OptionHome extends React.Component {
                   0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.7, 0.6,
                   0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.8, 0.7, 0.8, 0.6, 0.7, 0.19, 0.1, 0.36, 0.56, 0.7, 0.8
                 ],
-      timestamp: '0'
+      timestamp: '0',
+      emotionObj: {}
     }
     this.timestampCallback = this.timestampCallback.bind(this);
   }
 
   componentDidMount() {
     //axios GET request for attention
-    var lineGraph = c3.generate({
-      bindto: '.optionChart',
-      data: {
-        // x: 'x',
-        columns: [
-          this.state.attention
-        ]
-      }
-    });
 
-    var pieChart = c3.generate({
-      //axios GET request for emotions
-      bindto: '.emotionChart',
-      data: {
-        columns: [
-            ['anger', 30],
-            ['contempt', 1],
-            ['disgust', 40],
-            ['fear', 120],
-            ['happiness', 65],
-            ['neutral', 7],
-            ['sadness', 5],
-            ['surprise', 220],
-        ],
-        type : 'pie'
-      }
-    });
+    var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
+                    "neutral", "sadness", "surprise" ]
+
+    axios.post('/api/getFrames', {
+      optionId: this.props.currentSection.option.id
+    })
+    .then((res) => {
+      let tempEmotionObj = {};
+
+      emotions.forEach(emo => {
+        tempEmotionObj[emo] = res.data.reduce((acc, curr) => {
+            acc.push(curr[emo]);
+            return acc;
+          }, [emo])
+      })
+
+      return tempEmotionObj;
+    })
+    .then((emoObj) => {
+      this.setState({
+        emotionObj: emoObj
+      })
+    })
+    .then( () => {
+      //generate charts now
+      // console.log('all emotions', this.state.emotionObj)
+      var lineGraph = c3.generate({
+        bindto: '.optionChart',
+        data: {
+          // x: 'x',
+          columns: [
+            this.state.emotionObj.anger,
+            this.state.emotionObj.contempt,
+            this.state.emotionObj.disgust,
+            this.state.emotionObj.fear,
+            this.state.emotionObj.happiness,
+            this.state.emotionObj.neutral,
+            this.state.emotionObj.sadness,
+            this.state.emotionObj.surprise
+          ]
+        }
+      });
+
+      var pieChart = c3.generate({
+        bindto: '.emotionChart',
+        data: {
+          columns: [
+            ['anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
+          ],
+          type : 'pie'
+        }
+      });
+    })
+
+
   }
 
   timestampCallback(seconds){
@@ -74,6 +112,7 @@ class OptionHome extends React.Component {
             attention={this.state.attention}
             user={this.state.user}
             timestampCallback={this.timestampCallback}
+            emotionsObj={this.state.emotionObj}
             />
       </div>
     )
