@@ -13,6 +13,8 @@ router.get('/getRelatedSections', sectionRoutes.getRelatedSection);
 
 router.get('/getOptionsForSection', optionRoutes.getRelatedOptions);
 
+router.get('/getTesters', sectionRoutes.getTesters);
+
 router.post('/createProject', projectRoutes.createProject);
 
 
