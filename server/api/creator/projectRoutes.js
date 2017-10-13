@@ -14,7 +14,7 @@ exports.getProjectsForUser = function(req, res) {
     .then((user) => {
       Projects.findAll({
         where: {
-          userId: user.id
+          id: user.id
         }
       })
         .then((projects) => {
@@ -38,7 +38,7 @@ exports.createProject = function(req, res) {
   })
     .then((projectNameTaken) => {
       if (projectNameTaken) {
-        return res.send('Project with identical name already exists. Please rename your project')
+        return res.send('Project with identical name already exists. Please rename your project');
       } else {
         const newProject = Projects.create({
           name: req.body.name,
@@ -48,7 +48,7 @@ exports.createProject = function(req, res) {
             if (newProject) {
               res.send(JSON.stringify(newProject.id));
             } else {
-              console.error('Could not create new project', err);
+              console.error('Could not create new project');
             }
           })
           .catch((err) => {
