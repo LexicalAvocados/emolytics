@@ -8,7 +8,7 @@ import TesterFinishedVideo from './TesterFinishedVideo.jsx';
 import atob from 'atob';
 import AWS from 'aws-sdk';
 import S3Upload from 's3-bucket-upload';
-import cloudinary from 'cloudinary';
+// import cloudinary from 'cloudinary';
 
 class TesterVideo extends React.Component {
 
@@ -131,16 +131,16 @@ class TesterVideo extends React.Component {
 
   }
 
-  upload(img) {
-    cloudinary.config({
-      cloud_name: 'dcp74bsm8',
-      api_key: '169847461734926',
-      api_secret: 'Gqk2mNBC1D8q3LJQe0b1fLokn-Y'
-    });
-    cloudinary.uploader.upload(
-      img,
-      function(res) {
-        console.log('res from cloudinary', res)
+  // upload(img) {
+  //   cloudinary.config({
+  //     cloud_name: 'dcp74bsm8',
+  //     api_key: '169847461734926',
+  //     api_secret: 'Gqk2mNBC1D8q3LJQe0b1fLokn-Y'
+  //   });
+  //   cloudinary.uploader.upload(
+  //     img,
+  //     function(res) {
+  //       console.log('res from cloudinary', res)
         // Microsoft Post Request
         // var subscriptionKey = "4fc26d1500d04025a699f1ae74597ab3";
         // var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
@@ -203,9 +203,9 @@ class TesterVideo extends React.Component {
         // });
 
 
-      }
-    )
-  }
+  //     }
+  //   )
+  // }
 
   processImage() {
 
