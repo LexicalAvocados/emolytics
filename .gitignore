@@ -30,3 +30,8 @@ bower_components/
 
 client/bundle.js
 package-lock.json
+<<<<<<< HEAD
+=======
+
+photos
+>>>>>>> edit gitignore
