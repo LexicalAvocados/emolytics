@@ -4,17 +4,11 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
-<<<<<<< HEAD
 import TesterFinishedVideo from './TesterFinishedVideo.jsx';
-=======
 import atob from 'atob';
 import AWS from 'aws-sdk';
 import S3Upload from 's3-bucket-upload';
 import cloudinary from 'cloudinary';
-
->>>>>>> webcam
-
-
 
 class TesterVideo extends React.Component {
 
@@ -26,14 +20,10 @@ class TesterVideo extends React.Component {
         name: '',
         desc: ''
       },
-<<<<<<< HEAD
       complete: false
-
-=======
       time: [0],
       img: []
       
->>>>>>> webcam
     }
 
     this.getWebcam = this.getWebcam.bind(this);
