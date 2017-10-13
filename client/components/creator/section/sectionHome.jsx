@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions'
 import OptionList from './OptionList.jsx';
 import InviteTesters from './InviteTesters.jsx';
+import Invited from './Invited.jsx';
 import axios from 'axios';
 
 
@@ -39,20 +40,25 @@ class SectionHome extends React.Component {
       });
   }
 
-  addInvitee(index) {
+  addInvitee(index) { // You can only invite as many people as there are options
     if (this.state.invited.length >= 0 && this.state.invited.indexOf(this.state.testers[index]) === -1) {
-      this.setState({
-        invited: [...this.state.invited, this.state.testers[index]]
-      });
+      if (this.state.invited.length + 1 <= this.props.currentSection.options.length) {
+        this.setState({
+          invited: [...this.state.invited, this.state.testers[index]]
+        });
+      } else {
+        alert('You cannot invite anyone else!')
+      }
     } else {
       alert('You\'ve already invited this person.');
     }
   }
 
   submitInvites() { // After this is clicked give some feedback to creator - collapse the thing, says sent
-    axios.post('/api/sendEmails', { invitedArr: this.state.invited })
+    console.log('SENDING INVITEs')
+    axios.post('/api/sendEmails', { invitedArr: this.state.invited, options: this.props.currentSection.options })
       .then((success) => {
-        // console.log(success);
+        console.log(success);
         this.setState({
           invited: []
         })
@@ -81,13 +87,10 @@ class SectionHome extends React.Component {
               />
             ))}
             { this.state.invited.length ? (
-              <div>
-                <p>Invited:</p>
-                {this.state.invited.map((invitee, i) => (
-                  <p key={i}>Name: {invitee.username} Email: {invitee.email}</p> 
-                ))}
-                <button onClick={this.submitInvites}>Finish Inviting...</button>
-              </div>
+              <Invited 
+                invited={this.state.invited}
+                submitInvites={this.submitInvites}
+              />
             ) : (
               null
             )}
