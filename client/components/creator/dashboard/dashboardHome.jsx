@@ -33,6 +33,7 @@ class DashboardHome extends React.Component {
     this.props.actions.changeCurrentProject(obj);
   }
 
+  // Change this so that the rendering tears stop
   render () {
     return (
       <div>

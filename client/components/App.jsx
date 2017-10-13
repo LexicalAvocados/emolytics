@@ -65,7 +65,7 @@ class App extends React.Component {
             )
           ) : (
             <Switch>
-              <Route path="/signup" component={Signup}/>
+              <Route exact path="/signup" component={Signup}/>
               <Route path="*" component={Login}/>             
             </Switch>
           )
