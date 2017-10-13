@@ -20,7 +20,7 @@ class TesterVideo extends React.Component {
         name: '',
         desc: ''
       },
-      complete: false
+      complete: false,
       time: [0],
       img: []
       
