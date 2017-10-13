@@ -1,6 +1,6 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -55,8 +55,8 @@ class App extends React.Component {
           </Switch>
         ) : (
           <Switch>
-            <Route exact path="/" component={Login}/>
-            <Route path="/signup" component={Signup}/>
+            <Route exact path="/signup" component={Signup}/>
+            <Route path="*" component={Login}/>           
           </Switch>
         )}
         <button onClick={this.onClick}> test </button><br/><br/>

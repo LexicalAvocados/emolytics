@@ -18,10 +18,10 @@ const Navbar = (props) => {
       ) : (
           <div className='navContainer' style={navbarContainerStyle}>
             <Link to='/' style={noUnderline}>
-              <p className='navItem'>Home</p>
+              <p className='navItem'>Project Home</p>
             </Link>
-            <Link to='/projects' style={noUnderline}>
-              <p className='navItem'>Projects</p>
+            <Link to='/createProject' style={noUnderline}>
+              <p className='navItem'>Create Project</p>
             </Link>
             <Link to='/logout' style={noUnderline}>
               <p className='navItem'>Log out</p>

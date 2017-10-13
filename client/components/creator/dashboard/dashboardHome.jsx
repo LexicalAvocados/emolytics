@@ -36,14 +36,24 @@ class DashboardHome extends React.Component {
   render () {
     return (
       <div>
-        <p>PROJECT HOME</p>
-        { this.state.projects.map((project, i) => (
-          <ProjectList
-            onProjectClick={this.onProjectClick}
-            project={project}
-            key={i}
-          />
-        ))}
+        <p>Project Home</p>
+        { this.state.projects.length ? (
+          <div>
+            { this.state.projects.map((project, i) => (
+              <ProjectList
+                onProjectClick={this.onProjectClick}
+                project={project}
+                key={i}
+              />
+            ))}
+          </div>
+        ) : (
+          <div>
+            <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
+            <p>Why don't you click the 'Create Projects' button in the Navigation Bar and start doing something with your life!</p>
+          </div>
+        )}
+
       </div>
     );
   }
