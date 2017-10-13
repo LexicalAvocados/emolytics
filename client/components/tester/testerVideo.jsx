@@ -361,10 +361,6 @@ class TesterVideo extends React.Component {
         // instance.get('https://api.kairos.com/v2/analytics/59dfc67f3f273')
         //   .then(res => console.log(res))
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 6c26320d02ab0287ab896952538eaebc32df287a
       // let s3Upload = new S3Upload(AWS, {
       //   Bucket: 'reaction-sync',
       //   // region: [String],
@@ -384,23 +380,6 @@ class TesterVideo extends React.Component {
       // s3Upload.uploadBase64(data, 'test.png');
 
     };
-
-<<<<<<< HEAD
-    };
-=======
-    likeClick(e) {
-      e.preventDefault();
-
-      axios.post('/api/tester/getVideo', {
-        like: e.target.value
-      })
-      this.setState({
-        show: false
-      })
-
-        
-    }
->>>>>>> 6c26320d02ab0287ab896952538eaebc32df287a
 
     likeClick(e) {
       e.preventDefault();
