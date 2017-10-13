@@ -10,7 +10,7 @@ class InviteTesters extends React.Component {
 
   render () {
     return (
-      <p>{this.props.tester.username}</p> //And whatever other information about the user we want to display.
+      <p onClick={() => this.props.addInvitee(this.props.index)}>{this.props.tester.username}</p> //And whatever other information about the user we want to display.
     );
   }
 }

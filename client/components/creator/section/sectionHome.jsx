@@ -11,10 +11,12 @@ class SectionHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      testers: []
+      testers: [],
+      invited: []
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.grabTesters = this.grabTesters.bind(this);
+    this.addInvitee = this.addInvitee.bind(this);
   }
   
   onOptionClick(index) {
@@ -36,6 +38,16 @@ class SectionHome extends React.Component {
       });
   }
 
+  addInvitee(index) {
+    this.setState({
+      invited: [...this.state.invited, this.state.testers[index]]
+    });
+  }
+
+  submitInvites() { // After this is clicked give some feedback to creator - collapse the thing, says sent
+    // Send invited to backend
+  }
+
   render() {
     return (
       <div>
@@ -44,12 +56,28 @@ class SectionHome extends React.Component {
         <p>{this.props.currentSection.name}</p>
         <button onClick={this.grabTesters}>Invite testers to view options!</button>
         { this.state.testers.length ? (
-          this.state.testers.map((tester, i) => (
-            <InviteTesters 
-            tester={tester}
-            key={i}
-            />
-          ))
+          <div>
+            {this.state.testers.map((tester, i) => (
+              <InviteTesters 
+                tester={tester}
+                key={i}
+                index={i}
+                addInvitee={this.addInvitee}
+              />
+            ))}
+            { this.state.invited.length ? (
+              <div>
+                <p>Invited:</p>
+                {this.state.invited.map((invitee, i) => (
+                  <p key={i}>Name: {invitee.username} Email: {invitee.email}</p> 
+                ))}
+                <button>Finish Inviting...</button>
+              </div>
+            ) : (
+              null
+            )}
+
+          </div>
         ) : (
           null
         )}
