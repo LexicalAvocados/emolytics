@@ -22,18 +22,15 @@ class SectionHome extends React.Component {
   }
   
   onOptionClick(index) {
-    // console.log('OPTION CLICKED', this.props.currentSection.options[index]);
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
   }
 
   grabTesters() {
     axios.get('/api/getTesters')
       .then((response) => {
-        console.log('RESPONSE FROM GET TESTERS', response); 
         this.setState({
           testers: response.data
         });
-        console.log(this.state.testers);
       })
       .catch((err) => {
         console.log(err);
@@ -55,10 +52,8 @@ class SectionHome extends React.Component {
   }
 
   submitInvites() { // After this is clicked give some feedback to creator - collapse the thing, says sent
-    console.log('SENDING INVITEs')
     axios.post('/api/sendEmails', { invitedArr: this.state.invited, options: this.props.currentSection.options })
       .then((success) => {
-        console.log(success);
         this.setState({
           invited: []
         })

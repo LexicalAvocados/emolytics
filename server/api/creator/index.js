@@ -2,9 +2,7 @@ const nodemailer = require('nodemailer');
 
 
 exports.sendEmails = function(req, res) {
-  console.log('within emails', req.body);
-  // req.body.options is an arr 
-  // For users 
+  // console.log('within emails', req.body);
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -23,7 +21,7 @@ exports.sendEmails = function(req, res) {
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return console.log(error);
+        // return console.log(error);
         res.send('FAILURE');
       } else {
         console.log('I think the email was sent.', info);
