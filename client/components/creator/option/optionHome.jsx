@@ -1,7 +1,10 @@
 import React from 'react';
 import c3 from 'c3';
 import ReactPlayer from 'react-player';
-import DetailsPanel from './detailsPanel.jsx'
+import DetailsPanel from './detailsPanel.jsx';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions'
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -31,6 +34,7 @@ class OptionHome extends React.Component {
     });
 
     var pieChart = c3.generate({
+      //axios GET request for emotions
       bindto: '.emotionChart',
       data: {
         columns: [
@@ -59,11 +63,10 @@ class OptionHome extends React.Component {
     return (
       <div className='optionAnalyticsContainer'>
       <div className='leftSide'>
-        <ReactPlayer url='https://youtu.be/gCcx85zbxz4'
+        <ReactPlayer url={this.props.currentSection.youtubeUrl}
           ref={(player) => { this.ReactPlayer = player; }}
           controls={true} height={420} width={750} className='optionPlayer'/>
         <div className="optionChart">
-          <p> yo </p>
         </div>
       </div>
           <DetailsPanel
@@ -77,4 +80,20 @@ class OptionHome extends React.Component {
   }
 }
 
-export default OptionHome;
+const mapStateToProps = (state) => {
+  return ({
+    router: state.router,
+    currentProject: state.currentProject,
+    currentSection: state.currentSection
+  });
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+) (OptionHome);
