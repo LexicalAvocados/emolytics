@@ -1,6 +1,6 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -41,30 +41,37 @@ class App extends React.Component {
       <div>
         <Navbar />
         {this.props.example.text}
+        { this.props.loggedInUser.username ? (
+          <Switch>
+            <Route exact path="/" component={DashboardHome}/>
+            <Route path="/new" component={DashboardHome}/>
+            <Route path="/testvideo" component={TesterVideo}/>
+            <Route path="/project/:id" component={ProjectHome}/>
+            <Route path="/section/:id" component={SectionHome}/>
+            <Route path="/testviz" component={OptionHome}/>
+            <Route path="/option/:id" component={OptionHome}/>
+          </Switch>
+        ) : (
+          <Switch>
+            <Route exact path="/" component={Login}/>
+            <Route path="/signup" component={Signup}/>
+          </Switch>
+        )}
         <button onClick={this.onClick}> test </button><br/><br/>
-        <div>
-          <Route path="/" component={DashboardHome}/>
-          <Route path="/new" component={DashboardHome}/>
-          <Route path="/signup" component={Signup}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/testvideo" component={TesterVideo}/>
-          <Route path="/project/:id" component={ProjectHome}/>
-          <Route path="/section/:id" component={SectionHome}/>
-          <Route path="/testviz" component={OptionHome}/>
-          <Route path="/option/:id" component={OptionHome}/>
-        </div>
       </div>
     )
   }
 }
 
-
+{/* <Route path="/signup" component={Signup}/>
+          <Route path="/login" component={Login}/> */}
 
 const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
     example: state.example,
-    router: state.router
+    router: state.router,
+    loggedInUser: state.loggedInUser
   })
 };
 
