@@ -11,7 +11,7 @@ class SectionHome extends React.Component {
   }
   
   onOptionClick(index) {
-    console.log(this.props.currentSection.options[index]);
+    console.log('OPTION CLICKED', this.props.currentSection.options[index]);
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
   }
 

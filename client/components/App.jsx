@@ -59,7 +59,7 @@ class App extends React.Component {
             <Route path="*" component={Login}/>           
           </Switch>
         )}
-        <button onClick={this.onClick}> test </button><br/><br/>
+        {/* <button onClick={this.onClick}> test </button><br/><br/> */}
       </div>
     )
   }

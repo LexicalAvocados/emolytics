@@ -63,7 +63,7 @@ class OptionHome extends React.Component {
     return (
       <div className='optionAnalyticsContainer'>
       <div className='leftSide'>
-        <ReactPlayer url={this.props.currentSection.youtubeUrl}
+        <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
           ref={(player) => { this.ReactPlayer = player; }}
           controls={true} height={420} width={750} className='optionPlayer'/>
         <div className="optionChart">
