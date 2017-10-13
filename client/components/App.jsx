@@ -19,6 +19,7 @@ import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
 import OptionHome from './creator/option/OptionHome.jsx';
+import DashboardHome from './creator/dashboard/DashboardHome.jsx';
 
 
 class App extends React.Component {
@@ -41,7 +42,7 @@ class App extends React.Component {
         {this.props.example.text}
         <button onClick={this.onClick}> test </button><br/><br/>
         <div>
-          <Route exact path="/" component={Home}/>
+          <Route exact path="/" component={DashboardHome}/>
           <Route path="/new" component={Home}/>
           <Route path="/signup" component={Signup}/>
           <Route path="/login" component={Login}/>

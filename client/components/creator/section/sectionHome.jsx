@@ -38,6 +38,7 @@ class SectionHome extends React.Component {
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN SECTION HOME', state);
   return ({
+    router: state.router,
     currentProject: state.currentProject,
     currentSection: state.currentSection
   });

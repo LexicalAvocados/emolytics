@@ -55,7 +55,6 @@ class DashboardHome extends React.Component {
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN DASHBOARD', state);
   return ({
-    example: state.example,
     router: state.router,
     currentProject: state.currentProject
   });
