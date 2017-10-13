@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
-
+import TesterFinishedVideo from './TesterFinishedVideo.jsx';
 
 
 
@@ -17,8 +17,9 @@ class TesterVideo extends React.Component {
         url: '',
         name: '',
         desc: ''
-      }
-      
+      },
+      complete: false
+
     }
   }
 
