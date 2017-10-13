@@ -380,7 +380,6 @@ class TesterVideo extends React.Component {
       // s3Upload.uploadBase64(data, 'test.png');
 
     };
-
     likeClick(e) {
       e.preventDefault();
 
