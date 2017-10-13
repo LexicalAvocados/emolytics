@@ -21,12 +21,12 @@ class Navbar extends React.Component {
             this.props.loggedInUser.isCreator ? (
               <div className='navContainer' style={navbarContainerStyle}>
                 <Link to='/' style={noUnderline}>
-                  <p className='navItem'>Home</p>
+                  <p className='navItem'>Project Home</p>
                 </Link>
-                <Link to='/projects' style={noUnderline}>
-                  <p className='navItem'>Projects</p>
+                <Link to='/createProject' style={noUnderline}>
+                  <p className='navItem'>Create Project</p>
                 </Link>
-                <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
+                <Link to='/' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
                   <p className='navItem'>Log out</p>
                 </Link>
               </div>
