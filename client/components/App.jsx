@@ -39,7 +39,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar 
+          loggedIn={this.props.loggedInUser.username}
+        />
         {this.props.example.text}
         { this.props.loggedInUser.username ? (
           <Switch>
