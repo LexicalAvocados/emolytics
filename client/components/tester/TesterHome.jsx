@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../actions';
+import * as ChangeActions from '../../actions';
 import TesterVideo from './testerVideo.jsx';
 
 class TesterHome extends React.Component {
@@ -38,5 +38,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TesterHome);
-
-export default TesterHome;

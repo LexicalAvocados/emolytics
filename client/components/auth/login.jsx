@@ -1,10 +1,13 @@
 import React from 'react';
 import { Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { store, bindActionCreators } from 'redux';
-import * as ChangeActions from '../../actions';
 import axios from 'axios';
+
+// React-Redux connect() boilerplate
+// NOTE: you may have to modify the filepath for ChangeActions
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -37,6 +40,7 @@ class Login extends React.Component {
       .then(res => {
         if (res.data.loggedIn) {
           this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
+          this.props.history.push('/');
         } else {
           this.setState({loginError: res.data.reason});
           this.resetInputForms();
@@ -78,6 +82,9 @@ class Login extends React.Component {
   }
 }
 
+// React-Redux connect() boilerplate
+// 1. Include the properties in the Store you want this component to have access to
+// 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
   return ({
     example: state.example,
@@ -90,7 +97,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(Login));
