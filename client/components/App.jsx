@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions'
 
-import Home from './Home.jsx';
+import DashboardHome from './creator/dashboard/dashboardHome.jsx';
 import Signup from './auth/signup.jsx';
 import Login from './auth/login.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
@@ -41,8 +41,8 @@ class App extends React.Component {
         {this.props.example.text}
         <button onClick={this.onClick}> test </button><br/><br/>
         <div>
-          <Route exact path="/" component={Home}/>
-          <Route path="/new" component={Home}/>
+          <Route path="/" component={DashboardHome}/>
+          <Route path="/new" component={DashboardHome}/>
           <Route path="/signup" component={Signup}/>
           <Route path="/login" component={Login}/>
           <Route path="/testvideo" component={TesterVideo}/>
