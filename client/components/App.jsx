@@ -10,7 +10,7 @@ import rootReducer from '../reducers/index.js';
 import { changeExample } from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../actions'
+import * as ChangeActions from '../actions';
 
 import Home from './Home.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
