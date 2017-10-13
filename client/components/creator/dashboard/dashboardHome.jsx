@@ -16,7 +16,7 @@ class DashboardHome extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/getProjectsForUser', {params: { username: 'bob' }})
+    axios.get('/api/getProjectsForUser', {params: { username: 'bob' }}) // this.props.loggedInUser.username (import it below)
       .then((response) => {
         this.setState({
           projects: response.data

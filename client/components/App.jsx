@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions'
 
 import Home from './Home.jsx';
+import Navbar from './Navbar.jsx';
 import Signup from './auth/signup.jsx';
 import Login from './auth/login.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
@@ -39,6 +40,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Navbar />
         {this.props.example.text}
         <button onClick={this.onClick}> test </button><br/><br/>
         <div>
