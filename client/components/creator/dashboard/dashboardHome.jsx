@@ -37,7 +37,7 @@ class DashboardHome extends React.Component {
   render () {
     return (
       <div>
-        <p>Project Home</p>
+        <h2>Project Home</h2>
         { this.state.projects.length ? (
           <div>
             { this.state.projects.map((project, i) => (
