@@ -31,7 +31,7 @@ class SectionList extends React.Component {
   render () {
     return (
       <div>
-        <Link to={'/section/' + this.props.section.id}> 
+        <Link to={'/section' + this.props.section.id}> 
           <p onClick={this.onClickCallback}>{this.props.section.name}</p>
         </Link>
         { this.state.options.map((option, i) => {
