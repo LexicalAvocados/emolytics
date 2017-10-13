@@ -1,6 +1,9 @@
 const express = require('express');
 const db = require('../../../db');
 const Option = db.Option;
+const User = db.User;
+const Frame = db.Frame;
+const TesterAndOption = db.TesterAndOption;
 const router = express.Router();
 const base64Img = require('base64-img');
 const request = require('request-promise-native');
@@ -30,8 +33,73 @@ router.get('/getVideo', (req, res) => {
 
 router.post('/sendFrame', (req, res) => {
 	console.log(req.body);
+  var emotions = req.body.emotions;
 	console.log(req.session);
+	User.findAll({
+		where: {
+			username: req.session.username
+		}
+	})
+	 .then(user => {
+    console.log(user);
+    Frame.create({
+      time: req.body.time,
+      anger: emotions.anger,
+      contempt: emotions.contempt,
+      disgust: emotions.disgust,
+      fear: emotions.fear,
+      happiness: emotions.happiness,
+      neutral: emotions.neutral,
+      sadness: emotions.sadness,
+      surprise: emotions.surprise,
+      userId: user[0].dataValues.id,
+      optionId: 1
+    })
+    .then(user => {
+      res.send(user);
+    })
+   })
 })
+
+router.post('/getVideo', (req, res) => {
+  console.log(req.body);
+  User.findAll({
+    where: {
+      username: req.session.username
+    }
+  })
+    .then(user => {
+      TesterAndOption.create({
+        like: req.body.like,
+        userId: user[0].dataValues.id,
+        optionId: 1
+      })
+    })
+})
+
+// const Frame = sequelize.define('frame', {
+//   time: Sequelize.INTEGER,
+//   attention: Sequelize.DECIMAL,
+//   smile: Sequelize.DECIMAL,
+//   anger: Sequelize.DECIMAL,
+//   contempt: Sequelize.DECIMAL,
+//   disgust: Sequelize.DECIMAL,
+//   fear: Sequelize.DECIMAL,
+//   happiness: Sequelize.DECIMAL,
+//   neutral: Sequelize.DECIMAL,
+//   sadness: Sequelize.DECIMAL,
+//   surprise: Sequelize.DECIMAL
+// });
+
+// const User = sequelize.define('user', {
+//   username: Sequelize.STRING,
+//   password: Sequelize.STRING,
+//   email: Sequelize.STRING,
+//   fbId: Sequelize.INTEGER,
+//   sex: Sequelize.STRING,
+//   age: Sequelize.INTEGER,
+//   isCreator: Sequelize.BOOLEAN
+// });
 
 // router.post('/sendFrame', (req, res) => {
 //   console.log(req.body);

@@ -58,7 +58,7 @@ class App extends React.Component {
             ) : (
               <Switch>
                 <Route exact path="/" component={TesterVideo}/>
-                <Route path="/" component={TesterVideo}/>
+                <Route path="/video:id" component={TesterVideo}/>
               </Switch>
             )
           ) : (

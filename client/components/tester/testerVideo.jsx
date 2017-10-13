@@ -9,6 +9,8 @@ import atob from 'atob';
 import AWS from 'aws-sdk';
 import S3Upload from 's3-bucket-upload';
 import cloudinary from 'cloudinary';
+import ToggleDisplay from 'react-toggle-display';
+import { Modal, Button } from 'react-bootstrap';
 
 class TesterVideo extends React.Component {
 
@@ -22,7 +24,10 @@ class TesterVideo extends React.Component {
       },
       complete: false,
       time: [0],
-      img: []
+      img: [],
+      show: false,
+      like: true,
+      dislike: false
       
     }
 
@@ -30,6 +35,8 @@ class TesterVideo extends React.Component {
     this.takePicture = this.takePicture.bind(this);
     this.checkVideo = this.checkVideo.bind(this);
     this.processImage = this.processImage.bind(this);
+    this.showOverlay = this.showOverlay.bind(this);
+    this.likeClick = this.likeClick.bind(this);
     // this.upload = this.upload.bind(this);
   }
 
@@ -121,6 +128,7 @@ class TesterVideo extends React.Component {
   checkVideo() {
     var video = this.refs.video;
     var time = Math.floor(video.getCurrentTime());
+    var duration = Math.floor(video.getDuration());
     if (!this.state.time.includes(time)) {
       console.log(time);
       this.takePicture();
@@ -128,6 +136,12 @@ class TesterVideo extends React.Component {
       this.processImage(time);
     }
 
+  }
+
+  showOverlay() {
+    this.setState({
+        show: true
+      })
   }
 
   // upload(img) {
@@ -298,7 +312,12 @@ class TesterVideo extends React.Component {
                 // Show formatted JSON on webpage.
                 console.log((JSON.stringify(data, null, 2)));
 
-                axios.post('/api/tester/sendFrame', data[0].scores)
+                let sendObj = {
+                  emotions: data[0].scores,
+                  time: time
+                }
+
+                axios.post('/api/tester/sendFrame', sendObj)
                   .then(res => {
                     console.log(res);
                   })
@@ -365,20 +384,44 @@ class TesterVideo extends React.Component {
       // s3Upload.uploadBase64(data, 'test.png');
 
 
+
+
+
         
     };
+
+    likeClick(e) {
+      e.preventDefault();
+
+      axios.post('/api/tester/getVideo', {
+        like: e.target.value
+      })
+      this.setState({
+        show: false
+      })
+
+        
+    }
 
   render() {
     var imgStyle = {
       opacity: 0
     }
+
     return (
       <div>
+        <ToggleDisplay className="overlay"  show={this.state.show}>
+          <h1> Finished </h1> 
+          <TesterFinishedVideo />
+          <button value={this.state.like} onClick={this.likeClick} > like </button>
+          <button value={this.state.dislike} onClick={this.likeClick} > dislike </button>
+        </ToggleDisplay>
+
         <h2> Test Video </h2>
-        <ReactPlayer ref="video" url={this.state.video.url || 'https://www.youtube.com/watch?v=OpI2fqXDh1w'} playing />
+        <ReactPlayer onEnded={this.showOverlay} controls={true} ref="video" url={this.state.video.url || 'https://www.youtube.com/watch?v=OpI2fqXDh1w'} playing />
         <h2> {this.state.video.name} </h2>
         <h4> {this.state.video.desc} </h4>
-        <div class="camera">
+        <div class="camera">  
           <video style={imgStyle} id="video">Video stream not available.</video>
         </div>
       
