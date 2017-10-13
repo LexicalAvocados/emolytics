@@ -18,5 +18,6 @@ router.post('/createProject', projectRoutes.createProject);
 
 router.post('/getFrames', frameRoutes.getRelevantFrames);
 
+router.post('/getLike', optionRoutes.getUserLikeOnOption);
 
 module.exports = router;
