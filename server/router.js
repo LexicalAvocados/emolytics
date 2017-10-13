@@ -4,6 +4,7 @@ const testerRoutes = require('./api/tester');
 const projectRoutes = require('./api/creator/projectRoutes.js')
 const sectionRoutes = require('./api/creator/sectionRoutes.js');
 const optionRoutes = require('./api/creator/optionRoutes.js');
+const frameRoutes = require('./api/creator/frameRoutes.js');
 
 router.use('/tester', testerRoutes);
 
@@ -14,6 +15,8 @@ router.get('/getRelatedSections', sectionRoutes.getRelatedSection);
 router.get('/getOptionsForSection', optionRoutes.getRelatedOptions);
 
 router.post('/createProject', projectRoutes.createProject);
+
+router.post('/getFrames', frameRoutes.getRelevantFrames);
 
 
 module.exports = router;

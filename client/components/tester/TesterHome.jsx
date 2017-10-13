@@ -29,9 +29,7 @@ class TesterHome extends React.Component {
     return (
       <div className="TesterHomeContainer">
         <h2> Welcome to Emolytics! </h2><br/><br/>
-        <p> If you have a code, please enter it below.
-          Otherwise, feel free to browse our collection of videos,
-          and check out the analysis of your viewing session! </p><br/><br/>
+        <p>If you have a code, please enter it below.</p>
         <form>
           <FormGroup controlId='promoCode'>
             <Col sm={2}>
@@ -45,6 +43,8 @@ class TesterHome extends React.Component {
             <Button bsStyle='primary' onClick={this.handleSubmit}> Go </Button>
           </FormGroup>
         </form>
+        <p> Otherwise, feel free to browse our collection of videos,
+          and check out the analysis of your viewing session! </p><br/><br/>
       </div>
     )
   }

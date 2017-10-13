@@ -23,6 +23,18 @@ const DetailsPanel = (props) => {
     return moments;
   }
 
+  const calcMaxEmotion = (obj) => {
+    var total = 0;
+    var max = ["emotion", 0]
+    for (var key in obj) {
+      let currVal = obj[key].slice(1).reduce((sum, val) => sum+= +val, 0);
+      total += currVal;
+      if(currVal > max[1]) max = [ obj[key][0], currVal ]
+    }
+    let stringForRender = `${max[0]} (${Math.floor((max[1]/total)*10000)/100}%)`
+    return stringForRender;
+  }
+
   const timeClickCb = (e) => {
     var desired = $(e.target)[0].innerText;
     var seconds = desired.slice(0, desired.length - 1)
@@ -40,7 +52,7 @@ const DetailsPanel = (props) => {
       </div>
 
       <div className="testerEmotion">
-        <p> Most Prevalent Emotion: Surprise (45%)</p>
+        <p> Most Prevalent Emotion: {calcMaxEmotion(props.emotionsObj)}</p>
         <p className='chartHeader'> Overall Emotion Breakdown: </p>
         <div className='emotionChart'></div>
       </div><hr/>
