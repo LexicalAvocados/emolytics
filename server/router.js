@@ -5,6 +5,7 @@ const projectRoutes = require('./api/creator/projectRoutes.js')
 const sectionRoutes = require('./api/creator/sectionRoutes.js');
 const optionRoutes = require('./api/creator/optionRoutes.js');
 const frameRoutes = require('./api/creator/frameRoutes.js');
+const indexRoutes = require('./api/creator/index.js');
 
 router.use('/tester', testerRoutes);
 
