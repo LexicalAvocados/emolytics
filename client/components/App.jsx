@@ -20,6 +20,7 @@ import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
 import OptionHome from './creator/option/OptionHome.jsx';
+// import CreateProject from './creator/create/createProjects.jsx';
 
 
 class App extends React.Component {
@@ -50,10 +51,11 @@ class App extends React.Component {
                 <Route exact path="/" component={DashboardHome}/>
                 <Route path="/new" component={DashboardHome}/>
                 <Route path="/testvideo" component={TesterVideo}/>
-                <Route path="/project/:id" component={ProjectHome}/>
-                <Route path="/section/:id" component={SectionHome}/>
+                <Route path="/project:id" component={ProjectHome}/>
+                <Route path="/section:id" component={SectionHome}/>
                 <Route path="/testviz" component={OptionHome}/>
-                <Route path="/option/:id" component={OptionHome}/>
+                <Route path="/option:id" component={OptionHome}/>
+                {/* <Route path="/createProject" component={CreateProject}/> */}
               </Switch>
             ) : (
               <Switch>
@@ -64,7 +66,7 @@ class App extends React.Component {
           ) : (
             <Switch>
               <Route path="/signup" component={Signup}/>
-              <Route path="*" component={Login}/>              
+              <Route path="*" component={Login}/>             
             </Switch>
           )
         }
