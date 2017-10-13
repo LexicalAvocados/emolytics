@@ -3,7 +3,7 @@ import ProjectList from './ProjectList.jsx';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../../../actions'
+import * as ChangeActions from '../../../actions';
 
 
 class DashboardHome extends React.Component {
