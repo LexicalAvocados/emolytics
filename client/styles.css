@@ -1,5 +1,6 @@
 body {
-  font-family: 'Montserrat'
+  font-family: 'Montserrat';
+  margin: auto;
 }
 
 .navItem {
