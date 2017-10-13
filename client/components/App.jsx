@@ -39,9 +39,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar 
-          loggedIn={this.props.loggedInUser.username}
-        />
+        <Navbar />
         {this.props.example.text}
         { this.props.loggedInUser.username ? (
           <Switch>
@@ -56,6 +54,7 @@ class App extends React.Component {
         ) : (
           <Switch>
             <Route exact path="/" component={Login}/>
+            <Route path="/login" component={Login}/>
             <Route path="/signup" component={Signup}/>
           </Switch>
         )}
@@ -65,9 +64,9 @@ class App extends React.Component {
   }
 }
 
-{/* <Route path="/signup" component={Signup}/>
-          <Route path="/login" component={Login}/> */}
-
+// React-Redux connect() boilerplate
+// 1. Include the properties in the Store you want this component to have access to
+// 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
