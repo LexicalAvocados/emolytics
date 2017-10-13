@@ -10,7 +10,7 @@ import rootReducer from '../reducers/index.js';
 import { changeExample } from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../actions'
+import * as ChangeActions from '../actions';
 
 import DashboardHome from './creator/dashboard/dashboardHome.jsx';
 import Navbar from './Navbar.jsx';
