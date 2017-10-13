@@ -17,6 +17,7 @@ class SectionHome extends React.Component {
     this.onOptionClick = this.onOptionClick.bind(this);
     this.grabTesters = this.grabTesters.bind(this);
     this.addInvitee = this.addInvitee.bind(this);
+    this.submitInvites = this.submitInvites.bind(this);
   }
   
   onOptionClick(index) {
@@ -45,7 +46,13 @@ class SectionHome extends React.Component {
   }
 
   submitInvites() { // After this is clicked give some feedback to creator - collapse the thing, says sent
-    // Send invited to backend
+    axios.post('/api/sendEmails', { invitedArr: this.state.invited })
+      .then((success) => {
+        console.log('Invites sent');
+      })
+      .catch((failure) => {
+        console.log('Invites NOT sent', failure);
+      })
   }
 
   render() {
@@ -71,7 +78,7 @@ class SectionHome extends React.Component {
                 {this.state.invited.map((invitee, i) => (
                   <p key={i}>Name: {invitee.username} Email: {invitee.email}</p> 
                 ))}
-                <button>Finish Inviting...</button>
+                <button onClick={this.submitInvites}>Finish Inviting...</button>
               </div>
             ) : (
               null

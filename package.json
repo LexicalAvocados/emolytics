@@ -52,7 +52,7 @@
     "image-data-uri": "^1.0.0",
     "jquery": "^3.2.1",
     "moment": "^2.19.1",
-    "nodemailer": "^4.1.3",
+    "nodemailer": "^4.2.0",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
     "pg": "^7.3.0",
