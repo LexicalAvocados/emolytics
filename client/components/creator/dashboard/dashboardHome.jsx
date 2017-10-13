@@ -16,7 +16,7 @@ class DashboardHome extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/getProjectsForUser', {params: { username: 'bob' }})
+    axios.get('/api/getProjectsForUser', {params: { username: 'bob' }}) // this.props.loggedInUser.username (import it below)
       .then((response) => {
         this.setState({
           projects: response.data
@@ -55,7 +55,6 @@ class DashboardHome extends React.Component {
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN DASHBOARD', state);
   return ({
-    example: state.example,
     router: state.router,
     currentProject: state.currentProject
   });
