@@ -31,7 +31,8 @@ const DetailsPanel = (props) => {
       total += currVal;
       if(currVal > max[1]) max = [ obj[key][0], currVal ]
     }
-    let stringForRender = `${max[0]} (${Math.floor((max[1]/total)*10000)/100}%)`
+    let Emoshin = max[0][0].toUpperCase() + max[0].slice(1);
+    let stringForRender = `${Emoshin} (${Math.floor((max[1]/total)*10000)/100}%)`
     return stringForRender;
   }
 
@@ -57,6 +58,8 @@ const DetailsPanel = (props) => {
         <div className='emotionChart'></div>
       </div><hr/>
 
+      <div className="bottomPanelContainer">
+
         <div className="testerAttention">
           <p> Average Attention: {calcAvgAtten(props.attention.slice(1))}%</p>
           <p> Moments user lost focus: </p>
@@ -73,8 +76,14 @@ const DetailsPanel = (props) => {
               </li>
             ))}
           </ul>
-
         </div>
+
+        <div className="testerFeedback">
+          <p>Like: {props.likeStatus}</p>
+          <p> Comments: </p>
+        </div>
+
+      </div>
 
     </div>
   )

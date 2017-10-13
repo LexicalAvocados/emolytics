@@ -18,7 +18,8 @@ class OptionHome extends React.Component {
                   0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.8, 0.7, 0.8, 0.6, 0.7, 0.19, 0.1, 0.36, 0.56, 0.7, 0.8
                 ],
       timestamp: '0',
-      emotionObj: {}
+      emotionObj: {},
+      likeStatus: false
     }
     this.timestampCallback = this.timestampCallback.bind(this);
   }
@@ -73,20 +74,31 @@ class OptionHome extends React.Component {
         bindto: '.emotionChart',
         data: {
           columns: [
-            ['anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
+            ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
           ],
           type : 'pie'
         }
       });
     })
-
+    // .then( () => {
+    //   axios.post('/api/getLike', {
+    //     optionId: this.props.currentSection.option.id,
+    //     username: this.props.loggedInUser.username
+    //   })
+    //   .then( (res) => {
+    //     console.log('res in option home from like', res)
+    //     this.setState({
+    //       likeStatus: res.data
+    //     })
+    //   })
+    // })
 
   }
 
@@ -113,6 +125,7 @@ class OptionHome extends React.Component {
             user={this.state.user}
             timestampCallback={this.timestampCallback}
             emotionsObj={this.state.emotionObj}
+            likeStatus={this.state.likeStatus}
             />
       </div>
     )
@@ -123,7 +136,8 @@ const mapStateToProps = (state) => {
   return ({
     router: state.router,
     currentProject: state.currentProject,
-    currentSection: state.currentSection
+    currentSection: state.currentSection,
+    loggedInUser: state.loggedInUser
   });
 };
 

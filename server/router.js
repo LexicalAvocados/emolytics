@@ -23,6 +23,6 @@ router.post('/getFrames', frameRoutes.getRelevantFrames);
 
 router.post('/sendEmails', indexRoutes.sendEmails);
 
-
+router.post('/getLike', optionRoutes.getUserLikeOnOption);
 
 module.exports = router;
