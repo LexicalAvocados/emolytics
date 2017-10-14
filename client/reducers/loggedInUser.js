@@ -1,12 +1,15 @@
-const loggedInUser = (state = {username: null, isCreator: false}, action) => {
+const loggedInUser = (state = {username: undefined, isCreator: undefined, age: undefined, sex: undefined, race: undefined}, action) => {
   switch (action.type) {
     case 'SET_LOGGED_IN':
-      let newState = Object.assign({}, state);
-      newState.username = action.username;
-      newState.isCreator = action.isCreator;
-      return newState;
+      return Object.assign({}, state, {username: action.username, isCreator: action.isCreator});
     case 'SET_LOGGED_OUT':
-      return {username: null, isCreator: false};
+      return {username: undefined, isCreator: undefined, age: undefined, sex: undefined, race: undefined};
+    case 'SET_AGE':
+      return Object.assign({}, state, {age: action.age});
+    case 'SET_SEX':
+      return Object.assign({}, state, {sex: action.sex});
+    case 'SET_RACE':
+      return Object.assign({}, state, {race: action.race});
     default:
       return state;
   }
