@@ -34,7 +34,6 @@ class InvitationPanel extends React.Component {
       });
   }
 
-  // Test placing filterTesters within setState 
   selectAge(event) { 
     this.setState({
       ageSelected: event,
@@ -59,6 +58,8 @@ class InvitationPanel extends React.Component {
   // }
 
 
+  // Potential problem with this solution -- calling a function that attempts to setState within a function that is setting state. 
+  // Test placing filterTesters within setState
   filterTesters(criteria) { // Race not ready to implement
     var filtered = [];
     if (this.sexSelected === criteria) { // They are setting sex
@@ -81,7 +82,7 @@ class InvitationPanel extends React.Component {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
     }
-    this.setState({
+    this.setState({ 
       testersCopy: filtered
     });
   }
