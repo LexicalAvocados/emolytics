@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-
+  const routeForTesters = "http://localhost:3000/login"
 
 exports.sendEmails = function(req, res) {
   // console.log('within emails', req.body);
@@ -17,7 +17,7 @@ exports.sendEmails = function(req, res) {
       to: invitee.email,
       subject: "You've been invited!",
       text: "Guten Tag! You've been invited to something (if you've received this email)",
-      html: `<p>This is a test! You get ${req.body.options[i].id}</p>`
+      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${req.body.options[i].id} at ${routeForTesters} after logging in! Giddy up!</p>`
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -30,15 +30,3 @@ exports.sendEmails = function(req, res) {
     })
   });
 };
-
-
-//  options: 
-// [ { id: 2,
-//   name: 'Test Video 2',
-//   description: 'blah blah blah',
-//   youtubeUrl: 'https://www.youtube.com/watch?v=HzzmqUoQobc',
-//   thumbnail: 'https://i.ytimg.com/vi/AcMmLmvOYTo/default.jpg',
-//   length: 100,
-//   createdAt: '2017-10-11T21:10:25.179Z',
-//   updatedAt: '2017-10-11T21:10:25.179Z',
-//   sectionId: 1 } ] }

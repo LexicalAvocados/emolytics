@@ -6,14 +6,15 @@ class InviteTesters extends React.Component {
     super(props);
   }
 
-
-
-
   render () {
     return (
-      <p onClick={() => this.props.addInvitee(this.props.index)}>{this.props.tester.username}</p> //And whatever other information about the user we want to display.
+      <div>
+        <p>Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex}</p>
+      </div>
     );
   }
 }
 
 export default InviteTesters;
+
+//onClick={() => this.props.addInvitee(this.props.index)}
