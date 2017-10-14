@@ -19,11 +19,14 @@ const path = require('path');
 // 	length: 100
 // })
 
-router.get('/getVideo', (req, res) => {
+router.post('/getVideo', (req, res) => {
+  console.log("TESTTTTTTINGGGGG")
 	console.log('req session', req.session);
+  console.log(req.body);
+  var id = parseInt(req.body.id)
 	Option.findAll({
 		where: {
-			id: 1
+			id: id
 		}
 	})
 		.then(data => {
@@ -61,19 +64,59 @@ router.post('/sendFrame', (req, res) => {
    })
 })
 
-router.post('/getVideo', (req, res) => {
+router.post('/likeVideo', (req, res) => {
   console.log(req.body);
+  console.log(req.session)
   User.findAll({
     where: {
       username: req.session.username
     }
   })
     .then(user => {
-      TesterAndOption.create({
-        like: req.body.like,
-        userId: user[0].dataValues.id,
-        optionId: 1
-      })
+      console.log(user[0].dataValues);
+      TesterAndOption.findOrCreate({where: {optionId: req.body.option.id, userId: user[0].dataValues.id}})
+        .spread((entry, created) => {
+          console.log('ENTRY', entry)
+          entry.update({
+            finished: true,
+            like: req.body.like
+          })
+          console.log(created);
+        })
+    })
+})
+
+router.post('/startVideo', (req, res) => {
+  console.log('startVideo', req.body)
+  User.findOne({
+    where: {
+      username: req.session.username
+    }
+  })
+    .then(user => {
+      console.log(user.dataValues);
+      TesterAndOption
+        .findOne({where: {optionId: req.body.option.id, userId: user.dataValues.id}})
+        .then(data => {
+          console.log(data);
+          if (!data) {
+            TesterAndOption.create({
+              optionId: req.body.option.id, 
+              userId: user.dataValues.id,
+              finished: false
+            })
+          }
+        })
+        // .then(arr => {
+        //   console.log('arr', arr);
+          // if (created) {
+          //   entry[0].update({
+          //     finished: false,
+          //     like: null
+          //   })
+          // }
+
+        // })
     })
 })
 

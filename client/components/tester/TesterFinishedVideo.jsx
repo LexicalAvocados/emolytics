@@ -1,43 +1,36 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../actions';
+import axios from 'axios';
 
 class TesterFinishedVideo extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      likeResponse: '',
-      feedbackText: ''
+      like: true,
+      dislike: false
     }
-    this.LikeOnClick = this.LikeOnClick.bind(this);
-    this.feedBackTextChange = this.feedBackTextChange.bind(this);
+    this.likeClick = this.likeClick.bind(this);
   }
 
-  LikeOnClick(e) {
-    this.setState({
-      likeResponse: e.target.value
-    })
-  }
-
-  feedBackTextChange(e) {
-    this.setState({
-      feedbackText: e.target.value
-    })
-  }
 
   likeClick(e) {
     e.preventDefault();
-
-    axios.post('/api/tester/getVideo', {
-      like: e.target.value
+    axios.post('/api/tester/likeVideo', {
+      like: e.target.value,
+      option: this.props.currentTesterOption
     })
-    this.setState({
-      show: false
-    }) 
   }
 
   render() {
       return (
         <div>
+          <Button value={this.state.like} onClick={this.likeClick}> Like </Button>
+
+
+          <Button value={this.state.dislike} onClick={this.likeClick}> Dislike </Button>
 
 
         </div>
@@ -46,4 +39,19 @@ class TesterFinishedVideo extends React.Component {
 
 };
 
-export default TesterFinishedVideo;
+const mapStateToProps = (state) => {
+  console.log('state', state);
+  return ({
+    currentTesterOption: state.currentTesterOption
+  })
+}
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+})
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+  ) (TesterFinishedVideo)

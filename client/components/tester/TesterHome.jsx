@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 import TesterVideo from './testerVideo.jsx';
 import { Button, FormControl, FormGroup, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class TesterHome extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class TesterHome extends React.Component {
 
   handleSubmit(e) {
     // Route to that video
+    e.preventDefault();
   }
 
   render() {
@@ -30,7 +32,7 @@ class TesterHome extends React.Component {
       <div className="TesterHomeContainer">
         <h2> Welcome to Emolytics! </h2><br/><br/>
         <p>If you have a code, please enter it below.</p>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <FormGroup controlId='promoCode'>
             <Col sm={2}>
             <FormControl
@@ -40,7 +42,7 @@ class TesterHome extends React.Component {
               onChange={this.handleCodeChange}
               />
           </Col>
-            <Button bsStyle='primary' onClick={this.handleSubmit}> Go </Button>
+            <Link to={`/video/${this.state.testerCode}`}> <Button> Go </Button> </Link>
           </FormGroup>
         </form>
         <p> Otherwise, feel free to browse our collection of videos,
