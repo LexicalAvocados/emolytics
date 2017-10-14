@@ -73,7 +73,7 @@ class InvitationPanel extends React.Component {
       filtered = filtered.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
-    } else { // Sex not selected
+    } else if (this.ageSelected === criteria) {
       let index = criteria.indexOf('-');
       let first = criteria.slice(0, index);
       let second = criteria.slice(index + 1);
