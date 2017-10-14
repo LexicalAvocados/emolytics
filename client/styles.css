@@ -14,37 +14,47 @@ body {
   text-decoration: underline;
 }
 
+.sideNavItem {
+  text-align: center;
+}
+
 .optionAnalyticsContainer {
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 10% 50% 40%;
   grid-template-rows: 50% 50%;
-  border: solid black 1px;
-  border-radius: 10px;
   padding: 10px;
   grid-row-gap: 15px;
   width: 97%;
+  border: solid black 1px;
+  border-radius: 10px;
+}
+
+.sidemenucontainer {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: center;
 }
 
 .optionPlayer {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
   margin-left: 3%
 }
 
 .testerDetails {
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 2;
 }
 
 .emotionChart {
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 1;
 }
 
 .optionChart {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 2;
-  width: 82%;
+  width: 96%;
 }
 
 .lapseInFocus {

@@ -1,41 +1,50 @@
 import React from 'react';
 import c3 from 'c3';
 import ReactPlayer from 'react-player';
-import DetailsPanel from './detailsPanel.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 import pad from 'array-pad';
 
+import SideBar from './SideBar.jsx';
+import Overview from './Subcomponents/Overview.jsx';
+import Attention from './Subcomponents/Attention.jsx';
+import Demographics from './Subcomponents/Demographics.jsx';
+import Emotion from './Subcomponents/Emotion.jsx';
+import Feedback from './Subcomponents/Feedback.jsx';
+
 class OptionHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {name: 'blobbert', age: '26', gender: 'male'},
-      attention: ['attention', 0, 0.5, 1, 1, 0.7, 0.8, 0.8, 0.5, 0.2, 0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.8,
+      attention: [['Attention', 0, 0.5, 1, 1, 0.7, 0.8, 0.8, 0.5, 0.2, 0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.8,
                   0.75, 0.6, 0.4, 0.3, 0.34, 0.4, 0.6, 0.7, 0.8, 0.8, 0.6, 0.7, 0.4, 0.2, 0.36, 0.56, 0.7, 0.8, 0.7, 0.6,
                   0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.7, 0.6,
                   0.6, 1, 1, 0.8, 0.5, 0.7, 1, 1, 0.9, 0.8, 0.9, 0.8, 0.7, 0.8, 0.6, 0.7, 0.19, 0.1, 0.36, 0.56, 0.7, 0.8
-                ],
+                ]],
       timestamp: '0',
       emotionObj: {},
+      emotionsArrForRender: [],
       likeStatus: false,
       duration: 0,
-      completion: 0
+      completion: 0,
+      sideNavSelection: 'overview'
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
     this.generateCharts = this.generateCharts.bind(this);
+    this.changeSideNavSelection = this.changeSideNavSelection.bind(this);
+    this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
+    this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
   }
 
   componentDidMount() {
-
+    //orientation modal
   }
 
-  generateCharts() {
-    //axios GET request for attention
-
+  setStateAfterDuration() {
     var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
                     "neutral", "sadness", "surprise" ]
 
@@ -51,27 +60,49 @@ class OptionHome extends React.Component {
             acc.push(curr[emo]);
             return acc;
           }, [capitalized]);
-        let testCompletion = Math.floor(10*tempEmotionObj[emo].length - 1 / this.state.duration)/10;
         if (tempEmotionObj[emo].length < this.state.duration) {
           let diff = this.state.duration - tempEmotionObj[emo].length - 1;
           let padArr = pad([], diff, null);
           tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
         }
-        this.setState({
-          completion: testCompletion
-        }, () => console.log('complete', this.state.completion))
       })
-
       return tempEmotionObj;
     })
     .then((emoObj) => {
+      let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
+                      emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
       this.setState({
-        emotionObj: emoObj
+        emotionObj: emoObj,
+        emotionsArrForRender: emoArray
       })
     })
     .then( () => {
-      //generate charts now
-      // console.log('all emotions', this.state.emotionObj)
+      axios.post('/api/getLike', {
+        optionId: this.props.currentSection.option.id,
+        username: this.props.loggedInUser.username
+      })
+      .then( (res) => {
+        this.setState({
+          likeStatus: res.data.like
+        })
+      })
+    })
+    .then( () => {
+      this.generateCharts(this.state.emotionsArrForRender);
+    })
+    .then( () => {
+      let diff = this.state.duration - this.state.attention[0].length - 1;
+      let padArr = pad([], diff, null);
+      let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
+      this.setState({
+        attention: paddedAttentionArr
+      })
+    })
+  }
+
+  generateCharts(lineGraphData) {
+      console.log('generating charts now', lineGraphData);
+      // c3.select('.optionChart').unload();
       var lineGraph = c3.generate({
         bindto: '.optionChart',
         data: {
@@ -81,16 +112,7 @@ class OptionHome extends React.Component {
               timestamp: clickedTimestamp
             }, () => this.ReactPlayer.seekTo(this.state.timestamp))
           },
-          columns: [
-            this.state.emotionObj.anger,
-            this.state.emotionObj.contempt,
-            this.state.emotionObj.disgust,
-            this.state.emotionObj.fear,
-            this.state.emotionObj.happiness,
-            this.state.emotionObj.neutral,
-            this.state.emotionObj.sadness,
-            this.state.emotionObj.surprise
-          ]
+          columns: lineGraphData
         }
       });
 
@@ -110,57 +132,91 @@ class OptionHome extends React.Component {
           type : 'pie'
         }
       });
-    })
-    .then( () => {
-      axios.post('/api/getLike', {
-        optionId: this.props.currentSection.option.id,
-        username: this.props.loggedInUser.username
-      })
-      .then( (res) => {
-        this.setState({
-          likeStatus: res.data.like
-        })
-      })
-    })
   }
 
   setDuration(dur) {
     this.setState({
       duration: dur
-    }, () => this.generateCharts())
+    }, () => {
+      this.setStateAfterDuration();
+    })
+
   }
 
   timestampCallback(seconds){
     this.setState({
       timestamp: seconds
     }, () => this.ReactPlayer.seekTo(this.state.timestamp))
+  }
 
+  changeSideNavSelection(item) {
+    this.setState({
+      sideNavSelection: item
+    }, this.lineGraphDataSwitch);
+  }
+
+  lineGraphDataSwitch() {
+    if (this.state.sideNavSelection === 'attention') {
+      this.generateCharts(this.state.attention);
+    }
+    if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions') {
+      this.generateCharts(this.state.emotionsArrForRender)
+    }
   }
 
   render() {
     return (
       <div className='optionAnalyticsContainer'>
-      <div className='leftSide'>
-        <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-          ref={(player) => { this.ReactPlayer = player; }}
-          controls={true} height={420} width={750} className='optionPlayer' onDuration={this.setDuration}
-          config={{
-            youtube: {
-              playerVars: { showinfo: 1}
-            }
-          }}/>
-        <div className="optionChart">
+        <SideBar changeCb={this.changeSideNavSelection}/>
+        <div className='leftSide'>
+          <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
+            ref={(player) => { this.ReactPlayer = player; }}
+            controls={true} height={420} width={750} className='optionPlayer' onDuration={this.setDuration}
+            config={{
+              youtube: {
+                playerVars: { showinfo: 1}
+              }
+            }}/>
+          <div className="optionChart">
+          </div>
         </div>
-      </div>
-          <DetailsPanel
-            viewer={this.state.user}
-            attention={this.state.attention}
-            user={this.state.user}
-            timestampCallback={this.timestampCallback}
-            emotionsObj={this.state.emotionObj}
-            likeStatus={this.state.likeStatus}
-            completionStatus={this.state.completion}
-            />
+        <div className="rightSide">
+          {this.state.sideNavSelection === 'overview' ?
+            (<Overview
+              viewer={this.state.user}
+              attention={this.state.attention[0]}
+              user={this.state.user}
+              timestampCallback={this.timestampCallback}
+              emotionsObj={this.state.emotionObj}
+              likeStatus={this.state.likeStatus}
+              completionStatus={this.state.completion}
+              sideNavSelection={this.state.sideNavSelection}
+              />
+            ): ''
+          }
+
+          {this.state.sideNavSelection === 'attention' ? (
+            <div className='attentionRightPanelContainer'>
+              <Demographics user={this.state.user} />
+              <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+            </div>
+          ) : ''}
+
+          {this.state.sideNavSelection === 'feedback' ? (
+            <div className='feedbackRightPanelContainer'>
+              <Demographics user={this.state.user} />
+              <Feedback likeStatus={true} completionStatus={this.state.completion} />
+            </div>
+          ) : ''}
+
+          {this.state.sideNavSelection === 'emotions' ? (
+            <div className='emotionsRightPanelContainer'>
+              <Demographics user={this.state.user} />
+              <Emotion emotionsObj={this.state.emotionObj} />
+            </div>
+          ) : ''}
+
+        </div>
       </div>
     )
   }
