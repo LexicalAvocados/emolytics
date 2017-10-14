@@ -11,13 +11,14 @@ class InvitationPanel extends React.Component {
       testersCopy: [],
       ageSelected: null,
       sexSelected: null,
-      raceSelected: null
+      raceSelected: null,
+      previous: [],
+      filtered: false
     };
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
-    this.filterTesters = this.filterTesters.bind(this);
   }
 
 
@@ -35,18 +36,22 @@ class InvitationPanel extends React.Component {
   }
 
   selectAge(event) {
-    let display = event.slice(2, 4) + '-' + event.slice(10);
+    let filteredTesters = this.filterTesters('age', event)
     this.setState({
-      ageSelected: display
+      ageSelected: event,
+      testersCopy: filteredTesters
     });
   }
 
   selectSex(event) {
-    let filteredTesters = this.filterTesters('sex', event)
-    console.log(filteredTesters);
+    // let filteredTesters = this.filterTesters('sex', event)  
+    console.log(event);
+    console.log(filterTesters('sex', event, this.state.testers));
+    // console.log('WHAT', a);
+
     this.setState({
       sexSelected: event,
-      testersCopy: filteredTesters
+      // testersCopy: filteredTesters
     });
   }
 
@@ -58,21 +63,6 @@ class InvitationPanel extends React.Component {
     });
   }
 
-  filterTesters(selector, criteria) {
-    if (selector === 'sex' || selector === 'race') {
-      console.log(selector);
-      console.log(criteria);
-      return this.state.testers.filter((tester) => {
-        if (tester[selector] === criteria) {
-          console.log('hello');
-          return tester;
-        }
-      });
-    } else {
-      // Deal with refining age stuff.
-    }
-
-  }
 
   render() {
     return (
@@ -84,16 +74,16 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Age:</p>
               <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
-                <MenuItem eventKey=">=0 && <=10">0-10</MenuItem>
-                <MenuItem eventKey=">=11 && <=20">11-20</MenuItem>
-                <MenuItem eventKey=">=21 && <=30">21-30</MenuItem>
-                <MenuItem eventKey=">=31 && <=40">31-40</MenuItem>
-                <MenuItem eventKey=">=41 && <=50">41-50</MenuItem>
-                <MenuItem eventKey=">=51 && <=60">51-60</MenuItem>
-                <MenuItem eventKey=">=61 && <=70">61-70</MenuItem>
-                <MenuItem eventKey=">=71 && <=80">71-80</MenuItem>
-                <MenuItem eventKey=">=81 && <=90">81-90</MenuItem>
-                <MenuItem eventKey=">=91 && <=100">91-100 Impressive!</MenuItem>
+                <MenuItem eventKey="0-10">0-10</MenuItem>
+                <MenuItem eventKey="11-20">11-20</MenuItem>
+                <MenuItem eventKey="21-30">21-30</MenuItem>
+                <MenuItem eventKey="31-40">31-40</MenuItem>
+                <MenuItem eventKey="41-50">41-50</MenuItem>
+                <MenuItem eventKey="51-60">51-60</MenuItem>
+                <MenuItem eventKey="61-70">61-70</MenuItem>
+                <MenuItem eventKey="71-80">71-80</MenuItem>
+                <MenuItem eventKey="81-90">81-90</MenuItem>
+                <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
               </DropdownButton>
             </div>
             <br/>
@@ -129,3 +119,19 @@ class InvitationPanel extends React.Component {
 };
 
 export default InvitationPanel;
+
+
+const filterTesters = _.memoize(function(selector, criteria, array) {
+  if (selector === 'sex' || selector === 'race') {
+    return array.filter((tester) => {
+      if (tester[selector] === criteria) return tester;
+    });
+  } else {
+    let index = criteria.indexOf('-');
+    let first = criteria.slice(0, index);
+    let second = criteria.slice(index + 1);
+    return array.filter((tester) => {
+      if (tester[selector] >= JSON.parse(first) && tester[selector] <= JSON.parse(second)) return tester;
+    });
+  }
+});
