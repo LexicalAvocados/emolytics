@@ -50,7 +50,8 @@ class Signup extends React.Component {
       isCreator: this.state.isCreator
     })
       .then(res => {
-        this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
+        let {username, name, age, sex, race, isCreator} = res.data.userData;
+        this.props.actions.setLoggedIn(username, name, age, sex, race, isCreator);
         this.props.history.push('/');
       })
       .catch(err => {
