@@ -18,6 +18,15 @@ body {
   text-align: center;
 }
 
+.projectContainer, .projectsContainer {
+  border: solid black 1px;
+  border-radius: 20px;
+  background-color: #e5e3e3;
+  box-shadow: 2px 2px black;
+  padding: 15px;
+  width: 30%;
+}
+
 .optionAnalyticsContainer {
   display: grid;
   grid-template-columns: 10% 50% 40%;

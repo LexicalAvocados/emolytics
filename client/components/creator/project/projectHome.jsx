@@ -17,15 +17,15 @@ class ProjectHome extends React.Component {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
   }
-  
+
 
   render() {
     return (
-      <div>
+      <div className='projectContainer'>
         <h2>{this.props.currentProject.name}</h2>
         <p>{this.props.currentProject.description}</p>
         {this.props.currentProject.sections.map((section, i) => (
-          <SectionList 
+          <SectionList
             onSectionClick={this.onSectionClick}
             section={section}
             key={i}
