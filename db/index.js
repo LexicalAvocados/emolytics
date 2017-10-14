@@ -29,8 +29,10 @@ const User = sequelize.define('user', {
   password: Sequelize.STRING,
   email: Sequelize.STRING,
   fbId: Sequelize.INTEGER,
+  name: Sequelize.STRING,
   sex: Sequelize.STRING,
   age: Sequelize.INTEGER,
+  race: Sequelize.STRING,
   isCreator: Sequelize.BOOLEAN
 });
 

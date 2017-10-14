@@ -1,5 +1,5 @@
 const express = require('express');
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const Bluebird = require('bluebird');
@@ -28,12 +28,12 @@ app.use(session({
 app.use(express.static(__dirname + '/client'));
 
 
-
 app.use('/api', router);
 
 app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', auth.logout);
+app.put('/profile', (req, res) => auth.editProfile(req, res));
 // app.use(auth.checkUser);
 
 app.get('*', (req, res) => {

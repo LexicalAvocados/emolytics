@@ -8,7 +8,7 @@ import TesterFinishedVideo from './TesterFinishedVideo.jsx';
 import atob from 'atob';
 import AWS from 'aws-sdk';
 import S3Upload from 's3-bucket-upload';
-import cloudinary from 'cloudinary';
+// import cloudinary from 'cloudinary';
 import ToggleDisplay from 'react-toggle-display';
 import { Modal, Button } from 'react-bootstrap';
 
