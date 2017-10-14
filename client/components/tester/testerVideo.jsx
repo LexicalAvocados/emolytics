@@ -26,10 +26,8 @@ class TesterVideo extends React.Component {
       time: [0],
       img: [],
       show: false,
-      like: true,
-      dislike: false
     }
-
+    this.videoStart = this.videoStart.bind(this);
     this.getWebcam = this.getWebcam.bind(this);
     this.takePicture = this.takePicture.bind(this);
     this.checkVideo = this.checkVideo.bind(this);
@@ -48,7 +46,7 @@ class TesterVideo extends React.Component {
     //   //   console.log(clock);
     //   // })
     //   .begin()
-    axios.get('/api/tester/getVideo')
+    axios.post('/api/tester/getVideo', {id: this.props.match.params.id})
       .then((data) => {
         console.log(data);
         this.setState({
@@ -58,6 +56,9 @@ class TesterVideo extends React.Component {
             desc: data.data[0].description
           }
         })
+
+        this.props.actions.changeTesterOption(data.data[0]);
+        console.log(this);
       })
 
     this.getWebcam();
@@ -71,8 +72,15 @@ class TesterVideo extends React.Component {
       //     console.log('predictions', x, y);
       // }
     }, 3000)
+    this.startVideo();
 
+  }
 
+  videoStart() {
+    console.log("adfasdf");
+    axios.post('/api/tester/startVideo', {
+      option: this.props.currentTesterOption
+    })
   }
 
   getWebcam() {
@@ -83,7 +91,6 @@ class TesterVideo extends React.Component {
 
     var video = document.getElementById('video');
     var canvas = document.getElementById('canvas');
-    var photo = document.getElementById('photo');
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(function(stream) {
@@ -101,27 +108,6 @@ class TesterVideo extends React.Component {
       canvas.width = 300;
       canvas.height = 250;
       context.drawImage(video, 0, 0, 300, 250);
-      console.log(canvas);
-      var data = canvas.toDataURL('image/png');
-      // axios.post('/api/tester/sendFrame', data)
-      //   .then(res => {
-      //     console.log(res);
-      //   })
-      // var realData = data.replace(/^data:image\/(png|jpg);base64,/, "");
-      // var dataTest = data.split(',')[1];
-      // var mimeType = data.split(';')[0].slice(5);
-
-      // var bytes = window.atob(dataTest);
-      // var buf = new ArrayBuffer(bytes.length);
-      // var byteArr = new Uint8Array(buf);
-      // axios.post('https://requestb.in/wpray0wp', byteArr);
-      // console.log(data);
-      fetch(data)
-        .then(res => res.blob())
-        .then(data => this.state.img.push(data));
-      var photo = this.refs.photo;
-      photo.setAttribute('src', data);
-      console.log(photo)
   }
 
   checkVideo() {
@@ -361,24 +347,6 @@ class TesterVideo extends React.Component {
         // instance.get('https://api.kairos.com/v2/analytics/59dfc67f3f273')
         //   .then(res => console.log(res))
 
-      // let s3Upload = new S3Upload(AWS, {
-      //   Bucket: 'reaction-sync',
-      //   // region: [String],
-      //   // PoolId: [String],
-      //   // IdentityPoolId: [String],
-      //   // idToken: [String],
-      //   // dirName: [String],
-      //   // existingObjectUrl: [String],
-      //   onError: (err) => {
-      //     console.log('error')
-      //   },
-      //   onSuccess: (data) => {
-      //     console.log('success');
-      //   }
-      // });
-
-      // s3Upload.uploadBase64(data, 'test.png');
-
     };
     likeClick(e) {
       e.preventDefault();
@@ -396,32 +364,25 @@ class TesterVideo extends React.Component {
   render() {
     var imgStyle = {
       opacity: 0
+
     }
 
     return (
       <div>
         <ToggleDisplay className="overlay"  show={this.state.show}>
-          <h1> Finished </h1> 
           <TesterFinishedVideo />
-          <button value={this.state.like} onClick={this.likeClick} > like </button>
-          <button value={this.state.dislike} onClick={this.likeClick} > dislike </button>
         </ToggleDisplay>
 
-        <h2> Test Video </h2>
-        <ReactPlayer onEnded={this.showOverlay} controls={true} ref="video" url={this.state.video.url || 'https://www.youtube.com/watch?v=OpI2fqXDh1w'} playing />
+        <ReactPlayer onStart={this.videoStart} onEnded={this.showOverlay} controls={true} ref="video" url={this.state.video.url} playing />
         <h2> {this.state.video.name} </h2>
         <h4> {this.state.video.desc} </h4>
+
+
         <div class="camera">  
-          <video style={imgStyle} id="video">Video stream not available.</video>
+          <video className="testerVideo" id="video">Video stream not available.</video>
         </div>
-
-
-        <canvas style={imgStyle} ref="canvas" id="canvas">
-        </canvas>
-        <div class="output">
-          <img style={imgStyle} ref="photo" id="photo" alt="The screen capture will appear in this box."/>
-          <img style={imgStyle} ref="test" alt="The screen capture will appear in this box."/>
-        </div>
+        <canvas className="testerVideo" ref="canvas" id="canvas">
+        </canvas> 
       </div>
 
     )
@@ -433,7 +394,7 @@ class TesterVideo extends React.Component {
 const mapStateToProps = (state) => {
   console.log('state', state);
   return ({
-
+    currentTesterOption: state.currentTesterOption
   })
 }
 
