@@ -87,19 +87,18 @@ class OptionHome extends React.Component {
         }
       });
     })
-    // .then( () => {
-    //   axios.post('/api/getLike', {
-    //     optionId: this.props.currentSection.option.id,
-    //     username: this.props.loggedInUser.username
-    //   })
-    //   .then( (res) => {
-    //     console.log('res in option home from like', res)
-    //     this.setState({
-    //       likeStatus: res.data
-    //     })
-    //   })
-    // })
-
+    .then( () => {
+      axios.post('/api/getLike', {
+        optionId: this.props.currentSection.option.id,
+        username: this.props.loggedInUser.username
+      })
+      .then( (res) => {
+        console.log('res in option home from like', res)
+        this.setState({
+          likeStatus: res.data.like
+        })
+      })
+    })
   }
 
   timestampCallback(seconds){
