@@ -12,12 +12,10 @@ class SectionHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      testers: [],
       invited: [],
       submitted: false
     };
     this.onOptionClick = this.onOptionClick.bind(this);
-    this.grabTesters = this.grabTesters.bind(this);
     this.addInvitee = this.addInvitee.bind(this);
     this.submitInvites = this.submitInvites.bind(this);
   }
@@ -26,17 +24,7 @@ class SectionHome extends React.Component {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
   }
 
-  grabTesters() {
-    axios.get('/api/getTesters')
-      .then((response) => {
-        this.setState({
-          testers: response.data
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+
 
   addInvitee(index) { // You can only invite as many people as there are options
     if (this.state.invited.indexOf(this.state.testers[index]) === -1) {
@@ -80,10 +68,9 @@ class SectionHome extends React.Component {
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
-        <button onClick={this.grabTesters}>Invite testers to view options!</button>
-        { this.state.testers.length ? (
+        {/* { this.state.testers.length ? (
           <div>
-            {this.state.testers.map((tester, i) => (
+            {/* {this.state.testers.map((tester, i) => (
               <InviteTesters 
                 tester={tester}
                 key={i}
@@ -95,22 +82,24 @@ class SectionHome extends React.Component {
               <h4>Invites Sent</h4>
             ) : (
               this.renderInvites()
-            )}
+            )} */}
 
 
-          </div>
+          {/* </div>
         ) : (
           null
-        )}
-        
-        { this.props.currentSection.options.map((option, i) => (
-          <OptionList 
-            option={option}
-            key={i}
-            index={i}
-            onOptionClick={this.onOptionClick}
-          />
-        ))}
+        )} */} 
+        <div className="currentSectionOptionsList">
+          { this.props.currentSection.options.map((option, i) => (
+            <OptionList 
+              option={option}
+              key={i}
+              index={i}
+              onOptionClick={this.onOptionClick}
+              grabTesters={this.grabTesters}
+            />
+          ))}
+        </div>
       </div>
     );
   }

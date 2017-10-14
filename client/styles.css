@@ -79,3 +79,17 @@ body {
     left:0px;
     z-index:1000;
 }
+
+
+
+
+
+
+/* Lucas' CSS */
+.currentSectionOptionsList {
+}
+
+.currentSectionOptionListEntry {
+  float: left;
+  padding-right: 3%
+}
