@@ -36,6 +36,10 @@ class InvitationPanel extends React.Component {
       });
   }
 
+
+// CHANGE ALL THIS CRAP TO JUST BE AGE OR WHATEVER
+
+
   selectAge(event) {
     let filteredTesters = this.filterTesters(this.state.sexSelected, this.state.raceSelected, 'age', event)  
     this.setState({
@@ -78,14 +82,18 @@ class InvitationPanel extends React.Component {
     //     if (tester[race] === criteria) return tester;
     //   });
     // } 
-    if (age !== '' && criteria.indexOf('-') !== -1) {
+    if (age !== '') { // No criteria when sex selected.
+      if (criteria.indexOf('-') === -1) { 
+        criteria = age;
+        age = 'age';
+      }
       let index = criteria.indexOf('-');
       let first = criteria.slice(0, index);
       let second = criteria.slice(index + 1);
       ageArr = this.state.testers.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second) && tester.sex === this.state.sexSelected) return tester;
       });
-    }
+    } 
     returnArr = returnArr.concat(sexArr, ageArr);
     return returnArr;
   }
