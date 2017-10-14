@@ -42,6 +42,9 @@ class OptionHome extends React.Component {
 
   componentDidMount() {
     //orientation modal
+    this.setState({
+      user: this.props.loggedInUser
+    })
   }
 
   setStateAfterDuration() {
@@ -53,6 +56,10 @@ class OptionHome extends React.Component {
     })
     .then((res) => {
       let tempEmotionObj = {};
+      let calcCompletion = Math.floor(1000*(res.data.length / this.state.duration))/10;
+      this.setState({
+        completion: calcCompletion
+      })
 
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
@@ -61,7 +68,7 @@ class OptionHome extends React.Component {
             return acc;
           }, [capitalized]);
         if (tempEmotionObj[emo].length < this.state.duration) {
-          let diff = this.state.duration - tempEmotionObj[emo].length - 1;
+          var diff = this.state.duration - tempEmotionObj[emo].length - 1;
           let padArr = pad([], diff, null);
           tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
         }
