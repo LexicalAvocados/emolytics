@@ -10,7 +10,7 @@ class ProjectList extends React.Component {
     };
     this.onClickCallback = this.onClickCallback.bind(this)
   }
-  
+
   // Uxse id of project to get all sections
   componentDidMount() {
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
@@ -32,7 +32,7 @@ class ProjectList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='projectsContainer'>
         <Link to={'/project' + this.props.project.id}>
           <p onClick={this.onClickCallback}>Project Name: {this.props.project.name}</p>
         </Link>
