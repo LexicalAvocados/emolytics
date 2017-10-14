@@ -81,7 +81,8 @@ Option.belongsTo(Section);
 Option.sync({force: false});
 
 const TesterAndOption = sequelize.define('testerAndOption', {
-  like: Sequelize.BOOLEAN
+  like: Sequelize.BOOLEAN,
+  finished: Sequelize.BOOLEAN
 })
 
 Option.belongsToMany(User, {through: 'testerAndOption'});
