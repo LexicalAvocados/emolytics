@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
+import pad from 'array-pad';
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -19,12 +20,20 @@ class OptionHome extends React.Component {
                 ],
       timestamp: '0',
       emotionObj: {},
-      likeStatus: false
+      likeStatus: false,
+      duration: 0,
+      completion: 0
     }
     this.timestampCallback = this.timestampCallback.bind(this);
+    this.setDuration = this.setDuration.bind(this);
+    this.generateCharts = this.generateCharts.bind(this);
   }
 
   componentDidMount() {
+
+  }
+
+  generateCharts() {
     //axios GET request for attention
 
     var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
@@ -37,10 +46,20 @@ class OptionHome extends React.Component {
       let tempEmotionObj = {};
 
       emotions.forEach(emo => {
+        let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
         tempEmotionObj[emo] = res.data.reduce((acc, curr) => {
             acc.push(curr[emo]);
             return acc;
-          }, [emo])
+          }, [capitalized]);
+        let testCompletion = Math.floor(10*tempEmotionObj[emo].length - 1 / this.state.duration)/10;
+        if (tempEmotionObj[emo].length < this.state.duration) {
+          let diff = this.state.duration - tempEmotionObj[emo].length - 1;
+          let padArr = pad([], diff, null);
+          tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
+        }
+        this.setState({
+          completion: testCompletion
+        }, () => console.log('complete', this.state.completion))
       })
 
       return tempEmotionObj;
@@ -56,7 +75,12 @@ class OptionHome extends React.Component {
       var lineGraph = c3.generate({
         bindto: '.optionChart',
         data: {
-          // x: 'x',
+          onclick: (d) => {
+            let clickedTimestamp = d.x.toString();
+            this.setState({
+              timestamp: clickedTimestamp
+            }, () => this.ReactPlayer.seekTo(this.state.timestamp))
+          },
           columns: [
             this.state.emotionObj.anger,
             this.state.emotionObj.contempt,
@@ -93,12 +117,17 @@ class OptionHome extends React.Component {
         username: this.props.loggedInUser.username
       })
       .then( (res) => {
-        console.log('res in option home from like', res)
         this.setState({
           likeStatus: res.data.like
         })
       })
     })
+  }
+
+  setDuration(dur) {
+    this.setState({
+      duration: dur
+    }, () => this.generateCharts())
   }
 
   timestampCallback(seconds){
@@ -114,7 +143,12 @@ class OptionHome extends React.Component {
       <div className='leftSide'>
         <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
           ref={(player) => { this.ReactPlayer = player; }}
-          controls={true} height={420} width={750} className='optionPlayer'/>
+          controls={true} height={420} width={750} className='optionPlayer' onDuration={this.setDuration}
+          config={{
+            youtube: {
+              playerVars: { showinfo: 1}
+            }
+          }}/>
         <div className="optionChart">
         </div>
       </div>
@@ -125,6 +159,7 @@ class OptionHome extends React.Component {
             timestampCallback={this.timestampCallback}
             emotionsObj={this.state.emotionObj}
             likeStatus={this.state.likeStatus}
+            completionStatus={this.state.completion}
             />
       </div>
     )
