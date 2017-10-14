@@ -68,27 +68,6 @@ class SectionHome extends React.Component {
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
-        {/* { this.state.testers.length ? (
-          <div>
-            {/* {this.state.testers.map((tester, i) => (
-              <InviteTesters 
-                tester={tester}
-                key={i}
-                index={i}
-                addInvitee={this.addInvitee}
-              />
-            ))}
-            { this.state.submitted ? (
-              <h4>Invites Sent</h4>
-            ) : (
-              this.renderInvites()
-            )} */}
-
-
-          {/* </div>
-        ) : (
-          null
-        )} */} 
         <div className="currentSectionOptionsList">
           { this.props.currentSection.options.map((option, i) => (
             <OptionList 
@@ -96,7 +75,6 @@ class SectionHome extends React.Component {
               key={i}
               index={i}
               onOptionClick={this.onOptionClick}
-              grabTesters={this.grabTesters}
             />
           ))}
         </div>
@@ -125,3 +103,29 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 ) (SectionHome);
+
+
+
+
+
+        // { this.state.testers.length ? (
+        //   <div>
+        //      {this.state.testers.map((tester, i) => (
+        //       <InviteTesters 
+        //         tester={tester}
+        //         key={i}
+        //         index={i}
+        //         addInvitee={this.addInvitee}
+        //       />
+        //     ))}
+        //     { this.state.submitted ? (
+        //       <h4>Invites Sent</h4>
+        //     ) : (
+        //       this.renderInvites()
+        //     )} 
+
+
+        //   </div>
+        // ) : (
+        //   null
+        // )} 

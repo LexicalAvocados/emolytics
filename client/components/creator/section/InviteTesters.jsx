@@ -8,7 +8,7 @@ class InviteTesters extends React.Component {
 
   render () {
     return (
-      <div onClick={() => this.props.addInvitee(this.props.index)}>
+      <div>
         <p>Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex}</p>
       </div>
     );
@@ -16,3 +16,5 @@ class InviteTesters extends React.Component {
 }
 
 export default InviteTesters;
+
+//onClick={() => this.props.addInvitee(this.props.index)}
