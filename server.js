@@ -1,5 +1,5 @@
 const express = require('express');
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const Bluebird = require('bluebird');
@@ -26,7 +26,6 @@ app.use(session({
 
 // app.use(express.static(__dirname + '/../react-client/dist'));
 app.use(express.static(__dirname + '/client'));
-
 
 
 app.use('/api', router);

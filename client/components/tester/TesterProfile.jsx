@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, FormControl, ListGroup, ListGroupItem, Option, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, ListGroup, ListGroupItem, Option, ButtonToolbar, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -13,18 +13,33 @@ class TesterProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      editingName: false,
       editingAge: false,
-      editingSex: false
+      editingSex: false,
+      editingRace: false,
+      showSaveChanges: false
     }
+    this.startEditingName = this.startEditingName.bind(this);
+    this.stopEditingName = this.stopEditingName.bind(this);
     this.startEditingAge = this.startEditingAge.bind(this);
     this.stopEditingAge = this.stopEditingAge.bind(this);
     this.startEditingSex = this.startEditingSex.bind(this);
     this.stopEditingSex = this.stopEditingSex.bind(this);
     this.startEditingRace = this.startEditingRace.bind(this);
     this.stopEditingRace = this.stopEditingRace.bind(this);
+    this.updateName = this.updateName.bind(this);
     this.updateAge = this.updateAge.bind(this);
     this.updateSex = this.updateSex.bind(this);
     this.updateRace = this.updateRace.bind(this);
+  }
+
+  startEditingName() {
+    this.setState({editingName: true});
+  }
+
+  stopEditingName(e) {
+    e.preventDefault();
+    this.setState({editingName: false, showSaveChanges: true});
   }
 
   startEditingAge() {
@@ -33,7 +48,7 @@ class TesterProfile extends React.Component {
 
   stopEditingAge(e) {
     e.preventDefault();
-    this.setState({editingAge: false});
+    this.setState({editingAge: false, showSaveChanges: true});
   }
 
   startEditingSex() {
@@ -41,7 +56,7 @@ class TesterProfile extends React.Component {
   }
 
   stopEditingSex(e) {
-    this.setState({editingSex: false});
+    this.setState({editingSex: false, showSaveChanges: true});
   }
 
   startEditingRace() {
@@ -49,7 +64,15 @@ class TesterProfile extends React.Component {
   }
 
   stopEditingRace(e) {
-    this.setState({editingRace: false});
+    this.setState({editingRace: false, showSaveChanges: true});
+  }
+
+  updateName(e) {
+    if (e.target.value === '') {
+      this.props.actions.setName(undefined);
+    } else {
+      this.props.actions.setName(e.target.value);
+    }
   }
 
   updateAge(e) {
@@ -74,6 +97,18 @@ class TesterProfile extends React.Component {
     return (
       <div>
         <ListGroup>
+
+          <ListGroupItem onClick={this.startEditingName}>
+            Name: {this.state.editingName ?
+              <form onSubmit={this.stopEditingName}>
+                <FormGroup>
+                  <FormControl type='text' value={this.props.loggedInUser.name} onChange={this.updateName} />
+                </FormGroup>
+              </form>
+            :
+              <span>{this.props.loggedInUser.name}</span>
+            }
+          </ListGroupItem>
 
           <ListGroupItem onClick={this.startEditingAge}>
             Age: {this.state.editingAge ?
@@ -114,7 +149,9 @@ class TesterProfile extends React.Component {
               </ButtonToolbar>
             :
               <span>{this.props.loggedInUser.race}</span>}
-          </ListGroupItem>
+          </ListGroupItem><br/>
+
+          {this.state.showSaveChanges && <Button bsStyle='primary' onClick={this.submitChangesToDB}>Save Changes</Button>}
 
         </ListGroup>
       </div>

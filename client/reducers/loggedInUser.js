@@ -4,6 +4,8 @@ const loggedInUser = (state = {username: undefined, isCreator: undefined, age: u
       return Object.assign({}, state, {username: action.username, isCreator: action.isCreator});
     case 'SET_LOGGED_OUT':
       return {username: undefined, isCreator: undefined, age: undefined, sex: undefined, race: undefined};
+    case 'SET_NAME':
+      return Object.assign({}, state, {name: action.name});
     case 'SET_AGE':
       return Object.assign({}, state, {age: action.age});
     case 'SET_SEX':
