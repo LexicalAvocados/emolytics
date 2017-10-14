@@ -1,10 +1,6 @@
 const db = require('../../../db/index.js');
 const Options = db.Option;
-<<<<<<< HEAD
-const Likes = db.testerAndOptions;
-=======
 const Likes = db.TesterAndOption;
->>>>>>> like
 const Users = db.User;
 
 
