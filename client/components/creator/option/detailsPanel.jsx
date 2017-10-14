@@ -79,7 +79,7 @@ const DetailsPanel = (props) => {
         </div>
 
         <div className="testerFeedback">
-          <p>Like: {props.likeStatus}</p>
+          <p>Like: {props.likeStatus.toString()}</p>
           <p> Comments: </p>
         </div>
 
