@@ -34,25 +34,19 @@ class InvitationPanel extends React.Component {
       });
   }
 
-
-// CHANGE ALL THIS CRAP TO JUST BE AGE OR WHATEVER
-
-
-  selectAge(event) {
-    let filteredTesters = this.filterTesters('sex', 'race', 'age', event)  
+  // Test placing filterTesters within setState 
+  selectAge(event) { 
     this.setState({
       ageSelected: event,
-      testersCopy: filteredTesters
     });
+    this.filterTesters(event);
   }
 
   selectSex(event) {
-    let filteredTesters = this.filterTesters('sex', 'race', 'age', event)  
     this.setState({
       sexSelected: event,
-      testersCopy: filteredTesters
     });
-    // this.filterTesters()
+    this.filterTesters(event);
   }
 
   // selectRace(event) { // Can't test at the moment
@@ -87,7 +81,9 @@ class InvitationPanel extends React.Component {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
     }
-    return filtered;
+    this.setState({
+      testersCopy: filtered
+    });
   }
 
   render() {
