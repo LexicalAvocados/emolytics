@@ -14,7 +14,7 @@ body {
   text-decoration: underline;
 }
 
-.sideNavItem {
+.sideNavItem, .testerDetails {
   text-align: center;
 }
 
