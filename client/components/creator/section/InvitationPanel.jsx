@@ -9,9 +9,9 @@ class InvitationPanel extends React.Component {
     this.state = {
       testers: [],
       testersCopy: [],
-      ageSelected: null,
-      sexSelected: null,
-      raceSelected: null,
+      ageSelected: '',
+      sexSelected: '',
+      raceSelected: '',
       previous: [],
       filtered: false
     };
@@ -19,6 +19,7 @@ class InvitationPanel extends React.Component {
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
+    this.filterTesters = this.filterTesters.bind(this);
   }
 
 
@@ -36,7 +37,7 @@ class InvitationPanel extends React.Component {
   }
 
   selectAge(event) {
-    let filteredTesters = this.filterTesters('age', event)
+    let filteredTesters = this.filterTesters(this.state.sexSelected, this.state.raceSelected, 'age', event)  
     this.setState({
       ageSelected: event,
       testersCopy: filteredTesters
@@ -44,25 +45,50 @@ class InvitationPanel extends React.Component {
   }
 
   selectSex(event) {
-    // let filteredTesters = this.filterTesters('sex', event)  
-    console.log(event);
-    console.log(filterTesters('sex', event, this.state.testers));
-    // console.log('WHAT', a);
-
+    let filteredTesters = this.filterTesters('sex', this.state.raceSelected, this.state.ageSelected, event)  
     this.setState({
       sexSelected: event,
-      // testersCopy: filteredTesters
+      testersCopy: filteredTesters
     });
+    // this.filterTesters()
   }
 
   selectRace(event) { // Can't test at the moment
-    let filteredTesters = this.filterTesters('race', event)
+    let filteredTesters = this.filterTesters(this.state.sexSelected, 'race', this.state.ageSelected, event)  
     this.setState({
       raceSelected: event,
       testersCopy: filteredTesters
     });
+
   }
 
+
+  filterTesters(sex, race, age, criteria) { // Race not ready to implement
+    let returnArr = [];
+    let ageArr = [];
+    let sexArr = [];
+
+    if (sex !== '') {
+      sexArr = this.state.testers.filter((tester) => {
+        if (tester.sex === criteria) return tester;
+      });
+    }
+    // if (race !== '') { // SKIP
+    //   raceArr = this.state.testers.filter((tester) => {
+    //     if (tester[race] === criteria) return tester;
+    //   });
+    // } 
+    if (age !== '' && criteria.indexOf('-') !== -1) {
+      let index = criteria.indexOf('-');
+      let first = criteria.slice(0, index);
+      let second = criteria.slice(index + 1);
+      ageArr = this.state.testers.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second) && tester.sex === this.state.sexSelected) return tester;
+      });
+    }
+    returnArr = returnArr.concat(sexArr, ageArr);
+    return returnArr;
+  }
 
   render() {
     return (
@@ -119,19 +145,3 @@ class InvitationPanel extends React.Component {
 };
 
 export default InvitationPanel;
-
-
-const filterTesters = _.memoize(function(selector, criteria, array) {
-  if (selector === 'sex' || selector === 'race') {
-    return array.filter((tester) => {
-      if (tester[selector] === criteria) return tester;
-    });
-  } else {
-    let index = criteria.indexOf('-');
-    let first = criteria.slice(0, index);
-    let second = criteria.slice(index + 1);
-    return array.filter((tester) => {
-      if (tester[selector] >= JSON.parse(first) && tester[selector] <= JSON.parse(second)) return tester;
-    });
-  }
-});
