@@ -13,7 +13,8 @@ class SectionHome extends React.Component {
     super(props);
     this.state = {
       testers: [],
-      invited: []
+      invited: [],
+      submitted: false
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.grabTesters = this.grabTesters.bind(this);
@@ -55,13 +56,22 @@ class SectionHome extends React.Component {
     axios.post('/api/sendEmails', { invitedArr: this.state.invited, options: this.props.currentSection.options })
       .then((success) => {
         this.setState({
-          invited: []
+          invited: [],
+          submitted: true
         })
       })
       .catch((failure) => {
         console.log('Invites NOT sent', failure);
       })
+  }
 
+  renderInvites() {
+    if (this.state.invited.length) {
+      return <Invited 
+        invited={this.state.invited}
+        submitInvites={this.submitInvites}
+      />;
+    }
   }
 
   render() {
@@ -81,14 +91,12 @@ class SectionHome extends React.Component {
                 addInvitee={this.addInvitee}
               />
             ))}
-            { this.state.invited.length ? (
-              <Invited 
-                invited={this.state.invited}
-                submitInvites={this.submitInvites}
-              />
+            { this.state.submitted ? (
+              <h4>Invites Sent</h4>
             ) : (
-              null
+              this.renderInvites()
             )}
+
 
           </div>
         ) : (
