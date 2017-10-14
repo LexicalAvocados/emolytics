@@ -30,15 +30,3 @@ exports.sendEmails = function(req, res) {
     })
   });
 };
-
-
-//  options: 
-// [ { id: 2,
-//   name: 'Test Video 2',
-//   description: 'blah blah blah',
-//   youtubeUrl: 'https://www.youtube.com/watch?v=HzzmqUoQobc',
-//   thumbnail: 'https://i.ytimg.com/vi/AcMmLmvOYTo/default.jpg',
-//   length: 100,
-//   createdAt: '2017-10-11T21:10:25.179Z',
-//   updatedAt: '2017-10-11T21:10:25.179Z',
-//   sectionId: 1 } ] }
