@@ -81,6 +81,25 @@ exports.logout = (req, res) => {
 };
 
 
+exports.editProfile = (req, res) => {
+  console.log('editProfile req.body:', req.body);
+  let {username, name, age, sex, race} = req.body;
+
+  User.update({
+    username,
+    name,
+    age,
+    sex,
+    race
+  }, {where: {username}})
+    .then(dbResponse => {
+      console.log('dbResponse ([ 1 ] is good):', dbResponse);
+      if (dbResponse[0] === 1) res.send(true);
+      else res.send(false);
+    })
+}
+
+
 exports.checkUser = (req, res, next) => {
   if (req.session.username === undefined) {
     console.log('Not authorized, logging out');
