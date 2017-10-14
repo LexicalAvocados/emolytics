@@ -33,6 +33,7 @@ app.use('/api', router);
 app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', auth.logout);
+app.put('/profile', (req, res) => auth.editProfile(req, res));
 // app.use(auth.checkUser);
 
 app.get('*', (req, res) => {

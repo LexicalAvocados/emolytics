@@ -14,10 +14,9 @@ export const changeExample = (text) => ({
 	text
 });
 
-export const setLoggedIn = (username, isCreator) => ({
+export const setLoggedIn = (user) => ({
   type: SET_LOGGED_IN,
-  username,
-  isCreator
+  user
 });
 
 export const setLoggedOut = () => ({

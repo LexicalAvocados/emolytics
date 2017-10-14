@@ -39,8 +39,7 @@ class Login extends React.Component {
     })
       .then(res => {
         if (res.data.loggedIn) {
-          this.props.actions.setLoggedIn(res.data.userData.username, res.data.userData.isCreator);
-          console.log('hellllooo');
+          this.props.actions.setLoggedIn(res.data.userData);
           this.props.history.push('/');
         } else {
           this.setState({loginError: res.data.reason});

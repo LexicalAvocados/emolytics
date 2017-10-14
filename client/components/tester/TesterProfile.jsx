@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, FormControl, ListGroup, ListGroupItem, Option, ButtonToolbar, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, ListGroup, ListGroupItem, Option, ButtonToolbar, Button, ToggleButtonGroup, ToggleButton, Alert, Fade } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -17,7 +17,9 @@ class TesterProfile extends React.Component {
       editingAge: false,
       editingSex: false,
       editingRace: false,
-      showSaveChanges: false
+      showSaveChangesButton: false,
+      showProfileUpdateSuccess: false,
+      showProfileUpdateError: false
     }
     this.startEditingName = this.startEditingName.bind(this);
     this.stopEditingName = this.stopEditingName.bind(this);
@@ -31,6 +33,7 @@ class TesterProfile extends React.Component {
     this.updateAge = this.updateAge.bind(this);
     this.updateSex = this.updateSex.bind(this);
     this.updateRace = this.updateRace.bind(this);
+    this.submitChangesToDB = this.submitChangesToDB.bind(this);
   }
 
   startEditingName() {
@@ -39,7 +42,7 @@ class TesterProfile extends React.Component {
 
   stopEditingName(e) {
     e.preventDefault();
-    this.setState({editingName: false, showSaveChanges: true});
+    this.setState({editingName: false, showSaveChangesButton: true});
   }
 
   startEditingAge() {
@@ -48,7 +51,7 @@ class TesterProfile extends React.Component {
 
   stopEditingAge(e) {
     e.preventDefault();
-    this.setState({editingAge: false, showSaveChanges: true});
+    this.setState({editingAge: false, showSaveChangesButton: true});
   }
 
   startEditingSex() {
@@ -56,7 +59,7 @@ class TesterProfile extends React.Component {
   }
 
   stopEditingSex(e) {
-    this.setState({editingSex: false, showSaveChanges: true});
+    this.setState({editingSex: false, showSaveChangesButton: true});
   }
 
   startEditingRace() {
@@ -64,7 +67,7 @@ class TesterProfile extends React.Component {
   }
 
   stopEditingRace(e) {
-    this.setState({editingRace: false, showSaveChanges: true});
+    this.setState({editingRace: false, showSaveChangesButton: true});
   }
 
   updateName(e) {
@@ -91,6 +94,19 @@ class TesterProfile extends React.Component {
 
   updateRace(e) {
     this.props.actions.setRace(e);
+  }
+
+  submitChangesToDB() {
+    axios.put('/profile', this.props.loggedInUser)
+      .then(res => {
+        if (res) {
+          this.setState({showProfileUpdateSuccess: true});
+          setTimeout(() => this.setState({showProfileUpdateSuccess: false}), 3000);
+        } else {
+          this.setState({showProfileUpdateError: true});
+          setTimeout(() => this.setState({showProfileUpdateError: false}), 3000);        
+        }
+      })
   }
 
   render() {
@@ -151,7 +167,23 @@ class TesterProfile extends React.Component {
               <span>{this.props.loggedInUser.race}</span>}
           </ListGroupItem><br/>
 
-          {this.state.showSaveChanges && <Button bsStyle='primary' onClick={this.submitChangesToDB}>Save Changes</Button>}
+          {this.state.showSaveChangesButton && 
+          <Button
+            bsStyle='primary'
+            onClick={this.submitChangesToDB}
+          >Save Changes</Button>} <br/><br/>
+
+          <Fade in={this.state.showProfileUpdateSuccess}>
+            <Alert bsStyle='success'>
+              Profile updated!
+            </Alert>
+          </Fade>
+
+          <Fade in={this.state.showProfileUpdateError}>
+            <Alert bsStyle='warning'>
+              Error updating profile. Please try again later.
+            </Alert>
+          </Fade>
 
         </ListGroup>
       </div>
