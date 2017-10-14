@@ -17,7 +17,7 @@ class InvitationPanel extends React.Component {
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
-    this.filterBySex = this.filterBySex.bind(this);
+    this.filterTesters = this.filterTesters.bind(this);
   }
 
 
@@ -42,24 +42,36 @@ class InvitationPanel extends React.Component {
   }
 
   selectSex(event) {
-    console.log(event);
-    let filteredTesters = this.state.testers.filter((tester) => {
-      if (tester.sex === event) return tester;
-    });
+    let filteredTesters = this.filterTesters('sex', event)
+    console.log(filteredTesters);
     this.setState({
       sexSelected: event,
       testersCopy: filteredTesters
     });
   }
 
-  filterBySex(sex) {
-
+  selectRace(event) { // Can't test at the moment
+    let filteredTesters = this.filterTesters('race', event)
+    this.setState({
+      raceSelected: event,
+      testersCopy: filteredTesters
+    });
   }
 
-  selectRace(event) {
-    this.setState({
-      raceSelected: event
-    });
+  filterTesters(selector, criteria) {
+    if (selector === 'sex' || selector === 'race') {
+      console.log(selector);
+      console.log(criteria);
+      return this.state.testers.filter((tester) => {
+        if (tester[selector] === criteria) {
+          console.log('hello');
+          return tester;
+        }
+      });
+    } else {
+      // Deal with refining age stuff.
+    }
+
   }
 
   render() {
