@@ -21,6 +21,7 @@ body {
   border: solid black 1px;
   padding: 10px;
   grid-row-gap: 15px;
+  width: 97%;
 }
 
 .optionPlayer {
@@ -42,13 +43,26 @@ body {
 .optionChart {
   grid-column: 1;
   grid-row: 2;
-  width: 78%;
+  width: 82%;
 }
 
 .lapseInFocus {
   text-decoration: underline;
   color: blue;
   cursor: pointer;
+}
+
+.bottomPanelContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.testerAttention {
+  grid-column: 1;
+}
+
+.testerFeedback {
+  grid-column: 2;
 }
 
 .testerNameHeader, .chartHeader {
