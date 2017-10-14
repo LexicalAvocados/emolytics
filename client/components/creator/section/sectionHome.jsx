@@ -39,7 +39,7 @@ class SectionHome extends React.Component {
   }
 
   addInvitee(index) { // You can only invite as many people as there are options
-    if (this.state.invited.length >= 0 && this.state.invited.indexOf(this.state.testers[index]) === -1) {
+    if (this.state.invited.indexOf(this.state.testers[index]) === -1) {
       if (this.state.invited.length + 1 <= this.props.currentSection.options.length) {
         this.setState({
           invited: [...this.state.invited, this.state.testers[index]]
