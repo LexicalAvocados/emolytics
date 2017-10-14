@@ -7,9 +7,15 @@ class InvitationPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      testers: []
+      testers: [],
+      ageSelected: null,
+      sexSelected: null,
+      raceSelected: null
     };
     this.grabTesters = this.grabTesters.bind(this);
+    this.selectAge = this.selectAge.bind(this);
+    this.selectSex = this.selectSex.bind(this);
+    this.selectRace = this.selectRace.bind(this);
   }
 
 
@@ -25,6 +31,25 @@ class InvitationPanel extends React.Component {
       });
   }
 
+  selectAge(event) {
+    let display = event.slice(2, 4) + '-' + event.slice(10);
+    this.setState({
+      ageSelected: display
+    });
+  }
+
+  selectSex(event) {
+    this.setState({
+      sexSelected: event
+    });
+  }
+
+  selectRace(event) {
+    this.setState({
+      raceSelected: event
+    });
+  }
+
   render() {
     return (
       <div>
@@ -34,32 +59,43 @@ class InvitationPanel extends React.Component {
           <div className="invitationPanel">
             <div className="invitationPanelSelectors">
               <p>Age:</p>
-              <DropdownButton id="dropdown-btn-menu" title="Select an age range">
-                <MenuItem key="1">0-10</MenuItem>
+              <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
+                <MenuItem eventKey=">=0 && <=10">0-10</MenuItem>
+                <MenuItem eventKey=">=11 && <=20">11-20</MenuItem>
+                <MenuItem eventKey=">=21 && <=30">21-30</MenuItem>
+                <MenuItem eventKey=">=31 && <=40">31-40</MenuItem>
+                <MenuItem eventKey=">=41 && <=50">41-50</MenuItem>
+                <MenuItem eventKey=">=51 && <=60">51-60</MenuItem>
+                <MenuItem eventKey=">=61 && <=70">61-70</MenuItem>
+                <MenuItem eventKey=">=71 && <=80">71-80</MenuItem>
+                <MenuItem eventKey=">=81 && <=90">81-90</MenuItem>
+                <MenuItem eventKey=">=91 && <=100">91-100 Impressive!</MenuItem>
               </DropdownButton>
             </div>
             <br/>
             <div className="invitationPanelSelectors">
               <p>Sex:</p>
-              <DropdownButton id="dropdown-btn-menu" title="Select a sex">
-                <MenuItem key="1">Male</MenuItem>
-                <MenuItem key="2">Female</MenuItem>
+              <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Select a sex'}>
+                <MenuItem eventKey="Male">Male</MenuItem>
+                <MenuItem eventKey="Female">Female</MenuItem>
               </DropdownButton>
             </div>
             <br/>
             <div className="invitationPanelSelectors">
               <p>Race:</p>
-              <DropdownButton id="dropdown-btn-menu" title="Select a race">
-                <MenuItem key="1">Martian</MenuItem>
+              <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
+                <MenuItem eventKey="Martian">Martian</MenuItem>
               </DropdownButton>
             </div>
-            {this.state.testers.map((tester, i) => (
-              <InviteTesters 
-                tester={tester}
-                key={i}
-                index={i}
-              />
-            ))}
+            <div className="testersList">
+              {this.state.testers.map((tester, i) => (
+                <InviteTesters 
+                  tester={tester}
+                  key={i}
+                  index={i}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -69,11 +105,3 @@ class InvitationPanel extends React.Component {
 };
 
 export default InvitationPanel;
-
-
-//                {/* addInvitee={this.addInvitee} */}
-{/* // <DropdownButton onClick={this.grabTesters} id="dropdown-btn-menu" title="Invite testers">
-//         {this.state.testers.map((tester, i) => (
-//             <MenuItem key={i}>Name: {tester.username} Age: {tester.age} Sex: {tester.sex}</MenuItem>
-//           ))}
-//         </DropdownButton> */}
