@@ -8,6 +8,7 @@ class InvitationPanel extends React.Component {
     super(props);
     this.state = {
       testers: [],
+      testersCopy: [],
       ageSelected: null,
       sexSelected: null,
       raceSelected: null
@@ -16,6 +17,7 @@ class InvitationPanel extends React.Component {
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
+    this.filterBySex = this.filterBySex.bind(this);
   }
 
 
@@ -23,7 +25,8 @@ class InvitationPanel extends React.Component {
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
-          testers: response.data
+          testers: response.data,
+          testersCopy: response.data
         });
       })
       .catch((err) => {
@@ -39,9 +42,18 @@ class InvitationPanel extends React.Component {
   }
 
   selectSex(event) {
-    this.setState({
-      sexSelected: event
+    console.log(event);
+    let filteredTesters = this.state.testers.filter((tester) => {
+      if (tester.sex === event) return tester;
     });
+    this.setState({
+      sexSelected: event,
+      testersCopy: filteredTesters
+    });
+  }
+
+  filterBySex(sex) {
+
   }
 
   selectRace(event) {
@@ -88,7 +100,7 @@ class InvitationPanel extends React.Component {
               </DropdownButton>
             </div>
             <div className="testersList">
-              {this.state.testers.map((tester, i) => (
+              {this.state.testersCopy.map((tester, i) => (
                 <InviteTesters 
                   tester={tester}
                   key={i}
