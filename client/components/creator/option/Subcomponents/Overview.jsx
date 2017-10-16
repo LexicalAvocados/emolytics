@@ -10,7 +10,7 @@ const Overview = (props) => {
   return (
     <div className='testerAnalyticsContainer'>
 
-      <Demographics user={props.user} />
+      <Demographics user={props.user} selectedUsers={props.selectedUsers} allUsers={props.allUsers}/>
 
       <Emotion emotionsObj={props.emotionsObj} />
       <hr/>
