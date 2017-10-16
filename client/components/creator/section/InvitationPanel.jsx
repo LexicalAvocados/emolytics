@@ -13,7 +13,7 @@ class InvitationPanel extends React.Component {
       raceSelected: false,
       invited: []
     };
-    this.getTesters = this.getTesters.bind(this);
+    this.renderPanel = this.renderPanel.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
@@ -23,7 +23,7 @@ class InvitationPanel extends React.Component {
   }
 
 
-  getTesters() {
+  renderPanel() {
     this.setState({
       displayPanel: !this.state.displayPanel
     });
@@ -40,7 +40,6 @@ class InvitationPanel extends React.Component {
         invited: removed
       });   
     }
-    console.log(this.state.invited);
   }
 
   sendInvites(e) {
@@ -135,7 +134,7 @@ class InvitationPanel extends React.Component {
     return (
       <div>
         { !this.state.displayPanel ? (
-          <button onClick={this.getTesters}>Invite testers</button>
+          <button onClick={this.renderPanel}>Invite testers</button>
         ):(
           <div className="invitationPanel">
             <div className="invitationPanelSelectors">
@@ -185,6 +184,7 @@ class InvitationPanel extends React.Component {
                   />
                 ))}
                 <input type="submit" value="Send Invites"/>
+                <button onClick={this.renderPanel}>Close Invites Panel</button>
               </form>
             </div>
           </div>
