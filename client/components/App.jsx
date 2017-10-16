@@ -20,30 +20,20 @@ import TesterProfile from './tester/TesterProfile.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
-import OptionHome from './creator/option/OptionHome.jsx';
+// import OptionHome from './creator/option/OptionHome.jsx';
 // import CreateProject from './creator/create/createProjects.jsx';
 
 
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
-    this.onClick = this.onClick.bind(this);
     console.log('App: this:', this);
-  }
-
-  onClick() {
-    this.props.actions.changeExample('changed');
   }
 
   render() {
     return (
       <div>
         <Navbar />
-        {this.props.example.text}
-        <button onClick={this.onClick}> test </button><br/><br/>
 
         {
           this.props.loggedInUser.username ? (
@@ -54,8 +44,8 @@ class App extends React.Component {
                 <Route path="/testvideo" component={TesterVideo}/>
                 <Route path="/project:id" component={ProjectHome}/>
                 <Route path="/section:id" component={SectionHome}/>
-                <Route path="/testviz" component={OptionHome}/>
-                <Route path="/option:id" component={OptionHome}/>
+                {/* <Route path="/testviz" component={OptionHome}/> */}
+                {/* <Route path="/option:id" component={OptionHome}/> */}
                 {/* <Route path="/createProject" component={CreateProject}/> */}
               </Switch>
             ) : (

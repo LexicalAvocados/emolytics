@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Component Shallow Render renders accurately to the existing "App while logged in as Creator" snapshot 1`] = `
+<div>
+  <withRouter(Connect(Navbar)) />
+  <Switch>
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/"
+    />
+    <Route
+      component={[Function]}
+      path="/new"
+    />
+    <Route
+      component={[Function]}
+      path="/testvideo"
+    />
+    <Route
+      component={[Function]}
+      path="/project:id"
+    />
+    <Route
+      component={[Function]}
+      path="/section:id"
+    />
+  </Switch>
+</div>
+`;
+
+exports[`App Component Shallow Render renders accurately to the existing "App while logged in as Tester" snapshot 1`] = `
+<div>
+  <withRouter(Connect(Navbar)) />
+  <Switch>
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/"
+    />
+    <Route
+      component={[Function]}
+      path="/profile"
+    />
+    <Route
+      component={[Function]}
+      path="/video/:id"
+    />
+  </Switch>
+</div>
+`;
+
+exports[`App Component Shallow Render renders accurately to the existing "App while not logged in" snapshot 1`] = `
+<div>
+  <withRouter(Connect(Navbar)) />
+  <Switch>
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/signup"
+    />
+    <Route
+      component={[Function]}
+      path="*"
+    />
+  </Switch>
+</div>
+`;
+
+exports[`Login Component Shallow Render renders accurately to the existing Login snapshot 1`] = `
+<div>
+  <Form
+    bsClass="form"
+    componentClass="form"
+    horizontal={true}
+    inline={false}
+    onSubmit={[Function]}
+  >
+    <FormGroup
+      bsClass="form-group"
+    >
+      <br />
+      <br />
+      <ControlLabel
+        bsClass="control-label"
+        srOnly={false}
+      >
+        Log In
+      </ControlLabel>
+      <br />
+      <Col
+        bsClass="col"
+        componentClass="div"
+        sm={2}
+      >
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          onChange={[Function]}
+          placeholder="Username"
+          type="text"
+          value=""
+        />
+      </Col>
+      <br />
+      <br />
+      <Col
+        bsClass="col"
+        componentClass="div"
+        sm={2}
+      >
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          onChange={[Function]}
+          placeholder="Password"
+          type="password"
+          value=""
+        />
+      </Col>
+      <br />
+      <br />
+      <Button
+        active={false}
+        block={false}
+        bsClass="btn"
+        bsStyle="default"
+        disabled={false}
+        type="submit"
+      >
+        Submit
+      </Button>
+    </FormGroup>
+  </Form>
+</div>
+`;
+
+exports[`Signup Component Shallow Render renders accurately to the existing Signup snapshot 1`] = `
+<div>
+  <Form
+    bsClass="form"
+    componentClass="form"
+    horizontal={true}
+    inline={false}
+    onSubmit={[Function]}
+  >
+    <FormGroup
+      bsClass="form-group"
+    >
+      <ControlLabel
+        bsClass="control-label"
+        srOnly={false}
+      >
+        Create New Account
+      </ControlLabel>
+      <br />
+      <br />
+      <Col
+        bsClass="col"
+        componentClass="div"
+        sm={2}
+      >
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          onChange={[Function]}
+          placeholder="Username"
+          type="text"
+          value=""
+        />
+      </Col>
+      <br />
+      <br />
+      <Col
+        bsClass="col"
+        componentClass="div"
+        sm={2}
+      >
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          onChange={[Function]}
+          placeholder="Password"
+          type="password"
+          value=""
+        />
+      </Col>
+      <br />
+      <br />
+      <Col
+        bsClass="col"
+        componentClass="div"
+        sm={2}
+      >
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          onChange={[Function]}
+          placeholder="Email"
+          type="text"
+          value=""
+        />
+      </Col>
+      <br />
+      <br />
+      <Checkbox
+        bsClass="checkbox"
+        disabled={false}
+        inline={false}
+        onClick={[Function]}
+        title=""
+      >
+        Register as a Creator
+      </Checkbox>
+      <br />
+      <br />
+      <Button
+        active={false}
+        block={false}
+        bsClass="btn"
+        bsStyle="default"
+        disabled={false}
+        type="submit"
+      >
+        Submit
+      </Button>
+    </FormGroup>
+  </Form>
+</div>
+`;
