@@ -114,12 +114,8 @@ class InvitationPanel extends React.Component {
       filtered = this.state.testers.filter((tester) => {
         if (tester.race === toFilterBy) return tester;
       });
-    } else if (this.state.raceSelected && this.state.sexSelected) { // Catch for filtering by race indirectly without sex set. 
-      filtered = filtered.filter((tester) => {
-        if (tester.race === this.state.raceSelected) return tester;
-      });
     } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
-      filtered = this.state.testers.filter((tester) => {
+      filtered = filtered.filter((tester) => {
         if (tester.race === this.state.raceSelected) return tester;
       });
     }
