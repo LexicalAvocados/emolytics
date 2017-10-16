@@ -32,4 +32,4 @@ client/bundle.js
 package-lock.json
 
 photos
-.DS_Store
+*.DS_Store
