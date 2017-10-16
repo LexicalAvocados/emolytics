@@ -23,8 +23,8 @@ class Navbar extends React.Component {
                 <Link to='/' style={noUnderline}>
                   <p className='navItem'>Home</p>
                 </Link>
-                <Link to='/projects' style={noUnderline}>
-                  <p className='navItem'>Projects</p>
+                <Link to='/createProject' style={noUnderline}>
+                  <p className='navItem'>Create Project</p>
                 </Link>
                 <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
                   <p className='navItem'>Log out</p>

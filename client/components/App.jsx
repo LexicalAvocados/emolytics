@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -10,7 +10,6 @@ import { changeExample } from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions';
-
 import DashboardHome from './creator/dashboard/dashboardHome.jsx';
 import Navbar from './Navbar.jsx';
 import Signup from './auth/signup.jsx';
@@ -71,9 +70,8 @@ class App extends React.Component {
             </Switch>
           )
         }
-
       </div>
-    )
+    );
   }
 }
 
@@ -86,7 +84,7 @@ const mapStateToProps = (state) => {
     example: state.example,
     router: state.router,
     loggedInUser: state.loggedInUser
-  })
+  });
 };
 
 const mapDispatchToProps = (dispatch) => ({
