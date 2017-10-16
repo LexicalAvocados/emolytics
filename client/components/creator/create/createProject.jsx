@@ -14,6 +14,8 @@ class CreateProject extends React.Component {
       description: ''
     };
     this.submitProjectClick = this.submitProjectClick.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
   }
 
   handleNameChange(event) {
@@ -30,7 +32,8 @@ class CreateProject extends React.Component {
     });
 }
 // function that gets invoked when add new project button is clicked
-submitProjectClick() {
+submitProjectClick(e) {
+  e.preventDefault();
   axios.post('/api/createProject', {
     name: this.state.name,
     description: this.state.description

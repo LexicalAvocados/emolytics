@@ -27,7 +27,6 @@ app.use(session({
 // app.use(express.static(__dirname + '/../react-client/dist'));
 app.use(express.static(__dirname + '/client'));
 
-
 app.use('/api', router);
 
 app.post('/signup', (req, res) => auth.createAccount(req, res));
