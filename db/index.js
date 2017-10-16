@@ -114,6 +114,13 @@ Frame.belongsTo(Option);
 
 Frame.sync({force: false});
 
+const Key = sequelize.define('key', {
+  key: Sequelize.TEXT
+});
+
+Key.sync({force: false});
+
+
 module.exports = {
   sequelize: sequelize,
   User: User,
@@ -121,5 +128,6 @@ module.exports = {
   Section: Section,
   Option: Option,
   Frame: Frame,
-  TesterAndOption: TesterAndOption
+  TesterAndOption: TesterAndOption,
+  Key: Key
 };

@@ -1,8 +1,10 @@
 const express = require('express');
 const db = require('../../../db');
+const Sequelize = require('sequelize');
 const Option = db.Option;
 const User = db.User;
 const Frame = db.Frame;
+const Key = db.Key;
 const TesterAndOption = db.TesterAndOption;
 const router = express.Router();
 const base64Img = require('base64-img');
@@ -117,6 +119,17 @@ router.post('/startVideo', (req, res) => {
           // }
 
         // })
+    })
+})
+
+router.get('/getKey', (req, res) => {
+  Key.find({
+    order: [
+      Sequelize.fn( 'RAND')
+    ]
+  })
+    .then(data => {
+      console.log(data);
     })
 })
 
