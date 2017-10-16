@@ -24,7 +24,7 @@ class TesterVideo extends React.Component {
       },
       complete: false,
       time: [0],
-      img: [],
+      img: 0,
       show: false,
     }
     this.videoStart = this.videoStart.bind(this);
@@ -34,6 +34,7 @@ class TesterVideo extends React.Component {
     this.processImage = this.processImage.bind(this);
     this.showOverlay = this.showOverlay.bind(this);
     this.likeClick = this.likeClick.bind(this);
+    this.processImage = this.processImage.bind(this);
     // this.upload = this.upload.bind(this);
   }
 
@@ -71,13 +72,12 @@ class TesterVideo extends React.Component {
       //     var y = prediction.y;
       //     console.log('predictions', x, y);
       // }
-    }, 3000)
+    }, 500)
     this.startVideo();
 
   }
 
   videoStart() {
-    console.log("adfasdf");
     axios.post('/api/tester/startVideo', {
       option: this.props.currentTesterOption
     })
@@ -105,10 +105,12 @@ class TesterVideo extends React.Component {
   takePicture() {
     var canvas = this.refs.canvas;
     var context = canvas.getContext('2d');
-      canvas.width = 300;
-      canvas.height = 250;
-      context.drawImage(video, 0, 0, 300, 250);
-  }
+
+    canvas.width = 300;
+    canvas.height = 250;
+    context.drawImage(video, 0, 0, 300, 250);
+
+    }
 
   checkVideo() {
     var video = this.refs.video;
@@ -122,6 +124,8 @@ class TesterVideo extends React.Component {
     }
 
   }
+
+
 
   showOverlay() {
     this.setState({
@@ -160,47 +164,6 @@ class TesterVideo extends React.Component {
         // //     console.log(body);
         // //   }
         // // });
-
-        // // Request parameters.
-        // var params = {
-        //   "returnFaceId": "true",
-        //   "returnFaceLandmarks": "false",
-        //   "returnFaceAttributes": "emotion",
-        // };
-
-        // $.ajax({
-        //     url: uriBase + "?" + $.param(params),
-        //     // url: uriBase,
-
-        //     // Request headers.
-        //     beforeSend: function(xhrObj){
-        //         xhrObj.setRequestHeader("Content-Type", "application/json");
-        //         // xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
-        //         xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-        //     },
-
-        //     type: "POST",
-
-        //     // Request body.
-        //     data: '{"url": ' + '"' + res.url + '"}'
-        //     //processData: false,
-        // })
-
-        // .done(function(data) {
-        //     // Show formatted JSON on webpage.
-        //     console.log('data', data)
-        //     console.log((JSON.stringify(data, null, 2)));
-        // })
-
-        // .fail(function(jqXHR, textStatus, errorThrown) {
-        //     // Display error message.
-        //     var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-        //     errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
-        //         jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
-        //     alert(errorString);
-        // });
-
-
   //     }
   //   )
   // }
@@ -208,9 +171,29 @@ class TesterVideo extends React.Component {
   processImage(time) {
 
 
-        var canvas = this.refs.canvas;
-        // DOM element data Uri
-        var data = canvas.toDataURL('image/jpeg');
+    var canvas = this.refs.canvas;
+    // DOM element data Uri
+    var data = canvas.toDataURL('image/jpeg');
+    if (this.state.img.length < 3) {
+      this.state.img.push(data);
+    }
+    if (this.state.img.length === 3) {
+      var canvas = this.refs.canvasSend;
+      var context = canvas.getContext('2d');
+      canvas.width = 1000;
+      canvas.height = 250;
+
+      for (var i = 0; i < this.state.img.length; i++) {
+        var img = new Image();
+        img.src = this.state.img[i];
+        var imgTest = this.refs.img;
+        console.log('drawing', canvas);
+        context.drawImage(img, i * 300, 0, 300, 250);
+        imgTest.src = canvas.toDataURL();
+      }
+
+      this.state.img = [];
+    }
 
         // pure base64 data
         // var realData = data.replace(/^data:image\/(png|jpg);base64,/, "")
@@ -247,7 +230,9 @@ class TesterVideo extends React.Component {
           .then(res => res.blob())
           .then(blobData => {
             // Microsoft Post Request
-            var subscriptionKey = "4fc26d1500d04025a699f1ae74597ab3";
+            var subscriptionKeyArr = ["4fc26d1500d04025a699f1ae74597ab3", "9e9aef27e11c4d38924410600d37d565", "e5aa2225f71744dbb8eeb01b54f2df70", "0e973dcb8b2648a6aeae5d267ba7346d", "8a7c7d4e7ece43b497219a4a2ec38e41", "f1059db56d0545378d0ff4d9a2c15a61", "a3eec14964c048299a6db1c108f5ace2"]
+            var subscriptionKey = subscriptionKeyArr[this.state.img];
+            this.state.img = (this.state.img + 1) % subscriptionKeyArr.length;
             var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
             // var uriBase = "https://requestb.in/1ijcwry1";
 
@@ -296,18 +281,17 @@ class TesterVideo extends React.Component {
             .done(function(data) {
                 // Show formatted JSON on webpage.
                 console.log((JSON.stringify(data, null, 2)));
-
-                let sendObj = {
-                  emotions: data[0].scores,
-                  time: time
+                if (data[0]) {
+                  let sendObj = {
+                    emotions: data[0].scores,
+                    time: time
+                  }
+                  axios.post('/api/tester/sendFrame', sendObj)
+                    .then(res => {
+                      console.log(res);
+                    })
                 }
-
-                axios.post('/api/tester/sendFrame', sendObj)
-                  .then(res => {
-                    console.log(res);
-                  })
             })
-
             .fail(function(jqXHR, textStatus, errorThrown) {
                 // Display error message.
                 var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
@@ -379,10 +363,13 @@ class TesterVideo extends React.Component {
 
 
         <div class="camera">  
-          <video className="testerVideo" id="video">Video stream not available.</video>
+          <video id="video">Video stream not available.</video>
         </div>
-        <canvas className="testerVideo" ref="canvas" id="canvas">
+        <canvas ref="canvas" id="canvas">
+        </canvas>
+        <canvas ref="canvasSend" id="canvasSend">
         </canvas> 
+        <img ref="img"/>
       </div>
 
     )
