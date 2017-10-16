@@ -9,17 +9,18 @@ class InvitationPanel extends React.Component {
     this.state = {
       testers: [],
       testersCopy: [],
-      ageSelected: '',
-      sexSelected: '',
-      raceSelected: '',
-      previous: [],
-      filtered: false
+      ageSelected: false,
+      sexSelected: false,
+      raceSelected: false,
+      invited: []
     };
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
+    this.handleInvites = this.handleInvites.bind(this);
+    this.sendInvites = this.sendInvites.bind(this);
   }
 
 
@@ -36,58 +37,111 @@ class InvitationPanel extends React.Component {
       });
   }
 
-  selectAge(event) {
-    let filteredTesters = this.filterTesters(this.state.sexSelected, this.state.raceSelected, 'age', event)  
+  handleInvites(event, index) {
+    if (event.target.checked) {
+      this.setState({
+        invited: [...this.state.invited, this.state.testersCopy[index]]
+      });
+    } else { // Uninvited
+      var removed = this.state.invited.slice(index, 1);
+      this.setState({
+        invited: removed
+      });   
+    }
+    console.log(this.state.invited);
+  }
+
+  sendInvites(e) {
+    e.preventDefault();
+    axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
+      .then((success) => {
+        console.log(success);
+        // this.setState({
+        //   invited: []
+        // })
+      })
+      .catch((failure) => {
+        console.log('Invites NOT sent', failure);
+      })
+  }
+
+  selectAge(event) { 
+    var filtered = this.filterTesters('age', event);
     this.setState({
       ageSelected: event,
-      testersCopy: filteredTesters
+      testersCopy: filtered
     });
   }
 
   selectSex(event) {
-    let filteredTesters = this.filterTesters('sex', this.state.raceSelected, this.state.ageSelected, event)  
+    var filtered = this.filterTesters('sex', event);
     this.setState({
       sexSelected: event,
-      testersCopy: filteredTesters
+      testersCopy: filtered
     });
-    // this.filterTesters()
+   
   }
 
   selectRace(event) { // Can't test at the moment
-    let filteredTesters = this.filterTesters(this.state.sexSelected, 'race', this.state.ageSelected, event)  
+    var filtered = this.filterTesters('race', event);
     this.setState({
       raceSelected: event,
-      testersCopy: filteredTesters
+      testersCopy: filtered
     });
-
   }
 
+  // }
 
-  filterTesters(sex, race, age, criteria) { // Race not ready to implement
-    let returnArr = [];
-    let ageArr = [];
-    let sexArr = [];
-
-    if (sex !== '') {
-      sexArr = this.state.testers.filter((tester) => {
-        if (tester.sex === criteria) return tester;
+  filterTesters(criteria, toFilterBy) {
+    var filtered = [];
+    // SEX
+    if (criteria === 'sex') { // Catch for filtering by sex directly
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.sex === toFilterBy) return tester;
+      });
+    } else if (this.state.sexSelected) { // Catch for filtering by sex indirectly
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.sex === this.state.sexSelected) return tester;
       });
     }
-    // if (race !== '') { // SKIP
-    //   raceArr = this.state.testers.filter((tester) => {
-    //     if (tester[race] === criteria) return tester;
-    //   });
-    // } 
-    if (age !== '' && criteria.indexOf('-') !== -1) {
-      let index = criteria.indexOf('-');
-      let first = criteria.slice(0, index);
-      let second = criteria.slice(index + 1);
-      ageArr = this.state.testers.filter((tester) => {
-        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second) && tester.sex === this.state.sexSelected) return tester;
+    // RACE
+    if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
+      filtered = filtered.filter((tester) => {
+        if (tester.race === toFilterBy) return tester;
+      });
+    } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.race === toFilterBy) return tester;
+      });
+    } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
+      filtered = filtered.filter((tester) => {
+        if (tester.race === this.state.raceSelected) return tester;
       });
     }
-    returnArr = returnArr.concat(sexArr, ageArr);
-    return returnArr;
+    // AGE
+    if (criteria === 'age' && toFilterBy.indexOf('-') !== -1 && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
+      let index = toFilterBy.indexOf('-');
+      let first = toFilterBy.slice(0, index);
+      let second = toFilterBy.slice(index + 1);
+      filtered = filtered.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+      });
+    } else if (criteria === 'age') { // filtering by age directly
+      let index = toFilterBy.indexOf('-');
+      let first = toFilterBy.slice(0, index);
+      let second = toFilterBy.slice(index + 1);
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+      });
+    } else if (this.state.ageSelected) { // filter by age indirectly
+      let index = this.state.ageSelected.indexOf('-');
+      let first = this.state.ageSelected.slice(0, index);
+      let second = this.state.ageSelected.slice(index + 1);
+      filtered = filtered.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+      });
+    }
+    return filtered;
   }
 
   render() {
@@ -124,17 +178,27 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Race:</p>
               <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
-                <MenuItem eventKey="Martian">Martian</MenuItem>
+                <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
+                <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
+                <MenuItem eventKey="African American">African American</MenuItem>
+                <MenuItem eventKey="Asian">Asian</MenuItem>
+                <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
+                <MenuItem eventKey="Native American">Native American</MenuItem>
+                <MenuItem eventKey="Other">Other</MenuItem> 
               </DropdownButton>
             </div>
             <div className="testersList">
-              {this.state.testersCopy.map((tester, i) => (
-                <InviteTesters 
-                  tester={tester}
-                  key={i}
-                  index={i}
-                />
-              ))}
+              <form onSubmit={this.sendInvites}>
+                {this.state.testersCopy.map((tester, i) => (
+                  <InviteTesters 
+                    handleInvites={this.handleInvites}
+                    tester={tester}
+                    key={i}
+                    index={i}
+                  />
+                ))}
+                <input type="submit" value="Send Invites"/>
+              </form>
             </div>
           </div>
         )}

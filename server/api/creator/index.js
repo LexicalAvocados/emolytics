@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
-  const routeForTesters = "http://localhost:3000/login"
+const routeForTesters = "http://localhost:3000/login"
+
 
 exports.sendEmails = function(req, res) {
-  // console.log('within emails', req.body);
+  console.log('within emails', req.body);
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -11,13 +12,13 @@ exports.sendEmails = function(req, res) {
     }
   });
 
-  req.body.invitedArr.forEach((invitee, i) => {
+  req.body.invitedArr.forEach((invitee) => {
     let mailOptions = {
       from: "ReactionSync",
       to: invitee.email,
       subject: "You've been invited!",
       text: "Guten Tag! You've been invited to something (if you've received this email)",
-      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${req.body.options[i].id} at ${routeForTesters} after logging in! Giddy up!</p>`
+      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${req.body.option.id} at ${routeForTesters} after logging in! Giddy up!</p>`
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {

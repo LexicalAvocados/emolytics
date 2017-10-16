@@ -19,7 +19,9 @@ class OptionList extends React.Component {
         <Link to={'/option' + this.props.option.id}>
           <img src={this.props.option.thumbnail} alt="" onClick={() => this.props.onOptionClick(this.props.index)}/>
         </Link>
-        <InvitationPanel/>
+        <InvitationPanel
+        option={this.props.option}
+        />
       </div>
     );
   }
