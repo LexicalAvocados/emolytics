@@ -26,6 +26,7 @@ class TesterVideo extends React.Component {
       time: [0],
       img: 0,
       show: false,
+      key: ''
     }
     this.videoStart = this.videoStart.bind(this);
     this.getWebcam = this.getWebcam.bind(this);
@@ -72,7 +73,7 @@ class TesterVideo extends React.Component {
       //     var y = prediction.y;
       //     console.log('predictions', x, y);
       // }
-    }, 500)
+    }, 3000)
     this.startVideo();
 
   }
@@ -170,30 +171,8 @@ class TesterVideo extends React.Component {
 
   processImage(time) {
 
-
-    var canvas = this.refs.canvas;
-    // DOM element data Uri
     var data = canvas.toDataURL('image/jpeg');
-    if (this.state.img.length < 3) {
-      this.state.img.push(data);
-    }
-    if (this.state.img.length === 3) {
-      var canvas = this.refs.canvasSend;
-      var context = canvas.getContext('2d');
-      canvas.width = 1000;
-      canvas.height = 250;
 
-      for (var i = 0; i < this.state.img.length; i++) {
-        var img = new Image();
-        img.src = this.state.img[i];
-        var imgTest = this.refs.img;
-        console.log('drawing', canvas);
-        context.drawImage(img, i * 300, 0, 300, 250);
-        imgTest.src = canvas.toDataURL();
-      }
-
-      this.state.img = [];
-    }
 
         // pure base64 data
         // var realData = data.replace(/^data:image\/(png|jpg);base64,/, "")
@@ -226,79 +205,91 @@ class TesterVideo extends React.Component {
         // for (var i = 0; i < bytes.length; i++) {
         //   byteArr[i] = bytes.charCodeAt(i);
         // }
-        fetch(data) 
+        let currentTesterOption = this.props.currentTesterOption;
+        return fetch(data) 
           .then(res => res.blob())
           .then(blobData => {
             // Microsoft Post Request
-            var subscriptionKeyArr = ["4fc26d1500d04025a699f1ae74597ab3", "9e9aef27e11c4d38924410600d37d565", "e5aa2225f71744dbb8eeb01b54f2df70", "0e973dcb8b2648a6aeae5d267ba7346d", "8a7c7d4e7ece43b497219a4a2ec38e41", "f1059db56d0545378d0ff4d9a2c15a61", "a3eec14964c048299a6db1c108f5ace2"]
-            var subscriptionKey = subscriptionKeyArr[this.state.img];
-            this.state.img = (this.state.img + 1) % subscriptionKeyArr.length;
-            var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
-            // var uriBase = "https://requestb.in/1ijcwry1";
+            axios.get('/api/tester/getKey')
+              .then(data => {
+                console.log('DATA', data)
+                var subscriptionKey = data.data[0].key;
+                var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
+                // var uriBase = "https://requestb.in/1ijcwry1";
 
-            // axios.get(uriBase);
+                // axios.get(uriBase);
 
-            // axios.post(uriBase, {data: byteArr});
-            // var instance = axios.create({
-            //   headers: {
-            //     "Content-Type" : "application/octet-stream"
-            //   }
-            // });
-            // instance.post('https://requestb.in/wpray0wp', byteArr);
+                // axios.post(uriBase, {data: byteArr});
+                // var instance = axios.create({
+                //   headers: {
+                //     "Content-Type" : "application/octet-stream"
+                //   }
+                // });
+                // instance.post('https://requestb.in/wpray0wp', byteArr);
 
-            // var url ='https://requestb.in/zdz1bczd'
-            // request(url, function (error, response, body) {
-            //   if (!error) {
-            //     console.log(body);
-            //   }
-            // });
+                // var url ='https://requestb.in/zdz1bczd'
+                // request(url, function (error, response, body) {
+                //   if (!error) {
+                //     console.log(body);
+                //   }
+                // });
 
-            // Request parameters.
-            var params = {
-              "returnFaceId": "true",
-              "returnFaceLandmarks": "false",
-              "returnFaceAttributes": "emotion",
-            };
+                // Request parameters.
+                var params = {
+                  "returnFaceId": "true",
+                  "returnFaceLandmarks": "false",
+                  "returnFaceAttributes": "emotion",
+                };
 
-            $.ajax({
-                // url: uriBase + "?" + $.param(params),
-                url: uriBase,
+                $.ajax({
+                    // url: uriBase + "?" + $.param(params),
+                    url: uriBase,
 
-                // Request headers.
-                beforeSend: function(xhrObj){
-                    xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
-                    // xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
-                    xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-                },
+                    // Request headers.
+                    beforeSend: function(xhrObj){
+                        xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
+                        // xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
+                        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+                    },
 
-                type: "POST",
+                    type: "POST",
 
-                // Request body.
-                data: blobData,
-                processData: false,
-            })
-
-            .done(function(data) {
-                // Show formatted JSON on webpage.
-                console.log((JSON.stringify(data, null, 2)));
-                if (data[0]) {
-                  let sendObj = {
-                    emotions: data[0].scores,
-                    time: time
-                  }
-                  axios.post('/api/tester/sendFrame', sendObj)
-                    .then(res => {
-                      console.log(res);
-                    })
-                }
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                // Display error message.
-                var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-                errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
-                    jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
-                alert(errorString);
-            });
+                    // Request body.
+                    data: blobData,
+                    processData: false,
+                })
+                .done(function(data) {
+                    // Show formatted JSON on webpage.
+                    console.log((JSON.stringify(data, null, 2)));
+                    if (data[0]) {
+                      let sendObj = {
+                        emotions: data[0].scores,
+                        time: time,
+                        option: currentTesterOption
+                      }
+                      axios.post('/api/tester/sendFrame', sendObj)
+                        .then(res => {
+                          console.log(res);
+                        })
+                    } else {
+                      let sendObj = {
+                        time: time,
+                        option: currentTesterOption
+                      }
+                      axios.post('/api/tester/sendFrame', sendObj)
+                        .then(res => {
+                          console.log(res);
+                        })
+                    }
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    // Display error message.
+                    var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
+                    errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
+                        jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
+                     console.log(errorString);
+                });
+              })
           });
 
         //var dataBlob = canvas.toBlob()
