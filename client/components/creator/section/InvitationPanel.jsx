@@ -18,7 +18,7 @@ class InvitationPanel extends React.Component {
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
-    // this.selectRace = this.selectRace.bind(this);
+    this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
     this.handleInvites = this.handleInvites.bind(this);
     this.sendInvites = this.sendInvites.bind(this);
