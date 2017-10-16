@@ -8,8 +8,6 @@ class InvitationPanel extends React.Component {
     super(props);
     this.state = {
       displayPanel: false,
-      testers: [],
-      testersCopy: [],
       ageSelected: false,
       sexSelected: false,
       raceSelected: false,
@@ -22,33 +20,19 @@ class InvitationPanel extends React.Component {
     this.filterTesters = this.filterTesters.bind(this);
     this.handleInvites = this.handleInvites.bind(this);
     this.sendInvites = this.sendInvites.bind(this);
-    // this.renderPanel = this.renderPanel.bind(this);
   }
 
+
   getTesters() {
-    axios.get('/api/getTesters')
-      .then((response) => {
-        var uninvitedTesters = response.data.filter((tester) => {
-          if (this.props.invitedUserIds.indexOf(tester.id) === -1) return tester;
-        });
-        if (uninvitedTesters.length = response.data.length) {
-          this.props.renderInvited()
-        }
-        this.setState({
-          testers: uninvitedTesters,
-          testersCopy: uninvitedTesters,
-          displayPanel: !this.state.displayPanel
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.setState({
+      displayPanel: !this.state.displayPanel
+    });
   }
 
   handleInvites(event, index) {
     if (event.target.checked) {
       this.setState({
-        invited: [...this.state.invited, this.state.testersCopy[index]]
+        invited: [...this.state.invited, this.props.testersCopy[index]]
       });
     } else { // Uninvited
       var removed = this.state.invited.slice(index, 1);
@@ -74,39 +58,36 @@ class InvitationPanel extends React.Component {
   selectAge(event) { 
     var filtered = this.filterTesters('age', event);
     this.setState({
-      ageSelected: event,
-      testersCopy: filtered
+      ageSelected: event
     });
+    this.props.changeTestersCopy(filtered);
   }
 
   selectSex(event) {
     var filtered = this.filterTesters('sex', event);
     this.setState({
-      sexSelected: event,
-      testersCopy: filtered
+      sexSelected: event
     });
-   
+    this.props.changeTestersCopy(filtered);
   }
 
   selectRace(event) { // Can't test at the moment
     var filtered = this.filterTesters('race', event);
     this.setState({
-      raceSelected: event,
-      testersCopy: filtered
+      raceSelected: event
     });
+    this.props.changeTestersCopy(filtered);
   }
-
-  // }
 
   filterTesters(criteria, toFilterBy) {
     var filtered = [];
     // SEX
     if (criteria === 'sex') { // Catch for filtering by sex directly
-      filtered = this.state.testers.filter((tester) => {
+      filtered = this.props.testers.filter((tester) => {
         if (tester.sex === toFilterBy) return tester;
       });
     } else if (this.state.sexSelected) { // Catch for filtering by sex indirectly
-      filtered = this.state.testers.filter((tester) => {
+      filtered = this.props.testers.filter((tester) => {
         if (tester.sex === this.state.sexSelected) return tester;
       });
     }
@@ -116,7 +97,7 @@ class InvitationPanel extends React.Component {
         if (tester.race === toFilterBy) return tester;
       });
     } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
-      filtered = this.state.testers.filter((tester) => {
+      filtered = this.props.testers.filter((tester) => {
         if (tester.race === toFilterBy) return tester;
       });
     } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
@@ -136,7 +117,7 @@ class InvitationPanel extends React.Component {
       let index = toFilterBy.indexOf('-');
       let first = toFilterBy.slice(0, index);
       let second = toFilterBy.slice(index + 1);
-      filtered = this.state.testers.filter((tester) => {
+      filtered = this.props.testers.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
     } else if (this.state.ageSelected) { // filter by age indirectly
@@ -195,7 +176,7 @@ class InvitationPanel extends React.Component {
             </div>
             <div className="testersList">
               <form onSubmit={this.sendInvites}>
-                {this.state.testersCopy.map((tester, i) => (
+                {this.props.testersCopy.map((tester, i) => (
                   <InviteTesters 
                     handleInvites={this.handleInvites}
                     tester={tester}

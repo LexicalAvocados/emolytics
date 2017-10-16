@@ -11,18 +11,39 @@ class OptionList extends React.Component {
     this.state = {
       invited: false,
       haveInvited: false,
-      invitedUserIds: []
+      invitedUserIds: [],
+      testers: [],
+      testersCopy: []
     };
     this.renderInvited = this.renderInvited.bind(this);
-    this.renderHaveInvited = this.renderHaveInvited.bind(this);
+    // this.renderHaveInvited = this.renderHaveInvited.bind(this);
+    this.changeTestersCopy = this.changeTestersCopy.bind(this);
   }
 
   componentDidMount() {
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((response) => {
-        this.setState({
-          invitedUserIds: response.data
-        });
+        return response.data
+      })
+      .then((userIdsArray) => {
+        let priorInvites = true;
+        axios.get('/api/getTesters')
+          .then((response) => {
+            var uninvitedTesters = response.data.filter((tester) => {
+              if (userIdsArray.indexOf(tester.id) === -1) return tester;
+            });
+            if (uninvitedTesters.length === response.data.length) { 
+              priorInvites = false;
+            }
+            this.setState({
+              testers: uninvitedTesters,
+              testersCopy: uninvitedTesters,
+              haveInvited: priorInvites
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -35,10 +56,10 @@ class OptionList extends React.Component {
     });
   }
 
-  renderHaveInvited() {
+  changeTestersCopy(filtered) {
     this.setState({
-      haveInvited: !this.state.haveInvited
-    });
+      testersCopy: filtered
+    })
   }
 
 
@@ -58,7 +79,9 @@ class OptionList extends React.Component {
             option={this.props.option}
             renderInvited={this.renderInvited}
             invitedUserIds={this.state.invitedUserIds}
-            renderHaveInvited={this.renderHaveInvited}
+            testers={this.state.testers}
+            testersCopy={this.state.testersCopy}
+            changeTestersCopy={this.changeTestersCopy}
           />
         )}
       </div>
