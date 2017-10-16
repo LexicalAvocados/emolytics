@@ -11,56 +11,13 @@ import axios from 'axios';
 class SectionHome extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      invited: [],
-      submitted: false
-    };
     this.onOptionClick = this.onOptionClick.bind(this);
-    this.addInvitee = this.addInvitee.bind(this);
-    this.submitInvites = this.submitInvites.bind(this);
   }
   
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
   }
 
-
-
-  addInvitee(index) { // You can only invite as many people as there are options
-    if (this.state.invited.indexOf(this.state.testers[index]) === -1) {
-      if (this.state.invited.length + 1 <= this.props.currentSection.options.length) {
-        this.setState({
-          invited: [...this.state.invited, this.state.testers[index]]
-        });
-      } else {
-        alert('You cannot invite anyone else!')
-      }
-    } else {
-      alert('You\'ve already invited this person.');
-    }
-  }
-
-  submitInvites() { // After this is clicked give some feedback to creator - collapse the thing, says sent
-    axios.post('/api/sendEmails', { invitedArr: this.state.invited, options: this.props.currentSection.options })
-      .then((success) => {
-        this.setState({
-          invited: [],
-          submitted: true
-        })
-      })
-      .catch((failure) => {
-        console.log('Invites NOT sent', failure);
-      })
-  }
-
-  renderInvites() {
-    if (this.state.invited.length) {
-      return <Invited 
-        invited={this.state.invited}
-        submitInvites={this.submitInvites}
-      />;
-    }
-  }
 
   render() {
     return (

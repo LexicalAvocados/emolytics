@@ -11,13 +11,17 @@ class InvitationPanel extends React.Component {
       testersCopy: [],
       ageSelected: false,
       sexSelected: false,
-      raceSelected: false
+      raceSelected: false,
+      invited: [],
+      value: {}
     };
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
+    this.handleInvites = this.handleInvites.bind(this);
+    this.sendInvites = this.sendInvites.bind(this);
   }
 
 
@@ -28,11 +32,38 @@ class InvitationPanel extends React.Component {
           testers: response.data,
           testersCopy: response.data
         });
-        console.log(this.state.testers);
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  handleInvites(event, index) {
+    if (event.target.checked) {
+      this.setState({
+        invited: [...this.state.invited, this.state.testersCopy[index]]
+      });
+    } else { // Uninvited
+      var removed = this.state.invited.slice(index, 1);
+      this.setState({
+        invited: removed
+      });   
+    }
+    console.log(this.state.invited);
+  }
+
+  sendInvites(e) {
+    e.preventDefault();
+    axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
+      .then((success) => {
+        console.log(success);
+        // this.setState({
+        //   invited: []
+        // })
+      })
+      .catch((failure) => {
+        console.log('Invites NOT sent', failure);
+      })
   }
 
   selectAge(event) { 
@@ -92,7 +123,7 @@ class InvitationPanel extends React.Component {
       });
     }
     // AGE
-    if ((criteria === 'age' && toFilterBy.indexOf('-') !== -1) && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
+    if (criteria === 'age' && toFilterBy.indexOf('-') !== -1 && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
       let index = toFilterBy.indexOf('-');
       let first = toFilterBy.slice(0, index);
       let second = toFilterBy.slice(index + 1);
@@ -161,13 +192,18 @@ class InvitationPanel extends React.Component {
               </DropdownButton>
             </div>
             <div className="testersList">
-              {this.state.testersCopy.map((tester, i) => (
-                <InviteTesters 
-                  tester={tester}
-                  key={i}
-                  index={i}
-                />
-              ))}
+              <form onSubmit={this.sendInvites}>
+                {this.state.testersCopy.map((tester, i) => (
+                  <InviteTesters 
+                    handleInvites={this.handleInvites}
+                    value={this.state.value}
+                    tester={tester}
+                    key={i}
+                    index={i}
+                  />
+                ))}
+                <input type="submit" value="Send Invites"/>
+              </form>
             </div>
           </div>
         )}
