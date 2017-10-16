@@ -230,6 +230,7 @@ class TesterVideo extends React.Component {
           .then(res => res.blob())
           .then(blobData => {
             // Microsoft Post Request
+            axios.get('/api/tester/getKey')
             var subscriptionKeyArr = ["4fc26d1500d04025a699f1ae74597ab3", "9e9aef27e11c4d38924410600d37d565", "e5aa2225f71744dbb8eeb01b54f2df70", "0e973dcb8b2648a6aeae5d267ba7346d", "8a7c7d4e7ece43b497219a4a2ec38e41", "f1059db56d0545378d0ff4d9a2c15a61", "a3eec14964c048299a6db1c108f5ace2"]
             var subscriptionKey = subscriptionKeyArr[this.state.img];
             this.state.img = (this.state.img + 1) % subscriptionKeyArr.length;
