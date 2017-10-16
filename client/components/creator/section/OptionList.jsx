@@ -70,7 +70,7 @@ class OptionList extends React.Component {
           <img src={this.props.option.thumbnail} alt="" onClick={() => this.props.onOptionClick(this.props.index)}/>
         </Link>
         { this.state.haveInvited ? (
-          <p>You have invited testers to view this option</p> 
+          <p>You have previously invited testers to view this option</p> 
         ) : ( null )}
         { this.state.invited ? (
           <p>Testers Invited!</p>

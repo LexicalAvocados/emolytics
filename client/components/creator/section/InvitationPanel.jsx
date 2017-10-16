@@ -20,6 +20,7 @@ class InvitationPanel extends React.Component {
     this.filterTesters = this.filterTesters.bind(this);
     this.handleInvites = this.handleInvites.bind(this);
     this.sendInvites = this.sendInvites.bind(this);
+    this.inviteAll = this.inviteAll.bind(this);
   }
 
 
@@ -43,7 +44,9 @@ class InvitationPanel extends React.Component {
   }
 
   sendInvites(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
       .then((success) => {
         console.log(success);
@@ -53,6 +56,14 @@ class InvitationPanel extends React.Component {
         console.log('Invites NOT sent', failure);
       })
   }
+
+  inviteAll() {
+    this.setState({
+      invited: this.props.testersCopy
+    });
+    this.sendInvites();
+  }
+
 
   selectAge(event) { 
     var filtered = this.filterTesters('age', event);
@@ -225,6 +236,7 @@ class InvitationPanel extends React.Component {
                   />
                 ))}
                 <input type="submit" value="Send Invites"/>
+                <button onClick={this.inviteAll}>Invite All</button>
                 <button onClick={this.renderPanel}>Close Invites Panel</button>
               </form>
             </div>
