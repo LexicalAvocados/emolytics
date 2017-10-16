@@ -9,7 +9,15 @@ class OptionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      invited: false
     };
+    this.renderInvited = this.renderInvited.bind(this);
+  }
+
+  renderInvited() {
+    this.setState({
+      invited: !this.state.invited
+    });
   }
 
 
@@ -19,9 +27,14 @@ class OptionList extends React.Component {
         <Link to={'/option' + this.props.option.id}>
           <img src={this.props.option.thumbnail} alt="" onClick={() => this.props.onOptionClick(this.props.index)}/>
         </Link>
-        <InvitationPanel
-        option={this.props.option}
-        />
+        { this.state.invited ? (
+          <p>Testers Invited!</p>
+        ) : (
+          <InvitationPanel
+            option={this.props.option}
+            renderInvited={this.renderInvited}
+          />
+        )}
       </div>
     );
   }

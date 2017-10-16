@@ -56,9 +56,10 @@ class InvitationPanel extends React.Component {
     axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
       .then((success) => {
         console.log(success);
-        // this.setState({
+        // this.setState({ // Reset invited here?
         //   invited: []
         // })
+        this.props.renderInvited();
       })
       .catch((failure) => {
         console.log('Invites NOT sent', failure);
