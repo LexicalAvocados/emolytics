@@ -81,9 +81,13 @@ class InvitationPanel extends React.Component {
   filterTesters(criteria, toFilterBy) {
     var filtered = [];
     // SEX
-    if (criteria === 'sex') { // Catch for filtering by sex directly
+    if (criteria === 'sex' && toFilterBy !== 'None') { // Catch for filtering by sex directly
       filtered = this.props.testers.filter((tester) => {
         if (tester.sex === toFilterBy) return tester;
+      });
+    } else if (criteria === 'sex' && toFilterBy === 'None' || this.state.sexSelected === 'None') {
+      filtered = this.props.testers.map((tester) => {
+        return tester;
       });
     } else if (this.state.sexSelected) { // Catch for filtering by sex indirectly
       filtered = this.props.testers.filter((tester) => {
@@ -91,13 +95,17 @@ class InvitationPanel extends React.Component {
       });
     }
     // RACE
-    if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
+    if (criteria === 'race' && this.state.sexSelected && toFilterBy !== 'None') { // Catch for filtering by race directly, with previosly selected sex. 
       filtered = filtered.filter((tester) => {
         if (tester.race === toFilterBy) return tester;
       });
-    } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
+    } else if (criteria === 'race' && toFilterBy !== 'None') { // Catch for filtering by race directly and alone.
       filtered = this.props.testers.filter((tester) => {
         if (tester.race === toFilterBy) return tester;
+      });
+    } else if (criteria === 'race' && toFilterBy === 'None' || this.state.raceSelected === 'None') {
+      filtered = this.props.testers.map((tester) => {
+        return tester;
       });
     } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
       filtered = filtered.filter((tester) => {
@@ -112,12 +120,16 @@ class InvitationPanel extends React.Component {
       filtered = filtered.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
-    } else if (criteria === 'age') { // filtering by age directly
+    } else if (criteria === 'age' && toFilterBy !== 'None') { // filtering by age directly
       let index = toFilterBy.indexOf('-');
       let first = toFilterBy.slice(0, index);
       let second = toFilterBy.slice(index + 1);
       filtered = this.props.testers.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+      });
+    } else if (criteria === 'age' && toFilterBy === 'None' || this.state.ageSelected === 'None') {
+      filtered = this.props.testers.map((tester) => {
+        return tester;
       });
     } else if (this.state.ageSelected) { // filter by age indirectly
       let index = this.state.ageSelected.indexOf('-');
@@ -140,6 +152,7 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Age:</p>
               <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
+                <MenuItem eventKey="None">None</MenuItem>
                 <MenuItem eventKey="0-10">0-10</MenuItem>
                 <MenuItem eventKey="11-20">11-20</MenuItem>
                 <MenuItem eventKey="21-30">21-30</MenuItem>
@@ -156,6 +169,7 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Sex:</p>
               <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Select a sex'}>
+                <MenuItem eventKey="None">None</MenuItem>
                 <MenuItem eventKey="Male">Male</MenuItem>
                 <MenuItem eventKey="Female">Female</MenuItem>
               </DropdownButton>
@@ -164,6 +178,7 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Race:</p>
               <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
+                <MenuItem eventKey="None">None</MenuItem>
                 <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
                 <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
                 <MenuItem eventKey="African American">African American</MenuItem>
