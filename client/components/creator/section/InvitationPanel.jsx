@@ -9,16 +9,14 @@ class InvitationPanel extends React.Component {
     this.state = {
       testers: [],
       testersCopy: [],
-      ageSelected: '',
-      sexSelected: '',
-      raceSelected: '',
-      previous: [],
-      filtered: false
+      ageSelected: false,
+      sexSelected: false,
+      raceSelected: false
     };
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
-    this.selectRace = this.selectRace.bind(this);
+    // this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
   }
 
@@ -36,58 +34,67 @@ class InvitationPanel extends React.Component {
       });
   }
 
-  selectAge(event) {
-    let filteredTesters = this.filterTesters(this.state.sexSelected, this.state.raceSelected, 'age', event)  
+  selectAge(event) { 
+    var filtered = this.filterTesters('age', event);
     this.setState({
       ageSelected: event,
-      testersCopy: filteredTesters
+      testersCopy: filtered
     });
   }
 
   selectSex(event) {
-    let filteredTesters = this.filterTesters('sex', this.state.raceSelected, this.state.ageSelected, event)  
+    var filtered = this.filterTesters('sex', event);
     this.setState({
       sexSelected: event,
-      testersCopy: filteredTesters
+      testersCopy: filtered
     });
-    // this.filterTesters()
+   
   }
 
-  selectRace(event) { // Can't test at the moment
-    let filteredTesters = this.filterTesters(this.state.sexSelected, 'race', this.state.ageSelected, event)  
-    this.setState({
-      raceSelected: event,
-      testersCopy: filteredTesters
-    });
+  // selectRace(event) { // Can't test at the moment
+  //   let filteredTesters = this.filterTesters(this.state.sexSelected, 'race', this.state.ageSelected, event)  
+  //   this.setState({
+  //     raceSelected: event,
+  //     testersCopy: filteredTesters
+  //   });
 
-  }
+  // }
 
 
-  filterTesters(sex, race, age, criteria) { // Race not ready to implement
-    let returnArr = [];
-    let ageArr = [];
-    let sexArr = [];
-
-    if (sex !== '') {
-      sexArr = this.state.testers.filter((tester) => {
-        if (tester.sex === criteria) return tester;
+  filterTesters(criteria, toFilterBy) { // Race not ready to implement
+    var filtered = [];
+    if (criteria === 'sex' && this.state.sexSelected !== toFilterBy) { // Catch for filtering by sex directly
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.sex === toFilterBy) return tester;
+      });
+    } else if (this.state.sexSelected) { // Catch for filtering by sex indirectly
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.sex === this.state.sexSelected) return tester;
       });
     }
-    // if (race !== '') { // SKIP
-    //   raceArr = this.state.testers.filter((tester) => {
-    //     if (tester[race] === criteria) return tester;
-    //   });
-    // } 
-    if (age !== '' && criteria.indexOf('-') !== -1) {
-      let index = criteria.indexOf('-');
-      let first = criteria.slice(0, index);
-      let second = criteria.slice(index + 1);
-      ageArr = this.state.testers.filter((tester) => {
-        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second) && tester.sex === this.state.sexSelected) return tester;
+    if (criteria === 'age' && this.state.sexSelected) { // Then filter the filtered, filtering by age directly
+      let index = toFilterBy.indexOf('-');
+      let first = toFilterBy.slice(0, index);
+      let second = toFilterBy.slice(index + 1);
+      filtered = filtered.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+      });
+    } else if (criteria === 'age') { // filtering by age directly
+      let index = toFilterBy.indexOf('-');
+      let first = toFilterBy.slice(0, index);
+      let second = toFilterBy.slice(index + 1);
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+      });
+    } else if (this.state.ageSelected) { // filter by previously selected age
+      let index = this.state.ageSelected.indexOf('-');
+      let first = this.state.ageSelected.slice(0, index);
+      let second = this.state.ageSelected.slice(index + 1);
+      filtered = filtered.filter((tester) => {
+        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
     }
-    returnArr = returnArr.concat(sexArr, ageArr);
-    return returnArr;
+    return filtered;
   }
 
   render() {
