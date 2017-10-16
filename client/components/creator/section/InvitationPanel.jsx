@@ -11,13 +11,17 @@ class InvitationPanel extends React.Component {
       testersCopy: [],
       ageSelected: false,
       sexSelected: false,
-      raceSelected: false
+      raceSelected: false,
+      invited: [],
+      value: {}
     };
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     // this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
+    this.handleInvites = this.handleInvites.bind(this);
+    this.sendInvites = this.sendInvites.bind(this);
   }
 
 
@@ -32,6 +36,34 @@ class InvitationPanel extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  handleInvites(event, index) {
+    if (event.target.checked) {
+      this.setState({
+        invited: [...this.state.invited, this.state.testersCopy[index]]
+      });
+    } else { // Uninvited
+      var removed = this.state.invited.slice(index, 1);
+      this.setState({
+        invited: removed
+      });   
+    }
+    console.log(this.state.invited);
+  }
+
+  sendInvites(e) {
+    e.preventDefault();
+    axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
+      .then((success) => {
+        console.log(success);
+        // this.setState({
+        //   invited: []
+        // })
+      })
+      .catch((failure) => {
+        console.log('Invites NOT sent', failure);
+      })
   }
 
   selectAge(event) { 
@@ -51,19 +83,20 @@ class InvitationPanel extends React.Component {
    
   }
 
-  // selectRace(event) { // Can't test at the moment
-  //   let filteredTesters = this.filterTesters(this.state.sexSelected, 'race', this.state.ageSelected, event)  
-  //   this.setState({
-  //     raceSelected: event,
-  //     testersCopy: filteredTesters
-  //   });
+  selectRace(event) { // Can't test at the moment
+    var filtered = this.filterTesters('race', event);
+    this.setState({
+      raceSelected: event,
+      testersCopy: filtered
+    });
+  }
 
   // }
 
-
-  filterTesters(criteria, toFilterBy) { // Race not ready to implement
+  filterTesters(criteria, toFilterBy) {
     var filtered = [];
-    if (criteria === 'sex' && this.state.sexSelected !== toFilterBy) { // Catch for filtering by sex directly
+    // SEX
+    if (criteria === 'sex') { // Catch for filtering by sex directly
       filtered = this.state.testers.filter((tester) => {
         if (tester.sex === toFilterBy) return tester;
       });
@@ -72,7 +105,26 @@ class InvitationPanel extends React.Component {
         if (tester.sex === this.state.sexSelected) return tester;
       });
     }
-    if (criteria === 'age' && this.state.sexSelected) { // Then filter the filtered, filtering by age directly
+    // RACE
+    if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
+      filtered = filtered.filter((tester) => {
+        if (tester.race === toFilterBy) return tester;
+      });
+    } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.race === toFilterBy) return tester;
+      });
+    } else if (this.state.raceSelected && this.state.sexSelected) { // Catch for filtering by race indirectly without sex set. 
+      filtered = filtered.filter((tester) => {
+        if (tester.race === this.state.raceSelected) return tester;
+      });
+    } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.race === this.state.raceSelected) return tester;
+      });
+    }
+    // AGE
+    if (criteria === 'age' && toFilterBy.indexOf('-') !== -1 && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
       let index = toFilterBy.indexOf('-');
       let first = toFilterBy.slice(0, index);
       let second = toFilterBy.slice(index + 1);
@@ -86,7 +138,7 @@ class InvitationPanel extends React.Component {
       filtered = this.state.testers.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
-    } else if (this.state.ageSelected) { // filter by previously selected age
+    } else if (this.state.ageSelected) { // filter by age indirectly
       let index = this.state.ageSelected.indexOf('-');
       let first = this.state.ageSelected.slice(0, index);
       let second = this.state.ageSelected.slice(index + 1);
@@ -131,17 +183,28 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Race:</p>
               <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
-                <MenuItem eventKey="Martian">Martian</MenuItem>
+                <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
+                <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
+                <MenuItem eventKey="African American">African American</MenuItem>
+                <MenuItem eventKey="Asian">Asian</MenuItem>
+                <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
+                <MenuItem eventKey="Native American">Native American</MenuItem>
+                <MenuItem eventKey="Other">Other</MenuItem> 
               </DropdownButton>
             </div>
             <div className="testersList">
-              {this.state.testersCopy.map((tester, i) => (
-                <InviteTesters 
-                  tester={tester}
-                  key={i}
-                  index={i}
-                />
-              ))}
+              <form onSubmit={this.sendInvites}>
+                {this.state.testersCopy.map((tester, i) => (
+                  <InviteTesters 
+                    handleInvites={this.handleInvites}
+                    value={this.state.value}
+                    tester={tester}
+                    key={i}
+                    index={i}
+                  />
+                ))}
+                <input type="submit" value="Send Invites"/>
+              </form>
             </div>
           </div>
         )}
