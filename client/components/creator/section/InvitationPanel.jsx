@@ -7,6 +7,7 @@ class InvitationPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayPanel: false,
       testers: [],
       testersCopy: [],
       ageSelected: false,
@@ -14,22 +15,29 @@ class InvitationPanel extends React.Component {
       raceSelected: false,
       invited: []
     };
-    this.grabTesters = this.grabTesters.bind(this);
+    this.getTesters = this.getTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
     this.handleInvites = this.handleInvites.bind(this);
     this.sendInvites = this.sendInvites.bind(this);
+    // this.renderPanel = this.renderPanel.bind(this);
   }
 
-
-  grabTesters() {
+  getTesters() {
     axios.get('/api/getTesters')
       .then((response) => {
+        var uninvitedTesters = response.data.filter((tester) => {
+          if (this.props.invitedUserIds.indexOf(tester.id) === -1) return tester;
+        });
+        if (uninvitedTesters.length = response.data.length) {
+          this.props.renderInvited()
+        }
         this.setState({
-          testers: response.data,
-          testersCopy: response.data
+          testers: uninvitedTesters,
+          testersCopy: uninvitedTesters,
+          displayPanel: !this.state.displayPanel
         });
       })
       .catch((err) => {
@@ -56,9 +64,6 @@ class InvitationPanel extends React.Component {
     axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
       .then((success) => {
         console.log(success);
-        // this.setState({ // Reset invited here?
-        //   invited: []
-        // })
         this.props.renderInvited();
       })
       .catch((failure) => {
@@ -148,8 +153,8 @@ class InvitationPanel extends React.Component {
   render() {
     return (
       <div>
-        { !this.state.testers.length ? (
-          <button onClick={this.grabTesters}>Invite testers</button>
+        { !this.state.displayPanel ? (
+          <button onClick={this.getTesters}>Invite testers</button>
         ):(
           <div className="invitationPanel">
             <div className="invitationPanelSelectors">
