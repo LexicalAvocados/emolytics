@@ -5,6 +5,7 @@ import loggedInUser from './loggedInUser';
 import currentProject from './currentProject';
 import currentSection from './currentSection';
 import currentTesterOption from './currentTesterOption';
+import submitProject from './submitProject';
 
 const rootReducer = combineReducers({
 	example,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   currentProject,
   currentSection,
   currentTesterOption,
+  submitProject,
   router: routerReducer
 });
 

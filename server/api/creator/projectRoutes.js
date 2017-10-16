@@ -31,6 +31,16 @@ exports.getProjectsForUser = function(req, res) {
 };
 
 exports.createProject = function(req, res) {
+  console.log('req.session>>>>>>>>', req.session)
+  // query users where username = req.session.username
+  Users.findOne({
+    where: {
+      username: req.session.username
+    }
+  })
+  // when found, grab entry, enter userID
+  .then((user) => {
+//.then
   const projectNameTaken = Projects.findOne({
     where: {
       name: req.body.name
@@ -42,11 +52,14 @@ exports.createProject = function(req, res) {
       } else {
         const newProject = Projects.create({
           name: req.body.name,
-          description: req.body.description
+          description: req.body.description,
+          // userId: req.session.username.userid
+          userId: user.id
         })
           .then((newProject) => {
             if (newProject) {
-              res.send(JSON.stringify(newProject.id));
+              // console.log('project added', newProject)
+              res.send(newProject);
             } else {
               console.error('Could not create new project');
             }
@@ -59,6 +72,9 @@ exports.createProject = function(req, res) {
     .catch((err) => {
       console.error('Error finding existing project with identical name in db', err);
     });
+
+
+  })
 };
 
 
