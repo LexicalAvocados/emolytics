@@ -46,6 +46,7 @@ exports.createProject = function(req, res) {
         })
           .then((newProject) => {
             if (newProject) {
+              res.redirect('/');
               res.send(JSON.stringify(newProject.id));
             } else {
               console.error('Could not create new project');
