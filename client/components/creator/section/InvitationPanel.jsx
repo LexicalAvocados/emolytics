@@ -100,21 +100,25 @@ class InvitationPanel extends React.Component {
         });
       }
     }
-    // RACE
+    // RACE FIX THIS
     if (criteria === 'race' || this.state.raceSelected) {
-      if (criteria === 'race' && toFilterBy === 'None') {
-        filtered = this.props.testers.map((tester) => {
+      if (criteria === 'race' && toFilterBy === 'None'  && this.state.sexSelected) {
+        filtered = filtered.map((tester) => {
           return tester;
         });
       } else if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
         filtered = filtered.filter((tester) => {
           if (tester.race === toFilterBy) return tester;
         });
-      } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
+      } else if (criteria === 'race' && toFilterBy !== 'None') { // Catch for filtering by race directly and alone.
         filtered = this.props.testers.filter((tester) => {
           if (tester.race === toFilterBy) return tester;
         });
-      } else if (this.state.raceSelected !== 'None') { // Catch for filtering by race indirectly without sex set. 
+      } else if (criteria === 'race' && toFilterBy === 'None') { // Catch for filtering by race directly and alone.
+        filtered = this.props.testers.map((tester) => {
+          return tester;
+        });
+      } else if (this.state.raceSelected && this.state.raceSelected !== 'None') { // Catch for filtering by race indirectly without sex set. 
         filtered = filtered.filter((tester) => {
           if (tester.race === this.state.raceSelected) return tester;
         });
