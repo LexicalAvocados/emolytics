@@ -1,4 +1,7 @@
+const db = require('../../../db/index.js');
 const nodemailer = require('nodemailer');
+const TesterAndOptions = db.TesterAndOption;
+
 const routeForTesters = "http://localhost:3000/login"
 
 
@@ -13,6 +16,10 @@ exports.sendEmails = function(req, res) {
   });
 
   req.body.invitedArr.forEach((invitee) => {
+    TesterAndOptions.create({
+      optionId: req.body.option.id,
+      userId: invitee.id
+    });
     let mailOptions = {
       from: "ReactionSync",
       to: invitee.email,
