@@ -9,7 +9,7 @@ class InviteTesters extends React.Component {
   render () {
     return (
       <div>
-        <p>Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex}</p>
+        <p>Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex} Race: {this.props.tester.race}</p>
       </div>
     );
   }

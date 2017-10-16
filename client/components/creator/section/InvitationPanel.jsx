@@ -16,7 +16,7 @@ class InvitationPanel extends React.Component {
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
-    // this.selectRace = this.selectRace.bind(this);
+    this.selectRace = this.selectRace.bind(this);
     this.filterTesters = this.filterTesters.bind(this);
   }
 
@@ -28,6 +28,7 @@ class InvitationPanel extends React.Component {
           testers: response.data,
           testersCopy: response.data
         });
+        console.log(this.state.testers);
       })
       .catch((err) => {
         console.log(err);
@@ -51,19 +52,19 @@ class InvitationPanel extends React.Component {
    
   }
 
-  // selectRace(event) { // Can't test at the moment
-  //   let filteredTesters = this.filterTesters(this.state.sexSelected, 'race', this.state.ageSelected, event)  
-  //   this.setState({
-  //     raceSelected: event,
-  //     testersCopy: filteredTesters
-  //   });
+  selectRace(event) { // Can't test at the moment
+    var filtered = this.filterTesters('race', event);
+    this.setState({
+      raceSelected: event,
+      testersCopy: filtered
+    });
+  }
 
-  // }
 
-
-  filterTesters(criteria, toFilterBy) { // Race not ready to implement
+  filterTesters(criteria, toFilterBy) {
     var filtered = [];
-    if (criteria === 'sex' && this.state.sexSelected !== toFilterBy) { // Catch for filtering by sex directly
+    // SEX
+    if (criteria === 'sex') { // Catch for filtering by sex directly
       filtered = this.state.testers.filter((tester) => {
         if (tester.sex === toFilterBy) return tester;
       });
@@ -72,7 +73,26 @@ class InvitationPanel extends React.Component {
         if (tester.sex === this.state.sexSelected) return tester;
       });
     }
-    if (criteria === 'age' && this.state.sexSelected) { // Then filter the filtered, filtering by age directly
+    // RACE
+    if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
+      filtered = filtered.filter((tester) => {
+        if (tester.race === toFilterBy) return tester;
+      });
+    } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.race === toFilterBy) return tester;
+      });
+    } else if (this.state.raceSelected && this.state.sexSelected) { // Catch for filtering by race indirectly without sex set. 
+      filtered = filtered.filter((tester) => {
+        if (tester.race === this.state.raceSelected) return tester;
+      });
+    } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
+      filtered = this.state.testers.filter((tester) => {
+        if (tester.race === this.state.raceSelected) return tester;
+      });
+    }
+    // AGE
+    if ((criteria === 'age' && toFilterBy.indexOf('-') !== -1) && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
       let index = toFilterBy.indexOf('-');
       let first = toFilterBy.slice(0, index);
       let second = toFilterBy.slice(index + 1);
@@ -86,7 +106,7 @@ class InvitationPanel extends React.Component {
       filtered = this.state.testers.filter((tester) => {
         if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
       });
-    } else if (this.state.ageSelected) { // filter by previously selected age
+    } else if (this.state.ageSelected) { // filter by age indirectly
       let index = this.state.ageSelected.indexOf('-');
       let first = this.state.ageSelected.slice(0, index);
       let second = this.state.ageSelected.slice(index + 1);
@@ -131,7 +151,13 @@ class InvitationPanel extends React.Component {
             <div className="invitationPanelSelectors">
               <p>Race:</p>
               <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
-                <MenuItem eventKey="Martian">Martian</MenuItem>
+                <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
+                <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
+                <MenuItem eventKey="African American">African American</MenuItem>
+                <MenuItem eventKey="Asian">Asian</MenuItem>
+                <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
+                <MenuItem eventKey="Native American">Native American</MenuItem>
+                <MenuItem eventKey="Other">Other</MenuItem> 
               </DropdownButton>
             </div>
             <div className="testersList">
