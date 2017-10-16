@@ -33,3 +33,5 @@ package-lock.json
 
 photos
 .DS_Store
+
+*.sublime-workspace
