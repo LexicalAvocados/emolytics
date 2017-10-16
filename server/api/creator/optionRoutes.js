@@ -4,7 +4,7 @@ const Likes = db.TesterAndOption;
 const Users = db.User;
 
 
-exports.getRelatedOptions = function(req, res) {
+exports.getRelatedOptions = (req, res) => {
   Options.findAll({
     where: {
       sectionId: req.query.sectionId
@@ -41,4 +41,21 @@ exports.getUserLikeOnOption = (req, res) => {
     })
   })
 
+}
+
+exports.getTestersForOption = (req, res) => {
+  Likes.findAll({
+    where: {
+      optionId: req.query.optionId
+    }
+  })
+    .then((options) => {
+      let userIds = options.map((option) => {
+        return option.userId
+      })
+      res.send(userIds);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }

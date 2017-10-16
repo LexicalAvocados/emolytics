@@ -25,4 +25,6 @@ router.post('/sendEmails', indexRoutes.sendEmails);
 
 router.post('/getLike', optionRoutes.getUserLikeOnOption);
 
+router.get('/getTestersForOption', optionRoutes.getTestersForOption);
+
 module.exports = router;
