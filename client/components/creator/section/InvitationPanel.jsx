@@ -81,63 +81,85 @@ class InvitationPanel extends React.Component {
   filterTesters(criteria, toFilterBy) {
     var filtered = [];
     // SEX
-    if (criteria === 'sex' && toFilterBy !== 'None') { // Catch for filtering by sex directly
-      filtered = this.props.testers.filter((tester) => {
-        if (tester.sex === toFilterBy) return tester;
-      });
-    } else if (criteria === 'sex' && toFilterBy === 'None' || this.state.sexSelected === 'None') {
-      filtered = this.props.testers.map((tester) => {
-        return tester;
-      });
-    } else if (this.state.sexSelected) { // Catch for filtering by sex indirectly
-      filtered = this.props.testers.filter((tester) => {
-        if (tester.sex === this.state.sexSelected) return tester;
-      });
+    if (criteria === 'sex' || this.state.sexSelected) {
+      if (criteria === 'sex' && toFilterBy === 'None') {
+        filtered = this.props.testers.map((tester) => {
+          return tester;
+        });
+      } else if (criteria === 'sex') { // Catch for filtering by sex directly
+        filtered = this.props.testers.filter((tester) => {
+          if (tester.sex === toFilterBy) return tester;
+        });
+      } else if (this.state.sexSelected !== 'None') { // Catch for filtering by sex indirectly
+        filtered = this.props.testers.filter((tester) => {
+          if (tester.sex === this.state.sexSelected) return tester;
+        });
+      } else if (this.state.sexSelected === 'None') { // Catch for filtering by sex indirectly
+        filtered = this.props.testers.map((tester) => {
+          return tester;
+        });
+      }
     }
     // RACE
-    if (criteria === 'race' && this.state.sexSelected && toFilterBy !== 'None') { // Catch for filtering by race directly, with previosly selected sex. 
-      filtered = filtered.filter((tester) => {
-        if (tester.race === toFilterBy) return tester;
-      });
-    } else if (criteria === 'race' && toFilterBy !== 'None') { // Catch for filtering by race directly and alone.
-      filtered = this.props.testers.filter((tester) => {
-        if (tester.race === toFilterBy) return tester;
-      });
-    } else if (criteria === 'race' && toFilterBy === 'None' || this.state.raceSelected === 'None') {
-      filtered = this.props.testers.map((tester) => {
-        return tester;
-      });
-    } else if (this.state.raceSelected) { // Catch for filtering by race indirectly without sex set. 
-      filtered = filtered.filter((tester) => {
-        if (tester.race === this.state.raceSelected) return tester;
-      });
+    if (criteria === 'race' || this.state.raceSelected) {
+      if (criteria === 'race' && toFilterBy === 'None') {
+        filtered = this.props.testers.map((tester) => {
+          return tester;
+        });
+      } else if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
+        filtered = filtered.filter((tester) => {
+          if (tester.race === toFilterBy) return tester;
+        });
+      } else if (criteria === 'race') { // Catch for filtering by race directly and alone.
+        filtered = this.props.testers.filter((tester) => {
+          if (tester.race === toFilterBy) return tester;
+        });
+      } else if (this.state.raceSelected !== 'None') { // Catch for filtering by race indirectly without sex set. 
+        filtered = filtered.filter((tester) => {
+          if (tester.race === this.state.raceSelected) return tester;
+        });
+      } else if (this.state.raceSelected === 'None') { // Catch for filtering by race indirectly without sex set. 
+        filtered = filtered.map((tester) => {
+          return tester;
+        });
+      }
     }
     // AGE
-    if (criteria === 'age' && toFilterBy.indexOf('-') !== -1 && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
-      let index = toFilterBy.indexOf('-');
-      let first = toFilterBy.slice(0, index);
-      let second = toFilterBy.slice(index + 1);
-      filtered = filtered.filter((tester) => {
-        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
-      });
-    } else if (criteria === 'age' && toFilterBy !== 'None') { // filtering by age directly
-      let index = toFilterBy.indexOf('-');
-      let first = toFilterBy.slice(0, index);
-      let second = toFilterBy.slice(index + 1);
-      filtered = this.props.testers.filter((tester) => {
-        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
-      });
-    } else if (criteria === 'age' && toFilterBy === 'None' || this.state.ageSelected === 'None') {
-      filtered = this.props.testers.map((tester) => {
-        return tester;
-      });
-    } else if (this.state.ageSelected) { // filter by age indirectly
-      let index = this.state.ageSelected.indexOf('-');
-      let first = this.state.ageSelected.slice(0, index);
-      let second = this.state.ageSelected.slice(index + 1);
-      filtered = filtered.filter((tester) => {
-        if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
-      });
+    if (criteria === 'age' || this.state.ageSelected) {
+      if (criteria === 'age' && toFilterBy === 'None'  && (this.state.sexSelected || this.state.raceSelected)) {
+        filtered = filtered.map((tester) => {
+          return tester;
+        });
+      } else if (criteria === 'age' && toFilterBy.indexOf('-') !== -1 && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
+        let index = toFilterBy.indexOf('-');
+        let first = toFilterBy.slice(0, index);
+        let second = toFilterBy.slice(index + 1);
+        filtered = filtered.filter((tester) => {
+          if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+        });
+      } else if (criteria === 'age'  && toFilterBy !== 'None') { // filtering by age directly
+        let index = toFilterBy.indexOf('-');
+        let first = toFilterBy.slice(0, index);
+        let second = toFilterBy.slice(index + 1);
+        filtered = this.props.testers.filter((tester) => {
+          if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+        });
+      } else if (criteria === 'age' && toFilterBy === 'None') {
+        filtered = this.props.testers.map((tester) => {
+          return tester;
+        });
+      } else if (this.state.ageSelected && this.state.ageSelected !== 'None') { // filter by age indirectly
+        let index = this.state.ageSelected.indexOf('-');
+        let first = this.state.ageSelected.slice(0, index);
+        let second = this.state.ageSelected.slice(index + 1);
+        filtered = filtered.filter((tester) => {
+          if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
+        });
+      } else if (this.state.ageSelected === 'None') { // Catch for filtering by race indirectly without sex set. 
+        filtered = filtered.map((tester) => {
+          return tester;
+        });
+      } 
     }
     return filtered;
   }
