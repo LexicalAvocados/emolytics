@@ -74,3 +74,4 @@ export const submitCurrentProjectToList = (obj) => ({
 	type: SUBMIT_CURRENT_PROJECT_TO_LIST,
 	obj
 });
+
