@@ -12,17 +12,19 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
-// app.use(express.static(__dirname + '/../react-client/dist'));
-app.use(express.static(__dirname + '/client'));
-
-app.use('/api', router);
-
 app.use(session({
   secret: 'machine learning',
   cookie: {
     maxAge: 6000000,
   }
 }));
+
+// app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(express.static(__dirname + '/client'));
+
+app.use('/api', router);
+
+
 
 app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));

@@ -54,7 +54,7 @@ class App extends React.Component {
                 <Route path="/section:id" component={SectionHome}/>
                 <Route path="/testviz" component={OptionHome}/>
                 <Route path="/option:id" component={OptionHome}/>
-                { <Route path="/createProject" component={CreateProject}/> }
+                <Route path="/createProject" component={CreateProject}/>
               </Switch>
             ) : (
               <Switch>
