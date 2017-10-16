@@ -1,3 +1,5 @@
+import { REHYDRATE } from 'redux-persist/constants';
+
 const loggedInUser = (state = {username: undefined, name: undefined, age: undefined, sex: undefined, race: undefined, isCreator: undefined}, action) => {
   switch (action.type) {
     case 'SET_LOGGED_IN':
@@ -23,6 +25,10 @@ const loggedInUser = (state = {username: undefined, name: undefined, age: undefi
       return Object.assign({}, state, {sex: action.sex});
     case 'SET_RACE':
       return Object.assign({}, state, {race: action.race});
+    case 'persist/REHYDRATE':
+      let incoming = action.payload.loggedInUser;
+      if (incoming) return {...state, ...incoming};
+      return state;
     default:
       return state;
   }
