@@ -34,6 +34,7 @@ class CreateProject extends React.Component {
       description: event.target.value
     });
 }
+
 // function that gets invoked when add new project button is clicked
 submitProjectClick(e) {
   e.preventDefault();
