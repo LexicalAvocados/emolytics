@@ -59,7 +59,7 @@ class InvitationPanel extends React.Component {
         // this.setState({ // Reset invited here?
         //   invited: []
         // })
-        this.props.invited = false;
+        this.props.renderInvited();
       })
       .catch((failure) => {
         console.log('Invites NOT sent', failure);
