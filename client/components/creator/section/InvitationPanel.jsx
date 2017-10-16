@@ -12,8 +12,7 @@ class InvitationPanel extends React.Component {
       ageSelected: false,
       sexSelected: false,
       raceSelected: false,
-      invited: [],
-      value: {}
+      invited: []
     };
     this.grabTesters = this.grabTesters.bind(this);
     this.selectAge = this.selectAge.bind(this);
@@ -193,7 +192,6 @@ class InvitationPanel extends React.Component {
                 {this.state.testersCopy.map((tester, i) => (
                   <InviteTesters 
                     handleInvites={this.handleInvites}
-                    value={this.state.value}
                     tester={tester}
                     key={i}
                     index={i}
