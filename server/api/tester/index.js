@@ -1,10 +1,10 @@
 const express = require('express');
 const db = require('../../../db');
-const Sequelize = require('sequelize');
 const Option = db.Option;
 const User = db.User;
 const Frame = db.Frame;
 const Key = db.Key;
+const sequelize = db.sequelize;
 const TesterAndOption = db.TesterAndOption;
 const router = express.Router();
 const base64Img = require('base64-img');
@@ -37,34 +37,95 @@ router.post('/getVideo', (req, res) => {
 })
 
 router.post('/sendFrame', (req, res) => {
-	console.log(req.body);
   var emotions = req.body.emotions;
-	console.log(req.session);
 	User.findAll({
 		where: {
 			username: req.session.username
 		}
 	})
-	 .then(user => {
-    console.log(user);
-    Frame.create({
-      time: req.body.time,
-      anger: emotions.anger,
-      contempt: emotions.contempt,
-      disgust: emotions.disgust,
-      fear: emotions.fear,
-      happiness: emotions.happiness,
-      neutral: emotions.neutral,
-      sadness: emotions.sadness,
-      surprise: emotions.surprise,
-      userId: user[0].dataValues.id,
-      optionId: 1
-    })
-    .then(user => {
-      res.send(user);
-    })
-   })
+	  .then(user => {
+
+      let userArr = user;
+      if (emotions) {
+        console.log("EMOTIONS");
+
+        Frame.findOne({where: {optionId: req.body.option.id, userId: userArr[0].dataValues.id, time: req.body.time}})
+          .then(frame => {
+            if (frame) {
+              frame.update ({
+                attention : 1,
+                anger: emotions.anger,
+                contempt: emotions.contempt,
+                disgust: emotions.disgust,
+                fear: emotions.fear,
+                happiness: emotions.happiness,
+                neutral: emotions.neutral / 3,
+                sadness: emotions.sadness,
+                surprise: emotions.surprise,
+              })
+                .then(entry => {
+                  res.send(entry);
+                })
+            } else {
+              Frame.create({
+                attention : 1,
+                time: req.body.time,
+                anger: emotions.anger,
+                contempt: emotions.contempt,
+                disgust: emotions.disgust,
+                fear: emotions.fear,
+                happiness: emotions.happiness,
+                neutral: emotions.neutral / 3,
+                sadness: emotions.sadness,
+                surprise: emotions.surprise,
+                userId: user[0].dataValues.id,
+                optionId: req.body.option.id
+              })
+                .then(entry => {
+                  res.send(entry);
+                })
+              }
+            })
+      } else {
+        Frame.findOne({where: {optionId: req.body.option.id, userId: userArr[0].dataValues.id, time: req.body.time}})
+          .then(frame => {
+            if (frame) {
+              frame.update ({
+                attention : 0,
+                anger: 0,
+                contempt: 0,
+                disgust: 0,
+                fear: 0,
+                happiness: 0,
+                neutral: 0,
+                sadness: 0,
+                surprise: 0,
+              })
+                .then(entry => {
+                  res.send(entry);
+                })
+            } else {
+              Frame.create({
+                attention : 0,
+                anger: 0,
+                contempt: 0,
+                disgust: 0,
+                fear: 0,
+                happiness: 0,
+                neutral: 0,
+                sadness: 0,
+                surprise: 0,
+                userId: user[0].dataValues.id,
+                optionId: req.body.option.id
+              })
+                .then(entry => {
+                  res.send(entry);
+              })
+            }
+                    }) 
+   }
 })
+        })
 
 router.post('/likeVideo', (req, res) => {
   console.log(req.body);
@@ -123,14 +184,12 @@ router.post('/startVideo', (req, res) => {
 })
 
 router.get('/getKey', (req, res) => {
-  Key.find({
-    order: [
-      Sequelize.fn( 'RAND')
-    ]
+  console.log("GETTTTTTING KEYYYYY")
+  sequelize.query("SELECT key FROM keys ORDER BY RANDOM() LIMIT 1", { type: sequelize.QueryTypes.SELECT})
+    .then(key => {
+    // We don't need spread here, since only the results will be returned for select queries
+    res.send(key);
   })
-    .then(data => {
-      console.log(data);
-    })
 })
 
 // const Frame = sequelize.define('frame', {
