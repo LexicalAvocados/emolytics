@@ -13,6 +13,7 @@ import Attention from './Subcomponents/Attention.jsx';
 import Demographics from './Subcomponents/Demographics.jsx';
 import Emotion from './Subcomponents/Emotion.jsx';
 import Feedback from './Subcomponents/Feedback.jsx';
+import UserSelect from './Subcomponents/UserSelect.jsx';
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -30,7 +31,9 @@ class OptionHome extends React.Component {
       likeStatus: false,
       duration: 0,
       completion: 0,
-      sideNavSelection: 'overview'
+      sideNavSelection: 'overview',
+      allUsers: [],
+      selectedUsers: []
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
@@ -38,10 +41,32 @@ class OptionHome extends React.Component {
     this.changeSideNavSelection = this.changeSideNavSelection.bind(this);
     this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
     this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
+    this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
+    this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
   }
 
   componentDidMount() {
     //orientation modal
+    axios.post('/api/getUsersIdsWhoWatced', {
+      optionId: 4 //this.props.currentSection.option.id
+    })
+    .then( (res) => {
+      res.data.forEach(userId => {
+        // console.log('user id for axios', userId.userId)
+        axios.post('/api/getUsersNamesWhoWatced', {
+          userId: userId.userId
+        })
+        .then((username) => {
+          // console.log('user obj response', username)
+          let oldUsers = this.state.allUsers.slice()
+          let newUsers = oldUsers.concat(username.data);
+          this.setState({
+            allUsers: newUsers,
+            selectedUsers: newUsers
+          }, () => console.log('state set with users', this.state))
+        })
+      })
+    })
     this.setState({
       user: this.props.loggedInUser
     })
@@ -52,7 +77,7 @@ class OptionHome extends React.Component {
                     "neutral", "sadness", "surprise" ]
 
     axios.post('/api/getFrames', {
-      optionId: this.props.currentSection.option.id
+      optionId: 4 //this.props.currentSection.option.id
     })
     .then((res) => {
       let tempEmotionObj = {};
@@ -60,10 +85,11 @@ class OptionHome extends React.Component {
       this.setState({
         completion: calcCompletion
       })
-
+      console.log('refresher on what is res.data', res.data)
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
-        tempEmotionObj[emo] = res.data.reduce((acc, curr) => {
+        tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
+            // console.log('current object in foreach', curr)
             acc.push(curr[emo]);
             return acc;
           }, [capitalized]);
@@ -147,20 +173,19 @@ class OptionHome extends React.Component {
     }, () => {
       this.setStateAfterDuration();
     })
-
-  }
+  };
 
   timestampCallback(seconds){
     this.setState({
       timestamp: seconds
     }, () => this.ReactPlayer.seekTo(this.state.timestamp))
-  }
+  };
 
   changeSideNavSelection(item) {
     this.setState({
       sideNavSelection: item
     }, this.lineGraphDataSwitch);
-  }
+  };
 
   lineGraphDataSwitch() {
     if (this.state.sideNavSelection === 'attention') {
@@ -169,7 +194,74 @@ class OptionHome extends React.Component {
     if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions') {
       this.generateCharts(this.state.emotionsArrForRender)
     }
+  };
+
+  recalculateChartsBasedOnUserSelect(userIdsArray){
+    var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
+                    "neutral", "sadness", "surprise" ];
+    axios.post('/api/getFrames', {
+      optionId: 4 //this.props.currentSection.option.id
+    })
+    .then((res) => {
+      let tempEmotionObj = {};
+      console.log('in recalculation', res.data)
+      emotions.forEach(emo => {
+        let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
+        console.log('selected user ids', userIdsArray)
+        tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
+          if(userIdsArray.includes(curr.userId)) acc.push(curr[emo]); return acc;
+          }, [capitalized]);
+
+        if (tempEmotionObj[emo].length < this.state.duration) {
+          var diff = this.state.duration - tempEmotionObj[emo].length - 1;
+          let padArr = pad([], diff, null);
+          tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
+        }
+      })
+      return tempEmotionObj;
+    })
+    .then((emoObj) => {
+      let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
+                      emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
+      this.setState({
+        emotionObj: emoObj,
+        emotionsArrForRender: emoArray
+      })
+    })
+    // .then( () => {
+    //   axios.post('/api/getLike', {
+    //     optionId: this.props.currentSection.option.id,
+    //     username: this.props.loggedInUser.username
+    //   })
+    //   .then( (res) => {
+    //     this.setState({
+    //       likeStatus: res.data.like
+    //     })
+    //   })
+    // })
+    .then( () => {
+      this.generateCharts(this.state.emotionsArrForRender);
+    })
+    // .then( () => {
+    //   let diff = this.state.duration - this.state.attention[0].length - 1;
+    //   let padArr = pad([], diff, null);
+    //   let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
+    //   this.setState({
+    //     attention: paddedAttentionArr
+    //   })
+    // })
   }
+
+  handleUserSelectCb(userArr) {
+    this.setState({
+      selectedUsers: userArr
+    }, () => {
+      let userIdsArray = this.state.selectedUsers.reduce((acc, curr) => {
+        acc.push(curr.id); return acc;
+      }, []);
+      this.recalculateChartsBasedOnUserSelect(userIdsArray);
+    })
+  };
 
   render() {
     return (
@@ -190,6 +282,8 @@ class OptionHome extends React.Component {
         <div className="rightSide">
           {this.state.sideNavSelection === 'overview' ?
             (<Overview
+              allUsers={this.state.allUsers}
+              selectedUsers={this.state.selectedUsers}
               viewer={this.state.user}
               attention={this.state.attention[0]}
               user={this.state.user}
@@ -204,22 +298,30 @@ class OptionHome extends React.Component {
 
           {this.state.sideNavSelection === 'attention' ? (
             <div className='attentionRightPanelContainer'>
-              <Demographics user={this.state.user} />
+              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
               <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
             </div>
           ) : ''}
 
           {this.state.sideNavSelection === 'feedback' ? (
             <div className='feedbackRightPanelContainer'>
-              <Demographics user={this.state.user} />
+              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
               <Feedback likeStatus={true} completionStatus={this.state.completion} />
             </div>
           ) : ''}
 
           {this.state.sideNavSelection === 'emotions' ? (
             <div className='emotionsRightPanelContainer'>
-              <Demographics user={this.state.user} />
+              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
               <Emotion emotionsObj={this.state.emotionObj} />
+            </div>
+          ) : ''}
+
+          {this.state.sideNavSelection === 'settings' ? (
+            <div className='emotionsRightPanelContainer'>
+              <UserSelect user={this.state.user} optionId={this.props.currentSection.option.id}
+                          userSelectCb={this.handleUserSelectCb} changeSideNavSelection={this.changeSideNavSelection}
+                          selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
             </div>
           ) : ''}
 

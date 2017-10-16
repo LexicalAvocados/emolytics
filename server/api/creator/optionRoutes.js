@@ -40,5 +40,29 @@ exports.getUserLikeOnOption = (req, res) => {
       res.send('Error retrieving Like on this option/user combo!')
     })
   })
+};
 
+exports.getUsersIdsWhoWatced = (req, res) => {
+   Likes.findAll({
+    attributes: ['userId'],
+    where: {
+      optionId: req.body.optionId
+    }
+  })
+  .then( (usersIdsArr) => {
+      res.send(JSON.stringify(usersIdsArr));
+    })
+  .catch((err) => console.error('err in getting userids', err))
+};
+
+exports.getUsersNamesWhoWatced = (req, res) => {
+   Users.findAll({
+    where: {
+      id: req.body.userId
+    }
+  })
+  .then( (userObj) => {
+    res.send(JSON.stringify(userObj));
+  })
+  .catch((err) => console.error('err in getting usernames', err))
 }

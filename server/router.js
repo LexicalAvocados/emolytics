@@ -25,4 +25,8 @@ router.post('/sendEmails', indexRoutes.sendEmails);
 
 router.post('/getLike', optionRoutes.getUserLikeOnOption);
 
+router.post('/getUsersIdsWhoWatced', optionRoutes.getUsersIdsWhoWatced)
+
+router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced)
+
 module.exports = router;
