@@ -120,7 +120,6 @@ const Key = sequelize.define('key', {
 
 Key.sync({force: false});
 
-
 module.exports = {
   sequelize: sequelize,
   User: User,
