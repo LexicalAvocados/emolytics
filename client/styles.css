@@ -257,5 +257,22 @@ button {
 .testersList {
   /* border: 1px solid black;
   border-radius: 3px;
-  padding-left: 1%;
+  padding-left: 1%;*/
+}
+
+.projectHomeSectionListEntry {
+  margin-top: 2%;
+}
+
+.projectHomeSectionListThumbnail {
+  margin-left: 1%;
+}
+
+.closerTextLarger {
+  margin-bottom: 0%;
+  font-weight: bold;
+}
+
+.closerText {
+  margin-bottom: 0%;
 }

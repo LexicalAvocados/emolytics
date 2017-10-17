@@ -25,18 +25,21 @@ class SectionList extends React.Component {
   }
 
   onClickCallback() {
-    this.props.onSectionClick(this.props.section, this.state.options)
+    this.props.onSectionClick(this.props.section, this.state.options);
+    // this.props.history.push('/section' + this.props.section.id);
   }
 
   render () {
     return (
-      <div onClick={this.onClickCallback}>
+      <div onClick={this.onClickCallback} className="projectHomeSectionListEntry">
         <Link to={'/section' + this.props.section.id}> 
-          <p>{this.props.section.name}</p>
-          <p>{this.props.section.description}</p>
+          <p className="closerTextLarger">{this.props.section.name}</p>
+          <p className="closerText">{this.props.section.description}</p>
+          <div>
           { this.state.options.map((option, i) => {
-            return <img src={option.thumbnail} alt="" key={i}/>
+            return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
           })}
+          </div>
         </Link>
       </div>
     );
