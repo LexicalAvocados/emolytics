@@ -74,7 +74,7 @@ class OptionList extends React.Component {
   render() {
     return (
       <div className="currentSectionOptionListEntry">
-        <Link to={'/option' + this.props.option.id}> 
+        { /* <Link to={'/option' + this.props.option.id}> */ }
         <div onClick={() => this.props.onOptionClick(this.props.index)}>
           <img src={this.props.option.thumbnail} alt=""/>
           <p className="closerText">{this.props.option.name}</p>
