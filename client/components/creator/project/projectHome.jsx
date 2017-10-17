@@ -3,9 +3,8 @@ import {Link} from 'react-router-dom';
 import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../../../actions'
+import * as ChangeActions from '../../../actions';
 import axios from 'axios';
-
 
 class ProjectHome extends React.Component {
   constructor(props) {
@@ -17,7 +16,6 @@ class ProjectHome extends React.Component {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
   }
-
 
   render() {
     return (
@@ -35,8 +33,7 @@ class ProjectHome extends React.Component {
     );
   }
 
-};
-
+}
 
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN PROJECTHOME', state);

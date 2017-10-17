@@ -1,5 +1,3 @@
-const express = require('express');
-const router = require('express').Router();
 const db = require('../../../db/index.js');
 const Sections = db.Section;
 const Users = db.User;
@@ -15,9 +13,8 @@ exports.getRelatedSection = function(req, res) {
     })
     .catch((err) => {
       res.send(err);
-    })
+    });
 };
-
 
 exports.getTesters = function(req, res) {
   Users.findAll({
@@ -48,8 +45,7 @@ exports.addSection = function(req, res) {
     })
     .catch((err) => {
       console.error('Error creating new section', err);
-    })
-
+    });
 };
 
 
