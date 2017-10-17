@@ -37,37 +37,26 @@ exports.createProject = function(req, res) {
     }
   })
     .then((user) => {
-      const projectNameTaken = Projects.findOne({
-        where: {
-          name: req.body.name
-        }
+      Projects.create({
+        name: req.body.name,
+        description: req.body.description,
+        userId: user.id
       })
-        .then((projectNameTaken) => {
-          if (projectNameTaken) {
-            return res.send('Project with identical name already exists. Please rename your project');
+        .then((newProject) => {
+          if (newProject) {
+            res.send(newProject);
           } else {
-            const newProject = Projects.create({
-              name: req.body.name,
-              description: req.body.description,
-              userId: user.id
-            })
-              .then((newProject) => {
-                if (newProject) {
-                  res.send(newProject);
-                } else {
-                  console.error('Could not create new project');
-                }
-              })
-              .catch((err) => {
-                console.error('Error creating new project', err);
-              });
+            console.error('Could not create new project');
           }
+        })
+        .catch((err) => {
+          console.error('Error creating new project', err);
+        });
         })
         .catch((err) => {
           console.error('Error finding existing project with identical name in db', err);
         });
-    });
-};
+    };
 
 
 

@@ -1,20 +1,20 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 
-class CreateProject extends React.Component {
+class AddSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       description: ''
     };
-    this.submitProjectClick = this.submitProjectClick.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.submitSectionClick = this.submitSectionClick.bind(this);
   }
 
   handleNameChange(event) {
@@ -29,35 +29,41 @@ class CreateProject extends React.Component {
     });
   }
 
-  submitProjectClick(e) {
+  // handleYouTubeUrl() {
+
+  // }
+
+  submitSectionClick(e) {
     e.preventDefault();
-    axios.post('/api/createProject', {
+    axios.post('/api/addSection', {
       name: this.state.name,
-      description: this.state.description
+      description: this.state.description,
+      projectId: this.props.currentProject.id
     })
       .then((response) => {
         this.setState({
           name: response.data.name,
-          description: response.data.description
+          description: response.data.description,
         });
-        this.props.actions.changeCurrentProject(response.data);
-        this.props.history.push('/addSection');
+        this.props.actions.changeCurrentSection(response.data);
+        this.props.history.push('/addOption');
       })
       .catch((err) => {
-        console.error('Request to create new project NOT sent to server!', err);
+        console.error('Request to add new section NOT sent to server!', err);
       });
   }
 
   render() {
     return (
-      <div className="CreateProject">
-        <h2>Create Project</h2>
-        <form onSubmit={this.submitProjectClick}>
-          Project Name: <br />
-          <input type="text" name="projectname" value={this.state.name} onChange={this.handleNameChange} /><br />
-          Project Description: <br />
-          <input type="text" name="projectdescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+      <div className="AddSection">
+        <h2>Add Section</h2>
+        <form onSubmit={this.submitSectionClick}>
+          Section Name: <br />
+          <input type="text" name="sectionname" value={this.state.name} onChange={this.handleNameChange} /><br />
+          Section Description: <br />
+          <input type="text" name="sectiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
           <input type="submit" value="Submit" />
+
         </form>
       </div>
     );
@@ -78,5 +84,15 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (CreateProject));
+) (AddSection));
+
+
+
+
+
+
+
+
+
+
 
