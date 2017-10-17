@@ -5,17 +5,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 
-class AddSection extends React.Component {
+class AddOption extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      description: ''
+      description: '',
+      url:''
     };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.submitSectionClick = this.submitSectionClick.bind(this);
+    this.handleUrlChange = this.handleUrlChange.bind(this);
+    this.submitOptionClick = this.submitOptionClick.bind(this);
   }
+
+  // handleChange(event) {
+  //   this.setState({
+
+  //   })
+  // }
 
   handleNameChange(event) {
     this.setState({
@@ -29,41 +37,44 @@ class AddSection extends React.Component {
     });
   }
 
-  // handleYouTubeUrl() {
+  handleUrlChange(event) {
+    this.setState({
+      url: event.target.value
+    });
+  }
 
-  // }
-
-  submitSectionClick(event) {
+  submitOptionClick(event) {
     event.preventDefault();
-    axios.post('/api/addSection', {
+    axios.post('/api/addOption', {
       name: this.state.name,
-      description: this.state.description,
-      projectId: this.props.currentProject.id
+      description: this. state.description,
+      // need to add url here...
+      url: this.state.url
     })
       .then((response) => {
         this.setState({
           name: response.data.name,
           description: response.data.description
         });
-        this.props.actions.changeCurrentSection(response.data);
-        this.props.history.push('/addOption');
+        this.props.actions.changeCurrentOption(response.data);
       })
       .catch((err) => {
-        console.error('Request to add new section NOT sent to server!', err);
+        console.error('Request to add new option NOT sent to server!', err);
       });
   }
 
   render() {
     return (
-      <div className="AddSection">
-        <h2>Add Section</h2>
-        <form onSubmit={this.submitSectionClick}>
-          Section Name: <br />
-          <input type="text" name="sectionname" value={this.state.name} onChange={this.handleNameChange} /><br />
-          Section Description: <br />
-          <input type="text" name="sectiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+      <div className="AddOption">
+        <h2>Add Option</h2>
+        <form onSubmit={this.submitOptionClick}>
+        Option Name: <br />
+          <input type="text" name="optionname" value={this.state.name} onChange={this.handleNameChange} /><br />
+          Option Description: <br />
+          <input type="text" name="optiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          Url: <br />
+          <input type="text" name="optionurl" value={this.state.url} onChange={this.handleUrlChange} /><br />
           <input type="submit" value="Submit" />
-
         </form>
       </div>
     );
@@ -75,6 +86,7 @@ const mapStateToProps = (state) => {
     router: state.router,
     currentProject: state.currentProject,
     currentSection: state.currentSection
+
   });
 };
 
@@ -85,15 +97,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (AddSection));
-
-
-
-
-
-
-
-
+) (AddOption));
 
 
 

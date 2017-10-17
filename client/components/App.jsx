@@ -22,6 +22,7 @@ import SectionHome from './creator/section/SectionHome.jsx';
 import OptionHome from './creator/option/OptionHome.jsx';
 import CreateProject from './creator/create/createProject.jsx';
 import AddSection from './creator/create/addSection.jsx';
+import AddOption from './creator/create/addOption.jsx';
 
 
 export class App extends React.Component {
@@ -46,6 +47,7 @@ export class App extends React.Component {
                 <Route path="/option:id" component={OptionHome}/>
                 <Route path="/createProject" component={CreateProject}/>
                 <Route path="/addSection" component={AddSection}/>
+                <Route path="/addOption" component={AddOption}/>
               </Switch>
             ) : (
               <Switch>

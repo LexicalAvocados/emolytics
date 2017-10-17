@@ -4,7 +4,7 @@ import axios from 'axios';
 
 class SectionList extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       options: [] // I suppose just keep these in local state because they are just here to display thumbnails
     };
@@ -16,22 +16,22 @@ class SectionList extends React.Component {
       .then((res) => {
         this.setState({
           options: res.data
-        })
+        });
         this.props.actions.addOptionToCurrentProject(res.data);
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
-      })
+      });
   }
 
   onClickCallback() {
-    this.props.onSectionClick(this.props.section, this.state.options)
+    this.props.onSectionClick(this.props.section, this.state.options);
   }
 
   render () {
     return (
       <div>
-        <Link to={'/section' + this.props.section.id}> 
+        <Link to={'/section' + this.props.section.id}>
           <p onClick={this.onClickCallback}>{this.props.section.name}</p>
         </Link>
         { this.state.options.map((option, i) => {

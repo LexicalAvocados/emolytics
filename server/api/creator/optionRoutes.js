@@ -72,5 +72,23 @@ exports.getTestersForOption = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+};
+
+exports.addOption = (req, res) => {
+  Options.create({
+    name: req.body.name,
+    description: req.body.description,
+    sectionId: req.body.sectionId,
+    youtubeUrl: req.body.url
+  })
+    .then((newOption) => {
+      if (newOption) {
+        res.send(newOption);
+      }
     })
-}
+    .catch((err) => {
+      console.error('Error creating new option', err);
+    });
+};
+
