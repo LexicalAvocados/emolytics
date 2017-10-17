@@ -33,7 +33,7 @@ const Attention = (props) => {
   return (
     <div className="testerAttention">
       <p> Average Attention: {calcAvgAtten(props.attention.slice(1))}%</p>
-      <p> Moments user lost focus: </p>
+      <p> Viewers lost focus: </p>
       <ul>
         {calcLostFocus(props.attention.slice(4)).map((moment, i) => (
           <li key={i}>

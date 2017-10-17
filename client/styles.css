@@ -89,6 +89,7 @@ body {
 
 .testerAttention {
   grid-column: 1;
+  margin-left: 10%;
 }
 
 .testerFeedback {
