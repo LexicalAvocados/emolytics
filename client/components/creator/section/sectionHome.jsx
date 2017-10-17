@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionList from './OptionList.jsx';
+import { withRouter } from 'react-router-dom';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-  }
+    this.props.history.push('/option' + this.props.currentSection.options[index].id);
+  };
 
   render() {
     return (
@@ -49,7 +51,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (SectionHome);
+) (SectionHome));

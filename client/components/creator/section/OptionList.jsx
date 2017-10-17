@@ -74,10 +74,12 @@ class OptionList extends React.Component {
   render() {
     return (
       <div className="currentSectionOptionListEntry">
-        <Link to={'/option' + this.props.option.id}>
-          <img src={this.props.option.thumbnail} alt="" onClick={() => this.props.onOptionClick(this.props.index)}/>
+        { /* <Link to={'/option' + this.props.option.id}> */ }
+        <div onClick={() => this.props.onOptionClick(this.props.index)}>
+          <img src={this.props.option.thumbnail} alt=""/>
           <p className="closerText">{this.props.option.name}</p>
-        </Link>
+        </div>
+        {/* </Link> */}
         {/* <br /> */}
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p> 
