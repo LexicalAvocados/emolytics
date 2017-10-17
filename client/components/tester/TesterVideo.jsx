@@ -40,7 +40,7 @@ class TesterVideo extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this);
+    // console.log(this);
     // window.webgazer.setRegression('ridge')
     //   .setTracker('clmtrackr')
     //   // .setGazeListener((data, clock) => {
@@ -48,6 +48,13 @@ class TesterVideo extends React.Component {
     //   //   console.log(clock);
     //   // })
     //   .begin()
+        // var prediction = window.webgazer.getCurrentPrediction();
+    // console.log('prediction', prediction);
+    // if (prediction) {
+    //     var x = prediction.x;
+    //     var y = prediction.y;
+    //     console.log('predictions', x, y);
+    // }
     axios.post('/api/tester/getVideo', {id: this.props.match.params.id})
       .then((data) => {
         console.log(data);
@@ -63,20 +70,25 @@ class TesterVideo extends React.Component {
         console.log(this);
       })
 
+    // let check =  setInterval(this.checkVideo, 1000)
+    // this.setState({
+    //   checkVideo: check
+    // })
+
     this.getWebcam();
     setInterval(() => {
       this.checkVideo()
-      // var prediction = window.webgazer.getCurrentPrediction();
-      // console.log('prediction', prediction);
-      // if (prediction) {
-      //     var x = prediction.x;
-      //     var y = prediction.y;
-      //     console.log('predictions', x, y);
-      // }
-    }, 3000)
+
+    }, 1000)
     this.startVideo();
 
   }
+
+  clearVideoCheck() {
+    clearInterval(this.state.checkVideo);
+  }
+
+
 
   videoStart() {
     axios.post('/api/tester/startVideo', {
@@ -348,19 +360,22 @@ class TesterVideo extends React.Component {
           <TesterFinishedVideo />
         </ToggleDisplay>
 
-        <ReactPlayer onStart={this.videoStart} onEnded={this.showOverlay} controls={true} ref="video" url={this.state.video.url} playing />
-        <h2> {this.state.video.name} </h2>
-        <h4> {this.state.video.desc} </h4>
+        <div className="videoPlayer">
 
-
-        <div class="camera">  
-          <video id="video">Video stream not available.</video>
+          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} playing />
+          <br/>
+          <br/>
+          
+          <h2> {this.state.video.name} </h2>
+          <h4> {this.state.video.desc} </h4>
         </div>
-        <canvas ref="canvas" id="canvas">
+
+
+        <div >  
+          <video className="testerVideo" id="video">Video stream not available.</video>
+        </div>
+        <canvas className="testerVideo" ref="canvas" id="canvas">
         </canvas>
-        <canvas ref="canvasSend" id="canvasSend">
-        </canvas> 
-        <img ref="img"/>
       </div>
 
     )

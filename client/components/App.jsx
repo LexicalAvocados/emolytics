@@ -32,9 +32,8 @@ export class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="app">
         <Navbar />
-
         {
           this.props.loggedInUser.username ? (
             this.props.loggedInUser.isCreator ? (
@@ -67,6 +66,10 @@ export class App extends React.Component {
     );
   }
 }
+
+// example
+// {this.props.example.text}
+// <button onClick={this.onClick}> test </button><br/><br/>
 
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
