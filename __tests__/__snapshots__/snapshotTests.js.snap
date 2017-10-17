@@ -72,9 +72,17 @@ exports[`App Component Shallow Render renders accurately to the existing "App wh
 `;
 
 exports[`Login Component Shallow Render renders accurately to the existing Login snapshot 1`] = `
-<div>
+<div
+  className="auth"
+>
+  <h2
+    className="loginHeader"
+  >
+    Log In
+  </h2>
   <Form
     bsClass="form"
+    className="authForm"
     componentClass="form"
     horizontal={true}
     inline={false}
@@ -83,19 +91,10 @@ exports[`Login Component Shallow Render renders accurately to the existing Login
     <FormGroup
       bsClass="form-group"
     >
-      <br />
-      <br />
-      <ControlLabel
-        bsClass="control-label"
-        srOnly={false}
-      >
-        Log In
-      </ControlLabel>
-      <br />
       <Col
         bsClass="col"
+        className="authInput"
         componentClass="div"
-        sm={2}
       >
         <FormControl
           bsClass="form-control"
@@ -106,12 +105,10 @@ exports[`Login Component Shallow Render renders accurately to the existing Login
           value=""
         />
       </Col>
-      <br />
-      <br />
       <Col
         bsClass="col"
+        className="authInput"
         componentClass="div"
-        sm={2}
       >
         <FormControl
           bsClass="form-control"
@@ -122,25 +119,32 @@ exports[`Login Component Shallow Render renders accurately to the existing Login
           value=""
         />
       </Col>
-      <br />
-      <br />
       <Button
         active={false}
         block={false}
         bsClass="btn"
         bsStyle="default"
+        className="authSubmit"
         disabled={false}
         type="submit"
       >
         Submit
       </Button>
+      <br />
     </FormGroup>
   </Form>
 </div>
 `;
 
 exports[`Signup Component Shallow Render renders accurately to the existing Signup snapshot 1`] = `
-<div>
+<div
+  className="auth"
+>
+  <h2
+    className="signupHeader"
+  >
+    New Account
+  </h2>
   <Form
     bsClass="form"
     componentClass="form"
@@ -151,18 +155,10 @@ exports[`Signup Component Shallow Render renders accurately to the existing Sign
     <FormGroup
       bsClass="form-group"
     >
-      <ControlLabel
-        bsClass="control-label"
-        srOnly={false}
-      >
-        Create New Account
-      </ControlLabel>
-      <br />
-      <br />
       <Col
         bsClass="col"
+        className="authInput"
         componentClass="div"
-        sm={2}
       >
         <FormControl
           bsClass="form-control"
@@ -173,12 +169,10 @@ exports[`Signup Component Shallow Render renders accurately to the existing Sign
           value=""
         />
       </Col>
-      <br />
-      <br />
       <Col
         bsClass="col"
+        className="authInput"
         componentClass="div"
-        sm={2}
       >
         <FormControl
           bsClass="form-control"
@@ -189,12 +183,10 @@ exports[`Signup Component Shallow Render renders accurately to the existing Sign
           value=""
         />
       </Col>
-      <br />
-      <br />
       <Col
         bsClass="col"
+        className="authInput"
         componentClass="div"
-        sm={2}
       >
         <FormControl
           bsClass="form-control"
@@ -205,10 +197,9 @@ exports[`Signup Component Shallow Render renders accurately to the existing Sign
           value=""
         />
       </Col>
-      <br />
-      <br />
       <Checkbox
         bsClass="checkbox"
+        className="signupCreator"
         disabled={false}
         inline={false}
         onClick={[Function]}
@@ -216,8 +207,6 @@ exports[`Signup Component Shallow Render renders accurately to the existing Sign
       >
         Register as a Creator
       </Checkbox>
-      <br />
-      <br />
       <Button
         active={false}
         block={false}
