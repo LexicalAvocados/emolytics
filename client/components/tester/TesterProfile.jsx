@@ -81,10 +81,10 @@ class TesterProfile extends React.Component {
   updateAge(e) {
     if (e.target.value === '') {
       this.props.actions.setAge(undefined);
-    } else if (Number.isNaN(Number(e.target.value))) {
+    } else if (e.target.value.split('').every(char => char === ' ') || Number.isNaN(Number(e.target.value))) {
       return;
     } else {
-      this.props.actions.setAge(parseInt(e.target.value));
+      this.props.actions.setAge(Number(e.target.value));
     }
   }
 
@@ -111,58 +111,67 @@ class TesterProfile extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='testerProfile'>
+        <h2 className='profileHeading'>Your Profile</h2>
         <ListGroup>
 
           <ListGroupItem onClick={this.startEditingName}>
-            Name: {this.state.editingName ?
-              <form onSubmit={this.stopEditingName}>
-                <FormGroup>
-                  <FormControl type='text' value={this.props.loggedInUser.name} onChange={this.updateName} />
-                </FormGroup>
-              </form>
+            <span className='profileLabel'>Name:</span> {this.state.editingName ?
+              <span className='profileInput'>
+                <form className='profileInput' onSubmit={this.stopEditingName}>
+                  <FormGroup>
+                    <FormControl type='text' value={this.props.loggedInUser.name} onChange={this.updateName} />
+                  </FormGroup>
+                </form>
+              </span>
             :
               <span>{this.props.loggedInUser.name}</span>
             }
           </ListGroupItem>
 
           <ListGroupItem onClick={this.startEditingAge}>
-            Age: {this.state.editingAge ?
-              <form onSubmit={this.stopEditingAge}>
-                <FormGroup>
-                  <FormControl type='text' value={this.props.loggedInUser.age} onChange={this.updateAge} />
-                </FormGroup>
-              </form>
+            <span className='profileLabel'>Age:</span> {this.state.editingAge ?
+              <span className='profileInput'>
+                <form onSubmit={this.stopEditingAge}>
+                  <FormGroup>
+                    <FormControl type='text' value={this.props.loggedInUser.age} onChange={this.updateAge} />
+                  </FormGroup>
+                </form>
+              </span>
             :
               <span>{this.props.loggedInUser.age}</span>}
           </ListGroupItem>
 
           <ListGroupItem onClick={this.startEditingSex}>
-            Sex: {this.state.editingSex ?
-              <ButtonToolbar>
-                <ToggleButtonGroup type='radio' name='sexOptions' onChange={(e) => {this.updateSex(e); this.stopEditingSex(e)}}>
-                  <ToggleButton value='Male'>Male</ToggleButton>
-                  <ToggleButton value='Female'>Female</ToggleButton>
-                </ToggleButtonGroup>
-              </ButtonToolbar>
+            <span className='profileLabel'>Sex:</span> {this.state.editingSex ?
+              <span className='profileInput'>
+                <ButtonToolbar>
+                  <ToggleButtonGroup type='radio' name='sexOptions' onChange={(e) => {this.updateSex(e); this.stopEditingSex(e)}}>
+                    <ToggleButton value='Male'>Male</ToggleButton>
+                    <ToggleButton value='Female'>Female</ToggleButton>
+                  </ToggleButtonGroup>
+                </ButtonToolbar>
+              </span>
             :
               <span>{this.props.loggedInUser.sex}</span>
             }
           </ListGroupItem>
 
           <ListGroupItem onClick={this.startEditingRace}>
-            Race: {this.state.editingRace ?
-              <ButtonToolbar>
-                <ToggleButtonGroup type='radio' name='raceOptions' onChange={(e) => {this.updateRace(e); this.stopEditingRace(e)}}>
-                  <ToggleButton value='Caucasian'>Caucasian</ToggleButton>
-                  <ToggleButton value='Hispanic'>Hispanic</ToggleButton>
-                  <ToggleButton value='African American'>African American</ToggleButton>
-                  <ToggleButton value='Asian'>Asian</ToggleButton>
-                  <ToggleButton value='Pacific Islander'>Pacific Islander</ToggleButton>
-                  <ToggleButton value='Native American'>Native American</ToggleButton>
-                  <ToggleButton value='Other'>Other Ethnicity</ToggleButton>
-                </ToggleButtonGroup>
-              </ButtonToolbar>
+            <span className='profileLabel'>Race:</span> {this.state.editingRace ?
+              <span className='profileInput'>
+                <ButtonToolbar>
+                  <ToggleButtonGroup type='radio' name='raceOptions' onChange={(e) => {this.updateRace(e); this.stopEditingRace(e)}}>
+                    <ToggleButton value='Caucasian'>Caucasian</ToggleButton>
+                    <ToggleButton value='Hispanic'>Hispanic</ToggleButton>
+                    <ToggleButton value='African American'>African American</ToggleButton>
+                    <ToggleButton value='Asian'>Asian</ToggleButton>
+                    <ToggleButton value='Pacific Islander'>Pacific Islander</ToggleButton>
+                    <ToggleButton value='Native American'>Native American</ToggleButton>
+                    <ToggleButton value='Other'>Other Ethnicity</ToggleButton>
+                  </ToggleButtonGroup>
+                </ButtonToolbar>
+              </span>
             :
               <span>{this.props.loggedInUser.race}</span>}
           </ListGroupItem><br/>
@@ -189,6 +198,11 @@ class TesterProfile extends React.Component {
       </div>
     )
   }
+}
+
+const testerProfileContainerStyle = {
+  display: "flex",
+  marginTop: "3%"
 }
 
 // React-Redux connect() boilerplate

@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "jest --verbose",
+    "watch": "jest --verbose --watchAll",
     "start": "nodemon server.js",
     "compile": "webpack -w"
   },
