@@ -13,42 +13,24 @@ class AddOption extends React.Component {
       description: '',
       url:''
     };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleUrlChange = this.handleUrlChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.submitOptionClick = this.submitOptionClick.bind(this);
   }
 
-  // handleChange(event) {
-  //   this.setState({
-
-  //   })
-  // }
-
-  handleNameChange(event) {
+  handleChange(e) {
+    e.preventDefault();
+    var name = e.target.name;
+    var val = e.target.value;
     this.setState({
-      name: event.target.value
+      [name]: val
     });
   }
 
-  handleDescriptionChange(event) {
-    this.setState({
-      description: event.target.value
-    });
-  }
-
-  handleUrlChange(event) {
-    this.setState({
-      url: event.target.value
-    });
-  }
-
-  submitOptionClick(event) {
-    event.preventDefault();
+  submitOptionClick(e) {
+    e.preventDefault();
     axios.post('/api/addOption', {
       name: this.state.name,
       description: this. state.description,
-      // need to add url here...
       url: this.state.url
     })
       .then((response) => {
@@ -69,11 +51,11 @@ class AddOption extends React.Component {
         <h2>Add Option</h2>
         <form onSubmit={this.submitOptionClick}>
         Option Name: <br />
-          <input type="text" name="optionname" value={this.state.name} onChange={this.handleNameChange} /><br />
+          <input type="text" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Option Description: <br />
-          <input type="text" name="optiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          <input type="text" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           Url: <br />
-          <input type="text" name="optionurl" value={this.state.url} onChange={this.handleUrlChange} /><br />
+          <input type="text" name="url" value={this.state.url} onChange={this.handleChange} /><br />
           <input type="submit" value="Submit" />
         </form>
       </div>
