@@ -11,7 +11,6 @@ class ProjectList extends React.Component {
     this.onClickCallback = this.onClickCallback.bind(this)
   }
 
-  // Uxse id of project to get all sections
   componentDidMount() {
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {

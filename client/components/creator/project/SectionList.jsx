@@ -30,13 +30,14 @@ class SectionList extends React.Component {
 
   render () {
     return (
-      <div>
+      <div onClick={this.onClickCallback}>
         <Link to={'/section' + this.props.section.id}> 
-          <p onClick={this.onClickCallback}>{this.props.section.name}</p>
+          <p>{this.props.section.name}</p>
+          <p>{this.props.section.description}</p>
+          { this.state.options.map((option, i) => {
+            return <img src={option.thumbnail} alt="" key={i}/>
+          })}
         </Link>
-        { this.state.options.map((option, i) => {
-          return <img src={option.thumbnail} alt="" key={i}/>
-        })}
       </div>
     );
   }

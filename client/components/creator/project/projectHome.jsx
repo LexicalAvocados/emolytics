@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +11,7 @@ class ProjectHome extends React.Component {
   constructor(props) {
     super(props);
     this.onSectionClick = this.onSectionClick.bind(this);
+    this.routeToAddSection = this.routeToAddSection.bind(this);
   }
 
   onSectionClick(obj, options) {
@@ -18,19 +19,25 @@ class ProjectHome extends React.Component {
     this.props.actions.changeCurrentSection(obj, options);
   }
 
+  routeToAddSection() {
+    this.props.history.push('/addSection');
+  }
 
   render() {
     return (
-      <div className='projectContainer'>
+      <div>
         <h2>{this.props.currentProject.name}</h2>
-        <p>{this.props.currentProject.description}</p>
-        {this.props.currentProject.sections.map((section, i) => (
-          <SectionList
-            onSectionClick={this.onSectionClick}
-            section={section}
-            key={i}
-          />
-        ))}
+        <div className='projectContainer'>
+          <p>{this.props.currentProject.description}</p>
+          <button onClick={this.routeToAddSection}>Add a section</button>
+          {this.props.currentProject.sections.map((section, i) => (
+            <SectionList
+              onSectionClick={this.onSectionClick}
+              section={section}
+              key={i}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -51,7 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (ProjectHome);
+) (ProjectHome));
