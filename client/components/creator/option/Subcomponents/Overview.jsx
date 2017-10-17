@@ -19,7 +19,7 @@ const Overview = (props) => {
         <Attention attention={props.attention}
                    timestampCallback={props.timestampCallback}/>
 
-                 <Feedback likeStatus={true}
+                 <Feedback likeRatio={props.likeRatio}
                   completionStatus={props.completionStatus} />
       </div>
 
