@@ -25,6 +25,10 @@ exports[`App Component Shallow Render renders accurately to the existing "App wh
       component={[Function]}
       path="/section:id"
     />
+    <Route
+      component={[Function]}
+      path="/createProject"
+    />
   </Switch>
 </div>
 `;
