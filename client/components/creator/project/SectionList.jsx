@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import axios from 'axios';
 
 class SectionList extends React.Component {
@@ -26,13 +26,13 @@ class SectionList extends React.Component {
 
   onClickCallback() {
     this.props.onSectionClick(this.props.section, this.state.options);
-    // this.props.history.push('/section' + this.props.section.id);
+    this.props.history.push('/section' + this.props.section.id);
   }
 
   render () {
     return (
       <div onClick={this.onClickCallback} className="projectHomeSectionListEntry">
-        <Link to={'/section' + this.props.section.id}> 
+        {/* <Link to={'/section' + this.props.section.id}>  */}
           <p className="closerTextLarger">{this.props.section.name}</p>
           <p className="closerText">{this.props.section.description}</p>
           <div>
@@ -40,10 +40,10 @@ class SectionList extends React.Component {
               return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
             })}
           </div>
-        </Link>
+        {/* </Link> */}
       </div>
     );
   }
 }
 
-export default SectionList;
+export default withRouter(SectionList);

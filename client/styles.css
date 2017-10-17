@@ -294,6 +294,7 @@ button {
   border-radius: 3px;
   padding: 2% 0% 2% 2%;
   width: 110%;
+  background-color: white;
 }
 
 .invitationPanelSelectors {
