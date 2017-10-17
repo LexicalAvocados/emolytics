@@ -10,7 +10,8 @@ class DashboardHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projects: []
+      projects: [],
+      retrieved: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
   }
@@ -19,7 +20,8 @@ class DashboardHome extends React.Component {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }}) // this.props.loggedInUser.username (import it below)
       .then((response) => {
         this.setState({
-          projects: response.data
+          projects: response.data,
+          retrieved: true
         })
       })
       .catch((err) => {
@@ -33,26 +35,29 @@ class DashboardHome extends React.Component {
     this.props.actions.changeCurrentProject(obj);
   }
 
-  // Change this so that the rendering tears stop
   render () {
     return (
-      <div>
+      <div className="dashboardHomeContainer">
         <h2>Project Home</h2>
-        { this.state.projects.length ? (
-          <div>
-            { this.state.projects.map((project, i) => (
-              <ProjectList
-                onProjectClick={this.onProjectClick}
-                project={project}
-                key={i}
-              />
-            ))}
-          </div>
+        { this.state.retrieved ? (
+          this.state.projects.length ? (
+            <div>
+              { this.state.projects.map((project, i) => (
+                <ProjectList
+                  onProjectClick={this.onProjectClick}
+                  project={project}
+                  key={i}
+                />
+              ))}
+            </div>
+          ) : (
+            <div>
+              <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
+              <p>Why don't you click the 'Create Projects' button in the Navigation Bar and start doing something with your life!</p>
+            </div>
+          )
         ) : (
-          <div>
-            <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
-            <p>Why don't you click the 'Create Projects' button in the Navigation Bar and start doing something with your life!</p>
-          </div>
+          null
         )}
 
       </div>
