@@ -12,8 +12,8 @@ class CreateProject extends React.Component {
       name: '',
       description: ''
     };
-    this.submitProjectClick = this.submitProjectClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.submitProjectClick = this.submitProjectClick.bind(this);
   }
 
   handleChange(e) {

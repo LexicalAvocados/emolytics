@@ -12,20 +12,16 @@ class AddSection extends React.Component {
       name: '',
       description: ''
     };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.submitSectionClick = this.submitSectionClick.bind(this);
   }
 
-  handleNameChange(event) {
+  handleChange(e) {
+    e.preventDefault();
+    var name = e.target.name;
+    var val = e.target.value;
     this.setState({
-      name: event.target.value
-    });
-  }
-
-  handleDescriptionChange(event) {
-    this.setState({
-      description: event.target.value
+      [name]: val
     });
   }
 
@@ -33,8 +29,8 @@ class AddSection extends React.Component {
 
   // }
 
-  submitSectionClick(event) {
-    event.preventDefault();
+  submitSectionClick(e) {
+    e.preventDefault();
     axios.post('/api/addSection', {
       name: this.state.name,
       description: this.state.description,
@@ -59,9 +55,9 @@ class AddSection extends React.Component {
         <h2>Add Section</h2>
         <form onSubmit={this.submitSectionClick}>
           Section Name: <br />
-          <input type="text" name="sectionname" value={this.state.name} onChange={this.handleNameChange} /><br />
+          <input type="text" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Section Description: <br />
-          <input type="text" name="sectiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          <input type="text" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           <input type="submit" value="Submit" />
 
         </form>
@@ -86,14 +82,4 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 ) (AddSection));
-
-
-
-
-
-
-
-
-
-
 
