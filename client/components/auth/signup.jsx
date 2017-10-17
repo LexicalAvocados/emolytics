@@ -61,32 +61,35 @@ export class Signup extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='auth'>
+        <h2 className='signupHeader'>New Account</h2>
         <Form horizontal onSubmit={this.submitNewAccount}>
           <FormGroup>
-            <ControlLabel>Create New Account</ControlLabel><br/><br/>
-            <Col sm={2}>
-            <FormControl
-              type='text'
-              value={this.state.typedUsername}
-              placeholder='Username'
-              onChange={this.updateTypedUsername}
-            /></Col><br/><br/>
-          <Col sm={2}>
-            <FormControl
-              type='password'
-              value={this.state.typedPassword}
-              placeholder='Password'
-              onChange={this.updateTypedPassword}
-            /></Col><br/><br/>
-            <Col sm={2}>
-            <FormControl
-              type='text'
-              value={this.state.typedEmail}
-              placeholder='Email'
-              onChange={this.updateTypedEmail}
-            /></Col><br/><br/>
-            <Checkbox onClick={this.updateIsCreator}>Register as a Creator</Checkbox><br/><br/>
+            <Col className='authInput'>
+              <FormControl
+                type='text'
+                value={this.state.typedUsername}
+                placeholder='Username'
+                onChange={this.updateTypedUsername}
+              />
+            </Col>
+            <Col className='authInput'>
+              <FormControl
+                type='password'
+                value={this.state.typedPassword}
+                placeholder='Password'
+                onChange={this.updateTypedPassword}
+              />
+            </Col>
+            <Col className='authInput'>
+              <FormControl
+                type='text'
+                value={this.state.typedEmail}
+                placeholder='Email'
+                onChange={this.updateTypedEmail}
+              />
+            </Col>
+            <Checkbox className='signupCreator' onClick={this.updateIsCreator}>Register as a Creator</Checkbox>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>
