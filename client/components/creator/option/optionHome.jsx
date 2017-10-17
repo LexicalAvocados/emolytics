@@ -43,6 +43,7 @@ class OptionHome extends React.Component {
     this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
+    this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
   }
 
   componentDidMount() {
@@ -63,12 +64,6 @@ class OptionHome extends React.Component {
           this.setState({
             allUsers: newUsers,
             selectedUsers: newUsers
-          }, () => {
-            console.log('state set with users', this.state)
-            let averagedCompletion = this.state.completion / this.state.selectedUsers.length;
-            this.setState({
-              completion: averagedCompletion
-            })
           })
         })
       })
@@ -80,6 +75,7 @@ class OptionHome extends React.Component {
         optionId: this.props.currentSection.option.id
       })
       .then( (res) => {
+        console.log('response from like endpoint', res.data)
         let likeCount = res.data.reduce((tot, curr) => {
           if(curr.like === true) tot++
           return tot;
@@ -92,6 +88,27 @@ class OptionHome extends React.Component {
     })
   }
 
+  calculateCompletionPerc(array) {
+    let userCompletionObj = array.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
+      if (!acc[curr.userId]) acc[curr.userId] = 0;
+      if (acc[curr.userId] >= 0) {
+        if (curr.time > acc[curr.userId]) acc[curr.userId] = curr.time / this.state.duration
+      }
+      return acc;
+    }, {})
+    console.log('completionObj', userCompletionObj);
+    var avgCompletion = 0;
+    var numberOfUsers = 0;
+    for (var key in userCompletionObj) {
+      avgCompletion += userCompletionObj[key];
+      numberOfUsers++
+    };
+    avgCompletion = Math.floor(1000*(avgCompletion / numberOfUsers))/10;
+    this.setState({
+      completion: avgCompletion
+    })
+  }
+
   setStateAfterDuration() {
     var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
                     "neutral", "sadness", "surprise" ]
@@ -101,10 +118,7 @@ class OptionHome extends React.Component {
     })
     .then((res) => {
       let tempEmotionObj = {};
-      let calcCompletion = Math.floor(1000*(res.data.length / this.state.duration))/10;
-      this.setState({
-        completion: calcCompletion
-      })
+      this.calculateCompletionPerc(res.data)
       console.log('refresher on what is res.data', res.data)
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
@@ -229,6 +243,9 @@ class OptionHome extends React.Component {
     })
     .then((res) => {
       let tempEmotionObj = {};
+      let filteredFramesArr = res.data.filter(item => userIdsArray.includes(item.userId));
+      console.log('filteredFramesArr', filteredFramesArr)
+      this.calculateCompletionPerc(filteredFramesArr);
       // console.log('in recalculation', res.data)
       console.log('selected user ids', userIdsArray)
       emotions.forEach(emo => {
@@ -313,7 +330,7 @@ class OptionHome extends React.Component {
         <div className='leftSide'>
           <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
             ref={(player) => { this.ReactPlayer = player; }}
-            controls={true} height={420} width={750} className='optionPlayer' onDuration={this.setDuration}
+            controls={true} height={420} width={675} className='optionPlayer' onDuration={this.setDuration}
             config={{
               youtube: {
                 playerVars: { showinfo: 1}

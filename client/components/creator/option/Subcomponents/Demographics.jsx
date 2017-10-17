@@ -4,7 +4,7 @@ const Demographics = (props) => {
 
   const calcAvgAge = (userObjArray) => {
     var totalAge = userObjArray.reduce((acc, curr) => {return acc += (+curr.age || 0)}, 0);
-    return totalAge / userObjArray.length;
+    return Math.floor(10 * totalAge / userObjArray.length)/10;
   }
 
   const calcGenderDistribution = (userObjArray) => {
@@ -24,7 +24,7 @@ const Demographics = (props) => {
           <p> Selected viewers: </p>
           <div className='userDetails'>
             {props.selectedUsers.map((userObj, i) => (
-              <p key={i}> {userObj.name || userObj.username } (sex: {userObj.sex || 'N/A'}, age: {userObj.age || 'N/A'})</p>
+              <p key={i}> {userObj.name || userObj.username } (Gender: {userObj.sex || 'N/A'}, Age: {userObj.age || 'N/A'})</p>
             ))}
           </div>
 
@@ -36,16 +36,20 @@ const Demographics = (props) => {
         </div>
       ): (
         <div className='allUsers'>
-          <p> Selected: All Viewers</p>
+          <p> Selected: All Viewers ({props.selectedUsers.length})</p>
           <div className='averages'>
             <p> Avg Age: {calcAvgAge(props.selectedUsers)}</p>
             <p> Gender Distribution: {calcGenderDistribution(props.selectedUsers)}</p>
           </div>
         </div>
       )}
-      <hr/>
+      <hr style={hrStyle}/>
     </div>
   )
 };
+
+const hrStyle = {
+  // width: '75%'
+}
 
 export default Demographics;
