@@ -55,13 +55,16 @@ class AddSection extends React.Component {
 
   render() {
     return (
-      <div className="AddSection">
+      <div className="CreateProject">
         <h2>Add Section</h2>
+        <br/>
         <form onSubmit={this.submitSectionClick}>
           Section Name: <br />
           <input type="text" name="sectionname" value={this.state.name} onChange={this.handleNameChange} /><br />
+          <br/>
           Section Description: <br />
-          <input type="text" name="sectiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          <input className="inputDescription" type="text" name="sectiondescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          <br/>
           <input type="submit" value="Submit" />
 
         </form>

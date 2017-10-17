@@ -55,9 +55,12 @@ class CreateProject extends React.Component {
         <form onSubmit={this.submitProjectClick}>
           Project Name: <br />
           <input type="text" name="projectname" value={this.state.name} onChange={this.handleNameChange} /><br />
+          <br/>
           Project Description: <br />
-          <input type="text" name="projectdescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          <input className="inputDescription" type="text" name="projectdescription" value={this.state.description} onChange={this.handleDescriptionChange} /><br />
+          <br/>
           <input type="submit" value="Submit" />
+          
         </form>
       </div>
     );
