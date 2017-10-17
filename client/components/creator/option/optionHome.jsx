@@ -28,7 +28,7 @@ class OptionHome extends React.Component {
       timestamp: '0',
       emotionObj: {},
       emotionsArrForRender: [],
-      likeStatus: false,
+      likeRatio: '',
       duration: 0,
       completion: 0,
       sideNavSelection: 'overview',
@@ -69,6 +69,20 @@ class OptionHome extends React.Component {
     })
     this.setState({
       user: this.props.loggedInUser
+    }, () => {
+      axios.post('/api/getLikes', {
+        optionId: 4 //this.props.currentSection.option.id
+      })
+      .then( (res) => {
+        let likeCount = res.data.reduce((tot, curr) => {
+          if(curr.like === true) tot++
+          return tot;
+        }, 0)
+        let likeRatio = `${likeCount}/${res.data.length}`
+        this.setState({
+          likeRatio: likeRatio
+        })
+      })
     })
   }
 
@@ -89,9 +103,24 @@ class OptionHome extends React.Component {
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
         tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-            // console.log('current object in foreach', curr)
-            acc.push(curr[emo]);
-            return acc;
+            if (emo === 'neutral') {
+              if (acc[curr.time]) {
+                acc[curr.time] = (acc[curr.time] + curr[emo] / 8) / 2;
+                return acc;
+              } else {
+                acc.push(curr[emo] / 8);
+                return acc;
+              }
+            }
+            else {
+              if (acc[curr.time]) {
+                acc[curr.time] = (acc[curr.time] + curr[emo] )/ 2;
+                return acc;
+              } else {
+                acc.push(curr[emo]);
+                return acc;
+              }
+            }
           }, [capitalized]);
         if (tempEmotionObj[emo].length < this.state.duration) {
           var diff = this.state.duration - tempEmotionObj[emo].length - 1;
@@ -99,6 +128,7 @@ class OptionHome extends React.Component {
           tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
         }
       })
+      console.log('tempEmotionObj', tempEmotionObj)
       return tempEmotionObj;
     })
     .then((emoObj) => {
@@ -107,17 +137,6 @@ class OptionHome extends React.Component {
       this.setState({
         emotionObj: emoObj,
         emotionsArrForRender: emoArray
-      })
-    })
-    .then( () => {
-      axios.post('/api/getLike', {
-        optionId: this.props.currentSection.option.id,
-        username: this.props.loggedInUser.username
-      })
-      .then( (res) => {
-        this.setState({
-          likeStatus: res.data.like
-        })
       })
     })
     .then( () => {
@@ -204,21 +223,39 @@ class OptionHome extends React.Component {
     })
     .then((res) => {
       let tempEmotionObj = {};
-      console.log('in recalculation', res.data)
+      // console.log('in recalculation', res.data)
+      console.log('selected user ids', userIdsArray)
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
-        console.log('selected user ids', userIdsArray)
         tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-          if(userIdsArray.includes(curr.userId)) acc.push(curr[emo]); return acc;
-          }, [capitalized]);
-
-        if (tempEmotionObj[emo].length < this.state.duration) {
-          var diff = this.state.duration - tempEmotionObj[emo].length - 1;
-          let padArr = pad([], diff, null);
-          tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
-        }
-      })
-      return tempEmotionObj;
+        if (userIdsArray.includes(curr.userId) && curr.time !== null) {
+              if (emo === 'neutral') {
+                if (acc[curr.time]) {
+                  acc[curr.time] = (acc[curr.time] + curr[emo] / 8) / 2;
+                } else {
+                  acc = acc.concat(curr[emo] / 8);
+                }
+              }
+              else {
+                console.log('curr in middle of swap', curr)
+                if (acc[curr.time]) {
+                  acc[curr.time] = (acc[curr.time] + curr[emo] )/ 2;
+                } else {
+                  console.log('ACC', acc)
+                  acc = acc.concat(curr[emo]);
+                }
+              }
+            }
+              return acc;
+            }, [capitalized]);
+            if (tempEmotionObj[emo].length < this.state.duration) {
+              var diff = this.state.duration - tempEmotionObj[emo].length - 1;
+              let padArr = pad([], diff, null);
+              tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
+            }
+          })
+          console.log('tempEmotionObj', tempEmotionObj)
+          return tempEmotionObj;
     })
     .then((emoObj) => {
       let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
@@ -228,17 +265,19 @@ class OptionHome extends React.Component {
         emotionsArrForRender: emoArray
       })
     })
-    // .then( () => {
-    //   axios.post('/api/getLike', {
-    //     optionId: this.props.currentSection.option.id,
-    //     username: this.props.loggedInUser.username
-    //   })
-    //   .then( (res) => {
-    //     this.setState({
-    //       likeStatus: res.data.like
-    //     })
-    //   })
-    // })
+    axios.post('/api/getLikes', {
+      optionId: 4 //this.props.currentSection.option.id
+    })
+    .then( (res) => {
+      let likeCount = res.data.reduce((tot, curr) => {
+        if(curr.like === true && userIdsArray.includes(curr.userId)) tot++
+        return tot;
+      }, 0)
+      let likeRatio = `${likeCount}/${this.state.selectedUsers.length}`
+      this.setState({
+        likeRatio: likeRatio
+      })
+    })
     .then( () => {
       this.generateCharts(this.state.emotionsArrForRender);
     })
@@ -289,7 +328,7 @@ class OptionHome extends React.Component {
               user={this.state.user}
               timestampCallback={this.timestampCallback}
               emotionsObj={this.state.emotionObj}
-              likeStatus={this.state.likeStatus}
+              likeRatio={this.state.likeRatio}
               completionStatus={this.state.completion}
               sideNavSelection={this.state.sideNavSelection}
               />
@@ -306,7 +345,7 @@ class OptionHome extends React.Component {
           {this.state.sideNavSelection === 'feedback' ? (
             <div className='feedbackRightPanelContainer'>
               <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Feedback likeStatus={true} completionStatus={this.state.completion} />
+              <Feedback likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
             </div>
           ) : ''}
 

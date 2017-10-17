@@ -36,7 +36,7 @@ class UserSelect extends React.Component {
 
   render() {
     return (
-      <div className='userSelect' style={tempListStyle}>
+      <div className='userSelect'>
         <h3> Select viewers </h3>
         <FormGroup>
           <Checkbox bsClass='checkbox'
@@ -58,9 +58,5 @@ class UserSelect extends React.Component {
     )
   }
 };
-
-const tempListStyle = {
-  float: "right"
-}
 
 export default UserSelect;

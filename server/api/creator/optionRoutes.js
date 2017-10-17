@@ -18,28 +18,19 @@ exports.getRelatedOptions = (req, res) => {
     })
 };
 
-exports.getUserLikeOnOption = (req, res) => {
-  Users.findOne({
-    attributes: ['id'],
-    where: {
-      username: req.body.username
-    }
-  })
-  .then((uid) => {
-    Likes.findOne({
+exports.getLikesOnOption = (req, res) => {
+    Likes.findAll({
       where: {
-        optionId: req.body.optionId,
-        userId: uid.dataValues.id
+        optionId: req.body.optionId
       }
     })
-    .then((like) => {
-      console.log('Final Like', like)
-      res.send(like)
+    .then((likes) => {
+      console.log('All likes', likes)
+      res.send(likes)
     })
     .catch((err) => {
       res.send('Error retrieving Like on this option/user combo!')
     })
-  })
 };
 
 exports.getUsersIdsWhoWatced = (req, res) => {
