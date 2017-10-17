@@ -18,7 +18,3 @@ class InviteTesters extends React.Component {
 }
 
 export default InviteTesters;
-
-//onClick={() => this.props.addInvitee(this.props.index)}
-
-{/* <p>Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex} Race: {this.props.tester.race}</p> */}
