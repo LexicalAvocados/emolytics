@@ -29,6 +29,7 @@ body {
   box-shadow: 2px 2px black;
   padding: 15px;
   width: 50%;
+  padding-bottom: 3.5%;
 }
 
 .optionAnalyticsContainer {
@@ -275,4 +276,8 @@ button {
 
 .closerText {
   margin-bottom: 0%;
+}
+
+.addSectionButton{
+  float: right;
 }

@@ -36,9 +36,9 @@ class SectionList extends React.Component {
           <p className="closerTextLarger">{this.props.section.name}</p>
           <p className="closerText">{this.props.section.description}</p>
           <div>
-          { this.state.options.map((option, i) => {
-            return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
-          })}
+            { this.state.options.map((option, i) => {
+              return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
+            })}
           </div>
         </Link>
       </div>

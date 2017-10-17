@@ -37,9 +37,9 @@ class ProjectList extends React.Component {
 
   render() {
     return (
-      <div className='projectsContainer'>
+      <div onClick={this.onClickCallback} className='projectsContainer'>
         {/* <Link to={'/project' + this.props.project.id}> */}
-          <p onClick={this.onClickCallback}>Project Name: {this.props.project.name}</p>
+        <p>Project Name: {this.props.project.name}</p>
         {/* </Link> */}
         <p>Project Description: {this.props.project.description}</p>
         { this.state.sections.map((section, i) => {
