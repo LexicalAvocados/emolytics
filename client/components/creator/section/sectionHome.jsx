@@ -18,7 +18,7 @@ class SectionHome extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="sectionHomeContainer">
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
