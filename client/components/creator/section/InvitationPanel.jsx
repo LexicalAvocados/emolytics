@@ -181,63 +181,62 @@ class InvitationPanel extends React.Component {
 
   render() {
     return (
-          <div className="invitationPanel">
-            <div className="invitationPanelSelectors">
-              <p>Age:</p>
-              <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
-                <MenuItem eventKey="None">None</MenuItem>
-                <MenuItem eventKey="0-10">0-10</MenuItem>
-                <MenuItem eventKey="11-20">11-20</MenuItem>
-                <MenuItem eventKey="21-30">21-30</MenuItem>
-                <MenuItem eventKey="31-40">31-40</MenuItem>
-                <MenuItem eventKey="41-50">41-50</MenuItem>
-                <MenuItem eventKey="51-60">51-60</MenuItem>
-                <MenuItem eventKey="61-70">61-70</MenuItem>
-                <MenuItem eventKey="71-80">71-80</MenuItem>
-                <MenuItem eventKey="81-90">81-90</MenuItem>
-                <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
-              </DropdownButton>
-            </div>
-            <br/>
-            <div className="invitationPanelSelectors">
-              <p>Sex:</p>
-              <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Select a sex'}>
-                <MenuItem eventKey="None">None</MenuItem>
-                <MenuItem eventKey="Male">Male</MenuItem>
-                <MenuItem eventKey="Female">Female</MenuItem>
-              </DropdownButton>
-            </div>
-            <br/>
-            <div className="invitationPanelSelectors">
-              <p>Race:</p>
-              <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
-                <MenuItem eventKey="None">None</MenuItem>
-                <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
-                <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
-                <MenuItem eventKey="African American">African American</MenuItem>
-                <MenuItem eventKey="Asian">Asian</MenuItem>
-                <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
-                <MenuItem eventKey="Native American">Native American</MenuItem>
-                <MenuItem eventKey="Other">Other</MenuItem> 
-              </DropdownButton>
-            </div>
-            <div className="testersList">
-              <form onSubmit={this.sendInvites}>
-                {this.props.testersCopy.map((tester, i) => (
-                  <InviteTesters 
-                    handleInvites={this.handleInvites}
-                    tester={tester}
-                    key={i}
-                    index={i}
-                  />
-                ))}
-                <Button type="submit">Send Invites</Button>
-                <Button onClick={this.inviteAll}>Invite All</Button>
-                <Button onClick={this.renderPanel}>Close Invites Panel</Button>
-              </form>
-            </div>
-          </div>
-    
+      <div className="invitationPanel">
+        <div className="invitationPanelSelectors">
+          <p>Age:</p>
+          <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
+            <MenuItem eventKey="None">None</MenuItem>
+            <MenuItem eventKey="0-10">0-10</MenuItem>
+            <MenuItem eventKey="11-20">11-20</MenuItem>
+            <MenuItem eventKey="21-30">21-30</MenuItem>
+            <MenuItem eventKey="31-40">31-40</MenuItem>
+            <MenuItem eventKey="41-50">41-50</MenuItem>
+            <MenuItem eventKey="51-60">51-60</MenuItem>
+            <MenuItem eventKey="61-70">61-70</MenuItem>
+            <MenuItem eventKey="71-80">71-80</MenuItem>
+            <MenuItem eventKey="81-90">81-90</MenuItem>
+            <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
+          </DropdownButton>
+        </div>
+        <br/>
+        <div className="invitationPanelSelectors">
+          <p>Sex:</p>
+          <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Select a sex'}>
+            <MenuItem eventKey="None">None</MenuItem>
+            <MenuItem eventKey="Male">Male</MenuItem>
+            <MenuItem eventKey="Female">Female</MenuItem>
+          </DropdownButton>
+        </div>
+        <br/>
+        <div className="invitationPanelSelectors">
+          <p>Race:</p>
+          <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
+            <MenuItem eventKey="None">None</MenuItem>
+            <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
+            <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
+            <MenuItem eventKey="African American">African American</MenuItem>
+            <MenuItem eventKey="Asian">Asian</MenuItem>
+            <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
+            <MenuItem eventKey="Native American">Native American</MenuItem>
+            <MenuItem eventKey="Other">Other</MenuItem> 
+          </DropdownButton>
+        </div>
+        <div className="testersList">
+          <form onSubmit={this.sendInvites}>
+            {this.props.testersCopy.map((tester, i) => (
+              <InviteTesters 
+                handleInvites={this.handleInvites}
+                tester={tester}
+                key={i}
+                index={i}
+              />
+            ))}
+            <Button type="submit">Send Invites</Button>
+            <Button onClick={this.inviteAll}>Invite All</Button>
+            <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
+          </form>
+        </div>
+      </div>
     );
   }
   

@@ -92,6 +92,7 @@ class OptionList extends React.Component {
               testers={this.state.testers}
               testersCopy={this.state.testersCopy}
               changeTestersCopy={this.changeTestersCopy}
+              renderPanel={this.renderPanel}
             />
           )
         ) : (
