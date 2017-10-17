@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions'
 import axios from 'axios';
@@ -25,11 +26,11 @@ class ProjectHome extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="projectHomeContainer">
         <h2>{this.props.currentProject.name}</h2>
         <div className='projectContainer'>
           <p>{this.props.currentProject.description}</p>
-          <button onClick={this.routeToAddSection}>Add a section</button>
+          <Button onClick={this.routeToAddSection}>Add a section</Button>
           {this.props.currentProject.sections.map((section, i) => (
             <SectionList
               onSectionClick={this.onSectionClick}

@@ -37,7 +37,7 @@ class DashboardHome extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className="dashboardHomeContainer">
         <h2>Project Home</h2>
         { this.state.retrieved ? (
           this.state.projects.length ? (

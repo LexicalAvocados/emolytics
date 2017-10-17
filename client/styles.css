@@ -21,7 +21,7 @@ body {
 .projectContainer, .projectsContainer {
   border: solid black 1px;
   border-radius: 20px;
-  background-color: #e5e3e3;
+  background-color: white;
   box-shadow: 2px 2px black;
   padding: 15px;
   width: 50%;
@@ -113,18 +113,60 @@ body {
 
 
 /* Lucas' CSS */
+.dashboardHomeContainer {
+  background-color: #f2f2f2;
+  height: 200vh;
+  clear: right;
+  margin-left: -2.1%;
+  padding-left: 2%;
+}
+
+.projectHomeContainer {
+  background-color: #f2f2f2;
+  height: 200vh;
+  clear: right;
+  margin-left: -2.1%;
+  padding-left: 2%;
+}
+
 .currentSectionOptionsList {
+  /* border: 1px solid black;
+  border-radius: 3px;
+  padding-left: 1%; */
+  /* width: 100%; */
+}
+
+.sectionHomeContainer {
+  background-color: #f2f2f2;
+  height: 200vh;
+  clear: right;
+  margin-left: -2.1%;
+  padding-left: 2%;
 }
 
 .currentSectionOptionListEntry {
   float: left;
-  padding-right: 3%
+  padding-right: 3%;
+  width: auto;
+  /* border: 1px solid black;
+  border-radius: 3px;
+  padding-left: 1%; */
 }
 
+/* @keyframes reveal { DOESNT WORK
+  from {height: 0%;}
+  to {height: 100%;} 
+} */
+
 .invitationPanel {
+  /* animation-name: reveal;
+  animation-duration: 2s;
+  overflow: auto;
+  height: auto; */
   border: 1px solid black;
   border-radius: 3px;
   padding-left: 1%;
+  width: 100%;
 }
 
 .invitationPanelSelectors {
