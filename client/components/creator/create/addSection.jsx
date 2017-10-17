@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -33,8 +33,8 @@ class AddSection extends React.Component {
 
   // }
 
-  submitSectionClick(e) {
-    e.preventDefault();
+  submitSectionClick(event) {
+    event.preventDefault();
     axios.post('/api/addSection', {
       name: this.state.name,
       description: this.state.description,
@@ -43,7 +43,7 @@ class AddSection extends React.Component {
       .then((response) => {
         this.setState({
           name: response.data.name,
-          description: response.data.description,
+          description: response.data.description
         });
         this.props.actions.changeCurrentSection(response.data);
         this.props.history.push('/addOption');
@@ -73,7 +73,8 @@ class AddSection extends React.Component {
 const mapStateToProps = (state) => {
   return({
     router: state.router,
-    currentProject: state.currentProject
+    currentProject: state.currentProject,
+    currentSection: state.currentSection
   });
 };
 

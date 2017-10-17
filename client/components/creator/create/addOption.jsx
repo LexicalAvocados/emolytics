@@ -84,7 +84,7 @@ class AddOption extends React.Component {
 const mapStateToProps = (state) => {
   return({
     router: state.router,
-    currentProject: state.currentProject
+    currentProject: state.currentProject,
     currentSection: state.currentSection
 
   });
