@@ -19,7 +19,7 @@ import TesterProfile from './tester/TesterProfile.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
-// import OptionHome from './creator/option/OptionHome.jsx';
+import OptionHome from './creator/option/OptionHome.jsx';
 import CreateProject from './creator/create/createProject.jsx';
 import AddSection from './creator/create/addSection.jsx';
 
@@ -44,8 +44,7 @@ export class App extends React.Component {
                 <Route path="/testvideo" component={TesterVideo}/>
                 <Route path="/project:id" component={ProjectHome}/>
                 <Route path="/section:id" component={SectionHome}/>
-                {/* <Route path="/testviz" component={OptionHome}/> */}
-                {/* <Route path="/option:id" component={OptionHome}/> */}
+                <Route path="/option:id" component={OptionHome}/>
                 <Route path="/createProject" component={CreateProject}/>
                 <Route path="/addSection" component={AddSection}/>
               </Switch>
