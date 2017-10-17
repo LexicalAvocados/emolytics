@@ -157,6 +157,10 @@ body {
   margin-bottom: 2px;
 }
 
+.authSubmit {
+  margin-top: 2%;
+}
+
 
 /* Lucas' CSS */
 .currentSectionOptionsList {
