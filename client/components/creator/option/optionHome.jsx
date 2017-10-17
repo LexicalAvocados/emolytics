@@ -48,7 +48,7 @@ class OptionHome extends React.Component {
   componentDidMount() {
     //orientation modal
     axios.post('/api/getUsersIdsWhoWatced', {
-      optionId: 4 //this.props.currentSection.option.id
+      optionId: 1 //this.props.currentSection.option.id
     })
     .then( (res) => {
       res.data.forEach(userId => {
@@ -77,7 +77,7 @@ class OptionHome extends React.Component {
       user: this.props.loggedInUser
     }, () => {
       axios.post('/api/getLikes', {
-        optionId: 4 //this.props.currentSection.option.id
+        optionId: 1 //this.props.currentSection.option.id
       })
       .then( (res) => {
         let likeCount = res.data.reduce((tot, curr) => {
@@ -97,7 +97,7 @@ class OptionHome extends React.Component {
                     "neutral", "sadness", "surprise" ]
 
     axios.post('/api/getFrames', {
-      optionId: 4 //this.props.currentSection.option.id
+      optionId: 1 //this.props.currentSection.option.id
     })
     .then((res) => {
       let tempEmotionObj = {};
@@ -123,7 +123,7 @@ class OptionHome extends React.Component {
                 acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
                 return acc;
               } else {
-                acc.push(+curr[emo]);
+                acc.push(+curr[emo]); // eventually want to use acc[curr.time] = +curr[emo] and pad the array with null values interspersed
                 return acc;
               }
             }
@@ -225,7 +225,7 @@ class OptionHome extends React.Component {
     var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
                     "neutral", "sadness", "surprise" ];
     axios.post('/api/getFrames', {
-      optionId: 4 //this.props.currentSection.option.id
+      optionId: 1 //this.props.currentSection.option.id
     })
     .then((res) => {
       let tempEmotionObj = {};
@@ -270,7 +270,7 @@ class OptionHome extends React.Component {
       })
     })
     axios.post('/api/getLikes', {
-      optionId: 4 //this.props.currentSection.option.id
+      optionId: 1 //this.props.currentSection.option.id
     })
     .then( (res) => {
       let likeCount = res.data.reduce((tot, curr) => {
