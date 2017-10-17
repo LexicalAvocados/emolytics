@@ -21,7 +21,7 @@ const Demographics = (props) => {
       <h3> Demographics </h3>
       {props.selectedUsers.length < props.allUsers.length ? (
         <div className='specificUsers'>
-
+          <p> Selected viewers: </p>
           <div className='userDetails'>
             {props.selectedUsers.map((userObj, i) => (
               <p key={i}> {userObj.name || userObj.username } (sex: {userObj.sex || 'N/A'}, age: {userObj.age || 'N/A'})</p>
@@ -36,7 +36,7 @@ const Demographics = (props) => {
         </div>
       ): (
         <div className='allUsers'>
-          <p> All Users</p>
+          <p> Selected: All Viewers</p>
           <div className='averages'>
             <p> Avg Age: {calcAvgAge(props.selectedUsers)}</p>
             <p> Gender Distribution: {calcGenderDistribution(props.selectedUsers)}</p>
