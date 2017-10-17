@@ -29,7 +29,6 @@ class ProjectHome extends React.Component {
         <h2>{this.props.currentProject.name}</h2>
         <div className='projectContainer'>
           <p>{this.props.currentProject.description}</p>
-          <Button onClick={this.routeToAddSection}>Add a section</Button>
           {this.props.currentProject.sections.map((section, i) => (
             <SectionList
               onSectionClick={this.onSectionClick}
@@ -37,6 +36,7 @@ class ProjectHome extends React.Component {
               key={i}
             />
           ))}
+          <Button className="addSectionButton" onClick={this.routeToAddSection}>Add a section</Button>
         </div>
       </div>
     );

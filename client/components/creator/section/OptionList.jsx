@@ -76,10 +76,11 @@ class OptionList extends React.Component {
       <div className="currentSectionOptionListEntry">
         <Link to={'/option' + this.props.option.id}>
           <img src={this.props.option.thumbnail} alt="" onClick={() => this.props.onOptionClick(this.props.index)}/>
+          <p className="closerText">{this.props.option.name}</p>
         </Link>
-        <br />
+        {/* <br /> */}
         { this.state.haveInvited ? (
-          <p>You have previously invited testers to view this option</p> 
+          <p className="closerText">You have previously invited testers to view this option</p> 
         ) : ( null )}
         { !this.state.invited ? (
           !this.state.displayPanel ? (

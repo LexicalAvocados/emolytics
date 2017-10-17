@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class ProjectList extends React.Component {
@@ -27,14 +27,20 @@ class ProjectList extends React.Component {
 
   onClickCallback() {
     this.props.onProjectClick(this.props.project, this.state.sections)
+    this.props.history.push('/project' + this.props.project.id);
+    
   }
+
+  // routeToProject() {
+  //   this.props.history.push('/project' + this.props.project.id);
+  // }
 
   render() {
     return (
-      <div className='projectsContainer'>
-        <Link to={'/project' + this.props.project.id}>
-          <p onClick={this.onClickCallback}>Project Name: {this.props.project.name}</p>
-        </Link>
+      <div onClick={this.onClickCallback} className='projectsContainer'>
+        {/* <Link to={'/project' + this.props.project.id}> */}
+        <p>Project Name: {this.props.project.name}</p>
+        {/* </Link> */}
         <p>Project Description: {this.props.project.description}</p>
         { this.state.sections.map((section, i) => {
           return (
@@ -46,4 +52,4 @@ class ProjectList extends React.Component {
   }
 }
 
-export default ProjectList;
+export default withRouter(ProjectList);
