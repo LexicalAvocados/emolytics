@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import InvitationPanel from './InvitationPanel.jsx'
+import { Button } from 'react-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -9,6 +10,7 @@ class OptionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayPanel: false,
       invited: false,
       haveInvited: false,
       invitedUserIds: [],
@@ -18,6 +20,7 @@ class OptionList extends React.Component {
     this.renderInvited = this.renderInvited.bind(this);
     // this.renderHaveInvited = this.renderHaveInvited.bind(this);
     this.changeTestersCopy = this.changeTestersCopy.bind(this);
+    this.renderPanel = this.renderPanel.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +65,11 @@ class OptionList extends React.Component {
     })
   }
 
+  renderPanel() {
+    this.setState({
+      displayPanel: !this.state.displayPanel
+    });
+  }
 
   render() {
     return (
@@ -69,20 +77,25 @@ class OptionList extends React.Component {
         <Link to={'/option' + this.props.option.id}>
           <img src={this.props.option.thumbnail} alt="" onClick={() => this.props.onOptionClick(this.props.index)}/>
         </Link>
+        <br />
         { this.state.haveInvited ? (
           <p>You have previously invited testers to view this option</p> 
         ) : ( null )}
-        { this.state.invited ? (
-          <p>Testers Invited!</p>
+        { !this.state.invited ? (
+          !this.state.displayPanel ? (
+            <Button onClick={this.renderPanel}>Invite testers</Button>
+          ) : (
+            <InvitationPanel
+              option={this.props.option}
+              renderInvited={this.renderInvited}
+              invitedUserIds={this.state.invitedUserIds}
+              testers={this.state.testers}
+              testersCopy={this.state.testersCopy}
+              changeTestersCopy={this.changeTestersCopy}
+            />
+          )
         ) : (
-          <InvitationPanel
-            option={this.props.option}
-            renderInvited={this.renderInvited}
-            invitedUserIds={this.state.invitedUserIds}
-            testers={this.state.testers}
-            testersCopy={this.state.testersCopy}
-            changeTestersCopy={this.changeTestersCopy}
-          />
+          <p>Testers Invited!</p>
         )}
       </div>
     );

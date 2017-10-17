@@ -1,19 +1,19 @@
 import React from 'react';
 import InviteTesters from './InviteTesters.jsx';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 
 class InvitationPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayPanel: false,
       ageSelected: false,
       sexSelected: false,
       raceSelected: false,
       invited: []
     };
-    this.renderPanel = this.renderPanel.bind(this);
+    // this.renderPanel = this.renderPanel.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
@@ -24,11 +24,11 @@ class InvitationPanel extends React.Component {
   }
 
 
-  renderPanel() {
-    this.setState({
-      displayPanel: !this.state.displayPanel
-    });
-  }
+  // renderPanel() {
+  //   this.setState({
+  //     displayPanel: !this.state.displayPanel
+  //   });
+  // }
 
   handleInvites(event, index) {
     if (event.target.checked) {
@@ -181,10 +181,6 @@ class InvitationPanel extends React.Component {
 
   render() {
     return (
-      <div>
-        { !this.state.displayPanel ? (
-          <button onClick={this.renderPanel}>Invite testers</button>
-        ):(
           <div className="invitationPanel">
             <div className="invitationPanelSelectors">
               <p>Age:</p>
@@ -235,14 +231,13 @@ class InvitationPanel extends React.Component {
                     index={i}
                   />
                 ))}
-                <input type="submit" value="Send Invites"/>
-                <button onClick={this.inviteAll}>Invite All</button>
-                <button onClick={this.renderPanel}>Close Invites Panel</button>
+                <Button type="submit">Send Invites</Button>
+                <Button onClick={this.inviteAll}>Invite All</Button>
+                <Button onClick={this.renderPanel}>Close Invites Panel</Button>
               </form>
             </div>
           </div>
-        )}
-      </div>
+    
     );
   }
   
