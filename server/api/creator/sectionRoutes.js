@@ -1,3 +1,5 @@
+const express = require('express');
+const router = require('express').Router();
 const db = require('../../../db/index.js');
 const Sections = db.Section;
 const Users = db.User;
@@ -28,5 +30,26 @@ exports.getTesters = function(req, res) {
     })
     .catch((err) => {
       res.send('Error retrieving testers!', err);
-    })
+    });
 };
+
+exports.addSection = function(req, res) {
+  Sections.create({
+    name: req.body.name,
+    description: req.body.description,
+    projectId: req.body.projectId
+  })
+    .then((newSection) => {
+      if (newSection) {
+        res.send(newSection);
+      } else {
+        console.error('Could not create new section');
+      }
+    })
+    .catch((err) => {
+      console.error('Error creating new section', err);
+    })
+
+};
+
+

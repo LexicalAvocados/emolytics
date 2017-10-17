@@ -13,6 +13,8 @@ router.get('/getProjectsForUser', projectRoutes.getProjectsForUser);
 
 router.get('/getRelatedSections', sectionRoutes.getRelatedSection);
 
+router.post('/addSection', sectionRoutes.addSection);
+
 router.get('/getOptionsForSection', optionRoutes.getRelatedOptions);
 
 router.get('/getTesters', sectionRoutes.getTesters);
@@ -30,5 +32,6 @@ router.get('/getTestersForOption', optionRoutes.getTestersForOption);
 router.post('/getUsersIdsWhoWatced', optionRoutes.getUsersIdsWhoWatced)
 
 router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced)
+
 
 module.exports = router;
