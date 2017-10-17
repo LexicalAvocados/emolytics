@@ -23,7 +23,6 @@ const path = require('path');
 // })
 
 router.post('/getVideo', (req, res) => {
-  console.log("TESTTTTTTINGGGGG")
 	console.log('req session', req.session);
   console.log(req.body);
   var id = parseInt(req.body.id)
@@ -48,7 +47,6 @@ router.post('/sendFrame', (req, res) => {
 
       let userArr = user;
       if (emotions) {
-        console.log("EMOTIONS");
 
         Frame.findOne({where: {optionId: req.body.option.id, userId: userArr[0].dataValues.id, time: req.body.time}})
           .then(frame => {
@@ -108,6 +106,7 @@ router.post('/sendFrame', (req, res) => {
             } else {
               Frame.create({
                 attention : 0,
+                time: req.body.time,
                 anger: 0,
                 contempt: 0,
                 disgust: 0,
@@ -143,9 +142,11 @@ router.post('/likeVideo', (req, res) => {
           console.log('ENTRY', entry)
           entry.update({
             finished: true,
-            like: req.body.like
+            like: req.body.like,
+            comment: req.body.comment
           })
           console.log(created);
+          res.send('finished');
         })
     })
 })

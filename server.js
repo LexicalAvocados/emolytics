@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(session({
   secret: 'machine learning',
   cookie: {
-    maxAge: 60 * 60 * 24 * 100,
+    maxAge: 60 * 60 * 24 * 1000,
     saveUninitialized: true,
     secure: !true
   }
