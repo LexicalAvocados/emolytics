@@ -29,9 +29,11 @@ router.post('/getLikes', optionRoutes.getLikesOnOption);
 
 router.get('/getTestersForOption', optionRoutes.getTestersForOption);
 
-router.post('/getUsersIdsWhoWatced', optionRoutes.getUsersIdsWhoWatced)
+router.post('/getUsersIdsWhoWatced', optionRoutes.getUsersIdsWhoWatced);
 
-router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced)
+router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced);
+
+router.post('/addOption', optionRoutes.addOption);
 
 
 module.exports = router;

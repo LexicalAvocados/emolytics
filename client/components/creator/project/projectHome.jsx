@@ -4,9 +4,8 @@ import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
-import * as ChangeActions from '../../../actions'
+import * as ChangeActions from '../../../actions';
 import axios from 'axios';
-
 
 class ProjectHome extends React.Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class ProjectHome extends React.Component {
   routeToAddSection() {
     this.props.history.push('/addSection');
   }
-
+        
   render() {
     return (
       <div className="projectHomeContainer">
@@ -43,8 +42,7 @@ class ProjectHome extends React.Component {
     );
   }
 
-};
-
+}
 
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN PROJECTHOME', state);
