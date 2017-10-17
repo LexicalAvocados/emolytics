@@ -58,26 +58,26 @@ export class Login extends React.Component {
 
   render() {
     return (
-      <div>
-        <Form horizontal onSubmit={this.submitLogin}>
+      <div className='auth'>
+        <h2 className='loginHeader'>Log In</h2>
+        <Form horizontal className='authForm' onSubmit={this.submitLogin}>
           <FormGroup>
-            {<div>this.state.loginError</div> && this.state.loginError}<br/><br/>
-            <ControlLabel>Log In</ControlLabel><br/>
-            <Col sm={2}>
+            <Col className='authInput'>
             <FormControl
               type='text'
               value={this.state.typedUsername}
               placeholder='Username'
               onChange={this.updateTypedUsername}
-            /></Col><br/><br/>
-            <Col sm={2}>
+            /></Col>
+            <Col className='authInput'>
             <FormControl
               type='password'
               value={this.state.typedPassword}
               placeholder='Password'
               onChange={this.updateTypedPassword}
-            /></Col><br/><br/>
-            <Button type='submit'>Submit</Button>
+            /></Col>
+            <Button className='authSubmit' type='submit'>Submit</Button><br/>
+            {<div>this.state.loginError</div> && this.state.loginError}
           </FormGroup>
         </Form>
       </div>
