@@ -24,25 +24,16 @@ import OptionHome from './creator/option/OptionHome.jsx';
 import CreateProject from './creator/create/createProject.jsx';
 
 
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
-    this.onClick = this.onClick.bind(this);
     console.log('App: this:', this);
-  }
-
-  onClick() {
-    this.props.actions.changeExample('changed');
   }
 
   render() {
     return (
       <div>
         <Navbar />
-        {this.props.example.text}
-        <button onClick={this.onClick}> test </button><br/><br/>
 
         {
           this.props.loggedInUser.username ? (

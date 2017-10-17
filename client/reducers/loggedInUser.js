@@ -26,9 +26,8 @@ const loggedInUser = (state = {username: undefined, name: undefined, age: undefi
     case 'SET_RACE':
       return Object.assign({}, state, {race: action.race});
     case 'persist/REHYDRATE':
-      let incoming = action.payload.loggedInUser;
-      if (incoming) return {...state, ...incoming};
-      return state;
+      if (action.payload.loggedInUser) return action.payload.loggedInUser;
+      else return state;
     default:
       return state;
   }
