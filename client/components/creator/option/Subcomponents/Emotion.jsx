@@ -17,11 +17,15 @@ const Emotion = (props) => {
 
   return (
     <div className="testerEmotion">
-      <p> Most Prevalent Emotion: {calcMaxEmotion(props.emotionsObj)}</p>
+      <p style={center}> Most Prevalent Emotion: {calcMaxEmotion(props.emotionsObj)}</p>
       <p className='chartHeader'> Overall Emotion Breakdown: </p>
       <div className='emotionChart'></div>
     </div>
   )
 };
+
+const center = {
+  textAlign: "center"
+}
 
 export default Emotion;

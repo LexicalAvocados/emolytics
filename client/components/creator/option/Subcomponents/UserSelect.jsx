@@ -10,6 +10,7 @@ class UserSelect extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleAllUsers = this.toggleAllUsers.bind(this);
   }
 
   componentDidMount() {
@@ -31,7 +32,19 @@ class UserSelect extends React.Component {
     //callback with selected users state
     this.props.userSelectCb(this.state.tempSelectedUsers);
     this.props.changeSideNavSelection('overview');
+  };
 
+  toggleAllUsers() {
+    let currStatus = this.state.tempSelectedUsers.length === this.props.allUsers.length;
+    if (currStatus) {
+      this.setState({
+        tempSelectedUsers: []
+      })
+    } else {
+      this.setState({
+        tempSelectedUsers: this.props.allUsers
+      })
+    }
   }
 
   render() {
@@ -41,6 +54,7 @@ class UserSelect extends React.Component {
         <FormGroup>
           <Checkbox bsClass='checkbox'
                     checked={this.state.tempSelectedUsers.length === this.props.allUsers.length}
+                    onChange={this.toggleAllUsers}
           >All Testers</Checkbox>
         {this.props.allUsers.map((userObj, i) => (
             <Checkbox bsClass='checkbox'

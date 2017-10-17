@@ -63,7 +63,13 @@ class OptionHome extends React.Component {
           this.setState({
             allUsers: newUsers,
             selectedUsers: newUsers
-          }, () => console.log('state set with users', this.state))
+          }, () => {
+            console.log('state set with users', this.state)
+            let averagedCompletion = this.state.completion / this.state.selectedUsers.length;
+            this.setState({
+              completion: averagedCompletion
+            })
+          })
         })
       })
     })
@@ -167,7 +173,6 @@ class OptionHome extends React.Component {
           columns: lineGraphData
         }
       });
-      console.log('emotion obj instate', this.state.emotionObj)
       var pieChart = c3.generate({
         bindto: '.emotionChart',
         data: {
@@ -184,6 +189,7 @@ class OptionHome extends React.Component {
           type : 'pie'
         }
       });
+      this.forceUpdate();
   }
 
   setDuration(dur) {
@@ -231,18 +237,16 @@ class OptionHome extends React.Component {
         if (userIdsArray.includes(curr.userId) && curr.time !== null) {
               if (emo === 'neutral') {
                 if (acc[curr.time]) {
-                  acc[curr.time] = (acc[curr.time] + curr[emo] / 8) / 2;
+                  acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
                 } else {
-                  acc = acc.concat(curr[emo] / 8);
+                  acc.push(+curr[emo] / 8);
                 }
               }
               else {
-                console.log('curr in middle of swap', curr)
                 if (acc[curr.time]) {
-                  acc[curr.time] = (acc[curr.time] + curr[emo] )/ 2;
+                  acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
                 } else {
-                  console.log('ACC', acc)
-                  acc = acc.concat(curr[emo]);
+                  acc.push(+curr[emo]);
                 }
               }
             }
@@ -305,7 +309,7 @@ class OptionHome extends React.Component {
   render() {
     return (
       <div className='optionAnalyticsContainer'>
-        <SideBar changeCb={this.changeSideNavSelection}/>
+        <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
         <div className='leftSide'>
           <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
             ref={(player) => { this.ReactPlayer = player; }}

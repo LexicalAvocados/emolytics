@@ -80,7 +80,7 @@ body {
 
 .bottomPanelContainer {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 35% 65%;
 }
 
 .testerAttention {
@@ -88,6 +88,16 @@ body {
 }
 
 .testerFeedback {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.rawValues{
+  grid-column: 1;
+}
+
+.progressBars{
   grid-column: 2;
 }
 
