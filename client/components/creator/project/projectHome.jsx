@@ -27,8 +27,8 @@ class ProjectHome extends React.Component {
     return (
       <div className="projectHomeContainer">
         <h2>{this.props.currentProject.name}</h2>
-        <div className='projectContainer'>
-          <p>{this.props.currentProject.description}</p>
+        <p>{this.props.currentProject.description}</p>
+        <div className="blah">
           {this.props.currentProject.sections.map((section, i) => (
             <SectionList
               onSectionClick={this.onSectionClick}
