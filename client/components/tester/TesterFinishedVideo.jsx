@@ -52,7 +52,6 @@ class TesterFinishedVideo extends React.Component {
         <div className="finishVideo">
           <h3> Comments </h3> 
           <textarea name="comment" value={this.state.comment} onChange={this.handleChange} className="testerComments" rows="8" cols="80">
-            Creators Love Feedback!
           </textarea>
           <br/>
           <br/>

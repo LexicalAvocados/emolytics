@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+
 body {
-  font-family: 'Montserrat';
+  /*font-family: 'Montserrat';*/
+  font-family: 'Open Sans', sans-serif;
   margin: auto;
-  margin-left: 2%;
+  /*margin-left: 2%;*/
 }
 
 .app {
@@ -191,6 +195,45 @@ button {
 
 .TesterHomeContainer {
   clear: right;
+}
+
+.CreateProject {
+  clear: right;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 10px 20px 20px 20px;
+}
+
+.CreateProject input[type=text] {
+  padding: 8px 16px;
+  margin: 6px 0;
+}
+
+
+.inputDescription {
+  width: 50%;
+}
+
+.navContainer {
+  font-family: 'Open Sans', sans-serif;
+  float: right;
+  display: flex;
+  padding: 0px 0% 3% 3%;
+  margin-left: 5%;
+  right: 0;
+  font-size: 20px;
+}
+
+.TesterHomeContainer {
+  text-align: center;
+  background-color: #f2f2f2;
+  padding: 3% 3% 0% 2%;
+  border-radius: 12px;
+}
+
+.promoButton {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 
