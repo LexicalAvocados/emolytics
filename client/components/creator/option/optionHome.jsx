@@ -105,19 +105,19 @@ class OptionHome extends React.Component {
         tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
             if (emo === 'neutral') {
               if (acc[curr.time]) {
-                acc[curr.time] = (acc[curr.time] + curr[emo] / 8) / 2;
+                acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
                 return acc;
               } else {
-                acc.push(curr[emo] / 8);
+                acc.push(+curr[emo] / 8);
                 return acc;
               }
             }
             else {
               if (acc[curr.time]) {
-                acc[curr.time] = (acc[curr.time] + curr[emo] )/ 2;
+                acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
                 return acc;
               } else {
-                acc.push(curr[emo]);
+                acc.push(+curr[emo]);
                 return acc;
               }
             }
@@ -167,7 +167,7 @@ class OptionHome extends React.Component {
           columns: lineGraphData
         }
       });
-
+      console.log('emotion obj instate', this.state.emotionObj)
       var pieChart = c3.generate({
         bindto: '.emotionChart',
         data: {
