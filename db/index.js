@@ -82,7 +82,8 @@ Option.sync({force: false});
 
 const TesterAndOption = sequelize.define('testerAndOption', {
   like: Sequelize.BOOLEAN,
-  finished: Sequelize.BOOLEAN
+  finished: Sequelize.BOOLEAN,
+  comment: Sequelize.TEXT
 })
 
 Option.belongsToMany(User, {through: 'testerAndOption'});
@@ -114,11 +115,14 @@ Frame.belongsTo(Option);
 
 Frame.sync({force: false});
 
+
 const Key = sequelize.define('key', {
   key: Sequelize.TEXT
 });
 
 Key.sync({force: false});
+
+// Key.create({key: 'cb1e44a3d50c4a5291591ca117880155'})
 
 module.exports = {
   sequelize: sequelize,

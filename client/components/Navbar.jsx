@@ -62,8 +62,10 @@ class Navbar extends React.Component {
 const navbarContainerStyle = {
   float: "right",
   display: "flex",
-  padding: "10px",
-  marginRight: "3%"
+  padding: "0px 3% 3% 3%",
+  marginLeft: "3%",
+  right: 0,
+  fontSize: "20px"
 }
 
 const noUnderline = {

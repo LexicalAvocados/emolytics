@@ -4,6 +4,10 @@ body {
   margin-left: 2%;
 }
 
+.app {
+  padding: 4%;
+}
+
 .navItem {
   color: black;
   padding: 10px;
@@ -106,8 +110,8 @@ body {
 }
 
 .overlay{
-    opacity:0.8;
-    background-color:#ccc;
+    /*background-color:#ccc;*/
+    background: rgba(204, 204, 204, .8);
     position:fixed;
     width:100%;
     height:100%;
@@ -124,8 +128,69 @@ body {
   opacity: 0;
 }
 
+.videoPlayer {
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 4%;
+  position: relative;
+  height: 60vh;
+}
 
+.videoWrapper {
+  height: 80vh;
+}
 
+.player {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.finishVideo {
+  margin: 20%;
+  text-align: center;
+}
+
+button {
+  border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+
+}
+
+.like {
+  background-color: #4CAF50;
+  margin-right: 5%;
+}
+
+.like:hover {
+  text-decoration: underline;
+}
+
+.unlike {
+  background-color: #f44336;
+}
+
+.unlike:hover {
+  text-decoration: underline;
+
+}
+
+.testerComments {
+  opacity: 1;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.TesterHomeContainer {
+  clear: right;
+}
 
 
 /* Lucas' CSS */
