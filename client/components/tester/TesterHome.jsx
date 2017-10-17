@@ -30,19 +30,28 @@ class TesterHome extends React.Component {
   render() {
     return (
       <div className="TesterHomeContainer">
-        <h2> Welcome to Emolytics! </h2><br/><br/>
+        <h2> Welcome to Emolytics! </h2><br/>
         <p>If you have a code, please enter it below.</p>
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId='promoCode'>
-            <Col sm={2}>
+          <FormGroup  controlId='promoCode'>
+            <Col lg={5}>
+            </Col>
+            <Col className="promoButton" lg={2}>
             <FormControl
               type='text'
               value={this.state.testerCode}
               placeholder='Enter code'
               onChange={this.handleCodeChange}
               />
+              <br/>
+
+            <Link  to={`/video/${this.state.testerCode}`}> <Button> Go </Button> </Link>
           </Col>
-            <Link to={`/video/${this.state.testerCode}`}> <Button> Go </Button> </Link>
+          <Col lg={5}>
+          <br/><br/><br/><br/><br/>
+          </Col>
+            
+            
           </FormGroup>
         </form>
         <p> Otherwise, feel free to browse our collection of videos,

@@ -19,7 +19,7 @@ class Navbar extends React.Component {
         {
           this.props.loggedInUser.username ? (
             this.props.loggedInUser.isCreator ? (
-              <div className='navContainer' style={navbarContainerStyle}>
+              <div className='navContainer'>
                 <Link to='/' style={noUnderline}>
                   <p className='navItem'>Home</p>
                 </Link>
@@ -60,12 +60,12 @@ class Navbar extends React.Component {
 }
 
 const navbarContainerStyle = {
-  float: "right",
-  display: "flex",
-  padding: "0px 3% 3% 3%",
-  marginLeft: "3%",
-  right: 0,
-  fontSize: "20px"
+  // float: "right",
+  // display: "flex",
+  // padding: "0px 3% 3% 3%",
+  // marginLeft: "3%",
+  // right: 0,
+  // fontSize: "20px"
 }
 
 const noUnderline = {
