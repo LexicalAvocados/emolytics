@@ -1,8 +1,9 @@
 const db = require('../../../db/index.js');
 const User = db.User;
 const FocusGroup = db.FocusGroup;
-const nodemailer = require('nodemailer');
+const FocusGroupAndTester = db.FocusGroupAndTester;
 const TesterAndOptions = db.TesterAndOption;
+const nodemailer = require('nodemailer');
 
 const routeForTesters = "http://localhost:3000/login"
 
@@ -68,12 +69,32 @@ exports.createNewFocusGroup = (req, res) => {
 
 exports.addTesterToFocusGroup = (req, res) => {
   console.log('addTesterToFocusGroup req.body:', req.body);
-  User.findOne({
+
+  let tester = User.findOne({
     where: {
-      username: req.body.username
+      username: req.body.testerUsername
     }
-  })
-    .then(user => {
-      
+  });
+
+  let focusGroup = FocusGroup.findOne({
+    where: {
+      name: req.body.focusGroup
+    }
+  });
+
+  Promise.all([tester, focusGroup])
+    .then(values => {
+      FocusGroupAndTester.create({
+        userId: values[0].id,
+        focusGroupId: values[1].id
+      });
+    })
+    .then(newDbEntry => {
+      console.log('Associated', newDbEntry.userId, 'with Focus Group', newDbEntry.focusGroupId);
+      res.send(true);
+    })
+    .catch(err => {
+      console.log('Error associating Tester with Focus Group:', err);
+      res.send(false);
     })
 }

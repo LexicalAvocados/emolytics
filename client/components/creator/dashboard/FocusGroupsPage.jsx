@@ -14,6 +14,7 @@ class FocusGroupsPage extends React.Component {
     this.state = {
       typedFocusGroupName: '',
       typedTesterUsername: '',
+      focusGroupList: [],
       selectedFocusGroup: ''
     }
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
@@ -35,12 +36,15 @@ class FocusGroupsPage extends React.Component {
       focusGroupName: this.state.typedFocusGroupName,
       creatorUsername: this.props.loggedInUser.username
     })
+      .then(focusGroup => {
+        this.setState({focusGroupList: [...this.state.focusGroupList, focusGroup.name]})
+      })
   }
 
   addTesterToFocusGroup() {
     axios.post('/api/creator/addtoFocusGroup', {
       focusGroup: this.state.selectedFocusGroup,
-      username: this.state.typedUsername
+      testerUsername: this.state.typedTesterUsername
     })
   }
 
@@ -57,6 +61,7 @@ class FocusGroupsPage extends React.Component {
           />
         </form>
         <Button onClick={this.createNewFocusGroup}></Button>
+        {this.state.focusGroupList.length && 'Focus Groups Exist'}
         <h2>Add Tester to Focus Group</h2>
         <form onSubmit={this.addTesterToFocusGroup}>
           <FormControl
