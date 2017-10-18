@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionList from './OptionList.jsx';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -22,6 +23,9 @@ class SectionHome extends React.Component {
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
+        <Link to="/addOption">
+          <Button className="addSectionButton">Add an option</Button>
+        </Link>
         <div className="currentSectionOptionsList">
           { this.props.currentSection.options.map((option, i) => (
             <OptionList
