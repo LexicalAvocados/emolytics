@@ -44,9 +44,25 @@ class AddOption extends React.Component {
       .then((data) => {
         console.log('response from youtube', data);
         youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.default.url;
-        youTubeData.length = data.data.items[0].contentDetails.duration;
         youTubeData.tags = data.data.items[0].snippet.tags;
-        // youTubeData.length = youTubeData.length.
+        var unitsOfTime = ['H', 'M', 'S'];
+        var nums = []
+        for (var i = 0; i < unitsOfTime.length; i++) {
+          var num = this.convert(data.data.items[0].contentDetails.duration, unitsOfTime[i]);
+          if (i === 0 && num) {
+            num = num*60*60;
+            nums.push(num);
+          } else if (i === 1 && num) {
+            num = num*60;
+            nums.push(num);
+          } else if (i === 2 && num) {
+            nums.push(num) 
+          }
+        }
+        nums = nums.reduce((acc, cur) => {
+          return acc + cur;
+        })
+        youTubeData.length = nums;
         cb(youTubeData);
       })
       .catch((err) => console.error('error in youtube', err));
@@ -69,7 +85,8 @@ class AddOption extends React.Component {
             name: response.data.name,
             description: response.data.description
           }, () => {
-            this.props.actions.changeCurrentOption(response.data);
+            // this.props.actions.changeCurrentOption(response.data);
+            this.props.actions.addOptionsToCurrentSection(response.data);
             this.props.history.push('/project' + this.props.currentProject.id);
           });
 
@@ -79,6 +96,23 @@ class AddOption extends React.Component {
         });
     });
   }
+
+
+  convert(string, sequence) {
+    for (var i = string.length - 1; i >= 0; i--) {
+      if (string[i] === sequence) {
+        var num = '';
+        var last = string[i - 1];
+        if (!isNaN(string[i - 2])) {
+          var first = string[i -2];
+          return Number(num = first + last)
+        } else {
+          return Number(num = last);
+        }
+      }
+    }
+  }
+  
 
   render() {
     return (
