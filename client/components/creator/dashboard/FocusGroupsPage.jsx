@@ -12,27 +12,61 @@ class FocusGroupsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      typedUsername: ''
+      typedFocusGroupName: '',
+      typedTesterUsername: '',
+      selectedFocusGroup: ''
     }
-    this.updateTypedUsername = this.updateTypedUsername.bind(this);
+    this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
+    this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
+    this.createNewFocusGroup = this.createNewFocusGroup.bind(this);
+    this.addTesterToFocusGroup = this.addTesterToFocusGroup.bind(this);
   }
 
-  updateTypedUsername() {
+  updateTypedTesterUsername(e) {
     this.setState({typedUsername: e.target.value});
+  }
+
+  updateTypedFocusGroupName(e) {
+    this.setState({typedFocusGroupName: e.target.value})
+  }
+
+  createNewFocusGroup() {
+    axios.post('/api/creator/newFocusGroup', {
+      focusGroupName: this.state.typedFocusGroupName,
+      creatorUsername: this.props.loggedInUser.username
+    })
+  }
+
+  addTesterToFocusGroup() {
+    axios.post('/api/creator/addtoFocusGroup', {
+      focusGroup: this.state.selectedFocusGroup,
+      username: this.state.typedUsername
+    })
   }
 
   render() {
     return (
       <div>
-        <h2>Create a Focus Group</h2>
-        <form>
+        <h2>Create New Focus Group</h2>
+        <form onSubmit={this.createNewFocusGroup}>
+          <FormControl
+            type='text'
+            value={this.state.typedFocusGroupName}
+            placeholder='Focus Group Name'
+            onChange={this.updateTypedFocusGroupName}
+          />
+        </form>
+        <Button onClick={this.createNewFocusGroup}></Button>
+        <h2>Add Tester to Focus Group</h2>
+        <form onSubmit={this.addTesterToFocusGroup}>
           <FormControl
             type='text'
             value={this.state.typedUsername}
             placeholder='Tester Username'
-            onChange={this.updateTypedUsername}
+            onChange={this.updateTypedTesterUsername}
           />
         </form>
+        <h3>Focus Group Members</h3>
       </div>
     )
   }

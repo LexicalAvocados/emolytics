@@ -35,5 +35,9 @@ router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced);
 
 router.post('/addOption', optionRoutes.addOption);
 
+router.post('/newFocusGroup', indexRoutes.createNewFocusGroup);
+
+router.post('/addToFocusGroup', indexRoutes.addTesterToFocusGroup)
+
 
 module.exports = router;

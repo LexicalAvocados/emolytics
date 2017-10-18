@@ -42,9 +42,11 @@ User.sync({force: false});
 // Focus Group Schema //
 // ~~~~~~~~~~~~~~~~~~ //
 
-const FocusGroup = sequelize.define('focusGroup', {});
+const FocusGroup = sequelize.define('focusGroup', {
+  name: Sequelize.STRING
+});
 
-FocusGroup.belongsTo(Creator);
+FocusGroup.belongsTo(User);
 
 FocusGroup.sync({force: false});
 

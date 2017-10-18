@@ -1,4 +1,6 @@
 const db = require('../../../db/index.js');
+const User = db.User;
+const FocusGroup = db.FocusGroup;
 const nodemailer = require('nodemailer');
 const TesterAndOptions = db.TesterAndOption;
 
@@ -38,3 +40,40 @@ exports.sendEmails = function(req, res) {
     })
   });
 };
+
+
+exports.createNewFocusGroup = (req, res) => {
+  console.log('createNewFocusGroup req.body:', req.body);
+  User.findOne({
+    where: {
+      username: req.body.creatorUsername
+    }
+  })
+    .then(creator => {
+      FocusGroup.create({
+        name: req.body.focusGroupName
+        creatorId: creator.id
+      });
+    })
+    .then(newFocusGroup => {
+      console.log('New Focus Group created!');
+      res.send(newFocusGroup);
+    })
+    .catch(err => {
+      console.log('Error creating new Focus Group');
+      res.send(err);
+    });
+};
+
+
+exports.addTesterToFocusGroup = (req, res) => {
+  console.log('addTesterToFocusGroup req.body:', req.body);
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  })
+    .then(user => {
+      
+    })
+}
