@@ -36,8 +36,8 @@ class FocusGroupsPage extends React.Component {
       focusGroupName: this.state.typedFocusGroupName,
       creatorUsername: this.props.loggedInUser.username
     })
-      .then(focusGroup => {
-        this.setState({focusGroupList: [...this.state.focusGroupList, focusGroup.name]})
+      .then(newFocusGroup => {
+        this.setState({focusGroupList: [...this.state.focusGroupList, newFocusGroup.name]})
       })
   }
 
@@ -72,6 +72,7 @@ class FocusGroupsPage extends React.Component {
           />
         </form>
         <h3>Focus Group Members</h3>
+        {this.state.focusGroupMembers.length && 'Members Exist'}
       </div>
     )
   }
@@ -82,6 +83,7 @@ class FocusGroupsPage extends React.Component {
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => ({
   loggedInUser: state.loggedInUser,
+  focusGroups: state.focusGroups,
   router: state.router
 });
 
