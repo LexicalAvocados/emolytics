@@ -80,7 +80,10 @@ exports.addOption = (req, res) => {
     name: req.body.name,
     description: req.body.description,
     sectionId: req.body.sectionId,
-    youtubeUrl: req.body.url
+    youtubeUrl: req.body.url,
+    thumbnail: req.body.thumbnail,
+    length: req.body.length
+    // tags: req.body.tags
   })
     .then((newOption) => {
       if (newOption) {
