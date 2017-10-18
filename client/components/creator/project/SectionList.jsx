@@ -13,11 +13,14 @@ class SectionList extends React.Component {
 
   componentDidMount() {
     axios.get('/api/getOptionsForSection', { params: {sectionId: this.props.section.id}})
-      .then((res) => {
-        this.setState({
-          options: res.data
+      .then((options) => {
+        let sortedOptions = options.data.sort((one, two) => {
+          if (one.createdAt < two.createdAt) return 1;
+          if (one.createdAt > two.createdAt) return -1;
         });
-        this.props.actions.addOptionToCurrentProject(res.data);
+        this.setState({
+          options: sortedOptions
+        });
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
