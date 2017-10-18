@@ -49,14 +49,18 @@ class AddOption extends React.Component {
       name: this.state.name,
       description: this. state.description,
       // need to add url here...
-      url: this.state.url
+      url: this.state.url,
+      sectionId: this.props.currentSection.id
     })
       .then((response) => {
         this.setState({
           name: response.data.name,
           description: response.data.description
+        }, () => {
+          this.props.actions.changeCurrentOption(response.data);
+          this.props.history.push('/')
         });
-        this.props.actions.changeCurrentOption(response.data);
+        
       })
       .catch((err) => {
         console.error('Request to add new option NOT sent to server!', err);
