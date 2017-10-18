@@ -16,16 +16,16 @@ exports.sendEmails = function(req, res) {
   });
 
   req.body.invitedArr.forEach((invitee) => {
-    TesterAndOptions.create({
-      optionId: req.body.option.id,
-      userId: invitee.id
-    });
+    // TesterAndOptions.create({
+    //   optionId: req.body.option.id,
+    //   userId: invitee.id
+    // });
     let mailOptions = {
       from: "ReactionSync",
       to: invitee.email,
       subject: "You've been invited!",
       text: "Guten Tag! You've been invited to something (if you've received this email)",
-      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${req.body.option.id} at ${routeForTesters} after logging in! Giddy up!</p>`
+      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${req.body.sectionId} at ${routeForTesters} after logging in! Giddy up!</p>`
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {

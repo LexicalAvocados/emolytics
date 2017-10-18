@@ -6,7 +6,7 @@ class SectionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: [] // I suppose just keep these in local state because they are just here to display thumbnails
+      options: []
     };
     this.onClickCallback = this.onClickCallback.bind(this);
   }
