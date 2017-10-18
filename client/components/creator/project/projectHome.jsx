@@ -11,16 +11,11 @@ class ProjectHome extends React.Component {
   constructor(props) {
     super(props);
     this.onSectionClick = this.onSectionClick.bind(this);
-    this.routeToAddSection = this.routeToAddSection.bind(this);
   }
 
   onSectionClick(obj, options) {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
-  }
-
-  routeToAddSection() {
-    this.props.history.push('/addSection');
   }
         
   render() {
@@ -28,6 +23,9 @@ class ProjectHome extends React.Component {
       <div className="projectHomeContainer">
         <h2>{this.props.currentProject.name}</h2>
         <p>{this.props.currentProject.description}</p>
+        <Link to="/addSection">
+          <Button className="addSectionButton">Add a section</Button>
+        </Link>
         <div>
           {this.props.currentProject.sections.map((section, i) => (
             <SectionList
@@ -36,7 +34,6 @@ class ProjectHome extends React.Component {
               key={i}
             />
           ))}
-          <Button className="addSectionButton" onClick={this.routeToAddSection}>Add a section</Button>
         </div>
       </div>
     );
