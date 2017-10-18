@@ -41,9 +41,9 @@ class AddOption extends React.Component {
           description: response.data.description
         }, () => {
           this.props.actions.changeCurrentOption(response.data);
-          this.props.history.push('/')
+          this.props.history.push('/project' + this.props.currentProject.id);
         });
-        
+
       })
       .catch((err) => {
         console.error('Request to add new option NOT sent to server!', err);
@@ -53,6 +53,7 @@ class AddOption extends React.Component {
   render() {
     return (
       <div className="AddOption">
+        <p>{this.props.currentSection.name}</p>
         <h2>Add Option</h2>
         <form onSubmit={this.submitOptionClick}>
         Option Name: <br />

@@ -9,6 +9,7 @@ export const CHANGE_CURRENT_PROJECT = 'CHANGE_CURRENT_PROJECT';
 export const CHANGE_CURRENT_SECTION = 'CHANGE_CURRENT_SECTION';
 export const CHANGE_CURRENT_OPTION = 'CHANGE_CURRENT_OPTION';
 export const CHANGE_TESTER_OPTION = 'CHANGE_TESTER_OPTION';
+export const ADD_SECTIONS_TO_CURRENT_PROJECT = 'ADD_SECTIONS_TO_CURRENT_PROJECT';
 
 
 export const changeExample = (text) => ({
@@ -53,6 +54,11 @@ export const setRace = (race) => ({
 export const changeCurrentProject = (obj) => ({
 	type: CHANGE_CURRENT_PROJECT,
 	obj
+});
+
+export const addSectionsToCurrentProject = (sectionObj) => ({
+  type: ADD_SECTIONS_TO_CURRENT_PROJECT,
+  sectionObj
 });
 
 export const changeCurrentSection = (obj) => ({
