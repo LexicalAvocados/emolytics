@@ -5,7 +5,7 @@ export const SET_NAME = 'SET_NAME';
 export const SET_AGE = 'SET_AGE';
 export const SET_SEX = 'SET_SEX';
 export const SET_RACE = 'SET_RACE';
-export const ADD_FOCUS_GROUP = 'ADD_NEW_FOCUS_GROUP';
+export const ADD_FOCUS_GROUP = 'ADD_FOCUS_GROUP';
 export const DELETE_FOCUS_GROUP = 'DELETE_FOCUS_GROUP';
 export const ADD_TESTER_TO_FOCUS_GROUP = 'ADD_TESTER_TO_FOCUS_GROUP';
 export const REMOVE_TESTER_FROM_FOCUS_GROUP = 'REMOVE_TESTER_FROM_FOCUS_GROUP';
@@ -64,16 +64,16 @@ export const deleteFocusGroup = (focusGroupName) => ({
   focusGroupName
 });
 
-export const addTesterToFocusGroup = (focusGroupName, testerName) => ({
+export const addTesterToFocusGroup = (focusGroupName, testerUsername) => ({
   type: ADD_TESTER_TO_FOCUS_GROUP,
   focusGroupName,
-  testerName
+  testerUsername
 });
 
-export const removeTesterFromFocusGroup = (focusGroupName, testerName) => ({
+export const removeTesterFromFocusGroup = (focusGroupName, testerUsername) => ({
   type: REMOVE_TESTER_FROM_FOCUS_GROUP,
   focusGroupName,
-  testerName
+  testerUsername
 });
 
 export const changeCurrentProject = (obj) => ({
@@ -96,5 +96,3 @@ export const changeTesterOption = (obj) => ({
   type: CHANGE_TESTER_OPTION,
   obj
 });
-
-

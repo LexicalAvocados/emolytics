@@ -1,5 +1,6 @@
 import React from 'react';
-import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -14,13 +15,13 @@ class FocusGroupsPage extends React.Component {
     this.state = {
       typedFocusGroupName: '',
       typedTesterUsername: '',
-      focusGroupList: [],
-      selectedFocusGroup: ''
+      selectedGroupIdx: 0
     }
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
     this.createNewFocusGroup = this.createNewFocusGroup.bind(this);
     this.addTesterToFocusGroup = this.addTesterToFocusGroup.bind(this);
+    this.changeFocusGroupIdx = this.changeFocusGroupIdx.bind(this);
   }
 
   updateTypedTesterUsername(e) {
@@ -36,16 +37,28 @@ class FocusGroupsPage extends React.Component {
       focusGroupName: this.state.typedFocusGroupName,
       creatorUsername: this.props.loggedInUser.username
     })
-      .then(newFocusGroup => {
-        this.setState({focusGroupList: [...this.state.focusGroupList, newFocusGroup.name]})
+      .then(res => {
+        this.props.actions.addFocusGroup(res.data.name);
       })
   }
 
   addTesterToFocusGroup() {
+    let focusGroup = this.state.selectedFocusGroup;
+    let testerUsername = this.state.typedTesterUsername;
     axios.post('/api/creator/addtoFocusGroup', {
-      focusGroup: this.state.selectedFocusGroup,
-      testerUsername: this.state.typedTesterUsername
+      focusGroup,
+      testerUsername
     })
+      .then(res => {
+        this.props.actions.addTesterToFocusGroup(focusGroup, testerUsername);
+      })
+      .catch(res => {
+        console.log('Error adding Tester to Focus Group');
+      });
+  }
+
+  changeFocusGroupIdx(e) {
+    this.setState({selectedFocusGroup: e});
   }
 
   render() {
@@ -60,8 +73,19 @@ class FocusGroupsPage extends React.Component {
             onChange={this.updateTypedFocusGroupName}
           />
         </form>
-        <Button onClick={this.createNewFocusGroup}></Button>
-        {this.state.focusGroupList.length && 'Focus Groups Exist'}
+        <Button bsStyle='primary' onClick={this.createNewFocusGroup}>Create Group</Button>
+
+        {this.props.focusGroups.length > 0 ?
+          (<ButtonToolbar>
+            <ToggleButtonGroup type='radio' name='focusGroups' onChange={this.selectFocusGroup}>
+              {this.props.focusGroups.map((group, i) => (
+                <ToggleButton value={i}>{group.name}</ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </ButtonToolbar>)
+        :
+          null}
+
         <h2>Add Tester to Focus Group</h2>
         <form onSubmit={this.addTesterToFocusGroup}>
           <FormControl
@@ -72,7 +96,16 @@ class FocusGroupsPage extends React.Component {
           />
         </form>
         <h3>Focus Group Members</h3>
-        {this.state.focusGroupMembers.length && 'Members Exist'}
+
+        {this.props.focusGroups[this.state.selectedGroupIdx].testers.length > 0 ?
+          <ul>
+            {this.props.focusGroups[this.state.selectedGroupIdx].testers.map(tester => (
+              <li>tester</li>
+            ))}
+          </ul>
+        :
+          'none'
+        }
       </div>
     )
   }

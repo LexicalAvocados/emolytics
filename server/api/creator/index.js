@@ -51,14 +51,14 @@ exports.createNewFocusGroup = (req, res) => {
     }
   })
     .then(creator => {
-      FocusGroup.create({
-        name: req.body.focusGroupName
+      return FocusGroup.create({
+        name: req.body.focusGroupName,
         creatorId: creator.id
       });
     })
     .then(newFocusGroup => {
-      console.log('New Focus Group created!');
-      res.send(newFocusGroup);
+      console.log('New Focus Group created:', newFocusGroup);
+      res.send(newFocusGroup.dataValues);
     })
     .catch(err => {
       console.log('Error creating new Focus Group');
