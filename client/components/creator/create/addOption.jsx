@@ -4,7 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import key from './key.js';
+//import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
