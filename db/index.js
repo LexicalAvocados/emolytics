@@ -80,6 +80,17 @@ Option.belongsTo(Section);
 
 Option.sync({force: false});
 
+const OptionAndAnnotation = sequelize.define('optionAndAnnotation', {
+  time: Sequelize.INTEGER,
+  emotion: Sequelize.TEXT,
+  desc: Sequelize.TEXT
+})
+
+OptionAndAnnotation.belongsTo(Option);
+
+OptionAndAnnotation.sync({force: false});
+
+
 const TesterAndOption = sequelize.define('testerAndOption', {
   like: Sequelize.BOOLEAN,
   finished: Sequelize.BOOLEAN,
@@ -122,6 +133,8 @@ const Key = sequelize.define('key', {
 
 Key.sync({force: false});
 
+
+
 // Key.create({key: 'cb1e44a3d50c4a5291591ca117880155'})
 
 module.exports = {
@@ -132,5 +145,6 @@ module.exports = {
   Option: Option,
   Frame: Frame,
   TesterAndOption: TesterAndOption,
+  OptionAndAnnotation: OptionAndAnnotation,
   Key: Key
 };

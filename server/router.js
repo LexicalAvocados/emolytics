@@ -1,6 +1,7 @@
 const express = require('express');
 const router = require('express').Router();
 const testerRoutes = require('./api/tester');
+const creatorOptionRoutes = require('./api/creator/option.js');
 const projectRoutes = require('./api/creator/projectRoutes.js')
 const sectionRoutes = require('./api/creator/sectionRoutes.js');
 const optionRoutes = require('./api/creator/optionRoutes.js');
@@ -8,6 +9,8 @@ const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
 
 router.use('/tester', testerRoutes);
+
+router.use('/option', creatorOptionRoutes);
 
 router.get('/getProjectsForUser', projectRoutes.getProjectsForUser);
 

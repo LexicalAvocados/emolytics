@@ -5,6 +5,10 @@ import loggedInUser from './loggedInUser';
 import currentProject from './currentProject';
 import currentSection from './currentSection';
 import currentTesterOption from './currentTesterOption';
+import currentOptionAnnotations from './currentOptionAnnotations';
+import currentOption from './currentOption';
+import annotations from './annotations';
+import lineGraphData from './lineGraphData';
 
 const rootReducer = combineReducers({
 	example,
@@ -12,6 +16,10 @@ const rootReducer = combineReducers({
   currentProject,
   currentSection,
   currentTesterOption,
+  currentOptionAnnotations,
+  currentOption,
+  annotations,
+  lineGraphData,
   router: routerReducer
 });
 
