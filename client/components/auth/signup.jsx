@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -23,6 +23,7 @@ export class Signup extends React.Component {
     this.updateTypedEmail = this.updateTypedEmail.bind(this);
     this.updateIsCreator = this.updateIsCreator.bind(this);
     this.submitNewAccount = this.submitNewAccount.bind(this);
+    this.handleRoleSelect = this.handleRoleSelect.bind(this);
   }
 
   updateTypedUsername(e) {
@@ -59,6 +60,22 @@ export class Signup extends React.Component {
       })
   }
 
+  handleRoleSelect(ind) {
+    if (ind === 2) {
+      this.setState({
+        isCreator: true
+      }, () => {
+        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator})
+      });
+    } else {
+      this.setState({
+        isCreator: false
+      }, () => {
+        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator})
+      });
+    }
+  }
+
   render() {
     return (
       <div className='auth'>
@@ -89,10 +106,18 @@ export class Signup extends React.Component {
                 onChange={this.updateTypedEmail}
               />
             </Col>
-            <Checkbox className='signupCreator' onClick={this.updateIsCreator}>Register as a Creator</Checkbox>
+            <ButtonToolbar>
+              <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={this.handleRoleSelect}>
+                <ToggleButton value={1}>Tester</ToggleButton>
+                <ToggleButton value={2}>Creator</ToggleButton>
+              </ToggleButtonGroup>
+            </ButtonToolbar>
+            <br/>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>
+        <hr/>
+        <a href='/auth/facebook'>Sign up with Facebook</a>
       </div>
     )
   }
@@ -102,6 +127,7 @@ export class Signup extends React.Component {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
+  console.log('state in signup', state)
   return ({
     example: state.example,
     setLoggedIn: state.setLoggedIn,

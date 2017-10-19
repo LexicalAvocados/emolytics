@@ -33,6 +33,20 @@ exports.createAccount = (req, res) => {
     .catch(err => console.log('Account creation error!'));
 };
 
+// exports.fbLogin = (req, res) => {
+//   let username = req.body.username;
+//   User.findOne({where: {username}})
+//   .then((userObj) => {
+//     req.session.username = username;
+//     let resObj = JSON.stringify({
+//       loggedIn: true,
+//       userData: userObj,
+//     })
+//     req.session.save();
+//     res.setHeader('Content-Type', 'application/json');
+//     res.send(resObj);
+//   })
+// }
 
 exports.attemptLogin = (req, res) => {
   console.log('attemptLogin req.body:', req.body);
@@ -77,6 +91,9 @@ exports.logout = (req, res) => {
   console.log('req.session before destroying:', req.session);
   req.session.destroy();
   console.log('req.session after destroying:', req.session);
+  //for passport sessions,
+  req.logout();
+  console.log('req after log out passport', req.session)
   res.redirect('/');
 };
 

@@ -23,6 +23,7 @@ import OptionHome from './creator/option/OptionHome.jsx';
 import CreateProject from './creator/create/createProject.jsx';
 import AddSection from './creator/create/addSection.jsx';
 import AddOption from './creator/create/addOption.jsx';
+import Loading from './auth/loading.jsx';
 
 
 export class App extends React.Component {
@@ -58,6 +59,7 @@ export class App extends React.Component {
             )
           ) : (
             <Switch>
+              <Route exact path="/loading" component={Loading}/>
               <Route exact path="/signup" component={Signup}/>
               <Route path="*" component={Login}/>
             </Switch>
@@ -76,7 +78,7 @@ export class App extends React.Component {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
-  console.log('state', state);
+  console.log('state in App', state);
   return ({
     example: state.example,
     router: state.router,

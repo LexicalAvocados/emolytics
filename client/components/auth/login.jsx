@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -80,6 +80,8 @@ export class Login extends React.Component {
             {<div>this.state.loginError</div> && this.state.loginError}
           </FormGroup>
         </Form>
+        <hr/>
+           <a href='/auth/facebook'>Log in with Facebook</a>
       </div>
     )
   }
