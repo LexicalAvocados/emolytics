@@ -4,15 +4,12 @@ const currentSection = (state = { options: [] }, action) => {
       return Object.assign({}, state, action.obj);
     case 'CHANGE_CURRENT_OPTION':
       // return Object.assign({}, state, action.optionObj);
-<<<<<<< HEAD
       return { ...state, option: action.optionObj }
     case 'ADD_OPTIONS_TO_CURRENT_SECTION':
       return { ...state, options: [ ...state.options, action.optionObj]};
-=======
       return { ...state, option: action.optionObj };
     case 'SET_LOGGED_OUT':
       return {};
->>>>>>> passport
     default:
       return state;
   }
