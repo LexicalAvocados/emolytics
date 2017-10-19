@@ -307,6 +307,11 @@ button {
   display: flex;
 }
 
+.annotations p {
+  font-size: .8em;
+  margin: 0;
+}
+
 .error {
   color: red;
 }

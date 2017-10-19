@@ -214,8 +214,9 @@ class OptionHome extends React.Component {
             this.setState({
               timestamp: clickedTimestamp
             }, () => {
-              console.log(this.reactPlayer);
-              this.ReactPlayer.seekTo(this.state.timestamp)
+              var player = this.refs.player;
+              console.log(player);
+              player.seekTo(this.state.timestamp)
             })
           },
           columns: lineGraphData
@@ -254,7 +255,10 @@ class OptionHome extends React.Component {
   timestampCallback(seconds){
     this.setState({
       timestamp: seconds
-    }, () => this.ReactPlayer.seekTo(this.state.timestamp))
+    }, () => {
+      var player = this.refs.player;
+      player.seekTo(this.state.timestamp)
+    })
   };
 
   changeSideNavSelection(item) {
@@ -366,7 +370,7 @@ class OptionHome extends React.Component {
         <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
         <div className='leftSide'>
           <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-            ref={(player) => { this.ReactPlayer = player; }}
+            ref="player"
             controls={true} height={360} width={500} className='optionPlayer' onDuration={this.setDuration}
             config={{
               youtube: {

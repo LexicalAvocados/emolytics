@@ -100,11 +100,11 @@ class Annotations extends React.Component {
     })
     if (emotion) {
       return (
-        <p> {emotion} {test} </p>
+        <p> {emotion}: {test} </p>
         )
     } else {
       return (
-        <p> none </p>
+        <p> {ann.emotion} </p>
         )
     }
   }
@@ -119,16 +119,16 @@ render() {
             this.zoom(ann);
           }} className="annotations">
           <Col md={6}>
-            <p> {`Second: ${ann.time} \n
-                  Emotion: ${ann.emotion} \n
-                  Description: ${ann.desc} `}</p>
+            <p> Second: {ann.time} </p>
+            <p> Emotion: {ann.emotion} </p>
+            <p> Description: {ann.desc} </p>
 
           </Col>
           <Col md={6}>
 
             <p> {`Expected Emotion Score: ${this.props.lineGraphData.data[this.state[ann.emotion]][ann.time]}`} </p>
 
-            <p> {`Highest Score:`} </p>
+            <p> {`Highest Emotion:`} </p>
             {this.findLargest(ann)}
             
           </Col>
