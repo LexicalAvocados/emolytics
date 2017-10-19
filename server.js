@@ -20,10 +20,29 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://localhost:3000/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    return User.findOrCreate( {where: { name: profile.displayName, username: profile.displayName}})
-    .then((user, err) => {
-      console.log('incoming user', user)
-      return cb(err, user[0])
+    var usernameInitials = profile.displayName.split(' ').reduce((acc, namepart) => {
+      acc += namepart[0];
+      return acc;
+    }, '');
+    console.log('username initials', usernameInitials)
+
+    User.findOne(
+      {where: { name: profile.displayName }
+    })
+    .then((existingUser, err) => {
+      console.log('incoming user', existingUser)
+      if (!existingUser) {
+        User.create({
+          name: profile.displayName,
+          username: usernameInitials
+        })
+        .then( (newUser) => {
+          console.log('new user created', newUser)
+          return cb(err, newUser)
+        })
+      } else {
+        return cb(err, existingUser)
+      }
     })
     .catch((err) => console.error('error in db call', err))
   }
@@ -68,7 +87,7 @@ app.get('/auth/facebook',
   passport.authenticate('facebook'));
 //, { scope: ['user_likes', 'email', 'public_profile'] }
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {successRedirect: '/', failureRedirect: '/login' }));
+  passport.authenticate('facebook', {successRedirect: '/loading', failureRedirect: '/login' }));
 
 app.get('/userdata', (req, res) => {
   res.send(JSON.stringify(req.session))

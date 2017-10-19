@@ -23,7 +23,6 @@ export class Signup extends React.Component {
     this.updateTypedEmail = this.updateTypedEmail.bind(this);
     this.updateIsCreator = this.updateIsCreator.bind(this);
     this.submitNewAccount = this.submitNewAccount.bind(this);
-    this.handleFbSignup = this.handleFbSignup.bind(this);
     this.handleRoleSelect = this.handleRoleSelect.bind(this);
   }
 
@@ -61,31 +60,19 @@ export class Signup extends React.Component {
       })
   }
 
-  handleFbSignup() {
-    //check for the session here using dummy route
-    axios.get('/userdata')
-    .then( (resp) => {
-      let user = resp.data.passport.user;
-      console.log('USER', user)
-      this.props.actions.setLoggedIn(user.username, user.name, user.age, user.sex, user.race, this.state.isCreator);
-      this.props.history.push('/');
-    })
-    .catch((err) => console.log('error happened', err))
-  }
-
-  componentDidMount() {
-    this.handleFbSignup();
-  }
-
   handleRoleSelect(ind) {
     if (ind === 2) {
       this.setState({
         isCreator: true
-      })
+      }, () => {
+        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator})
+      });
     } else {
       this.setState({
         isCreator: false
-      })
+      }, () => {
+        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator})
+      });
     }
   }
 
@@ -130,7 +117,7 @@ export class Signup extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-        <a href='/auth/facebook' onClick={this.handleFbSignup}>Sign up with Facebook</a>
+        <a href='/auth/facebook'>Sign up with Facebook</a>
       </div>
     )
   }
@@ -140,6 +127,7 @@ export class Signup extends React.Component {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
+  console.log('state in signup', state)
   return ({
     example: state.example,
     setLoggedIn: state.setLoggedIn,

@@ -21,7 +21,6 @@ export class Login extends React.Component {
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
     this.resetInputForms = this.resetInputForms.bind(this);
-    this.handleFbLogin = this.handleFbLogin.bind(this);
   }
 
   updateTypedUsername(e) {
@@ -57,24 +56,6 @@ export class Login extends React.Component {
     this.setState({typedUsername: '', typedPassword: ''});
   }
 
-  componentDidMount() {
-    this.handleFbLogin()
-  }
-
-  handleFbLogin() {
-    //check for the session here using dummy route
-    axios.get('/userdata')
-    .then( (resp) => {
-      if (resp.data.passport) {
-        let user = resp.data.passport.user || null;
-        // console.log('USER', user)
-        this.props.actions.setLoggedIn(user.username, user.name, user.age, user.sex, user.race, user.isCreator);
-        this.props.history.push('/');
-      }
-    })
-    .catch((err) => console.log('error happened', err))
-  }
-
   render() {
     return (
       <div className='auth'>
@@ -100,7 +81,7 @@ export class Login extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-           <a href='/auth/facebook' onClick={this.handleFbLogin}>Log in with Facebook</a>
+           <a href='/auth/facebook'>Log in with Facebook</a>
       </div>
     )
   }

@@ -18,6 +18,14 @@ class Navbar extends React.Component {
 
   handleLogout() {
     this.props.actions.setLoggedOut();
+    var cleanState = {
+      currentProject: {},
+      currentSection: {},
+      currentTesterOption: {},
+      loggedInUser: {},
+      signupwithfb: {}
+    }
+    this.props.actions.wipeStateCleanOnLogout(cleanState);
     axios.get('/logout');
   }
 
@@ -84,7 +92,7 @@ const noUnderline = {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
-  console.log('state', state);
+  console.log('state in navbar', state);
   return ({
     example: state.example,
     loggedInUser: state.loggedInUser,

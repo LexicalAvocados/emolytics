@@ -6,6 +6,7 @@ const sectionRoutes = require('./api/creator/sectionRoutes.js');
 const optionRoutes = require('./api/creator/optionRoutes.js');
 const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
+const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
 
 router.use('/tester', testerRoutes);
 
@@ -35,5 +36,6 @@ router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced);
 
 router.post('/addOption', optionRoutes.addOption);
 
+router.post('/updateAfterFb', updateUserRoleRoutes.updateCreatorAfterSignup)
 
 module.exports = router;

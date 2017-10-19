@@ -4,10 +4,12 @@ const currentSection = (state = {}, action) => {
       return Object.assign({}, state, action.obj);
     case 'CHANGE_CURRENT_OPTION':
       // return Object.assign({}, state, action.optionObj);
-      return { ...state, option: action.optionObj }
+      return { ...state, option: action.optionObj };
+    case 'SET_LOGGED_OUT':
+      return {};
     default:
       return state;
   }
 }
-  
+
   export default currentSection;
