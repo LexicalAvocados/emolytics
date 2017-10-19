@@ -51,7 +51,7 @@ class ProjectList extends React.Component {
         <p>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
         { this.state.sections.map((section, i) => {
           return (
-            <p key={i}>{section.name}</p>
+            <p key={i}>Section name: {section.name}</p>
           );
         })}
       </div>
