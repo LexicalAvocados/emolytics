@@ -38,8 +38,8 @@ class SectionList extends React.Component {
     return (
       <div onClick={this.onClickCallback} className="projectHomeSectionListEntry">
         {/* <Link to={'/section' + this.props.section.id}>  */}
-        <p className="closerTextLarger">{this.props.section.name}</p>
-        <p className="closerText">{this.props.section.description}</p>
+        <p className="closerTextLarger">Section Name: {this.props.section.name}</p>
+        <p className="closerText">Section Description: {this.props.section.description}</p>
         <p>Created On: {this.state.date = new Date(this.props.section.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
         <div>
           { this.state.options.map((option, i) => {

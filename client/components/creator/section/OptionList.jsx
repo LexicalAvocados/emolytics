@@ -9,7 +9,7 @@ class OptionListEntry extends React.Component {
     super(props);
     this.state ={
       date: ''
-    }
+    };
   }
 
   componentDidMount() {
@@ -28,7 +28,7 @@ class OptionListEntry extends React.Component {
       <div className="currentSectionOptionListEntry">
         <div onClick={() => this.props.onOptionClick(this.props.index)}>
           <img src={this.props.option.thumbnail} alt=""/>
-          <p className="closerText">{this.props.option.name}</p>
+          <p className="closerText">Option Name: {this.props.option.name}</p>
           <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
         </div>
       </div>
