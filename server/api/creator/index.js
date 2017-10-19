@@ -78,13 +78,13 @@ exports.addTesterToFocusGroup = (req, res) => {
 
   let focusGroup = FocusGroup.findOne({
     where: {
-      name: req.body.focusGroup
+      name: req.body.focusGroupName
     }
   });
 
   Promise.all([tester, focusGroup])
     .then(values => {
-      FocusGroupAndTester.create({
+      return FocusGroupAndTester.create({
         userId: values[0].id,
         focusGroupId: values[1].id
       });
@@ -97,4 +97,40 @@ exports.addTesterToFocusGroup = (req, res) => {
       console.log('Error associating Tester with Focus Group:', err);
       res.send(false);
     })
-}
+};
+
+
+exports.removeTesterFromFocusGroup = (req, res) => {
+  console.log('removeTesterFromFocusGroup req.body:', req.body);
+
+  let tester = User.findOne({
+    where: {
+      username: req.body.testerUsername
+    }
+  });
+
+  let focusGroup = FocusGroup.findOne({
+    where: {
+      name: req.body.focusGroupName
+    }
+  });
+
+  Promise.all([tester, focusGroup])
+    .then(values => {
+      console.log('values:', values);
+      return FocusGroupAndTester.destroy({
+        where: {
+          userId: values[0].id,
+          focusGroupId: values[1].id
+        }
+      });
+    })
+    .then(numOfDeletedRows => {
+      console.log('numOfDeletedRows:', numOfDeletedRows);
+      if (numOfDeletedRows === 1) res.send(true);
+      else res.send(false);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+};
