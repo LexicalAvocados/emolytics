@@ -20,6 +20,10 @@ const focusGroups = (state = [], action) => {
       console.log('testerIdx:', testerIdx);
       focusGroup.testers = [...focusGroup.testers.slice(0, testerIdx), ...focusGroup.testers.slice(testerIdx + 1)];
       return [...state.slice(0, focusGroupIdx), focusGroup, ...state.slice(focusGroupIdx + 1)];
+    case 'POPULATE_CREATOR_FOCUS_GROUPS':
+      return action.focusGroups;
+    case 'SET_LOGGED_OUT':
+      return [];
     case 'persist/REHYDRATE':
       if (action.payload.focusGroups) return action.payload.focusGroups;
       else return state;

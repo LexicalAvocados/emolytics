@@ -58,7 +58,7 @@ exports.createNewFocusGroup = (req, res) => {
     .then(creator => {
       return FocusGroup.create({
         name: req.body.focusGroupName,
-        creatorId: creator.id
+        userId: creator.id
       });
     })
     .then(newFocusGroup => {
@@ -82,7 +82,7 @@ exports.deleteFocusGroup = (req, res) => {
     .then(creator => {
       return FocusGroup.destroy({
         name: req.body.focusGroupName,
-        creatorId: creator.id
+        userId: creator.id
       });
     })
     .then(numOfDeletedRows => {
@@ -159,6 +159,93 @@ exports.removeTesterFromFocusGroup = (req, res) => {
       console.log('numOfDeletedRows:', numOfDeletedRows);
       if (numOfDeletedRows === 1) res.send(true);
       else res.send(false);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+};
+
+
+exports.getCreatorFocusGroups = (req, res) => {
+  console.log('getCreatorFocusGroups req.query:', req.query);
+  let creatorFocusGroups = [];
+
+  User.findOne({
+    where: {
+      id: req.query.id
+    }
+  })
+    .then(creator => {
+      console.log('1st then block');
+      return FocusGroup.findAll({
+        where: {
+          userId: creator.dataValues.id
+        }
+      });
+    })
+    .then(groups => {
+      console.log('2nd then block');
+      groups = groups.map(group => {
+        group = group.dataValues;
+        delete group.createdAt;
+        delete group.updatedAt;
+        group.testerIds = [];
+        group.testers = [];
+        return group;
+      });
+
+      creatorFocusGroups = groups;
+
+      return Promise.all(groups.map(group => {
+        return FocusGroupAndTester.findAll({
+          where: {
+            focusGroupId: group.id
+          }
+        });
+      }));
+    })
+    .then(groupsAndTesters => {
+      console.log('3rd then block');
+      console.log('groupsAndTesters:', groupsAndTesters.map(x => x.map(y => y.dataValues)));
+      console.log('creatorFocusGroups:', creatorFocusGroups);
+
+      groupsAndTesters.forEach(group => {
+        group.forEach(dbEntry => {
+          for (var i = 0; i < creatorFocusGroups.length; i++) {
+            if (dbEntry.dataValues.focusGroupId === creatorFocusGroups[i].id) {
+              creatorFocusGroups[i].testerIds.push(dbEntry.dataValues.userId);
+            }
+          }
+        })
+      })
+
+      return Promise.all(groupsAndTesters.map(testersPerGroup => {
+        return Promise.all(testersPerGroup.map(tester => {
+          return User.findOne({
+            where: {
+              id: tester.dataValues.userId
+            }
+          });
+        }));
+      }));
+    })
+    .then(userDBEntries => {
+      console.log('4th then block');
+      console.log('creatorFocusGroups:', creatorFocusGroups);
+      console.log('userDBEntries:', userDBEntries.map(x => x.map(y => y.dataValues)));
+      userDBEntries.forEach(group => {
+        group.forEach(dbEntry => {
+          for (var i = 0; i < creatorFocusGroups.length; i++) {
+            for (var j = 0; j < creatorFocusGroups[i].testerIds.length; j++) {
+              if (dbEntry.dataValues.id === creatorFocusGroups[i].testerIds[j]) {
+                creatorFocusGroups[i].testers.push(dbEntry.dataValues.username);
+              }
+            }
+          }
+        });
+      });
+      console.log('final product:', creatorFocusGroups);
+      res.send(creatorFocusGroups);
     })
     .catch(err => {
       res.send(err);

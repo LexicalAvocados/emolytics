@@ -39,8 +39,23 @@ export class Login extends React.Component {
     })
       .then(res => {
         if (res.data.loggedIn) {
-          let {username, name, age, sex, race, isCreator} = res.data.userData;
-          this.props.actions.setLoggedIn(username, name, age, sex, race, isCreator);
+          let {id, username, name, age, sex, race, isCreator} = res.data.userData;
+          this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator);
+          if (isCreator) {
+            axios.get('/api/creator/getCreatorFocusGroups', {
+              params: {
+                id
+              }
+            })
+              .then(res => {
+                let focusGroups = res.data;
+                console.log('focusGroups:', focusGroups);
+                if (focusGroups.length > 0) this.props.actions.populateCreatorFocusGroups(focusGroups);
+              })
+              .catch(err => {
+                console.log('Error fetching Creator\'s Focus Groups:', err);
+              });
+          }
           this.props.history.push('/');
         } else {
           this.setState({loginError: res.data.reason});

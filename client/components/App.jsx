@@ -55,7 +55,6 @@ export class App extends React.Component {
             ) : (
               <Switch>
                 <Route exact path="/" component={TesterHome}/>
-                <Route path="/queue" component={TesterQueue}/>
                 <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>
               </Switch>

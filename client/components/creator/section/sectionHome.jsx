@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import OptionList from './OptionList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
@@ -99,12 +100,15 @@ class SectionHome extends React.Component {
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
+
         <Link to="/addOption">
           <Button className="addSectionButton">Add an option</Button>
         </Link>
+
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p> 
         ) : ( null )}
+
         { !this.state.invited ? (
           !this.state.displayPanel ? (
             <Button onClick={this.renderPanel}>Invite testers</Button>
@@ -122,6 +126,7 @@ class SectionHome extends React.Component {
         ) : (
           <p>Testers Invited!</p>
         )}
+
         <div className="currentSectionOptionsList">
           { this.props.currentSection.options.map((option, i) => (
             <OptionList
@@ -133,19 +138,35 @@ class SectionHome extends React.Component {
             />
           ))}
         </div>
+
+        {this.props.focusGroups.length > 0 ?
+          <div>
+            <FocusGroupsList />
+            {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
+              <ul>
+                {this.props.currentFocusGroup.testers.map((tester, i) => (
+                  <li key={i}>{tester}</li>
+                ))}
+              </ul>
+            :
+              null}
+          </div>
+        :
+          null}
+
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log('LOG WITHIN SECTION HOME', state);
-  return ({
-    router: state.router,
-    currentProject: state.currentProject,
-    currentSection: state.currentSection
-  });
-};
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  focusGroups: state.focusGroups,
+  currentFocusGroup: state.currentFocusGroup,
+  router: state.router,
+  currentProject: state.currentProject,
+  currentSection: state.currentSection
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
@@ -155,4 +176,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (SectionHome));
+)(SectionHome));

@@ -9,6 +9,8 @@ const currentFocusGroup = (state = null, action) => {
       return null;
     case 'DELETE_FOCUS_GROUP':
       return null;
+    case 'SET_LOGGED_OUT':
+      return null;
     default:
       return state;
   }
