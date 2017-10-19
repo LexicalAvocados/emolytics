@@ -33,7 +33,7 @@ const User = sequelize.define('user', {
   sex: Sequelize.STRING,
   age: Sequelize.INTEGER,
   race: Sequelize.STRING,
-  isCreator: Sequelize.BOOLEAN
+  isCreator: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 User.sync({force: false});

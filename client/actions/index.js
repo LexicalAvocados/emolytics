@@ -11,7 +11,8 @@ export const CHANGE_CURRENT_OPTION = 'CHANGE_CURRENT_OPTION';
 export const CHANGE_TESTER_OPTION = 'CHANGE_TESTER_OPTION';
 export const ADD_SECTIONS_TO_CURRENT_PROJECT = 'ADD_SECTIONS_TO_CURRENT_PROJECT';
 export const ADD_OPTIONS_TO_CURRENT_SECTION = 'ADD_OPTIONS_TO_CURRENT_SECTION';
-
+export const SET_ROLE_FOR_NEW_FB_USER = 'SET_ROLE_FOR_NEW_FB_USER';
+export const WIPE_STATE_CLEAN_ON_LOGOUT = 'WIPE_STATE_CLEAN_ON_LOGOUT';
 
 export const changeExample = (text) => ({
 	type: CHANGE_EXAMPLE,
@@ -82,4 +83,12 @@ export const changeTesterOption = (obj) => ({
   obj
 });
 
+export const setRoleForNewFbUser = (obj) => ({
+	type: SET_ROLE_FOR_NEW_FB_USER,
+	obj
+});
 
+export const wipeStateCleanOnLogout = (obj) => ({
+	type: WIPE_STATE_CLEAN_ON_LOGOUT,
+	obj
+});
