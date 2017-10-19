@@ -125,7 +125,7 @@ class AddOption extends React.Component {
           Option Description: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           Url: <br />
-          <input type="text" name="url" value={this.state.url} onChange={this.handleChange} /><br />
+          <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
           <input type="submit" value="Submit" />
         </form>
       </div>
