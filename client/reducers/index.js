@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   currentProject,
   currentSection,
   currentTesterOption,
-	signupwithfb,
+  signupwithfb,
   currentOptionAnnotations,
   currentOption,
   annotations,

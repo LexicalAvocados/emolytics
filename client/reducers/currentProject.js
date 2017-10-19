@@ -3,7 +3,7 @@ const currentProject = (state = { sections: [] }, action) => {
     case 'CHANGE_CURRENT_PROJECT':
       return Object.assign({}, state, action.obj);
     case 'ADD_SECTIONS_TO_CURRENT_PROJECT':
-      return { ...state, sections: [ ...state.sections, action.sectionObj]};
+      return { ...state, sections: [ action.sectionObj, ...state.sections ]};
     case 'SET_LOGGED_OUT':
       return {};
     default:

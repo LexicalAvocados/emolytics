@@ -31,7 +31,7 @@ import Loading from './auth/loading.jsx';
 export class App extends React.Component {
   constructor(props) {
     super(props);
-    console.log('App: this:', this);
+    // console.log('App: this:', this);
   }
 
   render() {
@@ -82,7 +82,7 @@ export class App extends React.Component {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
-  console.log('state in App', state);
+  // console.log('state in App', state);
   return ({
     router: state.router,
     loggedInUser: state.loggedInUser
