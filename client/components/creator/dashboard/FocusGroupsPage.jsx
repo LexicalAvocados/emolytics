@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import FocusGroupsList from './FocusGroupsList.jsx';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -109,23 +110,7 @@ class FocusGroupsPage extends React.Component {
         </form>
 
         {focusGroups.length > 0 ?
-          (<div>
-            <h2>Your Focus Groups</h2>
-            <div>
-              <ButtonToolbar>
-                <ToggleButtonGroup
-                  type='radio'
-                  name='focusGroups'
-                  value={focusGroups[focusGroups.indexOf(currentFocusGroup)]}
-                  onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
-                >
-                  {focusGroups.map((group, i) => (
-                    <ToggleButton key={i} value={i}>{group.name}</ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </ButtonToolbar>
-            </div>
-          </div>)
+          <FocusGroupsList />
         :
           null}
 
