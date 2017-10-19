@@ -43,11 +43,11 @@ class InvitationPanel extends React.Component {
     }
   }
 
-  sendInvites(e) {
+  sendInvites(e) { 
     if (e) {
       e.preventDefault();
     }
-    axios.post('/api/sendEmails', { invitedArr: this.state.invited, option: this.props.option })
+    axios.post('/api/sendEmails', { invitedArr: this.state.invited, options: this.props.options })
       .then((success) => {
         console.log(success);
         this.props.renderInvited();
