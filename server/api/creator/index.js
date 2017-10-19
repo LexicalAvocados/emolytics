@@ -15,10 +15,14 @@ exports.sendEmails = function(req, res) {
     }
   });
 
-  // req.body.invitedArr.forEach((invitee) => {
-  var remainder = req.body.invitedArr.length % req.body.options.length;
+
+  // var remainder = req.body.invitedArr.length % req.body.options.length;
   req.body.options.forEach((option) => {
-    for (var i = 0; i < req.body.options.length; i++) {
+    for (var i = 0; i < Math.floor(req.body.invitedArr.length/req.body.options.length); i++) {
+      TesterAndOptions.create({
+        optionId: option.id,
+        userId: req.body.invitedArr[i].id
+      });      
       let mailOptions = {
         from: "ReactionSync",
         to: req.body.invitedArr[i].email,
@@ -38,9 +42,4 @@ exports.sendEmails = function(req, res) {
 
     }
   });
-    // TesterAndOptions.create({
-    //   optionId: req.body.option.id,
-    //   userId: invitee.id
-    // });
-  // });
 };

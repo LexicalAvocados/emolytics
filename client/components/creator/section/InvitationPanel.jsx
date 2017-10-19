@@ -43,11 +43,11 @@ class InvitationPanel extends React.Component {
     }
   }
 
-  sendInvites(e) { 
+  sendInvites(e, invited) { 
     if (e) {
       e.preventDefault();
     }
-    axios.post('/api/sendEmails', { invitedArr: this.state.invited, options: this.props.options })
+    axios.post('/api/sendEmails', { invitedArr: invited, options: this.props.options })
       .then((success) => {
         console.log(success);
         this.props.renderInvited();
@@ -58,10 +58,10 @@ class InvitationPanel extends React.Component {
   }
 
   inviteAll() {
-    this.setState({
+    console.log(this.props.testersCopy);
+    this.setState({ 
       invited: this.props.testersCopy
-    });
-    this.sendInvites();
+    }, this.sendInvites(null, this.props.testersCopy));
   }
 
 
@@ -222,7 +222,7 @@ class InvitationPanel extends React.Component {
           </DropdownButton>
         </div>
         <div className="testersList">
-          <form onSubmit={this.sendInvites}>
+          <form onSubmit={() => this.sendInvites(this.state.invited)}>
             {this.props.testersCopy.map((tester, i) => (
               <InviteTesters 
                 handleInvites={this.handleInvites}
