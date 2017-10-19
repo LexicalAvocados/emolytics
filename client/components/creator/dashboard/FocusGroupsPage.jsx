@@ -40,6 +40,7 @@ class FocusGroupsPage extends React.Component {
     })
       .then(res => {
         this.props.actions.addFocusGroup(res.data.name);
+        this.setState({typedFocusGroupName: ''});
       })
   }
 
@@ -68,6 +69,7 @@ class FocusGroupsPage extends React.Component {
       .then(res => {
         if (res.data) this.props.actions.addTesterToFocusGroup(focusGroupName, testerUsername);
         else console.log('Error associating Tester with Focus Group:', res);
+        this.setState({typedTesterUsername: ''});
       })
       .catch(err => {
         console.log('Error adding Tester to Focus Group:', err);
@@ -91,6 +93,8 @@ class FocusGroupsPage extends React.Component {
   }
 
   render() {
+    let focusGroups = this.props.focusGroups;
+    let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
         <h2>Create New Focus Group</h2>
@@ -104,7 +108,7 @@ class FocusGroupsPage extends React.Component {
           <Button bsStyle='primary' type='submit'>Create Group</Button>
         </form>
 
-        {this.props.focusGroups.length > 0 ?
+        {focusGroups.length > 0 ?
           (<div>
             <h2>Your Focus Groups</h2>
             <div>
@@ -112,10 +116,10 @@ class FocusGroupsPage extends React.Component {
                 <ToggleButtonGroup
                   type='radio'
                   name='focusGroups'
-                  value={this.props.focusGroups[this.props.focusGroups.indexOf(this.props.currentFocusGroup)]}
-                  onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, this.props.focusGroups)}
+                  value={focusGroups[focusGroups.indexOf(currentFocusGroup)]}
+                  onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
                 >
-                  {this.props.focusGroups.map((group, i) => (
+                  {focusGroups.map((group, i) => (
                     <ToggleButton key={i} value={i}>{group.name}</ToggleButton>
                   ))}
                 </ToggleButtonGroup>
@@ -125,14 +129,14 @@ class FocusGroupsPage extends React.Component {
         :
           null}
 
-        {this.props.currentFocusGroup ?
+        {currentFocusGroup ?
           <div>
 
             <div>
               <Button bsStyle='danger' onClick={this.deleteFocusGroup}>Delete Focus Group</Button>
             </div>
 
-            <h2>Add Tester to {this.props.currentFocusGroup.name}</h2>
+            <h2>Add Tester to {currentFocusGroup.name}</h2>
 
             <form onSubmit={this.addTesterToFocusGroup}>
               <FormControl
@@ -144,11 +148,11 @@ class FocusGroupsPage extends React.Component {
               <Button bsStyle='primary' type='submit'>Add Tester</Button>
             </form>
 
-            <h2>{this.props.currentFocusGroup.name} Members</h2>
+            <h2>{currentFocusGroup.name} Members</h2>
 
-            {this.props.currentFocusGroup.testers.length > 0 ?
+            {currentFocusGroup.testers.length > 0 ?
               <ul>
-                {this.props.currentFocusGroup.testers.map((tester, i) => (
+                {currentFocusGroup.testers.map((tester, i) => (
                   <li key={i} onClick={this.removeTesterFromFocusGroup.bind(null, tester)}>{tester}</li>
                 ))}
               </ul>
