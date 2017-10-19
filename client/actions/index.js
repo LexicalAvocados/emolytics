@@ -17,6 +17,11 @@ export const CHANGE_TESTER_OPTION = 'CHANGE_TESTER_OPTION';
 export const ADD_SECTIONS_TO_CURRENT_PROJECT = 'ADD_SECTIONS_TO_CURRENT_PROJECT';
 export const ADD_OPTIONS_TO_CURRENT_SECTION = 'ADD_OPTIONS_TO_CURRENT_SECTION';
 export const SET_ROLE_FOR_NEW_FB_USER = 'SET_ROLE_FOR_NEW_FB_USER';
+export const CHANGE_OPTION_ANNOTATIONS = 'CHANGE_OPTION_ANNOTATIONS';
+export const CHANGE_OPTION = 'CHANGE_OPTION';
+export const CHANGE_ANNOTATIONS = 'CHANGE_ANNOTATIONS';
+export const CHANGE_LINE_GRAPH_DATA = 'CHANGE_LINE_GRAPH_DATA';
+
 
 export const changeExample = (text) => ({
 	type: CHANGE_EXAMPLE,
@@ -115,7 +120,30 @@ export const changeTesterOption = (obj) => ({
   obj
 });
 
+
 export const setRoleForNewFbUser = (obj) => ({
 	type: SET_ROLE_FOR_NEW_FB_USER,
 	obj
 });
+
+export const changeOptionAnnotations = (obj) => ({
+  type: CHANGE_OPTION_ANNOTATIONS,
+  obj
+})
+
+export const changeOption = (obj) => ({
+  type: CHANGE_OPTION,
+  obj
+})
+
+
+export const changeAnnotations = (obj) => ({
+  type: CHANGE_ANNOTATIONS,
+  obj
+})
+
+export const changeLineGraphData = (obj) => ({
+  type: CHANGE_LINE_GRAPH_DATA,
+  obj
+})
+
