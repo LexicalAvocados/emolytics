@@ -113,13 +113,9 @@ export const addOptionsToCurrentSection = (optionObj) => ({
 export const changeTesterOption = (obj) => ({
   type: CHANGE_TESTER_OPTION,
   obj
-<<<<<<< HEAD
 });
 
 export const setRoleForNewFbUser = (obj) => ({
 	type: SET_ROLE_FOR_NEW_FB_USER,
 	obj
 });
-=======
-});
->>>>>>> focusgroups
