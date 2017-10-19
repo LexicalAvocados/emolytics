@@ -2,11 +2,21 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-
+import axios from 'axios';
 
 class OptionList extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
+      .then((testerIds) => {
+        this.props.concatTesters(testerIds.data, this.props.index);
+      })
+      .catch((err) => {
+        console.log('Error retrieving testers for option', err);
+      });
   }
 
   render() {

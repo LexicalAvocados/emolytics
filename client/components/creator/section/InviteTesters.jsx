@@ -10,11 +10,14 @@ class InviteTesters extends React.Component {
 
   render () {
     return (
-      <Checkbox onChange={(e) => this.props.handleInvites(e, this.props.index)}>
-        Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex} Race: {this.props.tester.race}
-      </Checkbox>
+      <p>Availabe tester: {this.props.totalTesters}</p>
     );
   }
 }
 
 export default InviteTesters;
+
+
+{/* <Checkbox onChange={(e) => this.props.handleInvites(e, this.props.index)}>
+Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex} Race: {this.props.tester.race}
+</Checkbox> */}
