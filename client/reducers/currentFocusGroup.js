@@ -5,6 +5,10 @@ const currentFocusGroup = (state = null, action) => {
         if (i === action.index) return group;
         else return placeholder;
       }, {});
+    case 'ADD_FOCUS_GROUP':
+      return null;
+    case 'DELETE_FOCUS_GROUP':
+      return null;
     default:
       return state;
   }

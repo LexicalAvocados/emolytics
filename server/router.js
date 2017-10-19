@@ -37,6 +37,8 @@ router.post('/addOption', optionRoutes.addOption);
 
 router.post('/creator/newFocusGroup', indexRoutes.createNewFocusGroup);
 
+router.put('/creator/deleteFocusGroup', indexRoutes.deleteFocusGroup);
+
 router.post('/creator/addToFocusGroup', indexRoutes.addTesterToFocusGroup);
 
 router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGroup);

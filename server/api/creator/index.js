@@ -67,6 +67,31 @@ exports.createNewFocusGroup = (req, res) => {
 };
 
 
+exports.deleteFocusGroup = (req, res) => {
+  console.log('deleteFocusGroup req.body:', req.body);
+  User.findOne({
+    where: {
+      username: req.body.creatorUsername
+    }
+  })
+    .then(creator => {
+      return FocusGroup.destroy({
+        name: req.body.focusGroupName,
+        creatorId: creator.id
+      });
+    })
+    .then(numOfDeletedRows => {
+      console.log('numOfDeletedRows:', numOfDeletedRows);
+      if (numOfDeletedRows === 1) res.send(true);
+      else res.send(false);
+    })
+    .catch(err => {
+      console.log('Error deleting Focus Group');
+      res.send(err);
+    });  
+};
+
+
 exports.addTesterToFocusGroup = (req, res) => {
   console.log('addTesterToFocusGroup req.body:', req.body);
 

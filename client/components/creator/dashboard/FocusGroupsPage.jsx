@@ -14,12 +14,12 @@ class FocusGroupsPage extends React.Component {
     super(props);
     this.state = {
       typedFocusGroupName: '',
-      typedTesterUsername: '',
-      showTesterAlreadyAddError: false
+      typedTesterUsername: ''
     }
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
     this.createNewFocusGroup = this.createNewFocusGroup.bind(this);
+    this.deleteFocusGroup = this.deleteFocusGroup.bind(this);
     this.addTesterToFocusGroup = this.addTesterToFocusGroup.bind(this);
     this.removeTesterFromFocusGroup = this.removeTesterFromFocusGroup.bind(this);
   }
@@ -32,7 +32,8 @@ class FocusGroupsPage extends React.Component {
     this.setState({typedFocusGroupName: e.target.value})
   }
 
-  createNewFocusGroup() {
+  createNewFocusGroup(e) {
+    e.preventDefault();
     axios.post('/api/creator/newFocusGroup', {
       focusGroupName: this.state.typedFocusGroupName,
       creatorUsername: this.props.loggedInUser.username
@@ -40,6 +41,20 @@ class FocusGroupsPage extends React.Component {
       .then(res => {
         this.props.actions.addFocusGroup(res.data.name);
       })
+  }
+
+  deleteFocusGroup() {
+    axios.put('/api/creator/deleteFocusGroup', {
+      focusGroupName: this.props.currentFocusGroup,
+      creatorUsername: this.props.loggedInUser.username
+    })
+      .then(res => {
+        if (res.data) this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
+        else console.log('Error deleting Focus Group');
+      })
+      .catch(err => {
+        console.log('Error deleting Focus Group:', err);
+      });
   }
 
   addTesterToFocusGroup(e) {
@@ -79,47 +94,55 @@ class FocusGroupsPage extends React.Component {
     return (
       <div>
         <h2>Create New Focus Group</h2>
-        <form>
+        <form onSubmit={this.createNewFocusGroup}>
           <FormControl
             type='text'
             value={this.state.typedFocusGroupName}
             placeholder='Focus Group Name'
             onChange={this.updateTypedFocusGroupName}
           />
+          <Button bsStyle='primary' type='submit'>Create Group</Button>
         </form>
-        <Button bsStyle='primary' onClick={this.createNewFocusGroup}>Create Group</Button>
 
         {this.props.focusGroups.length > 0 ?
           (<div>
             <h2>Your Focus Groups</h2>
-            <ButtonToolbar>
-              <ToggleButtonGroup
-                type='radio'
-                name='focusGroups'
-                onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, this.props.focusGroups)}
-              >
-                {this.props.focusGroups.map((group, i) => (
-                  <ToggleButton key={i} value={i}>{group.name}</ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-            </ButtonToolbar>
+            <div>
+              <ButtonToolbar>
+                <ToggleButtonGroup
+                  type='radio'
+                  name='focusGroups'
+                  value={this.props.focusGroups[this.props.focusGroups.indexOf(this.props.currentFocusGroup)]}
+                  onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, this.props.focusGroups)}
+                >
+                  {this.props.focusGroups.map((group, i) => (
+                    <ToggleButton key={i} value={i}>{group.name}</ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+              </ButtonToolbar>
+            </div>
           </div>)
         :
           null}
 
         {this.props.currentFocusGroup ?
           <div>
+
+            <div>
+              <Button bsStyle='danger' onClick={this.deleteFocusGroup}>Delete Focus Group</Button>
+            </div>
+
             <h2>Add Tester to {this.props.currentFocusGroup.name}</h2>
 
-            <form>
+            <form onSubmit={this.addTesterToFocusGroup}>
               <FormControl
                 type='text'
                 value={this.state.typedTesterUsername}
                 placeholder='Tester Username'
                 onChange={this.updateTypedTesterUsername}
               />
+              <Button bsStyle='primary' type='submit'>Add Tester</Button>
             </form>
-            <Button bsStyle='primary' onClick={this.addTesterToFocusGroup}>Add Tester</Button>
 
             <h2>{this.props.currentFocusGroup.name} Members</h2>
 
