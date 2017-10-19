@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import OptionList from './OptionList.jsx';
+import OptionListEntry from './OptionList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -124,7 +124,7 @@ class SectionHome extends React.Component {
         )}
         <div className="currentSectionOptionsList">
           { this.props.currentSection.options.map((option, i) => (
-            <OptionList
+            <OptionListEntry
               option={option}
               key={i}
               index={i}

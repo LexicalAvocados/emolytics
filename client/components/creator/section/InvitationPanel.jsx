@@ -145,7 +145,7 @@ class InvitationPanel extends React.Component {
         filtered = filtered.map((tester) => {
           return tester;
         });
-      } else if (criteria === 'age' && toFilterBy.indexOf('-') !== -1 && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
+      } else if (criteria === 'age' && toFilterBy === 'None' && (this.state.sexSelected || this.state.raceSelected)) { // Filtering by age with sex and race selected
         let index = toFilterBy.indexOf('-');
         let first = toFilterBy.slice(0, index);
         let second = toFilterBy.slice(index + 1);
@@ -227,7 +227,7 @@ class InvitationPanel extends React.Component {
                 totalTesters={this.props.testersCopy.length}
               />
             {/* <Button type="submit">Send Invites</Button> */}
-            <Button onClick={this.inviteAll}>Invite All</Button>
+            <Button onClick={this.inviteAll}>Invite Testers</Button>
             <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
           </form>
         </div>

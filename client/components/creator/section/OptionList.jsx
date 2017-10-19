@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import axios from 'axios';
 
-class OptionList extends React.Component {
+class OptionListEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -35,4 +35,4 @@ class OptionList extends React.Component {
   }
 }
 
-export default OptionList;
+export default OptionListEntry;
