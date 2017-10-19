@@ -96,8 +96,7 @@ class SectionHome extends React.Component {
             <Button onClick={this.renderPanel}>Invite testers</Button>
           ) : (
             <InvitationPanel
-              option={this.props.option}
-              sectionId={this.props.currentSection.id}
+              options={this.props.currentSection.options}
               renderInvited={this.renderInvited}
               invitedUserIds={this.state.invitedUserIds}
               testers={this.state.testers}
