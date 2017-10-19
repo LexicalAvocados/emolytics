@@ -15,7 +15,7 @@ class FocusGroupsPage extends React.Component {
     this.state = {
       typedFocusGroupName: '',
       typedTesterUsername: '',
-      selectedGroupIdx: 0
+      selectedGroupIdx: -1
     }
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
@@ -58,7 +58,8 @@ class FocusGroupsPage extends React.Component {
   }
 
   changeFocusGroupIdx(e) {
-    this.setState({selectedFocusGroup: e});
+    console.log('e:', e);
+    this.setState({selectedGroupIdx: e});
   }
 
   render() {
@@ -77,35 +78,44 @@ class FocusGroupsPage extends React.Component {
 
         {this.props.focusGroups.length > 0 ?
           (<ButtonToolbar>
-            <ToggleButtonGroup type='radio' name='focusGroups' onChange={this.selectFocusGroup}>
+            <ToggleButtonGroup type='radio' name='focusGroups' onChange={this.changeFocusGroupIdx}>
               {this.props.focusGroups.map((group, i) => (
-                <ToggleButton value={i}>{group.name}</ToggleButton>
+                <ToggleButton key={i} value={i}>{group.name}</ToggleButton>
               ))}
             </ToggleButtonGroup>
           </ButtonToolbar>)
         :
           null}
 
-        <h2>Add Tester to Focus Group</h2>
-        <form onSubmit={this.addTesterToFocusGroup}>
-          <FormControl
-            type='text'
-            value={this.state.typedUsername}
-            placeholder='Tester Username'
-            onChange={this.updateTypedTesterUsername}
-          />
-        </form>
-        <h3>Focus Group Members</h3>
+        {this.state.selectedGroupIdx > -1 ?
+          <div>
 
-        {this.props.focusGroups[this.state.selectedGroupIdx].testers.length > 0 ?
-          <ul>
-            {this.props.focusGroups[this.state.selectedGroupIdx].testers.map(tester => (
-              <li>tester</li>
-            ))}
-          </ul>
+            <h2>Add Tester to {this.props.focusGroups[this.state.selectedGroupIdx].name}</h2>
+            <form onSubmit={this.addTesterToFocusGroup}>
+              <FormControl
+                type='text'
+                value={this.state.typedUsername}
+                placeholder='Tester Username'
+                onChange={this.updateTypedTesterUsername}
+              />
+            </form>
+
+            <h2>{this.props.focusGroups[this.state.selectedGroupIdx].name} Members</h2>
+
+            {this.props.focusGroups[this.state.selectedGroupIdx].testers.length > 0 ?
+              <ul>
+                {this.props.focusGroups[this.state.selectedGroupIdx].testers.map((tester, i) => (
+                  <li key={i}>tester</li>
+                ))}
+              </ul>
+            :
+              'none'
+            }
+
+          </div>
         :
-          'none'
-        }
+          null}
+
       </div>
     )
   }
