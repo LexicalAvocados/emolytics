@@ -9,10 +9,11 @@ class ProjectList extends React.Component {
       sections: [],
       date: ''
     };
-    this.onClickCallback = this.onClickCallback.bind(this)
+    this.onClickCallback = this.onClickCallback.bind(this);
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
@@ -27,11 +28,11 @@ class ProjectList extends React.Component {
       })
       .catch((err) => {
         console.log('Request to get relevant sections NOT sent to server!', err);
-      })
+      });
   }
 
   onClickCallback() {
-    this.props.onProjectClick(this.props.project, this.state.sections)
+    this.props.onProjectClick(this.props.project, this.state.sections);
     this.props.history.push('/project' + this.props.project.id);
 
   }

@@ -13,6 +13,7 @@ class SectionList extends React.Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     axios.get('/api/getOptionsForSection', { params: {sectionId: this.props.section.id}})
       .then((options) => {
         let sortedOptions = options.data.sort((one, two) => {
@@ -37,14 +38,14 @@ class SectionList extends React.Component {
     return (
       <div onClick={this.onClickCallback} className="projectHomeSectionListEntry">
         {/* <Link to={'/section' + this.props.section.id}>  */}
-          <p className="closerTextLarger">{this.props.section.name}</p>
-          <p className="closerText">{this.props.section.description}</p>
+        <p className="closerTextLarger">{this.props.section.name}</p>
+        <p className="closerText">{this.props.section.description}</p>
         <p>Created On: {this.state.date = new Date(this.props.section.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-          <div>
-            { this.state.options.map((option, i) => {
-              return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
-            })}
-          </div>
+        <div>
+          { this.state.options.map((option, i) => {
+            return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
+          })}
+        </div>
         {/* </Link> */}
       </div>
     );

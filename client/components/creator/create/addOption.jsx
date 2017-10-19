@@ -4,7 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-// import key from './key.js';
+import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class AddOption extends React.Component {
     var vidUrl = this.state.url;
     var sliceFrom = this.state.url.indexOf('=');
     var vidId = vidUrl.slice(sliceFrom + 1);
-    axios.get(`https://www.googleapis.com/youtube/v3/videos`, {
+    axios.get('https://www.googleapis.com/youtube/v3/videos', {
       params: {
         id: vidId,
         part: 'snippet, contentDetails',
