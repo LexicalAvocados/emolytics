@@ -226,7 +226,7 @@ class InvitationPanel extends React.Component {
               <InviteTesters 
                 totalTesters={this.props.testersCopy.length}
               />
-            <Button type="submit">Send Invites</Button>
+            {/* <Button type="submit">Send Invites</Button> */}
             <Button onClick={this.inviteAll}>Invite All</Button>
             <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
           </form>

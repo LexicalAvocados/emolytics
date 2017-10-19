@@ -28,28 +28,46 @@ class SectionHome extends React.Component {
     this.renderPanel = this.renderPanel.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
           testers: response.data
         });
+        // console.log('TESTERS BEFORE FILTER', this.state.testers)
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  concatTesters(testers) {
+  concatTesters(testers, index) {
     var freeOfDuplicates = [];
     testers.forEach((tester) => {
       if (this.state.testersForOptions.indexOf(tester) === -1) {
         freeOfDuplicates.push(tester);
       }
-    })
+    });
     this.setState({
       testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
     });
+    if (index === this.props.currentSection.options.length - 1) {
+      this.state.testersForOptions.concat(testers);
+      var priorInvites = true;
+      var testersThatHaveNotBeenInvited = this.state.testers.filter((tester) => {
+        if (this.state.testersForOptions.indexOf(tester.id) === -1) return tester;
+      });
+      // console.log('Not invited', testersThatHaveNotBeenInvited);
+      // console.log('All', this.state.testers);
+      if (testersThatHaveNotBeenInvited.length === this.state.testers.length) {
+        priorInvites = false;
+      }
+      this.setState({
+        testers: testersThatHaveNotBeenInvited,
+        testersCopy: testersThatHaveNotBeenInvited,
+        haveInvited: priorInvites
+      });
+    }
   }
 
   onOptionClick(index) {
@@ -70,15 +88,8 @@ class SectionHome extends React.Component {
   }
 
   renderPanel() {
-    var priorInvites = false;
-    var uninvitedTesters = this.state.testers.filter((tester) => {
-      if (this.state.testersForOptions.indexOf(tester.id) === -1) return tester;
-    });
     this.setState({
       displayPanel: !this.state.displayPanel,
-      testers: uninvitedTesters,
-      testersCopy: uninvitedTesters,
-      haveInvited: priorInvites
     });
   }
 
@@ -145,33 +156,3 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 ) (SectionHome));
-
-
-
-   // axios.get('/api/getTestersForOptions', { params: { optionIds: this.props.currentSection.options }})
-//     //   .then((response) => {
-//     //     return response.data
-//     //   })
-//     //   .then((userIdsArray) => {
-//     //     let priorInvites = true;
-//     axios.get('/api/getTesters')
-//     .then((response) => {
-//       // var uninvitedTesters = response.data.filter((tester) => {
-//       //   if (userIdsArray.indexOf(tester.id) === -1) return tester;
-//       // });
-//       // if (uninvitedTesters.length === response.data.length) { 
-//       //   priorInvites = false;
-//       // }
-//       this.setState({
-//         testers: response.data,
-//         testersCopy: response.data,
-//         haveInvited: false
-//       });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// // })
-// // .catch((error) => {
-// //   console.log(error);
-// // });

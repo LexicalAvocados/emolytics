@@ -12,7 +12,7 @@ class OptionList extends React.Component {
   componentDidMount() {
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
-        this.props.concatTesters(testerIds.data);
+        this.props.concatTesters(testerIds.data, this.props.index);
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
