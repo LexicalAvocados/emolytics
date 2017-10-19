@@ -1,12 +1,21 @@
 import { REHYDRATE } from 'redux-persist/constants';
 
-const loggedInUser = (state = {username: undefined, name: undefined, age: undefined, sex: undefined, race: undefined, isCreator: undefined}, action) => {
+const loggedInUser = (state = {
+  id: undefined,
+  username: undefined,
+  name: undefined,
+  age: undefined,
+  sex: undefined,
+  race: undefined,
+  isCreator: undefined
+}, action) => {
   switch (action.type) {
     case 'SET_LOGGED_IN':
       return Object.assign(
         {},
         state,
         {
+          id: action.id,
           username: action.username,
           name: action.name,
           age: action.age,
@@ -16,7 +25,7 @@ const loggedInUser = (state = {username: undefined, name: undefined, age: undefi
         }
       );
     case 'SET_LOGGED_OUT':
-      return {username: undefined, name: undefined, age: undefined, sex: undefined, race: undefined, isCreator: undefined};
+      return {id: undefined, username: undefined, name: undefined, age: undefined, sex: undefined, race: undefined, isCreator: undefined};
     case 'SET_NAME':
       return Object.assign({}, state, {name: action.name});
     case 'SET_AGE':

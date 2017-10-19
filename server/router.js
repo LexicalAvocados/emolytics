@@ -49,4 +49,6 @@ router.post('/creator/addToFocusGroup', indexRoutes.addTesterToFocusGroup);
 
 router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGroup);
 
+router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
+
 module.exports = router;
