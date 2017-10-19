@@ -18,14 +18,6 @@ class Navbar extends React.Component {
 
   handleLogout() {
     this.props.actions.setLoggedOut();
-    var cleanState = {
-      currentProject: {},
-      currentSection: {},
-      currentTesterOption: {},
-      loggedInUser: {},
-      signupwithfb: {}
-    }
-    this.props.actions.wipeStateCleanOnLogout(cleanState);
     axios.get('/logout');
   }
 
