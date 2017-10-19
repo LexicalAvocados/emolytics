@@ -15,6 +15,7 @@ class SectionHome extends React.Component {
     this.state = {
       displayPanel: false,
       invited: false,
+      assigned: false,
       haveInvited: false,
       invitedUserIds: [],
       testersForOptions:[],
@@ -27,6 +28,7 @@ class SectionHome extends React.Component {
     this.changeTestersCopy = this.changeTestersCopy.bind(this);
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
+    this.assignFocusGroup = this.assignFocusGroup.bind(this);
   }
 
   componentWillMount() {
@@ -82,6 +84,12 @@ class SectionHome extends React.Component {
     });
   }
 
+  renderAssigned() {
+    this.setState({
+      assigned: !this.state.assigned
+    });
+  }
+
   changeTestersCopy(filtered) {
     this.setState({
       testersCopy: filtered
@@ -92,6 +100,29 @@ class SectionHome extends React.Component {
     this.setState({
       displayPanel: !this.state.displayPanel,
     });
+  }
+
+  assignFocusGroup() {
+    let options = this.props.currentSection.options;
+    let focusGroupMembers = this.state.testers.reduce((members, tester, i) => {
+      if (this.props.currentFocusGroup.testers.includes(tester.username)) {
+        return [...members, tester];
+      } else {
+        return members;
+      }
+    }, []);
+    console.log('options:', options, 'focusGroupMembers:', focusGroupMembers);
+
+    axios.post('/api/sendEmails', {
+      invitedArr: focusGroupMembers,
+      options
+    })
+      .then(res => {
+        this.renderAssigned();
+      })
+      .catch(err => {
+        console.log('Error assigning Focus Group to Section:', err);
+      })
   }
 
   render() {
@@ -143,11 +174,24 @@ class SectionHome extends React.Component {
           <div>
             <FocusGroupsList />
             {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
-              <ul>
-                {this.props.currentFocusGroup.testers.map((tester, i) => (
-                  <li key={i}>{tester}</li>
-                ))}
-              </ul>
+              <div>
+                <h3>{this.props.currentFocusGroup.name} Members</h3>
+                <div>
+                  <ul>
+                    {this.props.currentFocusGroup.testers.map((tester, i) => (
+                      <li key={i}>{tester}</li>
+                    ))}
+                  </ul>
+                </div>
+                <Button
+                  bsStyle='primary'
+                  onClick={this.assignFocusGroup}
+                >Assign Focus Group to Section</Button>
+                {this.state.assigned ?
+                  'Focus Group Assigned!'
+                :
+                  null}
+              </div>
             :
               null}
           </div>
