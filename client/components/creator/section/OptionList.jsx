@@ -13,6 +13,7 @@ class OptionListEntry extends React.Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);
@@ -28,7 +29,7 @@ class OptionListEntry extends React.Component {
         <div onClick={() => this.props.onOptionClick(this.props.index)}>
           <img src={this.props.option.thumbnail} alt=""/>
           <p className="closerText">{this.props.option.name}</p>
-        <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
+          <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
         </div>
       </div>
     );

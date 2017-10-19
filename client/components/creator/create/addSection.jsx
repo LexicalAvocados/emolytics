@@ -58,7 +58,7 @@ class AddSection extends React.Component {
   render() {
     return (
       <div className="CreateProject">
-      <p>{this.props.currentProject.name}</p>
+        <p>{this.props.currentProject.name}</p>
         <h2>Add Section</h2>
         <br/>
         <form onSubmit={this.submitSectionClick}>
