@@ -15,26 +15,32 @@ exports.sendEmails = function(req, res) {
     }
   });
 
-  req.body.invitedArr.forEach((invitee) => {
-    TesterAndOptions.create({
-      optionId: req.body.option.id,
-      userId: invitee.id
-    });
-    let mailOptions = {
-      from: "ReactionSync",
-      to: invitee.email,
-      subject: "You've been invited!",
-      text: "Guten Tag! You've been invited to something (if you've received this email)",
-      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${req.body.option.id} at ${routeForTesters} after logging in! Giddy up!</p>`
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        // return console.log(error);
-        res.send('FAILURE');
-      } else {
-        console.log('I think the email was sent.', info);
-        res.send('Success');
-      }
-    })
+  // req.body.invitedArr.forEach((invitee) => {
+  var remainder = req.body.invitedArr.length % req.body.options.length;
+  req.body.options.forEach((option) => {
+    for (var i = 0; i < req.body.options.length; i++) {
+      let mailOptions = {
+        from: "ReactionSync",
+        to: req.body.invitedArr[i].email,
+        subject: "You've been invited!",
+        text: "Guten Tag! You've been invited to something (if you've received this email)",
+        html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${option.id} at ${routeForTesters} after logging in! Giddy up!</p>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          // return console.log(error);
+          res.send('FAILURE');
+        } else {
+          console.log('I think the email was sent.', info);
+          res.send('Success');
+        }
+      });
+
+    }
   });
+    // TesterAndOptions.create({
+    //   optionId: req.body.option.id,
+    //   userId: invitee.id
+    // });
+  // });
 };
