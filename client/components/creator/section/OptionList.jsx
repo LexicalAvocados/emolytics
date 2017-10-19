@@ -10,7 +10,6 @@ class OptionList extends React.Component {
     this.state ={
       date: ''
     }
-<<<<<<< HEAD
   }
 
   componentDidMount() {
@@ -21,8 +20,6 @@ class OptionList extends React.Component {
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
       });
-=======
->>>>>>> feature
   }
 
   render() {
