@@ -18,6 +18,7 @@ import Login from './auth/login.jsx';
 import TesterHome from './tester/TesterHome.jsx';
 import TesterProfile from './tester/TesterProfile.jsx';
 import TesterVideo from './tester/testerVideo.jsx';
+import TesterQueue from './tester/TesterQueue.jsx';
 import ProjectHome from './creator/project/projectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
 import OptionHome from './creator/option/OptionHome.jsx';

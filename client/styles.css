@@ -11,6 +11,12 @@ body {
   padding: 4%;
 }
 
+.fblogin {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
 .navItem {
   color: black;
   padding: 10px;
@@ -116,7 +122,7 @@ body {
 }
 
 .overlay{
-  background: rgba(204, 204, 204, .8);  
+  background: rgba(204, 204, 204, .8);
   position:fixed;
   width:100%;
   height:100%;
@@ -370,7 +376,7 @@ button {
 
 /* @keyframes reveal { DOESNT WORK
   from {height: 0%;}
-  to {height: 100%;} 
+  to {height: 100%;}
 } */
 
 .invitationPanel {

@@ -81,7 +81,9 @@ export class Login extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-           <a href='/auth/facebook'>Log in with Facebook</a>
+           <a href='/auth/facebook'>
+             <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
+           </a>
       </div>
     )
   }

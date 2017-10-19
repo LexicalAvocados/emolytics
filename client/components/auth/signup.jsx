@@ -117,10 +117,17 @@ export class Signup extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-        <a href='/auth/facebook'>Sign up with Facebook</a>
+          <a href='/auth/facebook'>
+            <img className='fblogin' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
+          </a>
+          <p style={center}> Don't forget to select Tester/Creator!</p>
       </div>
     )
   }
+}
+
+const center = {
+  textAlign: "center"
 }
 
 // React-Redux connect() boilerplate
