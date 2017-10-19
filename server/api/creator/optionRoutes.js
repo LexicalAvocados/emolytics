@@ -58,6 +58,8 @@ exports.getUsersNamesWhoWatced = (req, res) => {
   .catch((err) => console.error('err in getting usernames', err))
 }
 
+// I've sent all the options associated with that section
+
 exports.getTestersForOption = (req, res) => {
   Likes.findAll({
     where: {
@@ -66,7 +68,7 @@ exports.getTestersForOption = (req, res) => {
   })
     .then((options) => {
       let userIds = options.map((option) => {
-        return option.userId
+        return option.userId;
       })
       res.send(userIds);
     })

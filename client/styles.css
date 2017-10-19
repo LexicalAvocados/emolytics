@@ -343,7 +343,7 @@ button {
   border: 1px solid black;
   border-radius: 3px;
   padding: 2% 0% 2% 2%;
-  width: 110%;
+  /* width: 110%; */
   background-color: white;
 }
 

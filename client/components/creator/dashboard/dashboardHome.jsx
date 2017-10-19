@@ -17,9 +17,9 @@ class DashboardHome extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }}) // this.props.loggedInUser.username (import it below)
+    axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }}) 
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         let sortedProjects = response.data.sort((one, two) => {
           if (one.createdAt < two.createdAt) return 1;
           if (one.createdAt > two.createdAt) return -1;

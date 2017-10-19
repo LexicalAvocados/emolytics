@@ -223,14 +223,9 @@ class InvitationPanel extends React.Component {
         </div>
         <div className="testersList">
           <form onSubmit={() => this.sendInvites(this.state.invited)}>
-            {this.props.testersCopy.map((tester, i) => (
               <InviteTesters 
-                handleInvites={this.handleInvites}
-                tester={tester}
-                key={i}
-                index={i}
+                totalTesters={this.props.testersCopy.length}
               />
-            ))}
             <Button type="submit">Send Invites</Button>
             <Button onClick={this.inviteAll}>Invite All</Button>
             <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>

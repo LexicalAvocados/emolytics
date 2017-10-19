@@ -16,6 +16,7 @@ class SectionHome extends React.Component {
       invited: false,
       haveInvited: false,
       invitedUserIds: [],
+      testersForOptions:[],
       testers: [],
       testersCopy: []
     }
@@ -23,37 +24,32 @@ class SectionHome extends React.Component {
     this.renderInvited = this.renderInvited.bind(this);
     // this.renderHaveInvited = this.renderHaveInvited.bind(this);
     this.changeTestersCopy = this.changeTestersCopy.bind(this);
+    this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
   }
 
   componentDidMount() {
-    // axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
-    //   .then((response) => {
-    //     return response.data
-    //   })
-    //   .then((userIdsArray) => {
-    //     let priorInvites = true;
-        axios.get('/api/getTesters')
-          .then((response) => {
-            // var uninvitedTesters = response.data.filter((tester) => {
-            //   if (userIdsArray.indexOf(tester.id) === -1) return tester;
-            // });
-            // if (uninvitedTesters.length === response.data.length) { 
-            //   priorInvites = false;
-            // }
-            this.setState({
-              testers: response.data,
-              testersCopy: response.data,
-              haveInvited: false
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+    axios.get('/api/getTesters')
+      .then((response) => {
+        this.setState({
+          testers: response.data
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  concatTesters(testers) {
+    var freeOfDuplicates = [];
+    testers.forEach((tester) => {
+      if (this.state.testersForOptions.indexOf(tester) === -1) {
+        freeOfDuplicates.push(tester);
+      }
+    })
+    this.setState({
+      testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
+    });
   }
 
   onOptionClick(index) {
@@ -74,8 +70,15 @@ class SectionHome extends React.Component {
   }
 
   renderPanel() {
+    var priorInvites = false;
+    var uninvitedTesters = this.state.testers.filter((tester) => {
+      if (this.state.testersForOptions.indexOf(tester.id) === -1) return tester;
+    });
     this.setState({
-      displayPanel: !this.state.displayPanel
+      displayPanel: !this.state.displayPanel,
+      testers: uninvitedTesters,
+      testersCopy: uninvitedTesters,
+      haveInvited: priorInvites
     });
   }
 
@@ -115,6 +118,7 @@ class SectionHome extends React.Component {
               key={i}
               index={i}
               onOptionClick={this.onOptionClick}
+              concatTesters={this.concatTesters}
             />
           ))}
         </div>
@@ -141,3 +145,33 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 ) (SectionHome));
+
+
+
+   // axios.get('/api/getTestersForOptions', { params: { optionIds: this.props.currentSection.options }})
+//     //   .then((response) => {
+//     //     return response.data
+//     //   })
+//     //   .then((userIdsArray) => {
+//     //     let priorInvites = true;
+//     axios.get('/api/getTesters')
+//     .then((response) => {
+//       // var uninvitedTesters = response.data.filter((tester) => {
+//       //   if (userIdsArray.indexOf(tester.id) === -1) return tester;
+//       // });
+//       // if (uninvitedTesters.length === response.data.length) { 
+//       //   priorInvites = false;
+//       // }
+//       this.setState({
+//         testers: response.data,
+//         testersCopy: response.data,
+//         haveInvited: false
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// // })
+// // .catch((error) => {
+// //   console.log(error);
+// // });
