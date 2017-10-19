@@ -14,6 +14,7 @@ import Demographics from './Subcomponents/Demographics.jsx';
 import Emotion from './Subcomponents/Emotion.jsx';
 import Feedback from './Subcomponents/Feedback.jsx';
 import UserSelect from './Subcomponents/UserSelect.jsx';
+import Annotations from './Subcomponents/Annotation.jsx';
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -33,7 +34,9 @@ class OptionHome extends React.Component {
       completion: 0,
       sideNavSelection: 'overview',
       allUsers: [],
-      selectedUsers: []
+      selectedUsers: [],
+      graph: null,
+      player: null,
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
@@ -44,10 +47,27 @@ class OptionHome extends React.Component {
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
     this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
+    console.log(this);
   }
 
   componentDidMount() {
     //orientation modal
+    this.props.actions.changeOption(this.props.currentSection.option);
+    var player = this.refs.player;
+    console.log(player);
+    this.setState({
+      player: player
+    })
+    axios.post('api/option/getAllAnnotations', {
+      option: this.props.currentOption
+    })
+      .then(data => {
+        console.log("annotations", data.data);
+        var temp = {
+          annotations: data.data
+        }
+        this.props.actions.changeAnnotations(temp);
+      })
     axios.post('/api/getUsersIdsWhoWatced', {
       optionId: this.props.currentSection.option.id
     })
@@ -108,6 +128,10 @@ class OptionHome extends React.Component {
       completion: avgCompletion
     })
   }
+
+  // changeOption(obj) {
+
+  // }
 
   setStateAfterDuration() {
     var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
@@ -174,15 +198,26 @@ class OptionHome extends React.Component {
 
   generateCharts(lineGraphData) {
       console.log('generating charts now', lineGraphData);
+      var lineData = {
+        data: lineGraphData
+      }
+      this.props.actions.changeLineGraphData(lineData);
       // c3.select('.optionChart').unload();
       var lineGraph = c3.generate({
         bindto: '.optionChart',
+        selection: {
+          enabled: true
+        },
         data: {
           onclick: (d) => {
             let clickedTimestamp = d.x.toString();
             this.setState({
               timestamp: clickedTimestamp
-            }, () => this.ReactPlayer.seekTo(this.state.timestamp))
+            }, () => {
+              var player = this.refs.player;
+              console.log(player);
+              player.seekTo(this.state.timestamp)
+            })
           },
           columns: lineGraphData
         }
@@ -203,6 +238,9 @@ class OptionHome extends React.Component {
           type : 'pie'
         }
       });
+      this.setState({
+        graph: lineGraph
+      })
       this.forceUpdate();
   }
 
@@ -217,7 +255,10 @@ class OptionHome extends React.Component {
   timestampCallback(seconds){
     this.setState({
       timestamp: seconds
-    }, () => this.ReactPlayer.seekTo(this.state.timestamp))
+    }, () => {
+      var player = this.refs.player;
+      player.seekTo(this.state.timestamp)
+    })
   };
 
   changeSideNavSelection(item) {
@@ -230,7 +271,7 @@ class OptionHome extends React.Component {
     if (this.state.sideNavSelection === 'attention') {
       this.generateCharts(this.state.attention);
     }
-    if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions') {
+    if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
       this.generateCharts(this.state.emotionsArrForRender)
     }
   };
@@ -329,8 +370,8 @@ class OptionHome extends React.Component {
         <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
         <div className='leftSide'>
           <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-            ref={(player) => { this.ReactPlayer = player; }}
-            controls={true} height={420} width={675} className='optionPlayer' onDuration={this.setDuration}
+            ref="player"
+            controls={true} height={360} width={500} className='optionPlayer' onDuration={this.setDuration}
             config={{
               youtube: {
                 playerVars: { showinfo: 1}
@@ -385,6 +426,10 @@ class OptionHome extends React.Component {
             </div>
           ) : ''}
 
+          {this.state.sideNavSelection === 'annotations' ? (
+              <Annotations graph={this.state.graph} player={this.state.player}/>
+          ) : ''}
+
         </div>
       </div>
     )
@@ -396,7 +441,10 @@ const mapStateToProps = (state) => {
     router: state.router,
     currentProject: state.currentProject,
     currentSection: state.currentSection,
-    loggedInUser: state.loggedInUser
+    loggedInUser: state.loggedInUser,
+    currentOptionAnnotations: state.currentOptionAnnotations,
+    currentOption: state.currentOption,
+    lineGraphData: state.lineGraphData
   });
 };
 

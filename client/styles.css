@@ -288,6 +288,42 @@ button {
   margin-top: 2%;
 }
 
+.optionAnnotations {
+  background-color: #f2f2f2;
+  padding: 12px;
+}
+
+.optionAnnotationsTitle {
+  text-align: center;
+}
+
+.annotations {
+  padding: 10px;
+  background-color: white;
+  margin: 10px;
+  border-radius: 3px;
+  clear: right;
+  clear: left;
+  display: flex;
+}
+
+.annotations p {
+  font-size: .8em;
+  margin: 0;
+}
+
+.error {
+  color: red;
+}
+
+.annotationForm {
+  background-color: white;
+  border-radius: 3px;
+  padding: 2%;
+}
+
+.annotationForm Button {
+  font-size: 12px;
 
 /* Lucas' CSS */
 .dashboardHomeContainer {

@@ -7,6 +7,10 @@ import currentProject from './currentProject';
 import currentSection from './currentSection';
 import currentTesterOption from './currentTesterOption';
 import signupwithfb from './signupwithfb';
+import currentOptionAnnotations from './currentOptionAnnotations';
+import currentOption from './currentOption';
+import annotations from './annotations';
+import lineGraphData from './lineGraphData';
 
 const rootReducer = combineReducers({
   loggedInUser,
@@ -16,6 +20,10 @@ const rootReducer = combineReducers({
   currentSection,
   currentTesterOption,
 	signupwithfb,
+  currentOptionAnnotations,
+  currentOption,
+  annotations,
+  lineGraphData,
   router: routerReducer
 });
 
