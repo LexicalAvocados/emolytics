@@ -58,7 +58,7 @@ exports.createNewFocusGroup = (req, res) => {
     .then(creator => {
       return FocusGroup.create({
         name: req.body.focusGroupName,
-        creatorId: creator.id
+        userId: creator.id
       });
     })
     .then(newFocusGroup => {
