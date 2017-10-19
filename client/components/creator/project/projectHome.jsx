@@ -17,7 +17,7 @@ class ProjectHome extends React.Component {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
   }
-        
+
   render() {
     return (
       <div className="projectHomeContainer">

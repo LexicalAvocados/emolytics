@@ -6,7 +6,8 @@ class SectionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: []
+      options: [],
+      date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this);
   }
@@ -38,6 +39,7 @@ class SectionList extends React.Component {
         {/* <Link to={'/section' + this.props.section.id}>  */}
           <p className="closerTextLarger">{this.props.section.name}</p>
           <p className="closerText">{this.props.section.description}</p>
+        <p>Created On: {this.state.date = new Date(this.props.section.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
           <div>
             { this.state.options.map((option, i) => {
               return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>

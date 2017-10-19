@@ -6,7 +6,8 @@ class ProjectList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sections: []
+      sections: [],
+      date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this)
   }
@@ -32,7 +33,7 @@ class ProjectList extends React.Component {
   onClickCallback() {
     this.props.onProjectClick(this.props.project, this.state.sections)
     this.props.history.push('/project' + this.props.project.id);
-    
+
   }
 
   // routeToProject() {
@@ -46,6 +47,7 @@ class ProjectList extends React.Component {
         <p>Project Name: {this.props.project.name}</p>
         {/* </Link> */}
         <p>Project Description: {this.props.project.description}</p>
+        <p>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
         { this.state.sections.map((section, i) => {
           return (
             <p key={i}>{section.name}</p>
