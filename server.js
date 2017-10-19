@@ -17,27 +17,43 @@ const PORT = process.env.PORT || 3000;
 passport.use(new FacebookStrategy({
     clientID: '1808121682812707',
     clientSecret: '44fdbb032d8a430258e537b674992851',
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
+    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    profileFields: ['id', 'name', 'email', 'displayName', 'gender', 'likes', 'movies', 'music', 'books', 'television', 'games', 'hometown']
   },
   function(accessToken, refreshToken, profile, cb) {
+    // console.log('accessToken', accessToken)
     var usernameInitials = profile.displayName.split(' ').reduce((acc, namepart) => {
       acc += namepart[0];
       return acc;
-    }, '');
-    console.log('username initials', usernameInitials)
+    }, '').toLowerCase();
 
     User.findOne(
       {where: { name: profile.displayName }
     })
     .then((existingUser, err) => {
-      console.log('incoming user', existingUser)
+      // console.log('incoming user', existingUser)
       if (!existingUser) {
+        let params = ['likes', 'movies', 'music', 'books', 'television'];
+        let likeObj = {};
+        params.forEach((thing) => {
+          likeObj[thing] = profile._json[thing].data.reduce((acc, curr) => {
+            acc.push(curr.name); return acc;
+          }, [])
+        });
+        console.log('likeObj', likeObj)
         User.create({
           name: profile.displayName,
-          username: usernameInitials
+          username: usernameInitials,
+          sex: profile.gender,
+          fbId: profile.id,
+          likes: likeObj.likes,
+          movies: likeObj.movies,
+          music: likeObj.music,
+          books: likeObj.books,
+          television: likeObj.television
         })
         .then( (newUser) => {
-          console.log('new user created', newUser)
+          // console.log('new user created', newUser)
           return cb(err, newUser)
         })
       } else {
@@ -84,8 +100,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/auth/facebook',
-  passport.authenticate('facebook'));
-//, { scope: ['user_likes', 'email', 'public_profile'] }
+  passport.authenticate('facebook', { scope: ['user_likes', 'email', 'public_profile'] }));
+
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {successRedirect: '/loading', failureRedirect: '/login' }));
 

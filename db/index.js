@@ -28,12 +28,17 @@ const User = sequelize.define('user', {
   username: Sequelize.STRING,
   password: Sequelize.STRING,
   email: Sequelize.STRING,
-  fbId: Sequelize.INTEGER,
+  fbId: Sequelize.STRING,
   name: Sequelize.STRING,
   sex: Sequelize.STRING,
   age: Sequelize.INTEGER,
   race: Sequelize.STRING,
-  isCreator: {type: Sequelize.BOOLEAN, defaultValue: false}
+  isCreator: {type: Sequelize.BOOLEAN, defaultValue: false},
+  likes: Sequelize.ARRAY(Sequelize.TEXT),
+  movies: Sequelize.ARRAY(Sequelize.TEXT),
+  music: Sequelize.ARRAY(Sequelize.TEXT),
+  books: Sequelize.ARRAY(Sequelize.TEXT),
+  television: Sequelize.ARRAY(Sequelize.TEXT)
 });
 
 User.sync({force: false});
