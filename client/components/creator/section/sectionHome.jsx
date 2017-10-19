@@ -72,6 +72,13 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+    axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=1', { data: this.props.currentSection.options[index],  headers: {'Access-Control-Allow-Origin': '["Expect:"]'}})
+      .then((response) => {
+        console.log('RESPONSE FROM THE API', response);
+      })
+      .catch((err) => {
+        console.log('ERROR SENDING COMMENT TO API', err);
+      })
     this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 
