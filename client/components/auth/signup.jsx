@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap';
+import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -23,6 +23,8 @@ export class Signup extends React.Component {
     this.updateTypedEmail = this.updateTypedEmail.bind(this);
     this.updateIsCreator = this.updateIsCreator.bind(this);
     this.submitNewAccount = this.submitNewAccount.bind(this);
+    this.handleFbSignup = this.handleFbSignup.bind(this);
+    this.handleRoleSelect = this.handleRoleSelect.bind(this);
   }
 
   updateTypedUsername(e) {
@@ -59,6 +61,34 @@ export class Signup extends React.Component {
       })
   }
 
+  handleFbSignup() {
+    //check for the session here using dummy route
+    axios.get('/userdata')
+    .then( (resp) => {
+      let user = resp.data.passport.user;
+      console.log('USER', user)
+      this.props.actions.setLoggedIn(user.username, user.name, user.age, user.sex, user.race, this.state.isCreator);
+      this.props.history.push('/');
+    })
+    .catch((err) => console.log('error happened', err))
+  }
+
+  componentDidMount() {
+    this.handleFbSignup();
+  }
+
+  handleRoleSelect(ind) {
+    if (ind === 2) {
+      this.setState({
+        isCreator: true
+      })
+    } else {
+      this.setState({
+        isCreator: false
+      })
+    }
+  }
+
   render() {
     return (
       <div className='auth'>
@@ -89,10 +119,18 @@ export class Signup extends React.Component {
                 onChange={this.updateTypedEmail}
               />
             </Col>
-            <Checkbox className='signupCreator' onClick={this.updateIsCreator}>Register as a Creator</Checkbox>
+            <ButtonToolbar>
+              <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={this.handleRoleSelect}>
+                <ToggleButton value={1}>Tester</ToggleButton>
+                <ToggleButton value={2}>Creator</ToggleButton>
+              </ToggleButtonGroup>
+            </ButtonToolbar>
+            <br/>
             <Button type='submit'>Submit</Button>
           </FormGroup>
         </Form>
+        <hr/>
+        <a href='/auth/facebook' onClick={this.handleFbSignup}>Sign up with Facebook</a>
       </div>
     )
   }

@@ -14,7 +14,9 @@
       "js",
       "jsx"
     ],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   },
   "repository": {
     "type": "git",
@@ -72,6 +74,7 @@
     "nodemailer": "^4.2.0",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
     "pg": "^7.3.0",
     "prop-types": "^15.6.0",
     "react": "^15.6.1",

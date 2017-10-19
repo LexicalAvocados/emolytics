@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -11,6 +12,13 @@ import * as ChangeActions from '../actions';
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
+
+  this.handleLogout = this.handleLogout.bind(this);
+}
+
+  handleLogout() {
+    this.props.actions.setLoggedOut();
+    axios.get('/logout');
   }
 
   render() {
@@ -26,7 +34,7 @@ class Navbar extends React.Component {
                 <Link to='/createProject' style={noUnderline}>
                   <p className='navItem'>Create Project</p>
                 </Link>
-                <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
+                <Link to='/login' style={noUnderline} onClick={this.handleLogout}>
                   <p className='navItem'>Log out</p>
                 </Link>
               </div>
