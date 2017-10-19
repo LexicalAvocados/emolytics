@@ -40,7 +40,7 @@ passport.use(new FacebookStrategy({
             acc.push(curr.name); return acc;
           }, [])
         });
-        console.log('likeObj', likeObj)
+        // console.log('likeObj', likeObj)
         User.create({
           name: profile.displayName,
           username: usernameInitials,
