@@ -8,6 +8,7 @@ const optionRoutes = require('./api/creator/optionRoutes.js');
 const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
 const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
+const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRoutes.js');
 
 router.use('/tester', testerRoutes);
 
@@ -48,5 +49,7 @@ router.put('/creator/deleteFocusGroup', indexRoutes.deleteFocusGroup);
 router.post('/creator/addToFocusGroup', indexRoutes.addTesterToFocusGroup);
 
 router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGroup);
+
+router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange)
 
 module.exports = router;

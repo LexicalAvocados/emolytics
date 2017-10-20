@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 router.post('/addAnnotation', (req, res) => {
-	console.log(req.body);
+	// console.log(req.body);
 	OptionAndAnnotation.findOne({where: {optionId: req.body.option.id, time: req.body.time}})
 		.then(anno => {
       if (anno) {
@@ -32,10 +32,10 @@ router.post('/addAnnotation', (req, res) => {
 })
 
 router.post('/getAllAnnotations', (req, res) => {
-  console.log('Get All Annotation', req.body.option);
+  // console.log('Get All Annotation', req.body.option);
   OptionAndAnnotation.findAll({where: {optionId: req.body.option.id}})
     .then(data => {
-      console.log('ALL DATA', data);
+      // console.log('ALL DATA', data);
       let result = [];
       data.forEach(elem => {
         result.push(elem.dataValues)

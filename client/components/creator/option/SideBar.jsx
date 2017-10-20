@@ -5,7 +5,7 @@ import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
 const SideBar = (props) => {
 
   return (
-    <div className='sidemenucontainer' style={{background: '#2c3e50', color: '#FFF', height: '28%'}}>
+    <div className='sidemenucontainer' style={{background: '#2c3e50', color: '#FFF', height: '60%'}}>
       <SideNav highlightColor='#eff0f2' highlightBgColor='#7a110d' selected={props.currSelected} onItemSelection={props.changeCb}>
           <Nav id='overview'>
               <NavIcon><img height={25} width={25} src={'https://cdn2.iconfinder.com/data/icons/thin-charts-analytics/24/thin-1078_kpi_dashboard_report-512.png'}/></NavIcon>
@@ -23,13 +23,17 @@ const SideBar = (props) => {
               <NavIcon><img height={25} width={25} src={'https://d30y9cdsu7xlg0.cloudfront.net/png/204643-200.png'}/></NavIcon>
               <NavText className='sideNavItem'> Feedback </NavText>
           </Nav>
+          <Nav id='annotations'>
+              <NavIcon><img height={25} width={25} src={'https://cdn3.iconfinder.com/data/icons/abstract-1/512/annotation-512.png'}/></NavIcon>
+              <NavText className='sideNavItem'> Annotations </NavText>
+          </Nav>
+          <Nav id='detailedDemographics'>
+              <NavIcon><img height={25} width={25} src={'https://i.warosu.org/data/biz/img/0017/28/1484259015773.png'}/></NavIcon>
+              <NavText className='sideNavItem'> Demographics+ </NavText>
+          </Nav>
           <Nav id='settings'>
               <NavIcon><img height={25} width={25} src={'https://image.flaticon.com/icons/png/512/32/32441.png'}/></NavIcon>
               <NavText className='sideNavItem'> Settings </NavText>
-          </Nav>
-          <Nav id='annotations'>
-              <NavIcon><img height={25} width={25} src={'https://image.flaticon.com/icons/png/512/32/32441.png'}/></NavIcon>
-              <NavText className='sideNavItem'> Annotations </NavText>
           </Nav>
       </SideNav>
     </div>
