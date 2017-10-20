@@ -53,6 +53,29 @@ body {
   border: solid black 1px;
 }
 
+.ageDistributionChart {
+  height: 10%;
+  width: 100%;
+}
+
+.genderAndRaceContainer {
+  grid-column: 3;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 60% 40%;
+}
+
+.genderDistribution {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.raceDistribution {
+  grid-column: 2;
+  grid-row: 1;
+}
+
 .sidemenucontainer {
   grid-column: 1;
   grid-row: 1;

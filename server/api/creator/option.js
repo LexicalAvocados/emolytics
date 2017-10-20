@@ -12,34 +12,30 @@ const router = express.Router();
 
 
 router.post('/addAnnotation', (req, res) => {
-	console.log(req.body);
-  if (req.body.time) {
-    OptionAndAnnotation.findOne({where: {optionId: req.body.option.id, time: req.body.time, end: req.body.end}})
-      .then(anno => {
-        if (anno) {
-          anno.update({
-            emotion: req.body.emotion,
-            desc: req.body.desc
-          })
-        } else {
-          OptionAndAnnotation.create({
-            optionId: req.body.option.id,
-            time: req.body.time,
-            end: req.body.end,
-            emotion: req.body.emotion,
-            desc: req.body.desc
-          })
-        }
-      })
-  }
-
+	// console.log(req.body);
+	OptionAndAnnotation.findOne({where: {optionId: req.body.option.id, time: req.body.time}})
+		.then(anno => {
+      if (anno) {
+        anno.update({
+          emotion: req.body.emotion,
+          desc: req.body.desc
+        })
+      } else {
+        OptionAndAnnotation.create({
+          optionId: req.body.option.id,
+          time: req.body.time,
+          emotion: req.body.emotion,
+          desc: req.body.desc
+        })
+      }
+    })
 })
 
 router.post('/getAllAnnotations', (req, res) => {
-  console.log('Get All Annotation', req.body.option);
+  // console.log('Get All Annotation', req.body.option);
   OptionAndAnnotation.findAll({where: {optionId: req.body.option.id}})
     .then(data => {
-      console.log('ALL DATA', data);
+      // console.log('ALL DATA', data);
       let result = [];
       data.forEach(elem => {
         result.push(elem.dataValues)

@@ -8,7 +8,7 @@ const optionRoutes = require('./api/creator/optionRoutes.js');
 const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
 const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
-const axios = require('axios');
+const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRoutes.js');
 
 router.use('/tester', testerRoutes);
 
@@ -54,5 +54,6 @@ router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
 
 router.get('/aggregateComments', optionRoutes.aggregateComments);
 
+router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange)
 
 module.exports = router;

@@ -21,7 +21,8 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'name', 'email', 'displayName', 'gender', 'likes', 'movies', 'music', 'books', 'television', 'games', 'hometown']
   },
   function(accessToken, refreshToken, profile, cb) {
-    // console.log('accessToken', accessToken)
+    console.log('profile', profile);
+
     var usernameInitials = profile.displayName.split(' ').reduce((acc, namepart) => {
       acc += namepart[0];
       return acc;
@@ -36,9 +37,9 @@ passport.use(new FacebookStrategy({
         let params = ['likes', 'movies', 'music', 'books', 'television'];
         let likeObj = {};
         params.forEach((thing) => {
-          likeObj[thing] = profile._json[thing].data.reduce((acc, curr) => {
-            acc.push(curr.name); return acc;
-          }, [])
+            if (profile._json[thing]) {
+              likeObj[thing] = profile._json[thing].data.reduce((acc, curr) => {acc.push(curr.name); return acc; }, [])
+            }
         });
         // console.log('likeObj', likeObj)
         User.create({
@@ -46,11 +47,11 @@ passport.use(new FacebookStrategy({
           username: usernameInitials,
           sex: profile.gender,
           fbId: profile.id,
-          likes: likeObj.likes,
-          movies: likeObj.movies,
-          music: likeObj.music,
-          books: likeObj.books,
-          television: likeObj.television
+          likes: likeObj.likes || [],
+          movies: likeObj.movies || [],
+          music: likeObj.music || [],
+          books: likeObj.books || [],
+          television: likeObj.television || []
         })
         .then( (newUser) => {
           // console.log('new user created', newUser)
