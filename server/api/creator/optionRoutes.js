@@ -135,6 +135,32 @@ exports.aggregateComments = (req, res) => {
               aggregateComments: string 
             }) 
           }
+          return string; // Doesn't matter
+        })
+        .then((aggregateComments) => {
+          SectionComments.findAll({
+            where: {
+              sectionId: sectionId
+            }
+          })
+          .then((allEntries) => {
+            var apiString = allEntries.reduce((current, next) => {
+              if (next.comment !== null) {
+                return current += next.aggregateComments + ' ';
+              }
+            }, '')
+
+            // apiString += apiString;
+            console.log(apiString);
+            axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + apiString)
+            .then((response) => {
+              console.log('RESPONSE FROM THE API', response.data);
+              res.send(response.data);
+            })
+            .catch((err) => {
+              console.log('ERROR SENDING COMMENT TO API', err);
+            })
+          })
         })
         .catch((err) => {
           console.log(err);
@@ -144,11 +170,4 @@ exports.aggregateComments = (req, res) => {
 
 
 
-  // axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=0&SM_KEYWORD_COUNT=5', "sm_api_input=" + JSON.stringify(string))
-  // .then((response) => {
-  //   console.log('RESPONSE FROM THE API', response.data);
-  //   res.send(response.data);
-  // })
-  // .catch((err) => {
-  //   console.log('ERROR SENDING COMMENT TO API', err);
-  // })
+
