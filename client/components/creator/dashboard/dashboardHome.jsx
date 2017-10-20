@@ -17,7 +17,7 @@ class DashboardHome extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }}) 
+    axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
         // console.log(response.data);
         let sortedProjects = response.data.sort((one, two) => {
@@ -44,7 +44,7 @@ class DashboardHome extends React.Component {
   render () {
     return (
       <div className="dashboardHomeContainer">
-        <h2>Project Home</h2>
+        <h2>Project Dashboard</h2>
         <br/>
         { this.state.retrieved ? (
           this.state.projects.length ? (

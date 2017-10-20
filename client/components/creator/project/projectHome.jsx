@@ -21,8 +21,8 @@ class ProjectHome extends React.Component {
   render() {
     return (
       <div className="projectHomeContainer">
-        <h2>{this.props.currentProject.name}</h2>
-        <p>{this.props.currentProject.description}</p>
+        <h2>Project Title: {this.props.currentProject.name}</h2>
+        <h4>Project Description: {this.props.currentProject.description}</h4>
         <Link to="/addSection">
           <Button className="addSectionButton">Add a section</Button>
         </Link>

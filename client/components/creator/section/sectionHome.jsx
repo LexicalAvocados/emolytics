@@ -128,16 +128,15 @@ class SectionHome extends React.Component {
   render() {
     return (
       <div className="sectionHomeContainer">
-        <h3>{this.props.currentProject.name}</h3>
-        <p>{this.props.currentProject.description}</p>
-        <p>{this.props.currentSection.name}</p>
-
+        <h3>Project Name: {this.props.currentProject.name}</h3>
+        <p>Project Description: {this.props.currentProject.description}</p>
+        <p>Section Name: {this.props.currentSection.name}</p>
         <Link to="/addOption">
           <Button className="addSectionButton">Add an option</Button>
         </Link>
 
         { this.state.haveInvited ? (
-          <p className="closerText">You have previously invited testers to view this option</p> 
+          <p className="closerText">You have previously invited testers to view this option</p>
         ) : ( null )}
 
         { !this.state.invited ? (
