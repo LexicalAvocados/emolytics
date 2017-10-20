@@ -27,8 +27,19 @@ router.post('/getTesterQueue', (req, res) => {
 
   // let options = sequelize.query('SELECT * FROM "testerAndOptions" INNER JOIN "options" ON testerAndOptions.optionId = options.id WHERE ' + req.body.id + ' = testerAndOptions.userId');
 
-  sequelize.query(`SELECT * FROM "testerAndOptions" INNER JOIN "options" ON "testerAndOptions"."optionId" = "options"."id" WHERE ${req.body.id} = "testerAndOptions"."userId";`)
-    .then(x => console.log('x:', x));
+  sequelize.query(`SELECT "testerAndOptions"."createdAt" AS "assignedAt", "testerAndOptions"."userId",
+                  "options"."id", "options"."name", "options"."description", "options"."youtubeUrl", "options"."thumbnail",
+                  "options"."length", "options"."createdAt", "options"."updatedAt", "options"."sectionId"
+                  FROM "testerAndOptions" INNER JOIN "options"
+                  ON "testerAndOptions"."optionId" = "options"."id"
+                  WHERE 4 = "testerAndOptions"."userId" AND "testerAndOptions"."finished" IS NULL
+                  ORDER BY "testerAndOptions"."createdAt";`)
+    .then(optionsAssignedToTesterTuple => {
+      res.send(optionsAssignedToTesterTuple[0]);
+    })
+    .catch(err => {
+      res.send(err);
+    });
 });
 
 router.post('/getVideo', (req, res) => {
