@@ -38,7 +38,9 @@ const User = sequelize.define('user', {
   movies: Sequelize.ARRAY(Sequelize.TEXT),
   music: Sequelize.ARRAY(Sequelize.TEXT),
   books: Sequelize.ARRAY(Sequelize.TEXT),
-  television: Sequelize.ARRAY(Sequelize.TEXT)
+  television: Sequelize.ARRAY(Sequelize.TEXT),
+  games: Sequelize.ARRAY(Sequelize.TEXT),
+  location: Sequelize.STRING
 });
 
 User.sync({force: false});
