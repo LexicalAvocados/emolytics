@@ -2,7 +2,10 @@ const db = require('../../../db/index.js');
 const Options = db.Option;
 const Likes = db.TesterAndOption;
 const Users = db.User;
+// const Sequelize = require('sequelize');
+// const sequelize = db.sequelize;
 const SectionComments = db.SectionComments;
+const axios = require('axios');
 
 
 exports.getRelatedOptions = (req, res) => {
@@ -98,36 +101,45 @@ exports.addOption = (req, res) => {
     });
 };
 
-exports.getComments = (req, res) => {
-  var string = '';
-  var optionsIds = [];
-  // Begin by creating a db entry
-  SectionComments.create({ 
-    sectionId: req.query.sectionId
+exports.aggregateComments = (req, res) => {
+  option = JSON.parse(req.query.option);
+  sectionId = JSON.parse(req.query.sectionId);
+  Likes.findAll({
+    where: {
+      optionId: option.id
+    }
   })
-  .then((entry) => {
-    req.query.options.forEach((option) => {
-      option = JSON.parse(option);
-      // console.log('HELLLLLO', option)
-      Likes.findAll({
+    .then((allLikes) => {
+      return allLikes.reduce((current, next) => {
+        if (next.comment !== null) {
+          return current += next.comment + ' ';
+        }
+      }, '');
+    })
+    .then((string) => {
+      SectionComments.findOne({
         where: {
-          optionId: option.id
+          optionId: option.id,
+          sectionId: sectionId
         }
       })
-        .then((allLikes) => {
-          allLikes.forEach((entry) => {
-            // console.log(string);
-            return string += entry.comment      
-          });
-        }); 
+        .then((existent) => { // update option's entry with new comments
+          if (existent) {
+            existent.update({
+              aggregateComments: string
+            })
+          } else {
+            SectionComments.create({ // add entry
+              sectionId: sectionId,
+              optionId: option.id,
+              aggregateComments: string 
+            }) 
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     })
-  })
-  .then((hello) => {
-    console.log('THE END', hello);
-  })
-  // Now send that string to the api
-  // console.log(string);
-
   };
 
 
@@ -135,6 +147,7 @@ exports.getComments = (req, res) => {
   // axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=0&SM_KEYWORD_COUNT=5', "sm_api_input=" + JSON.stringify(string))
   // .then((response) => {
   //   console.log('RESPONSE FROM THE API', response.data);
+  //   res.send(response.data);
   // })
   // .catch((err) => {
   //   console.log('ERROR SENDING COMMENT TO API', err);

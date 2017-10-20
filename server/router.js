@@ -50,7 +50,7 @@ router.post('/creator/addToFocusGroup', indexRoutes.addTesterToFocusGroup);
 
 router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGroup);
 
-router.get('/Lucas', optionRoutes.getComments);
+router.get('/Lucas', optionRoutes.aggregateComments);
 
 
 module.exports = router;

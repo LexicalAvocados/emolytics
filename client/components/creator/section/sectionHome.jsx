@@ -72,7 +72,7 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    axios.get('/api/Lucas', { params: {options: this.props.currentSection.options, sectionId: this.props.currentSection.id} })
+    axios.get('/api/Lucas', { params: {option: this.props.currentSection.options[index], sectionId: this.props.currentSection.id} })
     .then((suc) => {
       console.log(suc);
     })

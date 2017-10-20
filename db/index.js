@@ -170,9 +170,11 @@ Key.sync({force: false});
 
 const SectionComments = sequelize.define('sectionComments', {
   keywords: Sequelize.ARRAY(Sequelize.TEXT),
+  aggregateComments: Sequelize.TEXT
 });
 
 SectionComments.belongsTo(Section);
+SectionComments.belongsTo(Option);
 
 SectionComments.sync({force: false});
 
