@@ -52,8 +52,6 @@ router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGro
 
 router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
 
-router.get('/aggregateComments', optionRoutes.aggregateComments);
-
 router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange)
 
 module.exports = router;

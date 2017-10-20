@@ -75,14 +75,7 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    axios.get('/api/aggregateComments', { params: {option: this.props.currentSection.options[index], sectionId: this.props.currentSection.id} })
-    .then((suc) => {
-      console.log(suc);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  this.props.history.push('/option' + this.props.currentSection.options[index].id);
+    this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 
   renderInvited() {
