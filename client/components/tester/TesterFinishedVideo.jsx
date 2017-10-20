@@ -28,9 +28,14 @@ class TesterFinishedVideo extends React.Component {
       comment: this.state.comment
     })
       .then(data => {
-        console.log("should be pushing");
-        this.props.history.push('/');
-      })
+          console.log("should be pushing");
+          this.props.history.push('/');
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+
+      // })
     
   }
 

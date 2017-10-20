@@ -2,10 +2,6 @@ const db = require('../../../db/index.js');
 const Options = db.Option;
 const Likes = db.TesterAndOption;
 const Users = db.User;
-// const Sequelize = require('sequelize');
-// const sequelize = db.sequelize;
-const SectionComments = db.SectionComments;
-const axios = require('axios');
 
 
 exports.getRelatedOptions = (req, res) => {
@@ -101,50 +97,3 @@ exports.addOption = (req, res) => {
     });
 };
 
-exports.aggregateComments = (req, res) => {
-  option = JSON.parse(req.query.option);
-  sectionId = JSON.parse(req.query.sectionId);
-  Likes.findAll({
-    where: {
-      optionId: option.id
-    }
-  })
-    .then((allLikes) => {
-      return allLikes.reduce((current, next) => {
-        if (next.comment !== null) {
-          return current += next.comment + ' ';
-        }
-      }, '');
-    })
-    .then((toApiString) => {
-      var doubled = toApiString + toApiString;
-      axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + doubled)
-      .then((summary) => {
-        return summary.data
-      })
-      .then((summary) => {
-        SectionComments.findOne({
-          where: {
-            optionId: option.id,
-            sectionId: sectionId
-          }
-        })
-          .then((existent) => { 
-            if (existent) {
-              existent.update({
-                aggregateComments: toApiString,
-                summary: summary.sm_api_content
-              })
-            } else {
-              SectionComments.create({ 
-                sectionId: sectionId,
-                optionId: option.id,
-                aggregateComments: toApiString,
-                summary: summary.sm_api_content
-              }) 
-            }
-            res.send('Success');
-          })
-        })
-      })
-  };

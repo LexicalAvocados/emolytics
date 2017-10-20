@@ -7,11 +7,13 @@ const Frame = db.Frame;
 const Key = db.Key;
 const sequelize = db.sequelize;
 const TesterAndOption = db.TesterAndOption;
+const SectionComments = db.SectionComments;
 const router = express.Router();
 const base64Img = require('base64-img');
 const request = require('request-promise-native');
 const imageDataURI = require('image-data-uri');
 const path = require('path');
+const axios = require('axios');
 
 
 // Option.create({
@@ -145,8 +147,11 @@ router.post('/likeVideo', (req, res) => {
             like: req.body.like,
             comment: req.body.comment
           })
-          console.log(created);
-          res.send('finished');
+          .then((data) => {
+            aggregateComments(req.body.option)
+            console.log(created);
+            res.send('finished');
+          })
         })
     })
 })
@@ -255,5 +260,62 @@ router.get('/getKey', (req, res) => {
 //   console.log("sending photooooo")
 //   res.sendFile(path.resolve('photos/' + req.params.id + '.png'));
 // })
+
+
+const aggregateComments = (option, res) => {
+  TesterAndOption.findAll({
+    where: {
+      optionId: option.id
+    }
+  })
+    .then((allLikes) => {
+      var string = allLikes.reduce((current, next) => {
+        if (next.comment !== null) {
+          return current += next.comment + ' ';
+        } else {
+          return current;
+        }
+      }, '');
+      if (string.length < 1350) {
+        return string += string
+      } else if (string.length > 1350) {
+        return string;
+      } else {
+        return null;
+      }
+    })
+    .then((toApiString) => {
+      axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
+      .then((summary) => {
+        console.log('API summary request success', summary);
+        return summary.data 
+      })
+      .then((summary) => {
+        SectionComments.findOne({
+          where: {
+            optionId: option.id
+          }
+        })
+          .then((existent) => { 
+            if (existent) {
+              existent.update({
+                aggregateComments: toApiString,
+                summary: summary.sm_api_content // Will default to null in failure. 
+              })
+            } else {
+              SectionComments.create({ 
+                optionId: option.id,
+                aggregateComments: toApiString,
+                summary: summary.sm_api_content // Will default to null in failure. 
+              }) 
+            }
+          })
+        })
+        .catch((err) => {
+          console.log('Error with summary api request', err);
+        })
+      })
+  };
+
 
 module.exports = router;
