@@ -29,6 +29,7 @@ class SectionHome extends React.Component {
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.assignFocusGroup = this.assignFocusGroup.bind(this);
+    console.log(this);
   }
 
   componentWillMount() {
