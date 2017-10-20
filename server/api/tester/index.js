@@ -22,6 +22,15 @@ const path = require('path');
 // 	length: 100
 // })
 
+router.post('/getTesterQueue', (req, res) => {
+  console.log('getTesterQueue req.query:', req.body);
+
+  // let options = sequelize.query('SELECT * FROM "testerAndOptions" INNER JOIN "options" ON testerAndOptions.optionId = options.id WHERE ' + req.body.id + ' = testerAndOptions.userId');
+
+  sequelize.query(`SELECT * FROM "testerAndOptions" INNER JOIN "options" ON "testerAndOptions"."optionId" = "options"."id" WHERE ${req.body.id} = "testerAndOptions"."userId";`)
+    .then(x => console.log('x:', x));
+});
+
 router.post('/getVideo', (req, res) => {
 	console.log('req session', req.session);
   console.log(req.body);

@@ -41,6 +41,7 @@ export class Login extends React.Component {
         if (res.data.loggedIn) {
           let {id, username, name, age, sex, race, isCreator} = res.data.userData;
           this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator);
+
           if (isCreator) {
             axios.get('/api/creator/getCreatorFocusGroups', {
               params: {
@@ -55,7 +56,16 @@ export class Login extends React.Component {
               .catch(err => {
                 console.log('Error fetching Creator\'s Focus Groups:', err);
               });
+          } else {
+            console.log('?????');
+            axios.post('/api/tester/getTesterQueue', {
+              id
+            })
+              .then(res => {
+                console.log('hi');
+              })
           }
+
           this.props.history.push('/');
         } else {
           this.setState({loginError: res.data.reason});
