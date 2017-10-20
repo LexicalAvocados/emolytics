@@ -11,6 +11,7 @@ export const ADD_TESTER_TO_FOCUS_GROUP = 'ADD_TESTER_TO_FOCUS_GROUP';
 export const REMOVE_TESTER_FROM_FOCUS_GROUP = 'REMOVE_TESTER_FROM_FOCUS_GROUP';
 export const CHANGE_CURRENT_FOCUS_GROUP = 'CHANGE_CURRENT_FOCUS_GROUP';
 export const POPULATE_CREATOR_FOCUS_GROUPS = 'POPULATE_CREATOR_FOCUS_GROUPS';
+export const POPULATE_TESTER_QUEUE = 'POPULATE_TESTER_QUEUE';
 export const CHANGE_CURRENT_PROJECT = 'CHANGE_CURRENT_PROJECT';
 export const CHANGE_CURRENT_SECTION = 'CHANGE_CURRENT_SECTION';
 export const CHANGE_CURRENT_OPTION = 'CHANGE_CURRENT_OPTION';
@@ -95,6 +96,11 @@ export const changeCurrentFocusGroup = (index, focusGroups) => ({
 export const populateCreatorFocusGroups = (focusGroups) => ({
   type: POPULATE_CREATOR_FOCUS_GROUPS,
   focusGroups
+});
+
+export const populateTesterQueue = (queue) => ({
+  type: POPULATE_TESTER_QUEUE,
+  queue
 });
 
 export const changeCurrentProject = (obj) => ({
