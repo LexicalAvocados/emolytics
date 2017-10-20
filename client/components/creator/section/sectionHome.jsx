@@ -79,7 +79,7 @@ class SectionHome extends React.Component {
     .catch((err) => {
       console.log(err);
     })
-  // this.props.history.push('/option' + this.props.currentSection.options[index].id);
+  this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 
   renderInvited() {
