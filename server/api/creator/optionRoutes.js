@@ -97,3 +97,35 @@ exports.addOption = (req, res) => {
     });
 };
 
+exports.getComments = (req, res) => {
+  // var string = "I expect this move will be welcomed here since “how come the van is not electric?” is almost always the first comment on our articles about Tesla’s mobile service. What I find especially interesting is that when also accounting for the upcoming launch of Tesla Semi, the company’s new all-electric heavy-duty truck, Tesla will have the opportunity to electrify virtually its entire internal fleet of vehicles."
+  var string = '';
+  var optionsIds = [];
+  // Begin by creating a db entry
+  req.query.data.forEach((option) => {
+    optionsIds.push(JSON.parse(option));
+    // console.log('HELLLLLO', option)
+    Likes.findAll({
+      attributes: [...optionsIds]
+    })
+      .then((allLikes) => {
+        console.log(allLikes);
+        allLikes.forEach((entry) => {
+          return string += entry.comment      
+        });
+      }); 
+  })
+  // Now send that string to the api
+  console.log(string);
+
+  };
+
+
+
+  // axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=0&SM_KEYWORD_COUNT=5', "sm_api_input=" + JSON.stringify(string))
+  // .then((response) => {
+  //   console.log('RESPONSE FROM THE API', response.data);
+  // })
+  // .catch((err) => {
+  //   console.log('ERROR SENDING COMMENT TO API', err);
+  // })
