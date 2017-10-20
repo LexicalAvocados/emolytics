@@ -9,18 +9,20 @@ const Overview = (props) => {
 
   return (
     <div className='testerAnalyticsContainer'>
+      <div className="optionContainer">
+        <Demographics user={props.user} selectedUsers={props.selectedUsers} allUsers={props.allUsers}/>
+      </div>
 
-      <Demographics user={props.user} selectedUsers={props.selectedUsers} allUsers={props.allUsers}/>
+      <div className="optionContainer">
+        <Emotion emotionsObj={props.emotionsObj} />
+      </div>
+      <br/>
 
-      <Emotion emotionsObj={props.emotionsObj} />
-      <hr/>
-
-      <div className="bottomPanelContainer">
-        <Attention attention={props.attention}
-                   timestampCallback={props.timestampCallback}/>
-
-                 <Feedback likeRatio={props.likeRatio}
-                  completionStatus={props.completionStatus} />
+      <div className="optionContainer">
+        <div className="optionBottom">
+          <Feedback likeRatio={props.likeRatio} completionStatus={props.completionStatus} />
+          <Attention attention={props.attention} timestampCallback={props.timestampCallback}/>
+        </div>
       </div>
 
     </div>
