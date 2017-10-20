@@ -15,6 +15,7 @@ import Emotion from './Subcomponents/Emotion.jsx';
 import Feedback from './Subcomponents/Feedback.jsx';
 import UserSelect from './Subcomponents/UserSelect.jsx';
 import Annotations from './Subcomponents/Annotation.jsx';
+import DetailedDemographics from './Subcomponents/DetailedDemographics.jsx';
 
 import {Button, Col} from 'react-bootstrap';
 
@@ -224,6 +225,7 @@ class OptionHome extends React.Component {
           columns: lineGraphData
         }
       });
+
       var pieChart = c3.generate({
         bindto: '.emotionChart',
         data: {
@@ -432,6 +434,10 @@ class OptionHome extends React.Component {
 
           {this.state.sideNavSelection === 'annotations' ? (
               <Annotations graph={this.state.graph} player={this.state.player}/>
+          ) : ''}
+
+          {this.state.sideNavSelection === 'detailedDemographics' ? (
+              <DetailedDemographics selectedUsers={this.state.selectedUsers}/>
           ) : ''}
 
         </div>

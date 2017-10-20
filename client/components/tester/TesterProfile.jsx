@@ -104,7 +104,7 @@ class TesterProfile extends React.Component {
           setTimeout(() => this.setState({showProfileUpdateSuccess: false}), 3000);
         } else {
           this.setState({showProfileUpdateError: true});
-          setTimeout(() => this.setState({showProfileUpdateError: false}), 3000);        
+          setTimeout(() => this.setState({showProfileUpdateError: false}), 3000);
         }
       })
   }
@@ -176,7 +176,7 @@ class TesterProfile extends React.Component {
               <span>{this.props.loggedInUser.race}</span>}
           </ListGroupItem><br/>
 
-          {this.state.showSaveChangesButton && 
+          {this.state.showSaveChangesButton &&
           <Button
             bsStyle='primary'
             onClick={this.submitChangesToDB}

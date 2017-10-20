@@ -25,7 +25,7 @@ exports.getLikesOnOption = (req, res) => {
       }
     })
     .then((likes) => {
-      console.log('All likes', likes)
+      // console.log('All likes', likes)
       res.send(likes)
     })
     .catch((err) => {
@@ -96,4 +96,3 @@ exports.addOption = (req, res) => {
       console.error('Error creating new option', err);
     });
 };
-
