@@ -117,16 +117,17 @@ class AddOption extends React.Component {
   render() {
     return (
       <div className="AddOption">
-        <p>{this.props.currentSection.name}</p>
-        <h2>Add Option</h2>
+        <h2>Section Name: {this.props.currentSection.name}</h2>
+        <h4>Section Description: {this.props.currentSection.description}</h4>
         <form onSubmit={this.submitOptionClick}>
-        Option Name: <br />
+        New Option Name: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Option Description: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           Url: <br />
           <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
           <input type="submit" value="Submit" />
+          <button type="submit"></button>
         </form>
       </div>
     );

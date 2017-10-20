@@ -43,11 +43,6 @@ class AddSection extends React.Component {
         });
         this.props.actions.changeCurrentSection(response.data);
         this.props.actions.addSectionsToCurrentProject(response.data);
-        // if (this.props.currentProject.sections) {
-        //   this.props.currentProject.sections.push(response.data);
-        // } else {
-        //   this.props.currentProject.sections = [response.data];
-        // }
         this.props.history.push('/addOption');
       })
       .catch((err) => {
@@ -58,11 +53,11 @@ class AddSection extends React.Component {
   render() {
     return (
       <div className="CreateProject">
-        <p>{this.props.currentProject.name}</p>
-        <h2>Add Section</h2>
+        <h2>Project Title: {this.props.currentProject.name}</h2>
+        <h4>Project Description: {this.props.currentProject.description}</h4>
         <br/>
         <form onSubmit={this.submitSectionClick}>
-          Section Name: <br />
+          New Section Name: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Section Description: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />

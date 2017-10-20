@@ -39,12 +39,11 @@ exports.addSection = function(req, res) {
     .then((newSection) => {
       if (newSection) {
         res.send(newSection);
-      } else {
-        console.error('Could not create new section');
       }
     })
     .catch((err) => {
-      console.error('Error creating new section', err);
+      console.log('Error creating new section', err);
+      res.send(err);
     });
 };
 
