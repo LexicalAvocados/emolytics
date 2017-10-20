@@ -10,6 +10,7 @@ class OptionListEntry extends React.Component {
     this.state ={
       date: ''
     };
+    console.log(this);
   }
 
   componentDidMount() {
