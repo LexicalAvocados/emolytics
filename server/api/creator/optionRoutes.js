@@ -2,7 +2,7 @@ const db = require('../../../db/index.js');
 const Options = db.Option;
 const Likes = db.TesterAndOption;
 const Users = db.User;
-
+const SectionComments = db.SectionComments;
 
 exports.getRelatedOptions = (req, res) => {
   Options.findAll({
@@ -97,3 +97,13 @@ exports.addOption = (req, res) => {
     });
 };
 
+exports.getFeedback = (req, res) => {
+  SectionComments.findOne({
+    where: {
+      optionId: req.query.optionId
+    }
+  })
+  .then((entry) => {
+    res.send(entry.summary);
+  })
+}

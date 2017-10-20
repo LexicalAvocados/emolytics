@@ -413,7 +413,7 @@ class OptionHome extends React.Component {
           {this.state.sideNavSelection === 'feedback' ? (
             <div className='feedbackRightPanelContainer'>
               <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Feedback likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
+              <Feedback feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
             </div>
           ) : ''}
 

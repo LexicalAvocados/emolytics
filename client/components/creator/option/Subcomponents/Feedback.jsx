@@ -16,7 +16,7 @@ const Feedback = (props) => {
       <div className="rawValues">
         <p> Watched {props.completionStatus}% of video</p>
         <p>Like: {props.likeRatio}</p>
-        <p> Comments: </p>
+        <p> Summarized comments: {props.feedback}</p>
       </div>
 
       <div className="progressBars">
