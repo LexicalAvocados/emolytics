@@ -15,6 +15,7 @@ class Loading extends React.Component {
 
   componentDidMount() {
     // console.log('in loading component')
+    // console.log('CURRENT LOGGED IN USER', this.props.loggedInUser)
     console.log('is new user a creator', this.props.role.isCreator)
     this.handleFbLogin();
   }
@@ -58,6 +59,7 @@ const mapStateToProps = (state) => {
     example: state.example,
     setLoggedIn: state.setLoggedIn,
     role: state.signupwithfb,
+    loggedInUser: state.loggedInUser,
     router: state.router
   })
 };
