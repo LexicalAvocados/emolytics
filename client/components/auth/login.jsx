@@ -41,6 +41,7 @@ export class Login extends React.Component {
         if (res.data.loggedIn) {
           let {id, username, name, age, sex, race, isCreator} = res.data.userData;
           this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator);
+
           if (isCreator) {
             axios.get('/api/creator/getCreatorFocusGroups', {
               params: {
@@ -55,7 +56,20 @@ export class Login extends React.Component {
               .catch(err => {
                 console.log('Error fetching Creator\'s Focus Groups:', err);
               });
+          } else {
+            axios.post('/api/tester/getTesterQueue', {
+              id
+            })
+              .then(res => {
+                let queue = res.data;
+                console.log('queue:', queue);
+                if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+              })
+              .catch(err => {
+                console.log('Error fetching Tester Queue from database:', err);
+              })
           }
+
           this.props.history.push('/');
         } else {
           this.setState({loginError: res.data.reason});
@@ -109,8 +123,7 @@ export class Login extends React.Component {
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
   return ({
-    example: state.example,
-    setLoggedIn: state.setLoggedIn,
+    loggedInUser: state.loggedInUser,
     router: state.router
   })
 };
