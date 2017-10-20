@@ -18,7 +18,7 @@ passport.use(new FacebookStrategy({
     clientID: '1808121682812707',
     clientSecret: '44fdbb032d8a430258e537b674992851',
     callbackURL: "http://localhost:3000/auth/facebook/callback",
-    profileFields: ['id', 'name', 'email', 'displayName', 'gender', 'likes', 'movies', 'music', 'books', 'television', 'games', 'hometown']
+    profileFields: ['id', 'name', 'email', 'displayName', 'gender', 'likes', 'movies', 'music', 'books', 'television', 'games', 'locale', 'age_range']
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log('profile', profile);
@@ -34,7 +34,7 @@ passport.use(new FacebookStrategy({
     .then((existingUser, err) => {
       // console.log('incoming user', existingUser)
       if (!existingUser) {
-        let params = ['likes', 'movies', 'music', 'books', 'television'];
+        let params = ['likes', 'movies', 'music', 'books', 'television', 'games'];
         let likeObj = {};
         params.forEach((thing) => {
             if (profile._json[thing]) {
@@ -46,12 +46,15 @@ passport.use(new FacebookStrategy({
           name: profile.displayName,
           username: usernameInitials,
           sex: profile.gender,
+          age: profile._json.age_range.min || 1,
           fbId: profile.id,
+          location: profile._json.locale || '',
           likes: likeObj.likes || [],
           movies: likeObj.movies || [],
           music: likeObj.music || [],
           books: likeObj.books || [],
-          television: likeObj.television || []
+          television: likeObj.television || [],
+          games: likeObj.games || []
         })
         .then( (newUser) => {
           // console.log('new user created', newUser)

@@ -33,7 +33,7 @@ exports.getProjectsForUser = function(req, res) {
 exports.createProject = function(req, res) {
   Users.findOne({
     where: {
-      username: req.session.username
+      username: req.session.username || req.session.passport.user.username
     }
   })
     .then((user) => {
@@ -57,8 +57,3 @@ exports.createProject = function(req, res) {
           console.error('Error finding existing project with identical name in db', err);
         });
     };
-
-
-
-
-

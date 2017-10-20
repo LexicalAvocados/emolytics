@@ -22,3 +22,5 @@ exports.getUserAgeRange = (req, res) => {
     res.send(JSON.stringify(ageIndForRes));
   })
 };
+
+exports.getCommonLikes

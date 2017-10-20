@@ -27,15 +27,20 @@ class Loading extends React.Component {
       if (resp.data.passport) {
         var user = resp.data.passport.user || null;
         console.log('USER', user)
-        this.props.actions.setLoggedIn(user.username, user.name, user.age, user.sex, user.race, this.props.role.isCreator);
+
+        if (this.props.role.isCreator) {
+          axios.post('/api/updateAfterFb', {
+            newUsername: user.username,
+            newIsCreator: this.props.role.isCreator
+          })
+          .then( (res, err) => {
+            console.log('res from updating creator status of new user', res)
+          })
+          this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, this.props.role.isCreator);
+        } else {
+          this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, user.isCreator);
+        }
       }
-      axios.post('/api/updateAfterFb', {
-        newUsername: user.username,
-        newIsCreator: this.props.role.isCreator
-      })
-      .then( (res, err) => {
-        console.log('res from updating creator status of new user', res)
-      })
     })
     // .then( () => {
     //   this.props.history.push('/');

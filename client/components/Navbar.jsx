@@ -26,7 +26,7 @@ class Navbar extends React.Component {
       <div>
         {
           this.props.loggedInUser.username ? (
-            this.props.loggedInUser.isCreator ? (
+            this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
               <div className='navContainer'>
                 <Link to='/' style={noUnderline}>
                   <p className='navItem'>Home</p>
@@ -87,10 +87,11 @@ const noUnderline = {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
-  // console.log('state in navbar', state);
+  console.log('state in navbar', state);
   return ({
     example: state.example,
     loggedInUser: state.loggedInUser,
+    role: state.signupwithfb,
     router: state.router
   })
 };
