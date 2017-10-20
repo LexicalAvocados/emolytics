@@ -145,13 +145,15 @@ exports.aggregateComments = (req, res) => {
           })
           .then((allEntries) => {
             var apiString = allEntries.reduce((current, next) => {
-              if (next.comment !== null) {
+              // console.log(next);
+              if (next.aggregateComments !== null) {
                 return current += next.aggregateComments + ' ';
               }
+              return current;
             }, '')
 
-            // apiString += apiString;
-            console.log(apiString);
+            // Keywords appear to max out at 15
+            console.log('the string', apiString);
             axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + apiString)
             .then((response) => {
               console.log('RESPONSE FROM THE API', response.data);
