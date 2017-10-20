@@ -75,6 +75,13 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+    axios.get('/api/getFeedback', { params: {optionId: this.props.currentSection.options[index].id} })
+    .then((response) => {
+      this.props.actions.addFeedbackToOption(response.data);
+    })
+    .catch((err) => {
+      console.log(err)
+    })
     this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 

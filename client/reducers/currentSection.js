@@ -7,7 +7,9 @@ const currentSection = (state = { options: [] }, action) => {
       return { ...state, option: action.optionObj }
     case 'ADD_OPTIONS_TO_CURRENT_SECTION':
       return { ...state, options: [ ...state.options, action.optionObj]};
-      return { ...state, option: action.optionObj };
+      // return { ...state, option: action.optionObj };
+    case 'ADD_FEEDBACK_TO_OPTION':
+      return { ...state, options: [ ...state.options], option: { ...state.option, feedback: action.feedbackString }}
     case 'SET_LOGGED_OUT':
       return {};
     default:

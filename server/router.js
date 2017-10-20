@@ -54,4 +54,6 @@ router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
 
 router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange)
 
+router.get('/getFeedback', optionRoutes.getFeedback);
+
 module.exports = router;

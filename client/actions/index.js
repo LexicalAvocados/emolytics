@@ -23,6 +23,7 @@ export const CHANGE_OPTION_ANNOTATIONS = 'CHANGE_OPTION_ANNOTATIONS';
 export const CHANGE_OPTION = 'CHANGE_OPTION';
 export const CHANGE_ANNOTATIONS = 'CHANGE_ANNOTATIONS';
 export const CHANGE_LINE_GRAPH_DATA = 'CHANGE_LINE_GRAPH_DATA';
+export const ADD_FEEDBACK_TO_OPTION = 'ADD_FEEDBACK_TO_OPTION';
 
 
 export const changeExample = (text) => ({
@@ -160,3 +161,7 @@ export const changeLineGraphData = (obj) => ({
   obj
 })
 
+export const addFeedbackToOption = (feedbackString) => ({
+  type: ADD_FEEDBACK_TO_OPTION,
+  feedbackString
+})
