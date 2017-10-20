@@ -8,6 +8,7 @@ const optionRoutes = require('./api/creator/optionRoutes.js');
 const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
 const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
+const axios = require('axios');
 
 router.use('/tester', testerRoutes);
 
@@ -50,5 +51,8 @@ router.post('/creator/addToFocusGroup', indexRoutes.addTesterToFocusGroup);
 router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGroup);
 
 router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
+
+router.get('/Lucas', optionRoutes.aggregateComments);
+
 
 module.exports = router;
