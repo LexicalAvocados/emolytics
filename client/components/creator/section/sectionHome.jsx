@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionListEntry from './OptionList.jsx';
+import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -14,6 +15,7 @@ class SectionHome extends React.Component {
     this.state = {
       displayPanel: false,
       invited: false,
+      assigned: false,
       haveInvited: false,
       invitedUserIds: [],
       testersForOptions:[],
@@ -26,6 +28,7 @@ class SectionHome extends React.Component {
     this.changeTestersCopy = this.changeTestersCopy.bind(this);
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
+    this.assignFocusGroup = this.assignFocusGroup.bind(this);
   }
 
   componentWillMount() {
@@ -81,6 +84,12 @@ class SectionHome extends React.Component {
     });
   }
 
+  renderAssigned() {
+    this.setState({
+      assigned: !this.state.assigned
+    });
+  }
+
   changeTestersCopy(filtered) {
     this.setState({
       testersCopy: filtered
@@ -93,18 +102,44 @@ class SectionHome extends React.Component {
     });
   }
 
+  assignFocusGroup() {
+    let options = this.props.currentSection.options;
+    let focusGroupMembers = this.state.testers.reduce((members, tester, i) => {
+      if (this.props.currentFocusGroup.testers.includes(tester.username)) {
+        return [...members, tester];
+      } else {
+        return members;
+      }
+    }, []);
+    console.log('options:', options, 'focusGroupMembers:', focusGroupMembers);
+
+    axios.post('/api/sendEmails', {
+      invitedArr: focusGroupMembers,
+      options
+    })
+      .then(res => {
+        this.renderAssigned();
+      })
+      .catch(err => {
+        console.log('Error assigning Focus Group to Section:', err);
+      })
+  }
+
   render() {
     return (
       <div className="sectionHomeContainer">
         <h3>{this.props.currentProject.name}</h3>
         <p>{this.props.currentProject.description}</p>
         <p>{this.props.currentSection.name}</p>
+
         <Link to="/addOption">
           <Button className="addSectionButton">Add an option</Button>
         </Link>
+
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p> 
         ) : ( null )}
+
         { !this.state.invited ? (
           !this.state.displayPanel ? (
             <Button onClick={this.renderPanel}>Invite testers</Button>
@@ -122,6 +157,7 @@ class SectionHome extends React.Component {
         ) : (
           <p>Testers Invited!</p>
         )}
+
         <div className="currentSectionOptionsList">
           { this.props.currentSection.options.map((option, i) => (
             <OptionListEntry
@@ -133,19 +169,48 @@ class SectionHome extends React.Component {
             />
           ))}
         </div>
+
+        {this.props.focusGroups.length > 0 ?
+          <div>
+            <FocusGroupsList />
+            {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
+              <div>
+                <h3>{this.props.currentFocusGroup.name} Members</h3>
+                <div>
+                  <ul>
+                    {this.props.currentFocusGroup.testers.map((tester, i) => (
+                      <li key={i}>{tester}</li>
+                    ))}
+                  </ul>
+                </div>
+                <Button
+                  bsStyle='primary'
+                  onClick={this.assignFocusGroup}
+                >Assign Focus Group to Section</Button>
+                {this.state.assigned ?
+                  'Focus Group Assigned!'
+                :
+                  null}
+              </div>
+            :
+              null}
+          </div>
+        :
+          null}
+
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log('LOG WITHIN SECTION HOME', state);
-  return ({
-    router: state.router,
-    currentProject: state.currentProject,
-    currentSection: state.currentSection
-  });
-};
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  focusGroups: state.focusGroups,
+  currentFocusGroup: state.currentFocusGroup,
+  router: state.router,
+  currentProject: state.currentProject,
+  currentSection: state.currentSection
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
@@ -155,4 +220,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (SectionHome));
+)(SectionHome));

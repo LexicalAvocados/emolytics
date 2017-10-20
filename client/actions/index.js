@@ -10,6 +10,7 @@ export const DELETE_FOCUS_GROUP = 'DELETE_FOCUS_GROUP';
 export const ADD_TESTER_TO_FOCUS_GROUP = 'ADD_TESTER_TO_FOCUS_GROUP';
 export const REMOVE_TESTER_FROM_FOCUS_GROUP = 'REMOVE_TESTER_FROM_FOCUS_GROUP';
 export const CHANGE_CURRENT_FOCUS_GROUP = 'CHANGE_CURRENT_FOCUS_GROUP';
+export const POPULATE_CREATOR_FOCUS_GROUPS = 'POPULATE_CREATOR_FOCUS_GROUPS';
 export const CHANGE_CURRENT_PROJECT = 'CHANGE_CURRENT_PROJECT';
 export const CHANGE_CURRENT_SECTION = 'CHANGE_CURRENT_SECTION';
 export const CHANGE_CURRENT_OPTION = 'CHANGE_CURRENT_OPTION';
@@ -28,8 +29,9 @@ export const changeExample = (text) => ({
 	text
 });
 
-export const setLoggedIn = (username, name, age, sex, race, isCreator) => ({
+export const setLoggedIn = (id, username, name, age, sex, race, isCreator) => ({
   type: SET_LOGGED_IN,
+  id,
   username,
   name,
   age,
@@ -87,6 +89,11 @@ export const removeTesterFromFocusGroup = (focusGroupName, testerUsername) => ({
 export const changeCurrentFocusGroup = (index, focusGroups) => ({
   type: CHANGE_CURRENT_FOCUS_GROUP,
   index,
+  focusGroups
+});
+
+export const populateCreatorFocusGroups = (focusGroups) => ({
+  type: POPULATE_CREATOR_FOCUS_GROUPS,
   focusGroups
 });
 
