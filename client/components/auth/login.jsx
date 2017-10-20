@@ -57,12 +57,16 @@ export class Login extends React.Component {
                 console.log('Error fetching Creator\'s Focus Groups:', err);
               });
           } else {
-            console.log('?????');
             axios.post('/api/tester/getTesterQueue', {
               id
             })
               .then(res => {
-                console.log('hi');
+                let queue = res.data;
+                console.log('queue:', queue);
+                if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+              })
+              .catch(err => {
+                console.log('Error fetching Tester Queue from database:', err);
               })
           }
 
@@ -119,8 +123,7 @@ export class Login extends React.Component {
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
   return ({
-    example: state.example,
-    setLoggedIn: state.setLoggedIn,
+    loggedInUser: state.loggedInUser,
     router: state.router
   })
 };
