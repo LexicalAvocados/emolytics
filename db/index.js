@@ -168,6 +168,13 @@ const Key = sequelize.define('key', {
 
 Key.sync({force: false});
 
+const SectionComments = sequelize.define('sectionComments', {
+  keywords: Sequelize.ARRAY(Sequelize.TEXT),
+});
+
+SectionComments.belongsTo(Section);
+
+SectionComments.sync({force: false});
 
 
 // Key.create({key: 'cb1e44a3d50c4a5291591ca117880155'})
@@ -183,5 +190,6 @@ module.exports = {
   Frame,
   TesterAndOption,
   OptionAndAnnotation,
-  Key
+  Key,
+  SectionComments
 };
