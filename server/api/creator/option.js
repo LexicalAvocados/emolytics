@@ -13,22 +13,26 @@ const router = express.Router();
 
 router.post('/addAnnotation', (req, res) => {
 	console.log(req.body);
-	OptionAndAnnotation.findOne({where: {optionId: req.body.option.id, time: req.body.time}})
-		.then(anno => {
-      if (anno) {
-        anno.update({
-          emotion: req.body.emotion,
-          desc: req.body.desc
-        })
-      } else {
-        OptionAndAnnotation.create({
-          optionId: req.body.option.id,
-          time: req.body.time,
-          emotion: req.body.emotion,
-          desc: req.body.desc
-        })
-      }
-    })
+  if (req.body.time) {
+    OptionAndAnnotation.findOne({where: {optionId: req.body.option.id, time: req.body.time, end: req.body.end}})
+      .then(anno => {
+        if (anno) {
+          anno.update({
+            emotion: req.body.emotion,
+            desc: req.body.desc
+          })
+        } else {
+          OptionAndAnnotation.create({
+            optionId: req.body.option.id,
+            time: req.body.time,
+            end: req.body.end,
+            emotion: req.body.emotion,
+            desc: req.body.desc
+          })
+        }
+      })
+  }
+
 })
 
 router.post('/getAllAnnotations', (req, res) => {

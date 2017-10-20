@@ -110,6 +110,7 @@ Option.sync({force: false});
 
 const OptionAndAnnotation = sequelize.define('optionAndAnnotation', {
   time: Sequelize.INTEGER,
+  end: Sequelize.INTEGER,
   emotion: Sequelize.TEXT,
   desc: Sequelize.TEXT
 })

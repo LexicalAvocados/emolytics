@@ -38,19 +38,20 @@ body {
 
 .optionAnalyticsContainer {
   display: grid;
-  grid-template-columns: 10% 50% 40%;
+  grid-template-columns: 8% 57% 35%;
   grid-template-rows: 50% 50%;
   padding: 10px;
   grid-row-gap: 15px;
-  width: 97%;
+  width: 100%;
   border: solid black 1px;
-  border-radius: 10px;
 }
 
 .sidemenucontainer {
   grid-column: 1;
   grid-row: 1;
   text-align: center;
+  /*display: flex;*/
+
 }
 
 .optionPlayer {
@@ -305,6 +306,7 @@ button {
   clear: right;
   clear: left;
   display: flex;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .annotations p {
@@ -324,6 +326,28 @@ button {
 
 .annotationForm Button {
   font-size: 12px;
+}
+
+.optionPlayer {
+  height: 42vh;
+}
+.testerAnalyticsContainer {
+  background-color: #f2f2f2;
+  padding: 5%;
+  border-radius: 4px;
+}
+
+.optionContainer {
+  background-color: white;
+  padding-top: 6px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.optionBottom {
+  padding: 10%;
+}
+
 
 /* Lucas' CSS */
 .dashboardHomeContainer {
