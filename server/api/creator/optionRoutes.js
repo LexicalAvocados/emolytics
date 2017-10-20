@@ -116,60 +116,35 @@ exports.aggregateComments = (req, res) => {
         }
       }, '');
     })
-    .then((string) => {
-      SectionComments.findOne({
-        where: {
-          optionId: option.id,
-          sectionId: sectionId
-        }
+    .then((toApiString) => {
+      var doubled = toApiString + toApiString;
+      axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + doubled)
+      .then((summary) => {
+        return summary.data
       })
-        .then((existent) => { // update option's entry with new comments
-          if (existent) {
-            existent.update({
-              aggregateComments: string
-            })
-          } else {
-            SectionComments.create({ // add entry
-              sectionId: sectionId,
-              optionId: option.id,
-              aggregateComments: string 
-            }) 
+      .then((summary) => {
+        SectionComments.findOne({
+          where: {
+            optionId: option.id,
+            sectionId: sectionId
           }
-          return string; // Doesn't matter
         })
-        .then((aggregateComments) => {
-          SectionComments.findAll({
-            where: {
-              sectionId: sectionId
+          .then((existent) => { 
+            if (existent) {
+              existent.update({
+                aggregateComments: toApiString,
+                summary: summary.sm_api_content
+              })
+            } else {
+              SectionComments.create({ 
+                sectionId: sectionId,
+                optionId: option.id,
+                aggregateComments: toApiString,
+                summary: summary.sm_api_content
+              }) 
             }
-          })
-          .then((allEntries) => {
-            var apiString = allEntries.reduce((current, next) => {
-              // console.log(next);
-              if (next.aggregateComments !== null) {
-                return current += next.aggregateComments + ' ';
-              }
-              return current;
-            }, '')
-
-            // Keywords appear to max out at 15
-            console.log('the string', apiString);
-            axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + apiString)
-            .then((response) => {
-              console.log('RESPONSE FROM THE API', response.data);
-              res.send(response.data);
-            })
-            .catch((err) => {
-              console.log('ERROR SENDING COMMENT TO API', err);
-            })
+            res.send('Success');
           })
         })
-        .catch((err) => {
-          console.log(err);
-        })
-    })
+      })
   };
-
-
-
-

@@ -169,7 +169,7 @@ const Key = sequelize.define('key', {
 Key.sync({force: false});
 
 const SectionComments = sequelize.define('sectionComments', {
-  keywords: Sequelize.ARRAY(Sequelize.TEXT),
+  summary: Sequelize.TEXT,
   aggregateComments: Sequelize.TEXT
 });
 
