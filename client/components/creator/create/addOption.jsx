@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionListEntry from '../section/OptionListEntry.jsx';
+
 import key from './key.js';
 
 class AddOption extends React.Component {
@@ -89,8 +90,7 @@ class AddOption extends React.Component {
             url: response.data.url
           }, () => {
             // this.props.actions.changeCurrentOption(response.data);
-            this.props.currentSection.options.push(response.data);
-            this.props.actions.addOptionsToCurrentSection(this.props.currentSection.options);
+            this.props.actions.addOptionsToCurrentSection(response.data);
             this.props.history.push('/project' + this.props.currentProject.id);
           });
 
@@ -133,7 +133,7 @@ class AddOption extends React.Component {
         <div className="ThumbNailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (
             <OptionListEntry
-              // optionData={this.state.optionData[i]}
+              optionData={this.state.optionData[i]}
               option={option}
               key={i}
               index={i}
