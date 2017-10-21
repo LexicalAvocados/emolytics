@@ -167,7 +167,6 @@ class SectionHome extends React.Component {
             optionData: data.data
           })
         }
-
       })
   }
 
