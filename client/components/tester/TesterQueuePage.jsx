@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import TesterQueueOptionEntry from './TesterQueueOptionEntry.jsx';
+import TesterOptionEntry from './TesterOptionEntry.jsx';
+import { Link } from 'react-router-dom';
+import { Col } from 'react-bootstrap';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -29,16 +31,22 @@ class TesterQueuePage extends React.Component {
   }
 
   render() {
-    console.log('TesterQueuePage render');
     return (
-      <div>
-        {this.props.testerQueue.map((option, i) => (
-          <TesterQueueOptionEntry
-            key={i}
-            option={option}
-            index={i}
-          />
-        ))}
+      <div className="TesterHomeContainer">
+        <h1>Your Queue</h1><br/>
+        {this.props.testerQueue.map((option, i) => {
+          return (
+            <Link to={`/video/${option.id}`}>
+              <Col className='testerOptionListEntry' md={3}>
+                <TesterOptionEntry
+                  key={i}
+                  option={option}
+                  index={i}
+                />
+              </Col>
+            </Link>
+          )
+        })}
       </div>
     )
   }

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
-import TesterVideo from './testerVideo.jsx';
+import TesterVideo from './TesterVideo.jsx';
+import TesterOptionEntry from './TesterOptionEntry.jsx';
 import { Button, FormControl, FormGroup, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -30,32 +31,21 @@ class TesterHome extends React.Component {
   render() {
     return (
       <div className="TesterHomeContainer">
-        <h2> Welcome to Emolytics! </h2><br/>
-        <p>If you have a code, please enter it below.</p>
-        <form onSubmit={this.handleSubmit}>
-          <FormGroup  controlId='promoCode'>
-            <Col lg={5}>
-            </Col>
-            <Col className="promoButton" lg={2}>
-            <FormControl
-              type='text'
-              value={this.state.testerCode}
-              placeholder='Enter code'
-              onChange={this.handleCodeChange}
-              />
-              <br/>
-
-            <Link  to={`/video/${this.state.testerCode}`}> <Button> Go </Button> </Link>
-          </Col>
-          <Col lg={5}>
-          <br/><br/><br/><br/><br/>
-          </Col>
-            
-            
-          </FormGroup>
-        </form>
-        <p> Otherwise, feel free to browse our collection of videos,
-          and check out the analysis of your viewing session! </p><br/><br/>
+        <h1>Welcome Back to Emolytics!</h1><br/>
+        <h3>Queue Quick Look</h3><br/>
+        {this.props.testerQueue.slice(0, 3).map((option, i) => {
+          return (
+            <Link to={`/video/${option.id}`}>
+              <Col className='testerOptionListEntry' md={3}>
+                <TesterOptionEntry
+                  key={i}
+                  option={option}
+                  index={i}
+                />
+              </Col>
+            </Link>
+          )
+        })}
       </div>
     )
   }
@@ -63,7 +53,8 @@ class TesterHome extends React.Component {
 
 const mapStateToProps = (state) => {
   return ({
-    example: state.example,
+    loggedInUser: state.loggedInUser,
+    testerQueue: state.testerQueue,
     router: state.router
   })
 };
