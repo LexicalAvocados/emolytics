@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
 
 class SectionList extends React.Component {
   constructor(props) {
@@ -37,18 +36,17 @@ class SectionList extends React.Component {
 
   render () {
     return (
-      <div>
-        <div onClick={this.onClickCallback} className="projectHomeSectionListEntry">
-          <p className="closerTextLarger">Section Name: {this.props.section.name}</p>
-          <p className="closerText">Section Description: {this.props.section.description}</p>
-          <p>Created On: {this.state.date = new Date(this.props.section.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-          <div>
-            { this.state.options.map((option, i) => {
-              return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
-            })}
-          </div>
+      <div onClick={this.onClickCallback} className="projectHomeSectionListEntry">
+        {/* <Link to={'/section' + this.props.section.id}>  */}
+        <p className="closerTextLarger">Section Name: {this.props.section.name}</p>
+        <p className="closerText">Section Description: {this.props.section.description}</p>
+        <p>Created On: {this.state.date = new Date(this.props.section.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
+        <div>
+          { this.state.options.map((option, i) => {
+            return <img className="projectHomeSectionListThumbnail" src={option.thumbnail} alt="" key={i}/>
+          })}
         </div>
-      <Button onClick={() => this.props.deleteSection(this.props.section.id)}>Delete</Button>
+        {/* </Link> */}
       </div>
     );
   }
