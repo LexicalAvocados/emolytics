@@ -26,6 +26,7 @@ class OptionListEntry extends React.Component {
   render() {
     return (
       <div onClick={() => this.props.onOptionClick(this.props.index)} className="currentSectionOptionListEntry">
+      <Button onClick={() => this.props.deleteOptions(this.props.index)} />
         <p className="closerText">Option Name: {this.props.option.name}</p>
         <p className="closerText">Option Description: {this.props.option.description}</p>
         <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>

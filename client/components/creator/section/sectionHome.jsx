@@ -103,6 +103,10 @@ class SectionHome extends React.Component {
     });
   }
 
+  deleteOption(index) {
+    // this.props.currentSection.options[index] // to be deleted
+  }
+
   renderPanel() {
     this.setState({
       displayPanel: !this.state.displayPanel,
