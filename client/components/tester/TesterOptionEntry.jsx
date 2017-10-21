@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 
-class TesterQueueOptionEntry extends React.Component {
+class TesterOtionEntry extends React.Component {
   constructor(props) {
     super(props);
     console.log('props:', props);
@@ -21,15 +21,11 @@ class TesterQueueOptionEntry extends React.Component {
 
   render() {
     return (
-      <div className="testerQueueOptionEntry">
-        <div>
-          <Link to={`/video/${this.props.option.id}`}>
-            <img src={this.props.option.thumbnail} alt=""/>
-          </Link>
-          <p>Option Name: {this.props.option.name}</p>
-          <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
-          <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        </div>
+      <div>
+        <img src={this.props.option.thumbnail} alt=""/>
+        <p>Option Name: {this.props.option.name}</p>
+        <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
+        <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
       </div>
     )
   }
@@ -51,4 +47,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TesterQueueOptionEntry));
+)(TesterOtionEntry));
