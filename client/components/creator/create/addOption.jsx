@@ -131,6 +131,9 @@ class AddOption extends React.Component {
           <input type="submit" value="Submit" /><br />
         </form>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fixed sectionHome
         <div className="ThumbNailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (
             <OptionListEntry
@@ -142,10 +145,13 @@ class AddOption extends React.Component {
               concatTesters={this.concatTesters}
             />
           ))}
+<<<<<<< HEAD
 =======
         <div>
 
 >>>>>>> working on add options feature
+=======
+>>>>>>> fixed sectionHome
         </div>
       </div>
     );
