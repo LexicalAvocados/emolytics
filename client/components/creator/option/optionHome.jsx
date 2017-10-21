@@ -222,7 +222,7 @@ class OptionHome extends React.Component {
               player.seekTo(this.state.timestamp)
             })
           },
-          columns: lineGraphData
+          columns: lineGraphData,
         }
       });
 
@@ -405,8 +405,12 @@ class OptionHome extends React.Component {
 
           {this.state.sideNavSelection === 'attention' ? (
             <div className='attentionRightPanelContainer'>
-              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+              <div className="optionContainer">
+                <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+              </div>
+              <div className="optionContainer">
+                <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+              </div>
             </div>
           ) : ''}
 

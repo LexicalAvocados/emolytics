@@ -60,22 +60,22 @@ class CompareOptions extends React.Component {
 
         <div>
         <Col md={6}>
-          <h4> Test 1 </h4>
           <select name="option1" value={this.state.option1} onChange={this.handleChange}>
+
             {selections}
             
           </select>
-          <CompareCharts option={this.props.currentSection.options[this.state.option1]}/>
+          <CompareCharts idx={1} option={this.props.currentSection.options[this.state.option1]}/>
 
         </Col>
 
         <Col md={6} style={divStyle}>
-          <h4> Test 2 </h4>
           <select name="option2" value={this.state.option2} onChange={this.handleChange}>
+
             {selections}
             
           </select>
-          <CompareCharts option={this.props.currentSection.options[this.state.option2]}/>
+          <CompareCharts idx={2} option={this.props.currentSection.options[this.state.option2]}/>
         </Col>
         </div>
 

@@ -31,23 +31,26 @@ const Attention = (props) => {
 
 
   return (
+
     <div className="testerAttention">
-      <p> Average Attention: {calcAvgAtten(props.attention.slice(1))}%</p>
-      <p> Viewers lost focus: </p>
-      <ul>
-        {calcLostFocus(props.attention.slice(4)).map((moment, i) => (
-          <li key={i}>
-            <a onClick={timeClickCb} className='lapseInFocus'>
-              {moment.time}s
-            </a>
-            <a> - </a>
-            <a>
-              ({moment.value*100}%)
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
+      
+        <p> Average Attention: {calcAvgAtten(props.attention.slice(1))}%</p>
+        <p> Viewers lost focus: </p>
+        <ul>
+          {calcLostFocus(props.attention.slice(4)).map((moment, i) => (
+            <li key={i}>
+              <a onClick={timeClickCb} className='lapseInFocus'>
+                {moment.time}s
+              </a>
+              <a> - </a>
+              <a>
+                ({moment.value*100}%)
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
   )
 };
 
