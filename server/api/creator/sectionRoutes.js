@@ -1,6 +1,8 @@
 const db = require('../../../db/index.js');
+const optionRoutes = require('./optionRoutes.js');
 const Sections = db.Section;
 const Users = db.User;
+const Options = db.Option;
 
 exports.getRelatedSection = function(req, res) {
   Sections.findAll({
@@ -47,4 +49,24 @@ exports.addSection = function(req, res) {
     });
 };
 
-
+exports.deleteSection = (req, res) => { 
+  Sections.destroy({
+    where: {
+      id: req.query.sectionId
+    }
+  }) // Will set the sectionId to null in options
+  .then((data) => { // Have to check to see if there are any first
+    Options.findAll({
+      where: {
+        sectionId: null
+      }
+    })
+    .then((allOptions) => {
+      console.log('ALL Options', allOptions);
+      optionRoutes.deleteOption({ query: { optionId: null, toDelete: 'sectionId'}}, null);
+    })
+  })
+  // optionRoutes.deleteOption
+  // Now go through the options, for each option, run previous function.
+  res.send('found it');
+}

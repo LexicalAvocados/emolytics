@@ -181,7 +181,6 @@ const SectionComments = sequelize.define('sectionComments', {
   aggregateComments: Sequelize.TEXT
 });
 
-SectionComments.belongsTo(Section);
 SectionComments.belongsTo(Option);
 
 SectionComments.sync({force: false});

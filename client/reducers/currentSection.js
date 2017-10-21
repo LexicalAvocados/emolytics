@@ -1,12 +1,12 @@
 const currentSection = (state = { options: [] }, action) => {
   switch (action.type) {
     case 'CHANGE_CURRENT_SECTION':
-      return Object.assign({}, state, action.obj);
+      return Object.assign({}, state, state.options = [], action.obj);
     case 'CHANGE_CURRENT_OPTION':
       // return Object.assign({}, state, action.optionObj);
       return { ...state, option: action.optionObj }
     case 'ADD_OPTIONS_TO_CURRENT_SECTION':
-      return { ...state, options: [ ...state.options, action.optionObj]};
+      return { ...state, options: [...action.optionObj]};
       // return { ...state, option: action.optionObj };
     case 'REMOVE_OPTION_FROM_OPTIONS':
       return { ...state, options: [ ...action.obj ]};

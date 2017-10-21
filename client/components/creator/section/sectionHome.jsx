@@ -114,15 +114,13 @@ class SectionHome extends React.Component {
   }
 
   deleteOption(id) {
-    // Delete from store
     this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
       if (option.id !== id) {
         return option;
       }
-      console.log(option);
     });
     this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
-    axios.delete('/api/deleteOption', { params: {optionId: id} })
+    axios.delete('/api/deleteOption', { params: {optionId: id, toDelete: 'id'} })
     .then((response) => {
       console.log(response);
     })
@@ -164,9 +162,12 @@ class SectionHome extends React.Component {
     axios.post('/api/section/getOptionsData', this.props.currentSection.options)
       .then(data => {
         console.log(data);
-        this.setState({
-          optionData: data.data
-        })
+        if (data.data) {
+          this.setState({
+            optionData: data.data
+          })
+        }
+
       })
   }
 

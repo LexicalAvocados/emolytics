@@ -11,11 +11,28 @@ class ProjectHome extends React.Component {
   constructor(props) {
     super(props);
     this.onSectionClick = this.onSectionClick.bind(this);
+    this.deleteSection = this.deleteSection.bind(this);
   }
 
   onSectionClick(obj, options) {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
+  }
+
+  deleteSection(id) {
+    this.props.currentProject.sections = this.props.currentProject.sections.filter((section) => {
+      if (section.id !== id) {
+        return section;
+      }
+    });
+    this.props.actions.changeCurrentProject(this.props.currentProject);
+    axios.delete('/api/deleteSection', { params: {sectionId: id} })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log('Error deleting section', error);
+    })
   }
 
   render() {
@@ -30,6 +47,7 @@ class ProjectHome extends React.Component {
           {this.props.currentProject.sections.map((section, i) => (
             <SectionList
               onSectionClick={this.onSectionClick}
+              deleteSection={this.deleteSection}
               section={section}
               key={i}
             />
