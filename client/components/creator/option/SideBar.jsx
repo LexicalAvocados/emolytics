@@ -5,8 +5,8 @@ import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
 const SideBar = (props) => {
 
   return (
-    <div className='sidemenucontainer' style={{background: '#2c3e50', color: '#FFF', height: '60%'}}>
-      <SideNav highlightColor='#eff0f2' highlightBgColor='#7a110d' selected={props.currSelected} onItemSelection={props.changeCb}>
+    <div className='sidemenucontainer' style={{background: '#FFF', color: 'grey'}}>
+      <SideNav highlightColor='#90AFC5' highlightBgColor='#f2f2f2' selected={props.currSelected} onItemSelection={props.changeCb}>
           <Nav id='overview'>
               <NavIcon><img height={25} width={25} src={'https://cdn2.iconfinder.com/data/icons/thin-charts-analytics/24/thin-1078_kpi_dashboard_report-512.png'}/></NavIcon>
               <NavText className='sideNavItem'> Overview </NavText>

@@ -38,6 +38,7 @@ export class App extends React.Component {
     return (
       <div className="app">
         <Navbar />
+        <div className="appBody">
         {
           this.props.loggedInUser.username ? (
             this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
@@ -69,6 +70,7 @@ export class App extends React.Component {
             </Switch>
           )
         }
+        </div>
       </div>
     );
   }

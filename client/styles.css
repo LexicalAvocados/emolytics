@@ -7,8 +7,26 @@ body {
   margin: auto;
 }
 
-.app {
+/*.app {
   padding: 4%;
+}*/
+
+.appBody {
+  background-color: #f2f2f2;
+  padding: 4%
+}
+
+.navBar {
+  margin-top: 15px;
+  width: 100vw;
+  height: 90px;
+
+  padding-left: 8%;
+  padding-right: 6%;
+}
+
+.websiteTitle {
+  float: left;
 }
 
 .fblogin {
@@ -125,7 +143,7 @@ body {
 
 .testerAttention {
   grid-column: 1;
-  margin-left: 10%;
+  padding: 5%;
 }
 
 .testerFeedback {
@@ -252,6 +270,7 @@ button {
   margin-left: 5%;
   right: 0;
   font-size: 20px;
+  margin-top: 20px;
 }
 
 .TesterHomeContainer {
@@ -468,7 +487,18 @@ button {
 }
 
 .sectionCompareCharts {
+  padding-right: 5%;
+  margin: 5%;
+}
 
+.optionDemographics {
+  text-align: center;
+  padding: 5%;
+}
+
+.optionDemographicsBody {
+  text-align: left;
+  left: 0;
 }
 
 /* @keyframes reveal { DOESNT WORK

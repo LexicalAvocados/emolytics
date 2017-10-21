@@ -28,12 +28,12 @@ router.post('/getOptionsData', (req, res) => {
     return TesterAndOption.findAll({where: {optionId: elem.id}})
     // sequelize.query(`"SELECT * FROM "testerAndOptions" INNER JOIN "users" ON "testerAndOptions"."userId" = "users"."id" WHERE "testerAndOptions"."optionId" = "${elem.id}"`)
       .then(arr => {
-        console.log("THIS IS ARR", arr);
+        // console.log("THIS IS ARR", arr);
         let total = 0;
         let finished = 0;
         let liked = 0;
         arr.forEach(elem => {
-          console.log('ELEM', elem)
+          // console.log('ELEM', elem)
           if (elem.dataValues.finished !== null) {
             total++;
           }
@@ -54,7 +54,7 @@ router.post('/getOptionsData', (req, res) => {
   })
   Promise.all(promises)
     .then(values => {
-      console.log('HEREEE ARE THE VALUES', values);
+      // console.log('HEREEE ARE THE VALUES', values);
       res.send(values);
       })
 
