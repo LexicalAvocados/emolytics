@@ -257,8 +257,36 @@ button {
 .TesterHomeContainer {
   text-align: center;
   background-color: #f2f2f2;
-  padding: 3% 3% 0% 2%;
+  padding: 3% 3% 3% 2%;
   border-radius: 12px;
+  overflow: auto;
+}
+
+.TesterHomeContainer a {
+  color: black;
+}
+
+.TesterQueueContainer {
+  text-align: center;
+  background-color: #f2f2f2;
+  padding: 3% 3% 3% 2%;
+  border-radius: 12px;
+  overflow: auto;
+}
+
+.TesterQueueContainer a {
+  color: black;
+}
+
+.testerOptionListEntry {
+  margin-left: 6.2%;
+  margin-bottom: 50px;
+  padding-top: 25px;
+  padding-bottom: 10px;
+  background-color: #d2dbdd;
+  border-style: hidden;
+  border-width: 1px;
+  border-radius: 8px;
 }
 
 .promoButton {
