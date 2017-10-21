@@ -19,32 +19,31 @@ exports.sendEmails = function(req, res) {
   });
 
 
-  // var remainder = req.body.invitedArr.length % req.body.options.length;
-  req.body.options.forEach((option) => {
-    for (var i = 0; i < Math.floor(req.body.invitedArr.length/req.body.options.length); i++) {
-      TesterAndOptions.create({
-        optionId: option.id,
-        userId: req.body.invitedArr[i].id
-      });      
-      let mailOptions = {
-        from: "ReactionSync",
-        to: req.body.invitedArr[i].email,
-        subject: "You've been invited!",
-        text: "Guten Tag! You've been invited to something (if you've received this email)",
-        html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please enter promo code ${option.id} at ${routeForTesters} after logging in! Giddy up!</p>`
-      };
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          // return console.log(error);
-          res.send('FAILURE');
-        } else {
-          console.log('I think the email was sent.', info);
-          res.send('Success');
-        }
-      });
-
-    }
-  });
+  let options = req.body.options;
+  let invitedArr = req.body.invitedArr;
+  
+  for (var i = 0; i < invitedArr.length; i++) {
+    TesterAndOptions.create({
+      optionId: options[i % options.length].id,
+      userId: invitedArr[i].id
+    });      
+    let mailOptions = {
+      from: "ReactionSync",
+      to: invitedArr[i].email,
+      subject: "You've been invited!",
+      text: "Guten Tag! You've been invited to something (if you've received this email)",
+      html: `<p>Herzlich Willkommen! You've been invitied to participate in a nefarious study! Please check your Video Queue after logging in! Giddy up!</p>`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        // return console.log(error);
+        res.send('FAILURE');
+      } else {
+        console.log('I think the email was sent.', info);
+        res.send('Success');
+      }
+    });
+  }
 };
 
 

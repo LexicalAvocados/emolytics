@@ -34,6 +34,9 @@ class Navbar extends React.Component {
                 <Link to='/createProject' style={noUnderline}>
                   <p className='navItem'>Create Project</p>
                 </Link>
+                <Link to='/focusgroups' style={noUnderline}>
+                  <p className='navItem'>Your Focus Groups</p>
+                </Link>
                 <Link to='/login' style={noUnderline} onClick={this.handleLogout}>
                   <p className='navItem'>Log out</p>
                 </Link>
