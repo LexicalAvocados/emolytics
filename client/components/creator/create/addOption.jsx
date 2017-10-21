@@ -4,6 +4,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+import OptionListEntry from '../section/OptionListEntry.jsx';
+
 import key from './key.js';
 
 class AddOption extends React.Component {
@@ -128,8 +130,17 @@ class AddOption extends React.Component {
           <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
           <input type="submit" value="Submit" /><br />
         </form>
-        <div>
-
+        <div className="ThumbNailListInAddOption">
+          { this.props.currentSection.options.map((option, i) => (
+            <OptionListEntry
+              // optionData={this.state.optionData[i]}
+              option={option}
+              key={i}
+              index={i}
+              onOptionClick={this.onOptionClick}
+              concatTesters={this.concatTesters}
+            />
+          ))}
         </div>
       </div>
     );

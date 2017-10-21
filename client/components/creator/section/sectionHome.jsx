@@ -163,7 +163,7 @@ class SectionHome extends React.Component {
   getOptionsData() {
     axios.post('/api/section/getOptionsData', this.props.currentSection.options)
       .then(data => {
-        console.log(data);
+        console.log('data>>>>>', data);
         this.setState({
           optionData: data.data
         })
