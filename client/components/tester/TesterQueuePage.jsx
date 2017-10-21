@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import TesterQueueOptionEntry from './TesterQueueOptionEntry.jsx';
 
 // React-Redux connect() boilerplate
@@ -11,6 +12,20 @@ import * as ChangeActions from '../../actions';
 class TesterQueuePage extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    axios.post('/api/tester/getTesterQueue', {
+      id: this.props.loggedInUser.id
+    })
+      .then(res => {
+        let queue = res.data;
+        console.log('queue:', queue);
+        if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+      })
+      .catch(err => {
+        console.log('Error fetching Tester Queue from database:', err);
+      })
   }
 
   render() {
