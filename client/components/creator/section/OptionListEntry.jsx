@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import axios from 'axios';
+import OptionData from './OptionData.jsx';
 
 class OptionListEntry extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class OptionListEntry extends React.Component {
     this.state ={
       date: ''
     };
+    console.log(this);
   }
 
   componentDidMount() {
@@ -25,11 +27,14 @@ class OptionListEntry extends React.Component {
 
   render() {
     return (
-      <div onClick={() => this.props.onOptionClick(this.props.index)} className="currentSectionOptionListEntry">
-        <p className="closerText">Option Name: {this.props.option.name}</p>
-        <p className="closerText">Option Description: {this.props.option.description}</p>
-        <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
+      <div className="currentSectionOptionListEntry">
+        <div className="optionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
           <img src={this.props.option.thumbnail} alt=""/>
+          <p className="closerText">Option Name: {this.props.option.name}</p>
+          <p className="closerText">Option Description: {this.props.option.description}</p>
+          <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
+        </div>
+        <OptionData data={this.props.optionData}/>
       </div>
     );
   }
