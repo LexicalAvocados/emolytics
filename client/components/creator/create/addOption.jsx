@@ -130,6 +130,7 @@ class AddOption extends React.Component {
           <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
           <input type="submit" value="Submit" /><br />
         </form>
+<<<<<<< HEAD
         <div className="ThumbNailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (
             <OptionListEntry
@@ -141,6 +142,10 @@ class AddOption extends React.Component {
               concatTesters={this.concatTesters}
             />
           ))}
+=======
+        <div>
+
+>>>>>>> working on add options feature
         </div>
       </div>
     );
