@@ -4,7 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-// import key from './key.js';
+import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -12,7 +12,8 @@ class AddOption extends React.Component {
     this.state = {
       name: '',
       description: '',
-      url:''
+      url:'',
+      thumbnails:[]
     };
     this.handleChange = this.handleChange.bind(this);
     this.submitOptionClick = this.submitOptionClick.bind(this);
@@ -32,7 +33,7 @@ class AddOption extends React.Component {
     var youTubeData = {};
     var vidUrl = this.state.url;
     var sliceFrom = this.state.url.indexOf('=');
-    var vidId = vidUrl.slice(sliceFrom + 1);
+    var vidId = vidUrl.slice(sliceFrom + 1, sliceFrom + 12);
     axios.get('https://www.googleapis.com/youtube/v3/videos', {
       params: {
         id: vidId,
@@ -83,7 +84,8 @@ class AddOption extends React.Component {
         .then((response) => {
           this.setState({
             name: response.data.name,
-            description: response.data.description
+            description: response.data.description,
+            url: response.data.url
           }, () => {
             // this.props.actions.changeCurrentOption(response.data);
             this.props.currentSection.options.push(response.data);
@@ -97,7 +99,6 @@ class AddOption extends React.Component {
         });
     });
   }
-
 
   convert(string, sequence) {
     for (var i = string.length - 1; i >= 0; i--) {
@@ -114,22 +115,23 @@ class AddOption extends React.Component {
     }
   }
 
-
   render() {
     return (
       <div className="AddOption">
         <h2>Section Name: {this.props.currentSection.name}</h2>
         <h4>Section Description: {this.props.currentSection.description}</h4>
-        <form onSubmit={this.submitOptionClick}>
-        New Option Name: <br />
+        <form id="optionForm" onSubmit={this.submitOptionClick}>
+          New Option Name: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Option Description: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           Url: <br />
           <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
-          <input type="submit" value="Submit" />
-          <button type="submit"></button>
+          <input type="submit" value="Submit" /><br />
         </form>
+        <div>
+
+        </div>
       </div>
     );
   }
@@ -140,7 +142,6 @@ const mapStateToProps = (state) => {
     router: state.router,
     currentProject: state.currentProject,
     currentSection: state.currentSection
-
   });
 };
 
