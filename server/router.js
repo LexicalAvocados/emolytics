@@ -59,8 +59,10 @@ router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRang
 
 router.get('/getFeedback', optionRoutes.getFeedback);
 
-router.delete('/deleteOption', optionRoutes.deleteOption)
+router.delete('/deleteOption', optionRoutes.deleteOption);
 
-router.delete('/deleteSection', sectionRoutes.deleteSection)
+router.delete('/deleteSection', sectionRoutes.deleteSection);
+
+router.delete('/deleteProject', projectRoutes.deleteProject)
 
 module.exports = router;

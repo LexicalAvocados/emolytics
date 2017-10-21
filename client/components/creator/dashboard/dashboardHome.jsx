@@ -14,6 +14,7 @@ class DashboardHome extends React.Component {
       retrieved: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
+    this.deleteProject = this.deleteProject.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,23 @@ class DashboardHome extends React.Component {
     this.props.actions.changeCurrentProject(obj);
   }
 
+  deleteProject(id) {
+    // Here we just need to delete it from the db and rerender
+    let filteredProjects = this.state.projects.filter((project) => {
+      if (project.id !== id) return project
+    })
+    axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
+    .then((response) => {
+      console.log(response);
+      this.setState({
+        projects: filteredProjects
+      })
+    })
+    .catch((err) => {
+      console.log('Error deleting project', err);
+    })
+  }
+
   render () {
     return (
       <div className="dashboardHomeContainer">
@@ -52,6 +70,7 @@ class DashboardHome extends React.Component {
               { this.state.projects.map((project, i) => (
                 <ProjectList
                   onProjectClick={this.onProjectClick}
+                  deleteProject={this.deleteProject}
                   project={project}
                   key={i}
                 />

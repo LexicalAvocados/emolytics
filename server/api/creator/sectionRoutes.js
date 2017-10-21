@@ -50,9 +50,15 @@ exports.addSection = function(req, res) {
 };
 
 exports.deleteSection = (req, res) => { 
+  
+  if (req.query.sectionId !== null) {
+    var sectionId = req.query.sectionId;
+  } else {
+    var sectionId = null
+  }
   Sections.destroy({
     where: {
-      id: req.query.sectionId
+      [req.query.toDelete]: sectionId
     }
   }) // Will set the sectionId to null in options
   .then((data) => { // Have to check to see if there are any first
@@ -62,11 +68,13 @@ exports.deleteSection = (req, res) => {
       }
     })
     .then((allOptions) => {
-      console.log('ALL Options', allOptions);
+      // console.log('ALL Options', allOptions);
       optionRoutes.deleteOption({ query: { optionId: null, toDelete: 'sectionId'}}, null);
     })
+    .then((finished) => {
+      if (res !== null) {
+        res.send('Finished deleting')
+      }
+    })
   })
-  // optionRoutes.deleteOption
-  // Now go through the options, for each option, run previous function.
-  res.send('found it');
 }

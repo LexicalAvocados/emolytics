@@ -25,6 +25,7 @@ export const CHANGE_ANNOTATIONS = 'CHANGE_ANNOTATIONS';
 export const CHANGE_LINE_GRAPH_DATA = 'CHANGE_LINE_GRAPH_DATA';
 export const ADD_FEEDBACK_TO_OPTION = 'ADD_FEEDBACK_TO_OPTION';
 export const REMOVE_OPTION_FROM_OPTIONS = 'REMOVE_OPTION_FROM_OPTIONS';
+export const REMOVE_SECTION_FROM_SECTIONS = 'REMOVE_SECTION_FROM_SECTIONS';
 
 export const changeExample = (text) => ({
 	type: CHANGE_EXAMPLE,
@@ -113,6 +114,11 @@ export const addSectionsToCurrentProject = (sectionObj) => ({
   type: ADD_SECTIONS_TO_CURRENT_PROJECT,
   sectionObj
 });
+
+export const removeSectionFromSections = (obj) => ({
+  type: REMOVE_SECTION_FROM_SECTIONS,
+  obj
+})
 
 export const changeCurrentSection = (obj) => ({
 	type: CHANGE_CURRENT_SECTION,
