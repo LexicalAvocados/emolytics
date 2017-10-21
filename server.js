@@ -6,6 +6,7 @@ const Bluebird = require('bluebird');
 const router = require('./server/router');
 const db = require('./db');
 const auth = require('./server/auth');
+const cron = require('./server/crontab.js')
 
 const passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy;

@@ -412,11 +412,35 @@ button {
 
 .currentSectionOptionListEntry {
   float: left;
-  padding-right: 3%;
-  width: auto;
+  margin: 5%;
+  width: 90%;
+  background-color: white;
+  padding: 3%;
   /* border: 1px solid black;
   border-radius: 3px;
   padding-left: 1%; */
+}
+
+.sectionOptionData {
+  float: right;
+}
+
+.optionListEntry {
+  width: 50%;
+  float: left;
+}
+
+.sectionComparison {
+  padding: 5%;
+  margin: 2%;
+  background-color: white;
+  overflow:auto;
+
+
+}
+
+.sectionCompareCharts {
+
 }
 
 /* @keyframes reveal { DOESNT WORK
