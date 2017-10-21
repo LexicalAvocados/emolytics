@@ -125,6 +125,24 @@ class SectionHome extends React.Component {
       })
   }
 
+  getOptionsData() {
+    axios.post('/api/section/getOptionsData', this.props.currentSection.options)
+      .then(data => {
+        console.log(data);
+        if (data.data) {
+          this.setState({
+            optionData: data.data
+          })
+        }
+      })
+  }
+
+  compare() {
+    this.setState({
+      compare: !this.state.compare
+    })
+  }
+
   render() {
     return (
       <div className="sectionHomeContainer">
