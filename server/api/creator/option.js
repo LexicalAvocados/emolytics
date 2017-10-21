@@ -44,6 +44,51 @@ router.post('/getAllAnnotations', (req, res) => {
     })
 })
 
+router.post('/getDemographics', (req, res) => {
+  console.log(req.body)
+  let response = {
+
+  };
+  sequelize.query(`SELECT * FROM "testerAndOptions" INNER JOIN "users" ON "testerAndOptions"."userId" = "users"."id" WHERE "testerAndOptions"."optionId" = ${req.body.id} AND "testerAndOptions"."finished" IS NOT NULL`, { type: sequelize.QueryTypes.SELECT})
+    .then(data => {
+      console.log(data)
+      let total = data.length;
+      let liked = 0;
+      let finished = 0;
+      let age = 0;
+      let male = 0;
+      data.forEach(elem => {
+        if (elem.like === true) {
+          liked++;
+        }
+        if (elem.finished === true) {
+          finished++;
+        }
+        if (elem.sex === 'Male') {
+          male++;
+        }
+        age += elem.age;
+      })
+      response.total = total;
+      response.liked =liked;
+      response.finished = finished;
+      response.age = age / total;
+      response.male = male;
+      console.log(response);
+      res.send(response);
+    })
+})
+
+
+router.post('/getEmotion', (req, res) => {
+  let response = {};
+
+  sequelize.query(`SELECT COUNT("id"), AVG("anger") as anger, AVG("contempt") as contempt, AVG("disgust") as disgust, AVG("fear") as fear, AVG("happiness") as happiness, AVG("neutral") as neutral, AVG("sadness") as sadness, AVG("surprise") as surprise, SUM("attention") FROM "frames" WHERE "optionId" =  ${req.body.id}`, { type: sequelize.QueryTypes.SELECT})
+    .then(data => {
+      console.log('DATA AVG', data);
+      res.send(data);
+    })
+})
 
 
 

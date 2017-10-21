@@ -23,7 +23,10 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="navBar">
+        <div className="websiteTitle">
+          <h1> Emolytics </h1>
+        </div>
         {
           this.props.loggedInUser.username ? (
             this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
