@@ -4,8 +4,11 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+<<<<<<< HEAD
 import OptionListEntry from '../section/OptionListEntry.jsx';
 
+=======
+>>>>>>> working on add options feature
 import key from './key.js';
 
 class AddOption extends React.Component {
