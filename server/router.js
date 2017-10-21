@@ -2,6 +2,7 @@ const express = require('express');
 const router = require('express').Router();
 const testerRoutes = require('./api/tester');
 const creatorOptionRoutes = require('./api/creator/option.js');
+const creatorSectionRoutes = require('./api/creator/section.js');
 const projectRoutes = require('./api/creator/projectRoutes.js')
 const sectionRoutes = require('./api/creator/sectionRoutes.js');
 const optionRoutes = require('./api/creator/optionRoutes.js');
@@ -12,6 +13,8 @@ const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
 router.use('/tester', testerRoutes);
 
 router.use('/option', creatorOptionRoutes);
+
+router.use('/section', creatorSectionRoutes);
 
 router.get('/getProjectsForUser', projectRoutes.getProjectsForUser);
 
