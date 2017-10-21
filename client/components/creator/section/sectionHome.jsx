@@ -35,6 +35,7 @@ class SectionHome extends React.Component {
     this.assignFocusGroup = this.assignFocusGroup.bind(this);
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
+    this.deleteOption = this.deleteOption.bind(this);
     console.log(this);
   }
 
@@ -112,8 +113,22 @@ class SectionHome extends React.Component {
     });
   }
 
-  deleteOption(index) {
-    // this.props.currentSection.options[index] // to be deleted
+  deleteOption(id) {
+    // Delete from store
+    this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
+      if (option.id !== id) {
+        return option;
+      }
+      console.log(option);
+    });
+    // WILL THEN HAVE TO RERENDER THE PAGE
+    axios.delete('/api/deleteOption', { params: {optionId: id} })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log('Error deleting option', error);
+    })
   }
 
   renderPanel() {
@@ -210,6 +225,7 @@ class SectionHome extends React.Component {
               index={i}
               onOptionClick={this.onOptionClick}
               concatTesters={this.concatTesters}
+              deleteOption={this.deleteOption}
             />
           ))}
         </div>

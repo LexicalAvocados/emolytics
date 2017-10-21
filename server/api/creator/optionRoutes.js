@@ -2,7 +2,9 @@ const db = require('../../../db/index.js');
 const Options = db.Option;
 const Likes = db.TesterAndOption;
 const Users = db.User;
+const Frames = db.Frame;
 const SectionComments = db.SectionComments;
+const OptionAndAnnotations = db.OptionAndAnnotation;
 
 exports.getRelatedOptions = (req, res) => {
   Options.findAll({
@@ -106,4 +108,43 @@ exports.getFeedback = (req, res) => {
   .then((entry) => {
     res.send(entry.summary);
   })
+}
+
+
+exports.deleteOption = (req, res) => {
+    // Delete from options table
+    Options.destroy({
+      where: {
+        id: req.query.optionId
+      }
+    })
+    .then((data) => { // Clean options and testers
+      Likes.destroy({ // Hopefully this gets all of them.
+        where: {
+          optionId: req.query.optionId
+        }
+      })
+    })
+      .then((data) => { // Clean frames
+        Frames.destroy({ 
+          where: {
+            optionId: req.query.optionId
+          }
+        })
+      })
+        .then((data) => { // Clean sectionComments
+          SectionComments.destroy({ 
+            where: {
+              optionId: req.query.optionId
+            }
+          })
+        })
+        .then((data) => { // Clean sectionComments
+          OptionAndAnnotations.destroy({ 
+            where: {
+              optionId: req.query.optionId
+            }
+          })
+        })      
+  res.send('Destroyed');
 }
