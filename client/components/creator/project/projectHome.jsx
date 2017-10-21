@@ -20,13 +20,14 @@ class ProjectHome extends React.Component {
   }
 
   deleteSection(id) {
-    this.props.currentProject.sections = this.props.currentProject.sections.filter((section) => {
+    let filteredSections = this.props.currentProject.sections.filter((section) => {
       if (section.id !== id) {
         return section;
       }
     });
-    this.props.actions.changeCurrentProject(this.props.currentProject);
-    axios.delete('/api/deleteSection', { params: {sectionId: id} })
+    this.props.actions.removeSectionFromSections(filteredSections);
+    console.log('AFTER THE DELETION', this.props.currentProject)
+    axios.delete('/api/deleteSection', { params: {sectionId: id, toDelete: 'id'} })
     .then((response) => {
       console.log(response);
     })

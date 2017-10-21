@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, withRouter } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 
 class ProjectList extends React.Component {
@@ -43,17 +44,20 @@ class ProjectList extends React.Component {
 
   render() {
     return (
-      <div onClick={this.onClickCallback} className='projectsContainer'>
-        {/* <Link to={'/project' + this.props.project.id}> */}
-        <p>Project Name: {this.props.project.name}</p>
-        {/* </Link> */}
-        <p>Project Description: {this.props.project.description}</p>
-        <p>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        { this.state.sections.map((section, i) => {
-          return (
-            <p key={i}>Section name: {section.name}</p>
-          );
-        })}
+      <div>
+        <div onClick={this.onClickCallback} className='projectsContainer'>
+          {/* <Link to={'/project' + this.props.project.id}> */}
+          <p>Project Name: {this.props.project.name}</p>
+          {/* </Link> */}
+          <p>Project Description: {this.props.project.description}</p>
+          <p>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
+          { this.state.sections.map((section, i) => {
+            return (
+              <p key={i}>Section name: {section.name}</p>
+            );
+          })}
+        </div>
+        <Button onClick={() => this.props.deleteProject(this.props.project.id)}>Delete</Button>
       </div>
     );
   }
