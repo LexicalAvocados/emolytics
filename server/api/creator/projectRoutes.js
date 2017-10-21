@@ -68,17 +68,12 @@ exports.deleteProject = (req, res) => {
     }
   })
   .then((data) => {
-    Sections.findAll({
-      where: {
-        projectId: null
-      }
-    })
-    .then((allSections) => {
-      sectionRoutes.deleteSection({ query: { sectionId: null, toDelete: 'projectId'}}, null);
-    })
-    .then((deleted) => { // Not setting projectId in sections to null
-      res.send('Success');
-    })
+    sectionRoutes.deleteSection({ query: { sectionId: null, toDelete: 'projectId'}}, null);
+    return 'Success';
   })
+  .then((deleted) => { // Not setting projectId in sections to null
+      res.send(deleted);
+  })
+
   // Then go through the secitons
-}
+};
