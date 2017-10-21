@@ -121,7 +121,7 @@ class SectionHome extends React.Component {
       }
       console.log(option);
     });
-    // WILL THEN HAVE TO RERENDER THE PAGE
+    this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
     axios.delete('/api/deleteOption', { params: {optionId: id} })
     .then((response) => {
       console.log(response);

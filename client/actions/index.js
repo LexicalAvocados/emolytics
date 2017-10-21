@@ -24,7 +24,7 @@ export const CHANGE_OPTION = 'CHANGE_OPTION';
 export const CHANGE_ANNOTATIONS = 'CHANGE_ANNOTATIONS';
 export const CHANGE_LINE_GRAPH_DATA = 'CHANGE_LINE_GRAPH_DATA';
 export const ADD_FEEDBACK_TO_OPTION = 'ADD_FEEDBACK_TO_OPTION';
-
+export const REMOVE_OPTION_FROM_OPTIONS = 'REMOVE_OPTION_FROM_OPTIONS';
 
 export const changeExample = (text) => ({
 	type: CHANGE_EXAMPLE,
@@ -128,6 +128,11 @@ export const addOptionsToCurrentSection = (optionObj) => ({
   type: ADD_OPTIONS_TO_CURRENT_SECTION,
   optionObj
 });
+
+export const removeOptionFromOptions = (obj) => ({
+  type: REMOVE_OPTION_FROM_OPTIONS,
+  obj
+})
 
 export const changeTesterOption = (obj) => ({
   type: CHANGE_TESTER_OPTION,
