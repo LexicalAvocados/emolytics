@@ -62,12 +62,6 @@ exports.deleteSection = (req, res) => {
     }
   }) // Will set the sectionId to null in options
   .then((data) => { // Have to check to see if there are any first
-    Options.findAll({
-      where: {
-        sectionId: null
-      }
-    })
-    .then((allOptions) => {
       // console.log('ALL Options', allOptions);
       optionRoutes.deleteOption({ query: { optionId: null, toDelete: 'sectionId'}}, null);
     })
@@ -76,5 +70,4 @@ exports.deleteSection = (req, res) => {
         res.send('Finished deleting')
       }
     })
-  })
 }
