@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionListEntry from '../section/OptionListEntry.jsx';
-
 import key from './key.js';
 
 class AddOption extends React.Component {
