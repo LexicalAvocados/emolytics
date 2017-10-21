@@ -61,4 +61,6 @@ router.get('/getFeedback', optionRoutes.getFeedback);
 
 router.delete('/deleteOption', optionRoutes.deleteOption)
 
+router.delete('/deleteSection', sectionRoutes.deleteSection)
+
 module.exports = router;

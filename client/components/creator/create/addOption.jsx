@@ -4,7 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-// import key from './key.js';
+import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -86,7 +86,8 @@ class AddOption extends React.Component {
             description: response.data.description
           }, () => {
             // this.props.actions.changeCurrentOption(response.data);
-            this.props.actions.addOptionsToCurrentSection(response.data);
+            this.props.currentSection.options.push(response.data);
+            this.props.actions.addOptionsToCurrentSection(this.props.currentSection.options);
             this.props.history.push('/project' + this.props.currentProject.id);
           });
 

@@ -106,45 +106,58 @@ exports.getFeedback = (req, res) => {
     }
   })
   .then((entry) => {
-    res.send(entry.summary);
+    if (entry) {
+      res.send(entry.summary);
+    } else {
+      res.send('Sorry')
+    }
   })
 }
 
 
 exports.deleteOption = (req, res) => {
     // Delete from options table
+    if (req.query.optionId !== null) {
+      var optionId = req.query.optionId // For when options are being deleted individually
+    } else {
+      var optionId = null; // For when section is being deleted
+    }
     Options.destroy({
       where: {
-        id: req.query.optionId
+        [req.query.toDelete]: optionId
       }
     })
-    .then((data) => { // Clean options and testers
-      Likes.destroy({ // Hopefully this gets all of them.
+    .then((data) => { 
+      Likes.destroy({ 
         where: {
-          optionId: req.query.optionId
+          optionId: optionId
         }
       })
     })
-      .then((data) => { // Clean frames
+      .then((data) => { 
         Frames.destroy({ 
           where: {
-            optionId: req.query.optionId
+            optionId: optionId
           }
         })
       })
-        .then((data) => { // Clean sectionComments
+        .then((data) => { 
           SectionComments.destroy({ 
             where: {
-              optionId: req.query.optionId
+              optionId: optionId
             }
           })
         })
-        .then((data) => { // Clean sectionComments
+        .then((data) => { 
           OptionAndAnnotations.destroy({ 
             where: {
-              optionId: req.query.optionId
+              optionId: optionId
             }
           })
-        })      
-  res.send('Destroyed');
+        })
+        .then((finished) => {
+          if (res !== null) {
+            res.send('Finished');
+          }
+        })
 }
