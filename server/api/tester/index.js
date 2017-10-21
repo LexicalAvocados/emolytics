@@ -196,6 +196,11 @@ router.post('/startVideo', (req, res) => {
               finished: false
             })
           }
+          else {
+            data.update({
+              finished: false
+            })
+          }
         })
         // .then(arr => {
         //   console.log('arr', arr);

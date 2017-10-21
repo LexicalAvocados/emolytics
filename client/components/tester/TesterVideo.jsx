@@ -80,7 +80,7 @@ class TesterVideo extends React.Component {
       this.checkVideo()
 
     }, 1000)
-    this.startVideo();
+    this.videoStart();
 
   }
 
