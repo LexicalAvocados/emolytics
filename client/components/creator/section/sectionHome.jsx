@@ -111,7 +111,7 @@ class SectionHome extends React.Component {
         return members;
       }
     }, []);
-    console.log('options:', options, 'focusGroupMembers:', focusGroupMembers);
+    // console.log('options:', options, 'focusGroupMembers:', focusGroupMembers);
 
     axios.post('/api/sendEmails', {
       invitedArr: focusGroupMembers,
