@@ -26,7 +26,6 @@ class ProjectHome extends React.Component {
       }
     });
     this.props.actions.removeSectionFromSections(filteredSections);
-    console.log('AFTER THE DELETION', this.props.currentProject)
     axios.delete('/api/deleteSection', { params: {sectionId: id, toDelete: 'id'} })
     .then((response) => {
       console.log(response);

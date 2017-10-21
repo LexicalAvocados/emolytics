@@ -43,13 +43,12 @@ class DashboardHome extends React.Component {
   }
 
   deleteProject(id) {
-    // Here we just need to delete it from the db and rerender
     let filteredProjects = this.state.projects.filter((project) => {
       if (project.id !== id) return project
     })
     axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       this.setState({
         projects: filteredProjects
       })

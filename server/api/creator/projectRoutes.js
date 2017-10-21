@@ -71,9 +71,7 @@ exports.deleteProject = (req, res) => {
     sectionRoutes.deleteSection({ query: { sectionId: null, toDelete: 'projectId'}}, null);
     return 'Success';
   })
-  .then((deleted) => { // Not setting projectId in sections to null
+  .then((deleted) => { 
       res.send(deleted);
   })
-
-  // Then go through the secitons
 };
