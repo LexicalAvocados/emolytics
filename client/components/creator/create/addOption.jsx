@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionListEntry from '../section/OptionListEntry.jsx';
-
 import key from './key.js';
 
 class AddOption extends React.Component {
@@ -133,7 +132,6 @@ class AddOption extends React.Component {
         <div className="ThumbNailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (
             <OptionListEntry
-              optionData={this.state.optionData[i]}
               option={option}
               key={i}
               index={i}
