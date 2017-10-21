@@ -59,4 +59,6 @@ router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRang
 
 router.get('/getFeedback', optionRoutes.getFeedback);
 
+router.delete('/deleteOption', optionRoutes.deleteOption)
+
 module.exports = router;

@@ -35,6 +35,7 @@ class OptionListEntry extends React.Component {
           <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
         </div>
         <OptionData data={this.props.optionData}/>
+        <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete</Button>
       </div>
     );
   }
