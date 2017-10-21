@@ -25,7 +25,9 @@ class Navbar extends React.Component {
     return (
       <div className="navBar">
         <div className="websiteTitle">
-          <h1> Emolytics </h1>
+          <Link to='/'>
+            <h1>Emolytics</h1>
+          </Link>
         </div>
         {
           this.props.loggedInUser.username ? (
