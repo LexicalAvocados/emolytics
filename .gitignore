@@ -37,3 +37,5 @@ photos
 *.sublime-workspace
 
 *key.js
+
+*client/bundle.js.map

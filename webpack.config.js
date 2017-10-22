@@ -60,6 +60,7 @@ var webpack = require('webpack');
 var config = {
   entry: './client/index.jsx',
   output: { path: __dirname + '/client', filename: 'bundle.js' },
+  devtool: 'source-map',
   module: {
     loaders: [
     {
