@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import OptionListEntry from '../section/OptionListEntry.jsx';
+import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
 import key from './key.js';
 
 class AddOption extends React.Component {
@@ -90,7 +91,7 @@ class AddOption extends React.Component {
           }, () => {
             // this.props.actions.changeCurrentOption(response.data);
             this.props.actions.addOptionsToCurrentSection(response.data);
-            this.props.history.push('/project' + this.props.currentProject.id);
+            // this.props.history.push('/project' + this.props.currentProject.id);
           });
 
         })
@@ -117,26 +118,30 @@ class AddOption extends React.Component {
 
   render() {
     return (
-      <div className="AddOption">
-        <h2>Section Name: {this.props.currentSection.name}</h2>
-        <h4>Section Description: {this.props.currentSection.description}</h4>
-        <form id="optionForm" onSubmit={this.submitOptionClick}>
-          New Option Name: <br />
-          <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
-          Option Description: <br />
-          <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
-          Url: <br />
-          <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
-          <input type="submit" value="Submit" /><br />
-        </form>
-        <div className="ThumbNailListInAddOption">
+      <div>
+        <div className="AddOption">
+          <h2>Section Name: {this.props.currentSection.name}</h2>
+          <h4>Section Description: {this.props.currentSection.description}</h4>
+          <form id="optionForm" onSubmit={this.submitOptionClick}>
+            New Option Name: <br />
+            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+            Option Description: <br />
+            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+            Url: <br />
+            <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
+            <input type="submit" value="Submit" /><br />
+          </form>
+        </div>
+        <div className="ThumbnailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (
-            <OptionListEntry
+            <ThumbnailListInAddOption
               option={option}
               key={i}
               index={i}
-              onOptionClick={this.onOptionClick}
-              concatTesters={this.concatTesters}
+              onOptionClick={() => {this.props.history.push(`/option${option.id}`)}
+              }
+              // console={(()=>{console.log("THIS IS OPTION", option)})()}
+              // concatTesters={this.concatTesters}
             />
           ))}
         </div>
@@ -161,6 +166,5 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 ) (AddOption));
-
 
 
