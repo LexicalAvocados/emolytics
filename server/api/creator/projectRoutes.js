@@ -60,6 +60,27 @@ exports.createProject = function(req, res) {
         });
     };
 
+//{ id: '135', name: 'cooooll', description: 'ooooo' }
+exports.updateProject = (req, res) => {
+  Projects.findById(req.query.id)
+    .then((Project) => {
+      Project.update({
+        name: req.query.name,
+        description: req.query.description
+      })
+        .then((success) => {
+          res.send('Updated');
+        })
+        .catch((err) => {
+          console.log(err);
+          res.send(err);
+        })
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send(err);
+    })
+}
 
 exports.deleteProject = (req, res) => {
   Projects.destroy({
@@ -67,11 +88,11 @@ exports.deleteProject = (req, res) => {
       id: req.query.projectId
     }
   })
-  .then((data) => {
-    sectionRoutes.deleteSection({ query: { sectionId: null, toDelete: 'projectId'}}, null);
-    return 'Success';
-  })
-  .then((deleted) => { 
+    .then((data) => {
+      sectionRoutes.deleteSection({ query: { sectionId: null, toDelete: 'projectId'}}, null);
+      return 'Success';
+    })
+    .then((deleted) => { 
       res.send(deleted);
-  })
+    });
 };

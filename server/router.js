@@ -68,6 +68,8 @@ router.delete('/deleteProject', projectRoutes.deleteProject);
 
 router.post('/createTryer', tryerRoutes.createTryer);
 
+router.get('/updateProject', projectRoutes.updateProject);
+
 // router.post('/sendTryerFrame', tryerRoutes.sendTryerFrame);
 
 module.exports = router;
