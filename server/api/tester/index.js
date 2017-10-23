@@ -24,17 +24,20 @@ const axios = require('axios');
 // 	length: 100
 // })
 
-router.post('/getTesterQueue', (req, res) => {
-  console.log('getTesterQueue req.query:', req.body);
+router.post('/getOptionsForTester', (req, res) => {
+  console.log('getOptionsForTester req.query:', req.body);
+  let id = req.body.id;
 
-  // let options = sequelize.query('SELECT * FROM "testerAndOptions" INNER JOIN "options" ON testerAndOptions.optionId = options.id WHERE ' + req.body.id + ' = testerAndOptions.userId');
+  // for a tester's Queue, we want table rows where "finished" is NULL (they have not opened a given Option page)
+  // for a tester's History, we want table rows where "finished" is NOT NULL (they opened a given Option page)
+  let mode = req.body.mode === 'queue' ? 'NULL' : 'NOT NULL'
 
   sequelize.query(`SELECT "testerAndOptions"."createdAt" AS "assignedAt", "testerAndOptions"."userId",
                   "options"."id", "options"."name", "options"."description", "options"."youtubeUrl", "options"."thumbnail",
                   "options"."length", "options"."createdAt", "options"."updatedAt", "options"."sectionId"
                   FROM "testerAndOptions" INNER JOIN "options"
                   ON "testerAndOptions"."optionId" = "options"."id"
-                  WHERE 4 = "testerAndOptions"."userId" AND "testerAndOptions"."finished" IS NULL
+                  WHERE ${id} = "testerAndOptions"."userId" AND "testerAndOptions"."finished" IS ${mode}
                   ORDER BY "testerAndOptions"."createdAt";`)
     .then(optionsAssignedToTesterTuple => {
       res.send(optionsAssignedToTesterTuple[0]);
