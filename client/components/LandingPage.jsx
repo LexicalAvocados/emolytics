@@ -12,6 +12,7 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import TryItOutHome from './TryItOut/TryItOutHome.jsx';
 import { Button, Modal } from 'react-bootstrap';
 
+
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +34,7 @@ class LandingPage extends React.Component {
 
   render() {
     return (
+      
       <div className='landingContainer'>
         <div className='landingSectionA'> 
           <div className='aInfo'>
