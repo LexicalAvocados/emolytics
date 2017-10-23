@@ -8,6 +8,9 @@ import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import Compare from './Compare.jsx';
+import ToggleDisplay from 'react-toggle-display';
+
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -20,7 +23,9 @@ class SectionHome extends React.Component {
       invitedUserIds: [],
       testersForOptions:[],
       testers: [],
-      testersCopy: []
+      testersCopy: [],
+      optionData: [],
+      compare: false
     }
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -29,7 +34,9 @@ class SectionHome extends React.Component {
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.assignFocusGroup = this.assignFocusGroup.bind(this);
-    this.deleteOption = this.deleteOption.bind(this)
+    this.deleteOption = this.deleteOption.bind(this);
+    this.getOptionsData = this.getOptionsData.bind(this);
+    this.compare = this.compare.bind(this);
   }
 
   componentWillMount() {
@@ -43,6 +50,8 @@ class SectionHome extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+
+    this.getOptionsData();
   }
 
   concatTesters(testers, index) {
@@ -166,6 +175,11 @@ class SectionHome extends React.Component {
         <h3>Project Name: {this.props.currentProject.name}</h3>
         <p>Project Description: {this.props.currentProject.description}</p>
         <p>Section Name: {this.props.currentSection.name}</p>
+
+        <Button onClick={this.compare}> Compare </Button>
+
+        <ToggleDisplay show={!this.state.compare}>
+
         <Link to="/addOption">
           <Button className="addSectionButton">Add an option</Button>
         </Link>
@@ -232,6 +246,16 @@ class SectionHome extends React.Component {
           </div>
         :
           null}
+
+
+          </ToggleDisplay>
+
+          <ToggleDisplay show={this.state.compare}>
+
+            <Compare/>
+
+
+          </ToggleDisplay>
 
       </div>
     );
