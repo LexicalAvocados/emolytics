@@ -16,7 +16,8 @@ exports.createAccount = (req, res) => {
         username,
         password: hash,
         email,
-        isCreator
+        isCreator,
+        lastloggedin: new Date()
       });
     })
     .then(newUser => {
@@ -65,6 +66,13 @@ exports.attemptLogin = (req, res) => {
     })
     .then(isValid => {
       if (isValid) {
+        User.findOne({where: {username}})
+        .then((user) => {
+          console.log('USER FOUND FOR LASR LOGGED IN')
+          user.lastloggedin = new Date();
+          user.save()
+        })
+
         req.session.username = username;
         delete existingUser.password;
 

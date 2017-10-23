@@ -15,7 +15,8 @@ class DashboardHome extends React.Component {
       projects: [],
       retrieved: false,
       showCreate: false,
-      displayEdit: false
+      displayEdit: false,
+      notifications: []
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -27,7 +28,7 @@ class DashboardHome extends React.Component {
   componentDidMount() {
     this.getProjectsFromDatabase();
   }
-  
+
   getProjectsFromDatabase() {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
@@ -44,7 +45,13 @@ class DashboardHome extends React.Component {
       .catch((err) => {
         console.log(err);
       });
-  }  
+
+    axios.get('/api/creator/allNotifications')
+    .then((res) => {
+      console.log('response from notifications endpoint', res.data)
+      let exampleNotif = `${res.data.sourceUsername} reacted to your video ${res.data.optionName}` //link to res.data.optionId
+    })
+  };
 
   onProjectClick(obj, sections) {
     obj['sections'] = sections;
@@ -53,7 +60,7 @@ class DashboardHome extends React.Component {
 
   revealCreate() {
     this.setState({
-      showCreate: !this.state.showCreate 
+      showCreate: !this.state.showCreate
     });
   }
 
@@ -96,7 +103,7 @@ class DashboardHome extends React.Component {
               <Modal.Title>Create A Project</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <CreateProject 
+              <CreateProject
                 close={this.revealCreate}
                 getProjectsFromDatabase={this.getProjectsFromDatabase}
               />
