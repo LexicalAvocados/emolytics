@@ -40,10 +40,11 @@ export class App extends React.Component {
     return (
       <div className="app">
         <Navbar />
-        <div className="appBody">
+        
         {
           this.props.loggedInUser.username ? (
             this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
+              <div className="appBody">
               <Switch>
                 <Route exact path="/" component={DashboardHome}/>
                 <Route path="/new" component={DashboardHome}/>
@@ -56,7 +57,9 @@ export class App extends React.Component {
                 <Route path="/addSection" component={AddSection}/>
                 <Route path="/addOption" component={AddOption}/>
               </Switch>
+              </div>
             ) : (
+              <div className="appBody">
               <Switch>
                 <Route exact path="/" component={TesterHome}/>
                 <Route path="/history" component={TesterHistoryPage}/>
@@ -64,6 +67,7 @@ export class App extends React.Component {
                 <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>
               </Switch>
+              </div>
             )
           ) : (
             <Switch>
@@ -74,7 +78,7 @@ export class App extends React.Component {
             </Switch>
           )
         }
-        </div>
+       
       </div>
     );
   }
