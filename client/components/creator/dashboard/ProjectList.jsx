@@ -43,21 +43,44 @@ class ProjectList extends React.Component {
   // }
 
   render() {
+    var time = {
+      float: "right"
+    }
+
+    var data = {
+      float: "left"
+    }
+
+    var del = {
+      float: "right",
+      clear: "right",
+    }
     return (
       <div>
         <div onClick={this.onClickCallback} className='projectsContainer'>
           {/* <Link to={'/project' + this.props.project.id}> */}
-          <p>Project Name: {this.props.project.name}</p>
-          {/* </Link> */}
-          <p>Project Description: {this.props.project.description}</p>
-          <p>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-          { this.state.sections.map((section, i) => {
-            return (
-              <p key={i}>Section name: {section.name}</p>
-            );
-          })}
+
+
+          <div style={data}>
+            <h4>{this.props.project.name}</h4>
+            {/* </Link> */}
+            <p>{this.props.project.description}</p>
+            <p> <u> Sections </u> </p>
+            { this.state.sections.map((section, i) => {
+              return (
+                <p key={i}>{section.name}</p>
+              );
+            })}
+          </div>
+          <div style={time}>
+            <br/>
+            <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)} </small></p>
+          </div>
+
         </div>
-        <Button onClick={() => this.props.deleteProject(this.props.project.id)}>Delete</Button>
+        <div style={del}>
+          <Button onClick={() => this.props.deleteProject(this.props.project.id)}>Delete</Button>
+        </div>
       </div>
     );
   }
