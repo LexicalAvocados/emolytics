@@ -4,10 +4,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-<<<<<<< HEAD
-// import OptionListEntry from '../section/OptionListEntry.jsx';
-=======
->>>>>>> confirm
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
 // import key from './key.js';
 
