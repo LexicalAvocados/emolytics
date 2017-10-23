@@ -73,9 +73,6 @@ class Navbar extends React.Component {
               <Link to='/signup' style={noUnderline}>
                 <p className='navItem'>Sign up</p>
               </Link>
-              <Link to='#tryItOut' style={noUnderline}>
-                <p className='navItem'>Try it out</p>
-              </Link>
             </div>
           )
         }
