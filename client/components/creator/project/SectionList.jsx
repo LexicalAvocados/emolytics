@@ -11,12 +11,29 @@ class SectionList extends React.Component {
       date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this);
+    this.grabOptions = this.grabOptions.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    axios.get('/api/getOptionsForSection', { params: {sectionId: this.props.section.id}})
+    this.grabOptions(this.props.section);
+
+  }
+
+  shouldComponentUpdate(nextProps, nextState) { // Works, not sure exactly why
+    // console.log('within should *******************', nextProps);
+    if (nextProps.rerenderOptions) {
+      this.grabOptions(nextProps.section);
+      this.props.associateOptions();
+      return true;
+    } 
+    return true;
+  }
+
+  grabOptions(section) {
+    axios.get('/api/getOptionsForSection', { params: {sectionId: section.id}})
       .then((options) => {
+        console.log('OPTIONS ASSOCIATED WITH SECTION', options);
         let sortedOptions = options.data.sort((one, two) => {
           if (one.createdAt < two.createdAt) return 1;
           if (one.createdAt > two.createdAt) return -1;

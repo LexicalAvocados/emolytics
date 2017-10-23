@@ -43,19 +43,21 @@ class DashboardHome extends React.Component {
   }
 
   deleteProject(id) {
-    let filteredProjects = this.state.projects.filter((project) => {
-      if (project.id !== id) return project
-    })
-    axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
-    .then((response) => {
-      // console.log(response);
-      this.setState({
-        projects: filteredProjects
+    if (confirm('Are you sure you want to delete this project?')) {
+      let filteredProjects = this.state.projects.filter((project) => {
+        if (project.id !== id) return project
       })
-    })
-    .catch((err) => {
-      console.log('Error deleting project', err);
-    })
+      axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
+        .then((response) => {
+          // console.log(response);
+          this.setState({
+            projects: filteredProjects
+          })
+        })
+        .catch((err) => {
+          console.log('Error deleting project', err);
+        })
+    }
   }
 
   render () {
