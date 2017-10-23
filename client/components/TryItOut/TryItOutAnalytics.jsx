@@ -40,7 +40,7 @@ class TryItOutAnalytics extends React.Component {
     this.setDuration = this.setDuration.bind(this);
     this.generateCharts = this.generateCharts.bind(this);
     this.changeSideNavSelection = this.changeSideNavSelection.bind(this);
-    this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
+    // this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
     // this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     // this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
@@ -69,20 +69,29 @@ class TryItOutAnalytics extends React.Component {
     this.setState({
       player: player,
       emotionObj: initialEmoObj
+    }, () => {
+      let currentEmoObj = this.state.emotionObj;
+      let initialEmoArrays = [currentEmoObj.anger, currentEmoObj.contempt, currentEmoObj.disgust,
+                      currentEmoObj.fear, currentEmoObj.happiness, currentEmoObj.neutral, currentEmoObj.sadness, currentEmoObj.surprise];
+      this.generateCharts(initialEmoArrays);
     })
   };
 
   setEmotionsArrFromObj(emoObj, time) {
-    console.log('Object in callback', emoObj);
+    // console.log('Object in callback', emoObj);
     let newEmoObj = emoObj
     let currentEmoObj = this.state.emotionObj;
 
     if (emoObj) {
       for (var key in newEmoObj) {
-        currentEmoObj[key][time] = newEmoObj[key];
+        if (key === 'neutral') {
+          currentEmoObj[key][time] = newEmoObj[key] / 7
+        } else {
+          currentEmoObj[key][time] = newEmoObj[key];
+        }
       }
     }
-    console.log('current emotion obj', currentEmoObj)
+    // console.log('current emotion obj', currentEmoObj)
     // var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
     //                 "neutral", "sadness", "surprise" ]
 
@@ -128,7 +137,7 @@ class TryItOutAnalytics extends React.Component {
       this.props.actions.changeLineGraphData(lineData);
       // c3.select('.optionChart').unload();
       var lineGraph = c3.generate({
-        bindto: '.optionChart',
+        bindto: '.tryItOutLineGraph',
         selection: {
           enabled: true
         },
@@ -166,7 +175,7 @@ class TryItOutAnalytics extends React.Component {
       this.setState({
         graph: lineGraph
       })
-      this.forceUpdate();
+      // this.forceUpdate();
   }
 
   setDuration(dur) {
@@ -192,15 +201,6 @@ class TryItOutAnalytics extends React.Component {
     }, this.lineGraphDataSwitch);
   };
 
-  lineGraphDataSwitch() {
-    if (this.state.sideNavSelection === 'attention') {
-      this.generateCharts(this.state.attention);
-    }
-    if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
-      this.generateCharts(this.state.emotionsArrForRender)
-    }
-  };
-
   handleUserSelectCb(userArr) {
     this.setState({
       selectedUsers: userArr
@@ -214,21 +214,19 @@ class TryItOutAnalytics extends React.Component {
 
   render() {
     return (
-      <div className='optionAnalyticsContainer'>
+      <div className='TryItOutAnalyticsContainer'>
+        <h3> Try it out with Bladerunner 2049 Trailer </h3>
+        <h4> Just watch the video and view your reaction data on the graph! </h4>
         <Grid>
-
           <Row className='tryitout'>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={6}>
               <TryItOutVideo setEmotionsArrFromObj={this.setEmotionsArrFromObj}/>
             </Col>
-          </Row>
-
-          <Row>
-            <Col xs={12} md={8}>
-              <div className="optionChart"></div>
+            <Col xs={12} md={6}>
+              <br/><br/>
+              <div className="tryItOutLineGraph"></div>
             </Col>
           </Row>
-
         </Grid>
 
 
