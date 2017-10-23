@@ -371,14 +371,16 @@ class OptionHome extends React.Component {
       <div className='optionAnalyticsContainer'>
         <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
         <div className='leftSide'>
+        <div className="optionPlayer">
           <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
             ref="player"
-            controls={true} height={360} width={500} className='optionPlayer' onDuration={this.setDuration}
+            controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
             config={{
               youtube: {
                 playerVars: { showinfo: 1}
               }
             }}/>
+            </div>
           <div className="optionChart">
           </div>
         </div>
