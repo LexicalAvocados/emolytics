@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import loggedInUser from './loggedInUser';
 import testerQueue from './testerQueue';
+import testerHistory from './testerHistory';
 import focusGroups from './focusGroups';
 import currentFocusGroup from './currentFocusGroup';
 import currentProject from './currentProject';
@@ -16,6 +17,7 @@ import lineGraphData from './lineGraphData';
 const rootReducer = combineReducers({
   loggedInUser,
   testerQueue,
+  testerHistory,
   focusGroups,
   currentFocusGroup,
   currentProject,

@@ -54,6 +54,9 @@ class Navbar extends React.Component {
                 <Link to='/queue' style={noUnderline}>
                   <p className='navItem'>Your Queue</p>
                 </Link>
+                <Link to='/history' style={noUnderline}>
+                  <p className='navItem'>Past History</p>
+                </Link>
                 <Link to='/profile' style={noUnderline}>
                   <p className='navItem'>Profile</p>
                 </Link>
@@ -94,15 +97,11 @@ const noUnderline = {
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  console.log('state in navbar', state);
-  return ({
-    example: state.example,
-    loggedInUser: state.loggedInUser,
-    role: state.signupwithfb,
-    router: state.router
-  })
-};
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  role: state.signupwithfb,
+  router: state.router
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
