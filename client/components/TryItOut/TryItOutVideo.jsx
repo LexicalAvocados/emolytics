@@ -150,11 +150,14 @@ class TryItOutVideo extends React.Component {
 
                instance.post(uriBase, blobData)
                 .then(data => {
-                  return (JSON.stringify(data.data, null, 2));
+                  // return (JSON.stringify(data.data, null, 2));
+                  return data.data
                 })
               .then( (emoObj) => {
-                console.log('emo obj after promise', emoObj)
-                this.props.setEmotionsArrFromObj(emoObj);
+                // console.log('emo obj after promise', emoObj[0].scores)
+                if (emoObj[0]){
+                  this.props.setEmotionsArrFromObj(emoObj[0].scores, time);
+                }
               })
           });
         });
