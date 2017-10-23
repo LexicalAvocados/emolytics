@@ -11,7 +11,6 @@ class TryItOutHome extends React.Component {
   render() {
     return (
       <div className='tryItOutHomeContainer'>
-        <p> Text from try it out home</p>
         <TryItOutAnalytics />
       </div>
     )

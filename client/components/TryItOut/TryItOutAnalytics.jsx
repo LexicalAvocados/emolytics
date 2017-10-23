@@ -78,16 +78,20 @@ class TryItOutAnalytics extends React.Component {
   };
 
   setEmotionsArrFromObj(emoObj, time) {
-    console.log('Object in callback', emoObj);
+    // console.log('Object in callback', emoObj);
     let newEmoObj = emoObj
     let currentEmoObj = this.state.emotionObj;
 
     if (emoObj) {
       for (var key in newEmoObj) {
-        currentEmoObj[key][time] = newEmoObj[key];
+        if (key === 'neutral') {
+          currentEmoObj[key][time] = newEmoObj[key] / 7
+        } else {
+          currentEmoObj[key][time] = newEmoObj[key];
+        }
       }
     }
-    console.log('current emotion obj', currentEmoObj)
+    // console.log('current emotion obj', currentEmoObj)
     // var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
     //                 "neutral", "sadness", "surprise" ]
 
@@ -210,18 +214,19 @@ class TryItOutAnalytics extends React.Component {
 
   render() {
     return (
-      <div className='optionAnalyticsContainer'>
+      <div className='TryItOutAnalyticsContainer'>
+        <h3> Try it out with Bladerunner 2049 Trailer </h3>
+        <h4> Just watch the video and view your reaction data on the graph! </h4>
         <Grid>
-
           <Row className='tryitout'>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={6}>
               <TryItOutVideo setEmotionsArrFromObj={this.setEmotionsArrFromObj}/>
             </Col>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={6}>
+              <br/><br/>
               <div className="tryItOutLineGraph"></div>
             </Col>
           </Row>
-
         </Grid>
 
 
