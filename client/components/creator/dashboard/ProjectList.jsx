@@ -1,16 +1,19 @@
 import React from 'react';
 import {Link, withRouter } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import CreateProject from '../create/createProject.jsx';
 
 class ProjectList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       sections: [],
-      date: ''
+      date: '',
+      displayModal: false
     };
     this.onClickCallback = this.onClickCallback.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -38,9 +41,11 @@ class ProjectList extends React.Component {
 
   }
 
-  // routeToProject() {
-  //   this.props.history.push('/project' + this.props.project.id);
-  // }
+  toggleEdit() {
+    this.setState({
+      displayModal: !this.state.displayModal
+    });
+  }
 
   render() {
     var time = {
@@ -54,33 +59,49 @@ class ProjectList extends React.Component {
     var del = {
       float: "right",
       clear: "right",
+      width: '100%'
+    }
+
+    var edit = {
+      width: '100%',
+      'background-color': 'whitesmoke'
     }
     return (
       <div>
-        <div onClick={this.onClickCallback} className='projectsContainer'>
-          {/* <Link to={'/project' + this.props.project.id}> */}
-
-
-          <div style={data}>
-            <h4>{this.props.project.name}</h4>
-            {/* </Link> */}
-            <p>{this.props.project.description}</p>
-            <p> <u> Sections </u> </p>
-            { this.state.sections.map((section, i) => {
-              return (
-                <p key={i}>{section.name}</p>
-              );
-            })}
+        <div className='projectsContainer'>
+          <div onClick={this.onClickCallback}>
+            <div style={data}>
+              <h4>{this.props.project.name}</h4>
+              <p>{this.props.project.description}</p>
+              <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
+              {/* { this.state.sections.map((section, i) => {
+                return (
+                  <p key={i}>{section.name}</p>
+                );
+              })} */}
+            </div>
+            <div style={time}>
+              <br/>
+              <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)} </small></p>
+            </div>
           </div>
-          <div style={time}>
-            <br/>
-            <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)} </small></p>
+          <div style={del}>
+            <Button onClick={this.toggleEdit} style={edit}>Edit</Button> {/* Finish the styling on this later */}
           </div>
-
         </div>
-        <div style={del}>
-          <Button onClick={() => this.props.deleteProject(this.props.project.id)}>Delete</Button>
-        </div>
+        <Modal show={this.state.displayModal} onHide={this.toggleEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Project</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <CreateProject />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.toggleEdit}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+        {/* <Button onClick={() => this.props.deleteProject(this.props.project.id)}>Delete</Button> */}
+        
       </div>
     );
   }

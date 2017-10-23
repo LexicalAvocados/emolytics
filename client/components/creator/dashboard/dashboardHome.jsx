@@ -4,6 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+import { Row, Col, Button } from 'react-bootstrap';
 
 
 class DashboardHome extends React.Component {
@@ -61,23 +62,31 @@ class DashboardHome extends React.Component {
   }
 
   render () {
+    var inherit = {
+      display: "inherit"
+    }
     return (
       <div className="dashboardHomeContainer">
-        <h2>Projects</h2>
+        <div className="dashboardHeader">
+          <h2 style={inherit}>Projects</h2>
+          <Button className="addEntityButton" style={inherit}>Add Project</Button>
+        </div>
         <hr/>
         <br/>
         { this.state.retrieved ? (
           this.state.projects.length ? (
-            <div>
+            <Row className="show-grid">
               { this.state.projects.map((project, i) => (
-                <ProjectList
-                  onProjectClick={this.onProjectClick}
-                  deleteProject={this.deleteProject}
-                  project={project}
-                  key={i}
-                />
+                <Col className="projectListContainer" md={4} key={i}>
+                  <ProjectList
+                    onProjectClick={this.onProjectClick}
+                    deleteProject={this.deleteProject}
+                    project={project}
+                    
+                  />
+                </Col>
               ))}
-            </div>
+            </Row>
           ) : (
             <div>
               <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>

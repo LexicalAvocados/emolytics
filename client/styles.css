@@ -61,11 +61,12 @@ body {
   background-color: white;
   /* box-shadow: 2px 2px black; */
   padding: 15px;
-  width: 90%;
+  width: 100%;
   padding-bottom: 3.5%;
   margin-bottom: 2%;
   overflow: auto;
-  float: left;
+  /* float: left; */
+  display: inline-grid;
 }
 
 .optionAnalyticsContainer {
@@ -505,6 +506,15 @@ button {
   /* border: 1px solid black;
   border-radius: 3px;
   padding-left: 1%; */
+}
+
+.dashboardHeader {
+  display: inline-block;
+  width: 100%
+}
+
+.addEntityButton {
+  float: right;
 }
 
 .sectionOptionData {
