@@ -458,6 +458,14 @@ button {
   margin-bottom: 9%;
 }
 
+.landingSectionB {
+  text-align: center;
+}
+
+.landingSectionSub {
+  padding: 10%;
+}
+
 .aBackground {
   height: 70vh;
   width: 100%;
