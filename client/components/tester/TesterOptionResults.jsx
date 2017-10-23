@@ -19,6 +19,10 @@ class TesterOptionResults extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      player: null,
+      graph: null,
+      timestamp: 0,
+      duration: 0,
       finished: null,
       like: null,
       comment: '',
@@ -26,9 +30,11 @@ class TesterOptionResults extends React.Component {
       emotionObj: {},
       emotionArrs: []
     }
+    this.generateCharts = this.generateCharts.bind(this);
   }
 
   componentWillMount() {
+
     axios.post('/api/tester/getOptionResultsForTester', {
       userId: this.props.loggedInUser.id,
       optionId: this.props.currentTesterOption.id
@@ -36,7 +42,7 @@ class TesterOptionResults extends React.Component {
       .then(res => {
         console.log('res.data:', res.data);
         let frames = res.data[0];
-        let feedback = res.data[1];
+        let testerOptionData = res.data[1];
 
         let anger = ['Anger', ...frames.map(frame => frame.anger)];
         let contempt = ['Contempt', ...frames.map(frame => frame.contempt)];
@@ -48,76 +54,118 @@ class TesterOptionResults extends React.Component {
         let surprise = ['Surprise', ...frames.map(frame => frame.surprise)];
 
         this.setState({
-          finished: feedback.finished,
-          like: feedback.like,
-          comment: feedback.comment,
+          player: this.refs.player,
+          duration: testerOptionData.length,
+          finished: testerOptionData.finished,
+          like: testerOptionData.like,
+          comment: testerOptionData.comment,
           attentionArr: [['Attention', ...frames.map(frame => frame.attention)]],
           emotionObj: {anger, contempt, disgust, fear, happiness, neutral, sadness, surprise},
           emotionArrs: [anger, contempt, disgust, fear, happiness, neutral, sadness, surprise]
-        }, () => console.log('this.state in callback:', this.state));
+        }, () => this.generateCharts(this.state.emotionObj));
       })
       .catch(err => {
         console.log('Error fetching Option Data from database:', err);
       })
   }
 
+  generateCharts(lineGraphData) {
+      console.log('generateCharts state:', this.state);
+      var lineData = {
+        data: lineGraphData
+      }
+      this.props.actions.changeLineGraphData(lineData);
+      var lineGraph = c3.generate({
+        bindto: '.optionChart',
+        selection: {
+          enabled: true
+        },
+        data: {
+          onclick: (d) => {
+            let clickedTimestamp = d.x.toString();
+            this.setState({
+              timestamp: clickedTimestamp
+            }, () => {
+              var player = this.refs.player;
+              player.seekTo(this.state.timestamp)
+            })
+          },
+          columns: lineGraphData,
+        }
+      });
+
+      var pieChart = c3.generate({
+        bindto: '.emotionChart',
+        data: {
+          columns: [
+            ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+            ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
+          ],
+          type : 'pie'
+        }
+      });
+      this.setState({
+        graph: lineGraph
+      })
+      this.forceUpdate();
+  }
+
   render() {
     return (
-      <div>
+      <div className='optionAnalyticsContainer'>
 
-        {`Hi! This is Option ${this.props.currentTesterOption.id}!`}
+        <div className='leftSide'>
+          <div className='optionPlayer'>
+            <ReactPlayer
+              className='optionPlayer'
+              url={this.props.currentTesterOption.youtubeUrl}
+              ref='player'
+              controls={true}
+              height='90%'
+              width='95%'
+              config={{
+                youtube: {
+                  playerVars: { showinfo: 1 }
+                }
+              }}
+            />
+          </div>
 
-        {/*<div className='optionAnalyticsContainer'>
+          <div className='optionChart'>
+          </div>
 
-          <div className='leftSide'>
-            <div className="optionPlayer">
-              <ReactPlayer
-                className='optionPlayer'
-                url={this.props.currentSection.option.youtubeUrl}
-                ref="player"
-                controls={true}
-                height="90%"
-                width='95%'
-                onDuration={this.setDuration}
-                config={{
-                  youtube: {
-                    playerVars: { showinfo: 1 }
-                  }
-                }}
+        </div>
+
+        {/*<div className='rightSide'>
+          <div className='testerAnalyticsContainer'>
+
+            <div className='optionContainer'>
+              <Feedback
+                likeRatio={props.likeRatio}
+                completionStatus={props.completionStatus}
               />
             </div>
 
-            <div className="optionChart">
+            <div className='optionContainer'>
+              <Emotion
+                emotionsObj={props.emotionsObj}
+              />
+            </div>
+
+            <div className='optionContainer'>
+              <Attention
+                attention={props.attention}
+                timestampCallback={props.timestampCallback}
+              />
             </div>
 
           </div>
-
-          <div className="rightSide">
-            <div className='testerAnalyticsContainer'>
-
-              <div className="optionContainer">
-                <Feedback
-                  likeRatio={props.likeRatio}
-                  completionStatus={props.completionStatus}
-                />
-              </div>
-
-              <div className="optionContainer">
-                <Emotion
-                  emotionsObj={props.emotionsObj}
-                />
-              </div>
-
-              <div className="optionContainer">
-                <Attention
-                  attention={props.attention}
-                  timestampCallback={props.timestampCallback}
-                />
-              </div>
-
-            </div>
-          </div>
-
         </div>*/}
 
       </div>
