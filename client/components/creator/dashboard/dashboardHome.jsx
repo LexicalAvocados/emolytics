@@ -1,9 +1,11 @@
 import React from 'react';
 import ProjectList from './ProjectList.jsx';
+import CreateProject from '../create/createProject.jsx';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+import { Row, Col, Button, Modal } from 'react-bootstrap';
 
 
 class DashboardHome extends React.Component {
@@ -11,13 +13,20 @@ class DashboardHome extends React.Component {
     super(props);
     this.state = {
       projects: [],
-      retrieved: false
+      retrieved: false,
+      showCreate: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
+    this.getProjectsFromDatabase = this.getProjectsFromDatabase.bind(this);
+    this.revealCreate = this.revealCreate.bind(this);
   }
 
   componentDidMount() {
+    this.getProjectsFromDatabase();
+  }
+  
+  getProjectsFromDatabase() {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
         // console.log(response.data);
@@ -25,21 +34,25 @@ class DashboardHome extends React.Component {
           if (one.createdAt < two.createdAt) return 1;
           if (one.createdAt > two.createdAt) return -1;
         });
-        console.log(sortedProjects);
         this.setState({
           projects: sortedProjects,
           retrieved: true
-        })
+        });
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
-
+      });
+  }  
 
   onProjectClick(obj, sections) {
     obj['sections'] = sections;
     this.props.actions.changeCurrentProject(obj);
+  }
+
+  revealCreate() {
+    this.setState({
+      showCreate: !this.state.showCreate 
+    });
   }
 
   deleteProject(id) {
@@ -61,23 +74,46 @@ class DashboardHome extends React.Component {
   }
 
   render () {
+    var inherit = {
+      display: "inherit"
+    }
     return (
       <div className="dashboardHomeContainer">
-        <h2>Projects</h2>
+        <div className="dashboardHeader">
+          <h2 style={inherit}>Projects</h2>
+          <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
+          <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
+            <Modal.Header closeButton>
+              <Modal.Title>Create A Project</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <CreateProject 
+                close={this.revealCreate}
+                getProjectsFromDatabase={this.getProjectsFromDatabase}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.revealCreate}>Close</Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
         <hr/>
         <br/>
         { this.state.retrieved ? (
           this.state.projects.length ? (
-            <div>
+            <Row className="show-grid">
               { this.state.projects.map((project, i) => (
-                <ProjectList
-                  onProjectClick={this.onProjectClick}
-                  deleteProject={this.deleteProject}
-                  project={project}
-                  key={i}
-                />
+                <Col className="projectListContainer" md={4} key={i}>
+                  <ProjectList
+                    onProjectClick={this.onProjectClick}
+                    deleteProject={this.deleteProject}
+                    getProjectsFromDatabase={this.getProjectsFromDatabase}
+                    project={project}
+                    
+                  />
+                </Col>
               ))}
-            </div>
+            </Row>
           ) : (
             <div>
               <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
