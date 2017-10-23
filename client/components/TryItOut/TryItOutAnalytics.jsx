@@ -6,16 +6,11 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 import axios from 'axios';
 import pad from 'array-pad';
+import { Grid, Row, Col } from 'react-bootstrap'
 
 import SideBar from '../creator/option/SideBar.jsx';
 import Overview from '../creator/option/Subcomponents/Overview.jsx';
-import Attention from '../creator/option/Subcomponents/Attention.jsx';
-import Demographics from '../creator/option/Subcomponents/Demographics.jsx';
 import Emotion from '../creator/option/Subcomponents/Emotion.jsx';
-import Feedback from '../creator/option/Subcomponents/Feedback.jsx';
-import UserSelect from '../creator/option/Subcomponents/UserSelect.jsx';
-import Annotations from '../creator/option/Subcomponents/Annotation.jsx';
-import DetailedDemographics from '../creator/option/Subcomponents/DetailedDemographics.jsx';
 
 import TryItOutVideo from './TryItOutVideo.jsx';
 
@@ -46,7 +41,7 @@ class TryItOutAnalytics extends React.Component {
     this.generateCharts = this.generateCharts.bind(this);
     this.changeSideNavSelection = this.changeSideNavSelection.bind(this);
     this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
-    this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
+    // this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     // this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
     this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
@@ -59,10 +54,45 @@ class TryItOutAnalytics extends React.Component {
     // this.props.actions.changeOption(this.props.currentSection.option);
     var player = this.refs.player;
     // console.log(player);
+    var diff = this.state.duration - 1;
+    let padArr = pad([], diff, null);
+    let initialEmoObj = {
+      "anger": ['Anger'].concat(padArr),
+      "contempt": ['Contempt'].concat(padArr),
+      "disgust": ['Disgust'].concat(padArr),
+      "fear": ['Fear'].concat(padArr),
+      "happiness": ['Happiness'].concat(padArr),
+      "neutral": ['Neutral'].concat(padArr),
+      "sadness": ['Sadness'].concat(padArr),
+      "surprise": ['Surprise'].concat(padArr)
+    }
     this.setState({
-      player: player
+      player: player,
+      emotionObj: initialEmoObj
     })
-    this.setStateAfterDuration()
+  };
+
+  setEmotionsArrFromObj(emoObj, time) {
+    console.log('Object in callback', emoObj);
+    let newEmoObj = emoObj
+    let currentEmoObj = this.state.emotionObj;
+
+    if (emoObj) {
+      for (var key in newEmoObj) {
+        currentEmoObj[key][time] = newEmoObj[key];
+      }
+    }
+    console.log('current emotion obj', currentEmoObj)
+    // var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
+    //                 "neutral", "sadness", "surprise" ]
+
+    let emoArrays = [currentEmoObj.anger, currentEmoObj.contempt, currentEmoObj.disgust,
+                    currentEmoObj.fear, currentEmoObj.happiness, currentEmoObj.neutral, currentEmoObj.sadness, currentEmoObj.surprise];
+
+        this.setState({
+          emotionObj: currentEmoObj,
+          emotionsArrForRender: emoArrays
+        }, () => this.generateCharts(this.state.emotionsArrForRender))
   }
 
   calculateCompletionPerc(array) {
@@ -89,69 +119,6 @@ class TryItOutAnalytics extends React.Component {
   // changeOption(obj) {
   //
   // }
-
-  setStateAfterDuration() {
-    var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
-                    "neutral", "sadness", "surprise" ]
-
-    axios.post('/api/getFrames', {
-      optionId: 1
-    })
-    .then((res) => {
-      let tempEmotionObj = {};
-      this.calculateCompletionPerc(res.data)
-      console.log('refresher on what is res.data', res.data)
-      emotions.forEach(emo => {
-        let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
-        tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-            if (emo === 'neutral') {
-              if (acc[curr.time]) {
-                acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
-                return acc;
-              } else {
-                acc.push(+curr[emo] / 8);
-                return acc;
-              }
-            }
-            else {
-              if (acc[curr.time]) {
-                acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
-                return acc;
-              } else {
-                acc.push(+curr[emo]); // eventually want to use acc[curr.time] = +curr[emo] and pad the array with null values interspersed
-                return acc;
-              }
-            }
-          }, [capitalized]);
-        if (tempEmotionObj[emo].length < this.state.duration) {
-          var diff = this.state.duration - tempEmotionObj[emo].length - 1;
-          let padArr = pad([], diff, null);
-          tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
-        }
-      })
-      // console.log('tempEmotionObj', tempEmotionObj)
-      return tempEmotionObj;
-    })
-    .then((emoObj) => {
-      let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
-                      emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
-      this.setState({
-        emotionObj: emoObj,
-        emotionsArrForRender: emoArray
-      }, () => console.log('state set', this.state))
-    })
-    .then( () => {
-      this.generateCharts(this.state.emotionsArrForRender);
-    })
-    .then( () => {
-      let diff = this.state.duration - this.state.attention[0].length - 1;
-      let padArr = pad([], diff, null);
-      let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
-      this.setState({
-        attention: paddedAttentionArr
-      })
-    })
-  }
 
   generateCharts(lineGraphData) {
       // console.log('generating charts now', lineGraphData);
@@ -245,21 +212,27 @@ class TryItOutAnalytics extends React.Component {
     })
   };
 
-  setEmotionsArrFromObj(emoObj) {
-    console.log('Object in callback', emoObj)
-  }
-
   render() {
     return (
       <div className='optionAnalyticsContainer'>
-        <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
-        <div className='leftSide'>
-          <TryItOutVideo setEmotionsArrFromObj={this.setEmotionsArrFromObj}/>
-          <div className="optionChart">
-          </div>
-        </div>
-        <div className="rightSide">
-          {this.state.sideNavSelection === 'overview' ?
+        <Grid>
+
+          <Row className='tryitout'>
+            <Col xs={12} md={8}>
+              <TryItOutVideo setEmotionsArrFromObj={this.setEmotionsArrFromObj}/>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col xs={12} md={8}>
+              <div className="optionChart"></div>
+            </Col>
+          </Row>
+
+        </Grid>
+
+
+          {1 === 0 ?
             (<Overview
               allUsers={this.state.allUsers}
               selectedUsers={this.state.selectedUsers}
@@ -275,48 +248,7 @@ class TryItOutAnalytics extends React.Component {
             ): ''
           }
 
-          {this.state.sideNavSelection === 'attention' ? (
-            <div className='attentionRightPanelContainer'>
-              <div className="optionContainer">
-                <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              </div>
-              <div className="optionContainer">
-                <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
-              </div>
-            </div>
-          ) : ''}
 
-          {this.state.sideNavSelection === 'feedback' ? (
-            <div className='feedbackRightPanelContainer'>
-              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Feedback feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
-            </div>
-          ) : ''}
-
-          {this.state.sideNavSelection === 'emotions' ? (
-            <div className='emotionsRightPanelContainer'>
-              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Emotion emotionsObj={this.state.emotionObj} />
-            </div>
-          ) : ''}
-
-          {this.state.sideNavSelection === 'settings' ? (
-            <div className='emotionsRightPanelContainer'>
-              <UserSelect user={this.state.user} optionId={this.props.currentSection.option.id}
-                          userSelectCb={this.handleUserSelectCb} changeSideNavSelection={this.changeSideNavSelection}
-                          selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-            </div>
-          ) : ''}
-
-          {this.state.sideNavSelection === 'annotations' ? (
-              <Annotations graph={this.state.graph} player={this.state.player}/>
-          ) : ''}
-
-          {this.state.sideNavSelection === 'detailedDemographics' ? (
-              <DetailedDemographics selectedUsers={this.state.selectedUsers}/>
-          ) : ''}
-
-        </div>
       </div>
     )
   }
