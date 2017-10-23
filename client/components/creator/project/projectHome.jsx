@@ -10,8 +10,12 @@ import axios from 'axios';
 class ProjectHome extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      rerenderOptions: false
+    }
     this.onSectionClick = this.onSectionClick.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
+    this.associateOptions = this.associateOptions.bind(this);
   }
 
   onSectionClick(obj, options) {
@@ -19,20 +23,32 @@ class ProjectHome extends React.Component {
     this.props.actions.changeCurrentSection(obj, options);
   }
 
+  associateOptions() {
+    this.setState({
+      rerenderOptions: false
+    })
+  }
+
   deleteSection(id) {
-    let filteredSections = this.props.currentProject.sections.filter((section) => {
-      if (section.id !== id) {
-        return section;
-      }
-    });
-    this.props.actions.removeSectionFromSections(filteredSections);
-    axios.delete('/api/deleteSection', { params: {sectionId: id, toDelete: 'id'} })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log('Error deleting section', error);
-    })
+    if (confirm('Are you sure you want to delete this section?')) {
+      this.props.currentProject.sections = this.props.currentProject.sections.filter((section) => {
+        if (section.id !== id) {
+          return section;
+        }
+      });
+      console.log('This should be the current project', this.props.currentProject);
+      axios.delete('/api/deleteSection', { params: {sectionId: id, toDelete: 'id'} })
+        .then((response) => {
+          console.log(response);
+          this.props.actions.removeSectionFromSections(this.props.currentProject.sections);
+          this.setState({
+            rerenderOptions: true
+          });
+        })
+        .catch((error) => {
+          console.log('Error deleting section', error);
+        })
+    }
   }
 
   render() {
@@ -44,14 +60,20 @@ class ProjectHome extends React.Component {
           <Button className="addSectionButton">Add a section</Button>
         </Link>
         <div>
-          {this.props.currentProject.sections.map((section, i) => (
+          {this.props.currentProject.sections.map((section, i) => {
+            console.log('ITERATING THROUGH SECTIONS', section);
+          return (
             <SectionList
               onSectionClick={this.onSectionClick}
               deleteSection={this.deleteSection}
+              rerenderOptions={this.state.rerenderOptions}
+              associateOptions={this.associateOptions}
               section={section}
               key={i}
             />
-          ))}
+
+          );
+          })}
         </div>
       </div>
     );
