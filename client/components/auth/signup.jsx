@@ -113,7 +113,7 @@ export class Signup extends React.Component {
               </ToggleButtonGroup>
             </ButtonToolbar>
             <br/>
-            <Button type='submit'>Submit</Button>
+            <Button type='submit'>Create Account</Button>
           </FormGroup>
         </Form>
         <hr/>
