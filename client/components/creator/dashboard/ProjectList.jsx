@@ -9,11 +9,9 @@ class ProjectList extends React.Component {
     super(props);
     this.state = {
       sections: [],
-      date: '',
-      displayModal: false
+      date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this);
-    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -39,12 +37,6 @@ class ProjectList extends React.Component {
     this.props.onProjectClick(this.props.project, this.state.sections);
     this.props.history.push('/project' + this.props.project.id);
 
-  }
-
-  toggleEdit() {
-    this.setState({
-      displayModal: !this.state.displayModal
-    });
   }
 
   render() {
@@ -86,23 +78,23 @@ class ProjectList extends React.Component {
             </div>
           </div>
           <div style={del}>
-            <Button onClick={this.toggleEdit} style={edit}>Edit</Button> {/* Finish the styling on this later */}
+            <Button onClick={this.props.toggleEdit} style={edit}>Edit</Button> {/* Finish the styling on this later */}
           </div>
         </div>
-        <Modal bsSize="large" show={this.state.displayModal} onHide={this.toggleEdit}>
+        <Modal bsSize="large" show={this.props.displayEdit} onHide={this.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Your Project</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <EditProject 
-              close={this.toggleEdit}
+              close={this.props.toggleEdit}
               projectId={this.props.project.id}
               getProjectsFromDatabase={this.props.getProjectsFromDatabase}
             />
           </Modal.Body>
           <Modal.Footer>
             <Button style={data} onClick={() => this.props.deleteProject(this.props.project.id)}>Delete this Project</Button>
-            <Button onClick={this.toggleEdit}>Close</Button>
+            <Button onClick={this.props.toggleEdit}>Close</Button>
           </Modal.Footer>
         </Modal>
       </div>
