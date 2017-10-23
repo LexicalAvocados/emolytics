@@ -10,7 +10,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import ScrollableAnchor from 'react-scrollable-anchor';
 import TryItOutHome from './TryItOut/TryItOutHome.jsx';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 class LandingPage extends React.Component {
   constructor(props) {
