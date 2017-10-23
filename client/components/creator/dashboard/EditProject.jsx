@@ -27,8 +27,7 @@ class EditProject extends React.Component {
     // Change the stuff here, cause a rerender on the original page.
     axios.get('/api/updateProject', { params: { id: this.props.projectId, name: this.state.name, description: this.state.description}})
       .then((response) => {
-        console.log(response);
-        // Now trigger a rerender of the page.
+        this.props.getProjectsFromDatabase();
         this.props.close();
       })
       .catch((error) => {

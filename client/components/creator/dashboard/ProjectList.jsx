@@ -97,6 +97,7 @@ class ProjectList extends React.Component {
             <EditProject 
               close={this.toggleEdit}
               projectId={this.props.project.id}
+              getProjectsFromDatabase={this.props.getProjectsFromDatabase}
             />
           </Modal.Body>
           <Modal.Footer>

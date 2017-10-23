@@ -16,9 +16,14 @@ class DashboardHome extends React.Component {
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
+    this.getProjectsFromDatabase = this.getProjectsFromDatabase.bind(this);
   }
 
   componentDidMount() {
+    this.getProjectsFromDatabase();
+  }
+  
+  getProjectsFromDatabase() {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
         // console.log(response.data);
@@ -26,18 +31,15 @@ class DashboardHome extends React.Component {
           if (one.createdAt < two.createdAt) return 1;
           if (one.createdAt > two.createdAt) return -1;
         });
-        console.log(sortedProjects);
         this.setState({
           projects: sortedProjects,
           retrieved: true
-        })
+        });
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
-
-
+      });
+  }  
   onProjectClick(obj, sections) {
     obj['sections'] = sections;
     this.props.actions.changeCurrentProject(obj);
@@ -81,6 +83,7 @@ class DashboardHome extends React.Component {
                   <ProjectList
                     onProjectClick={this.onProjectClick}
                     deleteProject={this.deleteProject}
+                    getProjectsFromDatabase={this.getProjectsFromDatabase}
                     project={project}
                     
                   />
