@@ -4,9 +4,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-// import OptionListEntry from '../section/OptionListEntry.jsx';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
-// import key from './key.js';
+import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -19,6 +18,7 @@ class AddOption extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.submitOptionClick = this.submitOptionClick.bind(this);
+    this.completeSubmitionsClick = this.completeSubmitionsClick.bind(this);
     this.retrieveYouTubeData = this.retrieveYouTubeData.bind(this);
   }
 
@@ -76,7 +76,7 @@ class AddOption extends React.Component {
     this.retrieveYouTubeData((youTubeData) => {
       axios.post('/api/addOption', {
         name: this.state.name,
-        description: this. state.description,
+        description: this.state.description,
         url: this.state.url,
         sectionId: this.props.currentSection.id,
         thumbnail: youTubeData.thumbnail,
@@ -89,13 +89,8 @@ class AddOption extends React.Component {
             description: response.data.description,
             url: response.data.url
           }, () => {
-            // console.log('currentSection', this.props.currentSection.options)
-            // console.log('response.data>>>>>>>>', response.data)
             this.props.currentSection.options.unshift(response.data);
             this.props.actions.addOptionsToCurrentSection(this.props.currentSection.options);
-            // this.props.actions.changeCurrentOption(response.data);
-            //this.props.actions.addOptionsToCurrentSection(response.data);
-            // this.props.history.push('/project' + this.props.currentProject.id);
           });
 
         })
@@ -103,6 +98,12 @@ class AddOption extends React.Component {
           console.error('Request to add new option NOT sent to server!', err);
         });
     });
+  }
+
+  completeSubmitionsClick(e) {
+    e.preventDefault();
+
+        this.props.history.push('/project' + `${this.props.currentProject.id}`);
   }
 
   convert(string, sequence) {
@@ -133,8 +134,9 @@ class AddOption extends React.Component {
             <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
             Url: <br />
             <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
-            <input type="submit" value="Submit" /><br />
+            <input type="submit" value="Submit New Option" /><br />
           </form>
+          <button onClick={this.completeSubmitionsClick}>Complete Submitions</button><br />
         </div>
         <div className="ThumbnailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (

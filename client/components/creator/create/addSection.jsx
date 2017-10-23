@@ -25,10 +25,6 @@ class AddSection extends React.Component {
     });
   }
 
-  // handleYouTubeUrl() {
-
-  // }
-
   submitSectionClick(e) {
     e.preventDefault();
     axios.post('/api/addSection', {
