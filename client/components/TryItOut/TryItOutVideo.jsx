@@ -189,13 +189,11 @@ class TryItOutVideo extends React.Component {
         </ToggleDisplay>
 
         <div className="videoPlayer">
-
-          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} playing />
-          <br/>
-          <br/>
-
-          <h2> {this.state.video.name} </h2>
+          <h3> {this.state.video.name} </h3>
           <h4> {this.state.video.desc} </h4>
+          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} playing />
+
+
         </div>
 
 
