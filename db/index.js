@@ -40,7 +40,8 @@ const User = sequelize.define('user', {
   books: Sequelize.ARRAY(Sequelize.TEXT),
   television: Sequelize.ARRAY(Sequelize.TEXT),
   games: Sequelize.ARRAY(Sequelize.TEXT),
-  location: Sequelize.STRING
+  location: Sequelize.STRING,
+  lastloggedin: Sequelize.DATE
 });
 
 User.sync({force: false});
@@ -166,39 +167,6 @@ Frame.belongsTo(Option);
 
 Frame.sync({force: false});
 
-// ~~~~~~~~~~~~ //
-// Tryers Schema //
-// ~~~~~~~~~~~~ //
-
-const Tryer = sequelize.define('tryer', {
-});
-
-Tryer.sync({force: false});
-
-
-
-// ~~~~~~~~~~~~ //
-// Tryers Frame Schema //
-// ~~~~~~~~~~~~ //
-
-const TryerFrame = sequelize.define('tryerframe', {
-  time: Sequelize.INTEGER,
-  attention: Sequelize.DECIMAL,
-  smile: Sequelize.DECIMAL,
-  anger: Sequelize.DECIMAL,
-  contempt: Sequelize.DECIMAL,
-  disgust: Sequelize.DECIMAL,
-  fear: Sequelize.DECIMAL,
-  happiness: Sequelize.DECIMAL,
-  neutral: Sequelize.DECIMAL,
-  sadness: Sequelize.DECIMAL,
-  surprise: Sequelize.DECIMAL
-});
-
-TryerFrame.belongsTo(Tryer);
-
-TryerFrame.sync({force: false});
-
 // ~~~~~~~~~~ //
 // Key Schema //
 // ~~~~~~~~~~ //
@@ -209,6 +177,10 @@ const Key = sequelize.define('key', {
 
 Key.sync({force: false});
 
+// ~~~~~~~~~~ //
+// Section Comments Schema //
+// ~~~~~~~~~~ //
+
 const SectionComments = sequelize.define('sectionComments', {
   summary: Sequelize.TEXT,
   aggregateComments: Sequelize.TEXT
@@ -218,6 +190,23 @@ SectionComments.belongsTo(Option);
 
 SectionComments.sync({force: false});
 
+// ~~~~~~~~~~ //
+// Notifications Schema //
+// ~~~~~~~~~~ //
+
+const Notification = sequelize.define('notifications', {
+  seen: {type: Sequelize.BOOLEAN, defaultValue: false},
+  sourceUsername: Sequelize.TEXT,
+  optionName: Sequelize.STRING
+})
+
+//'sourceUsername' is person who caused the notification (eg. tester (target) watched creators video)
+
+Notification.belongsTo(User);
+Notification.belongsTo(Option);
+Notification.belongsTo(Project);
+
+Notification.sync({force: false});
 
 // Key.create({key: 'cb1e44a3d50c4a5291591ca117880155'})
 
@@ -234,6 +223,5 @@ module.exports = {
   OptionAndAnnotation,
   Key,
   SectionComments,
-  Tryer,
-  TryerFrame
+  Notification
 };
