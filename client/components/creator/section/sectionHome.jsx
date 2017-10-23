@@ -2,14 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import OptionListEntry from './OptionListEntry.jsx';
+import OptionListEntry from './OptionList.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
-import Compare from './Compare.jsx';
 import { Link, withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
-import ToggleDisplay from 'react-toggle-display';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -22,9 +20,7 @@ class SectionHome extends React.Component {
       invitedUserIds: [],
       testersForOptions:[],
       testers: [],
-      testersCopy: [],
-      optionData: [],
-      compare: false
+      testersCopy: []
     }
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -33,10 +29,6 @@ class SectionHome extends React.Component {
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.assignFocusGroup = this.assignFocusGroup.bind(this);
-    this.getOptionsData = this.getOptionsData.bind(this);
-    this.compare = this.compare.bind(this);
-    this.deleteOption = this.deleteOption.bind(this);
-    console.log(this);
   }
 
   componentWillMount() {
@@ -50,8 +42,6 @@ class SectionHome extends React.Component {
       .catch((err) => {
         console.log(err);
       });
-
-    this.getOptionsData();
   }
 
   concatTesters(testers, index) {
@@ -85,13 +75,6 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    axios.get('/api/getFeedback', { params: {optionId: this.props.currentSection.options[index].id} })
-    .then((response) => {
-      this.props.actions.addFeedbackToOption(response.data);
-    })
-    .catch((err) => {
-      console.log(err)
-    })
     this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 
@@ -113,22 +96,6 @@ class SectionHome extends React.Component {
     });
   }
 
-  deleteOption(id) {
-    this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
-      if (option.id !== id) {
-        return option;
-      }
-    });
-    this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
-    axios.delete('/api/deleteOption', { params: {optionId: id, toDelete: 'id'} })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log('Error deleting option', error);
-    })
-  }
-
   renderPanel() {
     this.setState({
       displayPanel: !this.state.displayPanel,
@@ -144,7 +111,7 @@ class SectionHome extends React.Component {
         return members;
       }
     }, []);
-    console.log('options:', options, 'focusGroupMembers:', focusGroupMembers);
+    // console.log('options:', options, 'focusGroupMembers:', focusGroupMembers);
 
     axios.post('/api/sendEmails', {
       invitedArr: focusGroupMembers,
@@ -167,7 +134,6 @@ class SectionHome extends React.Component {
             optionData: data.data
           })
         }
-
       })
   }
 
@@ -183,14 +149,6 @@ class SectionHome extends React.Component {
         <h3>Project Name: {this.props.currentProject.name}</h3>
         <p>Project Description: {this.props.currentProject.description}</p>
         <p>Section Name: {this.props.currentSection.name}</p>
-
-
-
-        <Button onClick={this.compare}> Compare </Button>
-
-
-        <ToggleDisplay show={!this.state.compare}>
-
         <Link to="/addOption">
           <Button className="addSectionButton">Add an option</Button>
         </Link>
@@ -220,13 +178,11 @@ class SectionHome extends React.Component {
         <div className="currentSectionOptionsList">
           { this.props.currentSection.options.map((option, i) => (
             <OptionListEntry
-              optionData={this.state.optionData[i]}
               option={option}
               key={i}
               index={i}
               onOptionClick={this.onOptionClick}
               concatTesters={this.concatTesters}
-              deleteOption={this.deleteOption}
             />
           ))}
         </div>
@@ -258,16 +214,6 @@ class SectionHome extends React.Component {
           </div>
         :
           null}
-
-
-          </ToggleDisplay>
-
-          <ToggleDisplay show={this.state.compare}>
-
-            <Compare/>
-
-
-          </ToggleDisplay>
 
       </div>
     );

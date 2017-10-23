@@ -17,8 +17,6 @@ import UserSelect from './Subcomponents/UserSelect.jsx';
 import Annotations from './Subcomponents/Annotation.jsx';
 import DetailedDemographics from './Subcomponents/DetailedDemographics.jsx';
 
-import {Button, Col} from 'react-bootstrap';
-
 class OptionHome extends React.Component {
   constructor(props) {
     super(props);
@@ -50,14 +48,14 @@ class OptionHome extends React.Component {
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
     this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
-    console.log(this);
+    // console.log(this);
   }
 
   componentDidMount() {
     //orientation modal
     this.props.actions.changeOption(this.props.currentSection.option);
     var player = this.refs.player;
-    console.log(player);
+    // console.log(player);
     this.setState({
       player: player
     })
@@ -65,7 +63,7 @@ class OptionHome extends React.Component {
       option: this.props.currentOption
     })
       .then(data => {
-        console.log("annotations", data.data);
+        // console.log("annotations", data.data);
         var temp = {
           annotations: data.data
         }
@@ -98,7 +96,7 @@ class OptionHome extends React.Component {
         optionId: this.props.currentSection.option.id
       })
       .then( (res) => {
-        console.log('response from like endpoint', res.data)
+        // console.log('response from like endpoint', res.data)
         let likeCount = res.data.reduce((tot, curr) => {
           if(curr.like === true) tot++
           return tot;
@@ -119,7 +117,7 @@ class OptionHome extends React.Component {
       }
       return acc;
     }, {})
-    console.log('completionObj', userCompletionObj);
+    // console.log('completionObj', userCompletionObj);
     var avgCompletion = 0;
     var numberOfUsers = 0;
     for (var key in userCompletionObj) {
@@ -146,7 +144,7 @@ class OptionHome extends React.Component {
     .then((res) => {
       let tempEmotionObj = {};
       this.calculateCompletionPerc(res.data)
-      console.log('refresher on what is res.data', res.data)
+      // console.log('refresher on what is res.data', res.data)
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
         tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
@@ -175,7 +173,7 @@ class OptionHome extends React.Component {
           tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
         }
       })
-      console.log('tempEmotionObj', tempEmotionObj)
+      // console.log('tempEmotionObj', tempEmotionObj)
       return tempEmotionObj;
     })
     .then((emoObj) => {
@@ -200,7 +198,7 @@ class OptionHome extends React.Component {
   }
 
   generateCharts(lineGraphData) {
-      console.log('generating charts now', lineGraphData);
+      // console.log('generating charts now', lineGraphData);
       var lineData = {
         data: lineGraphData
       }
@@ -218,7 +216,7 @@ class OptionHome extends React.Component {
               timestamp: clickedTimestamp
             }, () => {
               var player = this.refs.player;
-              console.log(player);
+              // console.log(player);
               player.seekTo(this.state.timestamp)
             })
           },
@@ -289,10 +287,10 @@ class OptionHome extends React.Component {
     .then((res) => {
       let tempEmotionObj = {};
       let filteredFramesArr = res.data.filter(item => userIdsArray.includes(item.userId));
-      console.log('filteredFramesArr', filteredFramesArr)
+      // console.log('filteredFramesArr', filteredFramesArr)
       this.calculateCompletionPerc(filteredFramesArr);
       // console.log('in recalculation', res.data)
-      console.log('selected user ids', userIdsArray)
+      // console.log('selected user ids', userIdsArray)
       emotions.forEach(emo => {
         let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
         tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
@@ -320,7 +318,7 @@ class OptionHome extends React.Component {
               tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
             }
           })
-          console.log('tempEmotionObj', tempEmotionObj)
+          // console.log('tempEmotionObj', tempEmotionObj)
           return tempEmotionObj;
     })
     .then((emoObj) => {
@@ -373,16 +371,14 @@ class OptionHome extends React.Component {
       <div className='optionAnalyticsContainer'>
         <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
         <div className='leftSide'>
-          <div className="optionPlayer">
           <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
             ref="player"
-            controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+            controls={true} height={360} width={500} className='optionPlayer' onDuration={this.setDuration}
             config={{
               youtube: {
                 playerVars: { showinfo: 1}
               }
             }}/>
-            </div>
           <div className="optionChart">
           </div>
         </div>
