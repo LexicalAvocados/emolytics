@@ -45,18 +45,13 @@ class DashboardHome extends React.Component {
       .catch((err) => {
         console.log(err);
       });
-<<<<<<< HEAD
-  }
-=======
 
     axios.get('/api/creator/allNotifications')
     .then((res) => {
       console.log('response from notifications endpoint', res.data)
       let exampleNotif = `${res.data.sourceUsername} reacted to your video ${res.data.optionName}` //link to res.data.optionId
     })
-  }
-
->>>>>>> cr7
+  };
 
   onProjectClick(obj, sections) {
     obj['sections'] = sections;
