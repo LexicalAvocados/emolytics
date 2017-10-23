@@ -19,6 +19,7 @@ import TesterHome from './tester/TesterHome.jsx';
 import TesterProfile from './tester/TesterProfile.jsx';
 import TesterVideo from './tester/TesterVideo.jsx';
 import TesterQueuePage from './tester/TesterQueuePage.jsx';
+import TesterHistoryPage from './tester/TesterHistoryPage.jsx';
 import ProjectHome from './creator/project/ProjectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
 import OptionHome from './creator/option/OptionHome.jsx';
@@ -57,6 +58,7 @@ export class App extends React.Component {
             ) : (
               <Switch>
                 <Route exact path="/" component={TesterHome}/>
+                <Route path="/history" component={TesterHistoryPage}/>
                 <Route path="/queue" component={TesterQueuePage}/>
                 <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>

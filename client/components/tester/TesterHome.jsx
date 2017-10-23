@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
@@ -10,22 +11,21 @@ import { Link } from 'react-router-dom';
 class TesterHome extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      testerCode: ''
-    }
-    this.handleCodeChange = this.handleCodeChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleCodeChange(e) {
-    this.setState({
-      testerCode: e.target.value
+  componentWillMount() {
+    axios.post('/api/tester/getOptionsForTester', {
+      id: this.props.loggedInUser.id,
+      mode: 'queue'
     })
-  };
-
-  handleSubmit(e) {
-    // Route to that video
-    e.preventDefault();
+      .then(res => {
+        let queue = res.data;
+        console.log('queue:', queue);
+        if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+      })
+      .catch(err => {
+        console.log('Error fetching Tester Queue from database:', err);
+      })
   }
 
   render() {

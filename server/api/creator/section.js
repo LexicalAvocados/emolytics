@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 router.post('/getOptionsData', (req, res) => {
-  console.log('req.body>>>>>>>>>>>',req.body);
+  console.log('req.body',req.body);
   // var test = [];
   // req.body.forEach(elem => {
   //   TesterAndOption.findAll({where: {optionId: elem.id}})

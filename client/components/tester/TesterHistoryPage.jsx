@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 
-class TesterQueuePage extends React.Component {
+class TesterHistoryPage extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -19,23 +19,23 @@ class TesterQueuePage extends React.Component {
   componentWillMount() {
     axios.post('/api/tester/getOptionsForTester', {
       id: this.props.loggedInUser.id,
-      mode: 'queue'
+      mode: 'history'
     })
       .then(res => {
-        let queue = res.data;
-        console.log('queue:', queue);
-        if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+        let history = res.data;
+        console.log('history:', history);
+        if (history.length > 0) this.props.actions.populateTesterHistory(history);
       })
       .catch(err => {
-        console.log('Error fetching Tester Queue from database:', err);
+        console.log('Error fetching Tester History from database:', err);
       })
   }
 
   render() {
     return (
       <div className="TesterHomeContainer">
-        <h1>Your Queue</h1><br/>
-        {this.props.testerQueue.map((option, i) => {
+        <h1>Your History</h1><br/>
+        {this.props.testerHistory.map((option, i) => {
           return (
             <Link to={`/video/${option.id}`}>
               <Col className='testerOptionListEntry' md={3}>
@@ -59,7 +59,7 @@ class TesterQueuePage extends React.Component {
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => ({
   loggedInUser: state.loggedInUser,
-  testerQueue: state.testerQueue,
+  testerHistory: state.testerHistory,
   router: state.router
 });
 
@@ -70,4 +70,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TesterQueuePage));
+)(TesterHistoryPage));
