@@ -458,6 +458,24 @@ button {
   margin-bottom: 9%;
 }
 
+.landingSectionB {
+  text-align: center;
+  padding-top: 5%;
+  margin-bottom: 5%;
+  height: 66vh;
+}
+
+.landingSectionC {
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  overflow: auto;
+}
+
+.landingSectionSub {
+  padding: 2% 10%;
+}
+
 .aBackground {
   height: 70vh;
   width: 100%;
@@ -473,6 +491,17 @@ button {
   text-align: center;
   width: 100%;
   padding-top: 10%;
+}
+
+.landingFooter {
+  height: 140px;
+
+  background-color: lightgrey;
+  padding: 5px 5%;
+}
+
+.footerCol {
+  padding-left: 20%;
 }
 
 /* Lucas' CSS */
