@@ -4,7 +4,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import OptionListEntry from '../section/OptionListEntry.jsx';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
 import key from './key.js';
 
@@ -90,10 +89,8 @@ class AddOption extends React.Component {
             description: response.data.description,
             url: response.data.url
           }, () => {
-            // this.props.actions.changeCurrentOption(response.data);
             this.props.currentSection.options.unshift(response.data);
             this.props.actions.addOptionsToCurrentSection(this.props.currentSection.options);
-            // this.props.actions.addOptionsToCurrentSection(response.data);
             // this.props.history.push('/project' + this.props.currentProject.id);
           });
         })

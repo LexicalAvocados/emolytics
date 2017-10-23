@@ -98,19 +98,21 @@ class SectionHome extends React.Component {
   }
 
   deleteOption(id) {
-    this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
-      if (option.id !== id) {
-        return option;
-      }
-    });
-    this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
-    axios.delete('/api/deleteOption', { params: {optionId: id, toDelete: 'id'} })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log('Error deleting option', error);
-      })
+    if (confirm('Are you sure you want to delete this option?')) {
+      this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
+        if (option.id !== id) {
+          return option;
+        }
+      });
+      this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
+      axios.delete('/api/deleteOption', { params: {optionId: id, toDelete: 'id'} })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log('Error deleting option', error);
+        });
+    }
   }
 
   renderPanel() {
