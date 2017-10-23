@@ -166,6 +166,39 @@ Frame.belongsTo(Option);
 
 Frame.sync({force: false});
 
+// ~~~~~~~~~~~~ //
+// Tryers Schema //
+// ~~~~~~~~~~~~ //
+
+const Tryer = sequelize.define('tryer', {
+});
+
+Tryer.sync({force: false});
+
+
+
+// ~~~~~~~~~~~~ //
+// Tryers Frame Schema //
+// ~~~~~~~~~~~~ //
+
+const TryerFrame = sequelize.define('tryerframe', {
+  time: Sequelize.INTEGER,
+  attention: Sequelize.DECIMAL,
+  smile: Sequelize.DECIMAL,
+  anger: Sequelize.DECIMAL,
+  contempt: Sequelize.DECIMAL,
+  disgust: Sequelize.DECIMAL,
+  fear: Sequelize.DECIMAL,
+  happiness: Sequelize.DECIMAL,
+  neutral: Sequelize.DECIMAL,
+  sadness: Sequelize.DECIMAL,
+  surprise: Sequelize.DECIMAL
+});
+
+TryerFrame.belongsTo(Tryer);
+
+TryerFrame.sync({force: false});
+
 // ~~~~~~~~~~ //
 // Key Schema //
 // ~~~~~~~~~~ //
@@ -200,5 +233,7 @@ module.exports = {
   TesterAndOption,
   OptionAndAnnotation,
   Key,
-  SectionComments
+  SectionComments,
+  Tryer,
+  TryerFrame
 };

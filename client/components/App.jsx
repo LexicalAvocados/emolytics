@@ -26,6 +26,7 @@ import CreateProject from './creator/create/createProject.jsx';
 import AddSection from './creator/create/addSection.jsx';
 import AddOption from './creator/create/addOption.jsx';
 import Loading from './auth/loading.jsx';
+import LandingPage from './LandingPage.jsx';
 
 
 export class App extends React.Component {
@@ -64,6 +65,7 @@ export class App extends React.Component {
             )
           ) : (
             <Switch>
+              <Route exact path="/" component={LandingPage}/>
               <Route exact path="/loading" component={Loading}/>
               <Route exact path="/signup" component={Signup}/>
               <Route path="*" component={Login}/>
