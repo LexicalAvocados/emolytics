@@ -4,7 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import OptionListEntry from '../section/OptionListEntry.jsx';
+// import OptionListEntry from '../section/OptionListEntry.jsx';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
 import key from './key.js';
 
@@ -89,8 +89,12 @@ class AddOption extends React.Component {
             description: response.data.description,
             url: response.data.url
           }, () => {
+            // console.log('currentSection', this.props.currentSection.options)
+            // console.log('response.data>>>>>>>>', response.data)
+            this.props.currentSection.options.unshift(response.data);
+            this.props.actions.addOptionsToCurrentSection(this.props.currentSection.options);
             // this.props.actions.changeCurrentOption(response.data);
-            this.props.actions.addOptionsToCurrentSection(response.data);
+            //this.props.actions.addOptionsToCurrentSection(response.data);
             // this.props.history.push('/project' + this.props.currentProject.id);
           });
 
@@ -138,10 +142,9 @@ class AddOption extends React.Component {
               option={option}
               key={i}
               index={i}
-              onOptionClick={() => {this.props.history.push(`/option${option.id}`)}
-              }
+              // onOptionClick={() => {this.props.history.push(`/option${option.id}`)}
+              // }
               // console={(()=>{console.log("THIS IS OPTION", option)})()}
-              // concatTesters={this.concatTesters}
             />
           ))}
         </div>
