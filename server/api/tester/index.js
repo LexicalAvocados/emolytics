@@ -25,7 +25,7 @@ const axios = require('axios');
 // })
 
 router.post('/getOptionsForTester', (req, res) => {
-  console.log('getOptionsForTester req.query:', req.body);
+  console.log('getOptionsForTester req.body:', req.body);
   let id = req.body.id;
 
   // for a tester's Queue, we want table rows where "finished" is NULL (they have not opened a given Option page)
@@ -39,12 +39,40 @@ router.post('/getOptionsForTester', (req, res) => {
                   ON "testerAndOptions"."optionId" = "options"."id"
                   WHERE ${id} = "testerAndOptions"."userId" AND "testerAndOptions"."finished" IS ${mode}
                   ORDER BY "testerAndOptions"."createdAt";`)
-    .then(optionsAssignedToTesterTuple => {
-      res.send(optionsAssignedToTesterTuple[0]);
+    .then(optionsTuple => {
+      res.send(optionsTuple[0]);
     })
     .catch(err => {
       res.send(err);
     });
+});
+
+router.post('/getOptionResultsForTester', (req, res) => {
+  console.log('getOptionResultsForTester req.body:', req.body);
+
+  let frames = Frame.findAll({
+    where: {
+      userId: req.body.userId,
+      optionId: req.body.optionId
+    },
+    order: [['createdAt']]
+  });
+
+  let testerOptionData = TesterAndOption.findOne({
+    where: {
+      userId: req.body.userId,
+      optionId: req.body.optionId
+    }
+  });
+
+  Promise.all([frames, testerOptionData])
+    .then(optionResults => {
+      res.send(optionResults)
+    })
+    .catch(err => {
+      res.send(err)
+    });
+
 });
 
 router.post('/getVideo', (req, res) => {

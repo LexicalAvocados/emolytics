@@ -40,7 +40,7 @@ class Navbar extends React.Component {
                   <p className='navItem'>Create Project</p>
                 </Link>
                 <Link to='/focusgroups' style={noUnderline}>
-                  <p className='navItem'>Your Focus Groups</p>
+                  <p className='navItem'>Focus Groups</p>
                 </Link>
                 <Link to='/login' style={noUnderline} onClick={this.handleLogout}>
                   <p className='navItem'>Log out</p>
@@ -52,10 +52,10 @@ class Navbar extends React.Component {
                   <p className='navItem'>Home</p>
                 </Link>
                 <Link to='/queue' style={noUnderline}>
-                  <p className='navItem'>Your Queue</p>
+                  <p className='navItem'>Queue</p>
                 </Link>
                 <Link to='/history' style={noUnderline}>
-                  <p className='navItem'>Past History</p>
+                  <p className='navItem'>History</p>
                 </Link>
                 <Link to='/profile' style={noUnderline}>
                   <p className='navItem'>Profile</p>
