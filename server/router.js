@@ -10,7 +10,6 @@ const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
 const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
 const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRoutes.js');
-const tryerRoutes = require('./api/tester/tryerRoutes.js')
 
 router.use('/tester', testerRoutes);
 
@@ -66,8 +65,6 @@ router.delete('/deleteSection', sectionRoutes.deleteSection);
 
 router.delete('/deleteProject', projectRoutes.deleteProject);
 
-router.post('/createTryer', tryerRoutes.createTryer);
-
-// router.post('/sendTryerFrame', tryerRoutes.sendTryerFrame);
+router.get('/creator/allNotifications', indexRoutes.getAllNotificationsForUser)
 
 module.exports = router;

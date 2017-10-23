@@ -3,6 +3,7 @@ const User = db.User;
 const FocusGroup = db.FocusGroup;
 const FocusGroupAndTester = db.FocusGroupAndTester;
 const TesterAndOptions = db.TesterAndOption;
+const Notifications = db.Notification;
 const nodemailer = require('nodemailer');
 
 const routeForTesters = "http://localhost:3000/login"
@@ -21,12 +22,12 @@ exports.sendEmails = function(req, res) {
 
   let options = req.body.options;
   let invitedArr = req.body.invitedArr;
-  
+
   for (var i = 0; i < invitedArr.length; i++) {
     TesterAndOptions.create({
       optionId: options[i % options.length].id,
       userId: invitedArr[i].id
-    });      
+    });
     let mailOptions = {
       from: "ReactionSync",
       to: invitedArr[i].email,
@@ -92,7 +93,7 @@ exports.deleteFocusGroup = (req, res) => {
     .catch(err => {
       console.log('Error deleting Focus Group');
       res.send(err);
-    });  
+    });
 };
 
 
@@ -250,3 +251,23 @@ exports.getCreatorFocusGroups = (req, res) => {
       res.send(err);
     });
 };
+
+exports.getAllNotificationsForUser = (req, res) => {
+  User.findOne({
+    attributes: ['id'],
+    where: {
+      username: req.session.username || req.session.passport.user.username
+    }
+  })
+  .then( (user) => {
+    console.log('user for notifications', user.dataValues.id)
+    Notifications.findAll({
+      where: {
+        userId: user.dataValues.id
+      }
+    })
+    .then( (allNotifs) => {
+      res.send(JSON.stringify(allNotifs))
+    })
+  })
+}

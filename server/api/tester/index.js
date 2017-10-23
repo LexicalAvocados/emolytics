@@ -8,6 +8,9 @@ const Key = db.Key;
 const sequelize = db.sequelize;
 const TesterAndOption = db.TesterAndOption;
 const SectionComments = db.SectionComments;
+const Notifications = db.Notification;
+const Section = db.Section;
+const Project = db.Project;
 const router = express.Router();
 const base64Img = require('base64-img');
 const request = require('request-promise-native');
@@ -63,6 +66,7 @@ router.post('/getVideo', (req, res) => {
 
 router.post('/sendFrame', (req, res) => {
   var emotions = req.body.emotions;
+  console.log('REQ SESSION', req.session)
 	User.findAll({
 		where: {
 			username: req.session.username
@@ -147,7 +151,7 @@ router.post('/sendFrame', (req, res) => {
                   res.send(entry);
               })
             }
-                    }) 
+                    })
    }
 })
         })
@@ -177,6 +181,52 @@ router.post('/likeVideo', (req, res) => {
           })
         })
     })
+    .then( () => {
+      //Notification
+      var closureObj = {
+        projectId: 0,
+        projectName: ''
+      }
+
+      Option.findOne({
+        attributes: ['sectionId'],
+        where: {
+          id: req.body.option.id
+        }
+      })
+      .then( (section) => {
+        // console.log('SECTIONOOO', section.dataValues.sectionId)
+        return Section.findOne({
+          attributes: ['projectId'],
+          where: {
+            id: section.dataValues.sectionId
+          }
+        })
+        .then( (project) => {
+          // console.log('PROJECTOOOO', project.dataValues.projectId)
+          closureObj.projectId = project.dataValues.projectId;
+
+          return Project.findOne({
+            attributes: ['userId', 'name'],
+            where: {
+              id: project.dataValues.projectId
+            }
+          })
+        })
+        .then( (user) => {
+          // console.log('USEROOOOO SOURCE', user.dataValues.userId);
+          closureObj.projectName = user.dataValues.name;
+
+          Notifications.create({
+            sourceUsername: req.session.username,
+            optionId: req.body.option.id,
+            optionName: req.body.option.name,
+            userId: user.dataValues.userId,
+            projectId: closureObj.projectId
+          })
+        })
+      })
+    })
 })
 
 router.post('/startVideo', (req, res) => {
@@ -194,7 +244,7 @@ router.post('/startVideo', (req, res) => {
           console.log(data);
           if (!data) {
             TesterAndOption.create({
-              optionId: req.body.option.id, 
+              optionId: req.body.option.id,
               userId: user.dataValues.id,
               finished: false
             })
@@ -308,13 +358,13 @@ const aggregateComments = (option, res) => {
         return string += string
       } else if (string.length > 1350) {
         return string;
-      } 
+      }
     })
     .then((toApiString) => {
       axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
       .then((summary) => {
         console.log('API summary request success', summary);
-        return summary.data 
+        return summary.data
       })
       .then((summary) => {
         SectionComments.findOne({
@@ -322,18 +372,18 @@ const aggregateComments = (option, res) => {
             optionId: option.id
           }
         })
-          .then((existent) => { 
+          .then((existent) => {
             if (existent) {
               existent.update({
                 aggregateComments: toApiString,
-                summary: summary.sm_api_content // Will default to null in failure. 
+                summary: summary.sm_api_content // Will default to null in failure.
               })
             } else {
-              SectionComments.create({ 
+              SectionComments.create({
                 optionId: option.id,
                 aggregateComments: toApiString,
-                summary: summary.sm_api_content // Will default to null in failure. 
-              }) 
+                summary: summary.sm_api_content // Will default to null in failure.
+              })
             }
           })
         })

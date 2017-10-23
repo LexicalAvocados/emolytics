@@ -11,7 +11,8 @@ class DashboardHome extends React.Component {
     super(props);
     this.state = {
       projects: [],
-      retrieved: false
+      retrieved: false,
+      notifications: []
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -33,7 +34,13 @@ class DashboardHome extends React.Component {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
+
+    axios.get('/api/creator/allNotifications')
+    .then((res) => {
+      console.log('response from notifications endpoint', res.data)
+      let exampleNotif = `${res.data.sourceUsername} reacted to your video ${res.data.optionName}` //link to res.data.optionId
+    })
   }
 
 
