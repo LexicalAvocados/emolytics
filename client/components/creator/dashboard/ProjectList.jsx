@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, withRouter } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-import CreateProject from '../create/createProject.jsx';
+import EditProject from './EditProject.jsx';
 
 class ProjectList extends React.Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class ProjectList extends React.Component {
 
     var edit = {
       width: '100%',
-      'background-color': 'whitesmoke'
+      backgroundColor: 'whitesmoke'
     }
     return (
       <div>
@@ -89,12 +89,15 @@ class ProjectList extends React.Component {
             <Button onClick={this.toggleEdit} style={edit}>Edit</Button> {/* Finish the styling on this later */}
           </div>
         </div>
-        <Modal show={this.state.displayModal} onHide={this.toggleEdit}>
+        <Modal bsSize="large" show={this.state.displayModal} onHide={this.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Project</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <CreateProject />
+            <EditProject 
+              close={this.toggleEdit}
+              projectId={this.props.project.id}
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.toggleEdit}>Close</Button>

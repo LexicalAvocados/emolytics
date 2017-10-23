@@ -33,12 +33,12 @@ class CreateProject extends React.Component {
       description: this.state.description
     })
       .then((response) => {
-        this.setState({
-          name: response.data.name,
-          description: response.data.description
-        });
-        this.props.actions.changeCurrentProject(response.data);
-        this.props.history.push('/addSection');
+        // this.setState({
+        //   name: response.data.name,
+        //   description: response.data.description
+        // });
+        // this.props.actions.changeCurrentProject(response.data);
+        // this.props.history.push('/addSection');
       })
       .catch((err) => {
         console.error('Request to create new project NOT sent to server!', err);
