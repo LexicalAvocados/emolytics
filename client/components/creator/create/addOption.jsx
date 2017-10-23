@@ -74,6 +74,7 @@ class AddOption extends React.Component {
   submitOptionClick(e) {
     e.preventDefault();
     this.retrieveYouTubeData((youTubeData) => {
+      console.log(youTubeData);
       axios.post('/api/addOption', {
         name: this.state.name,
         description: this. state.description,
@@ -90,10 +91,11 @@ class AddOption extends React.Component {
             url: response.data.url
           }, () => {
             // this.props.actions.changeCurrentOption(response.data);
-            this.props.actions.addOptionsToCurrentSection(response.data);
+            this.props.currentSection.options.unshift(response.data);
+            this.props.actions.addOptionsToCurrentSection(this.props.currentSection.options);
+            // this.props.actions.addOptionsToCurrentSection(response.data);
             // this.props.history.push('/project' + this.props.currentProject.id);
           });
-
         })
         .catch((err) => {
           console.error('Request to add new option NOT sent to server!', err);
