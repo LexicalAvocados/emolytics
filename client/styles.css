@@ -21,7 +21,7 @@ body {
 .navBar {
   margin-top: 32px;
   width: 100vw;
-  height: 90px;
+  height: 85px;
   padding-left: 8%;
   padding-right: 6%;
 }
@@ -432,6 +432,35 @@ button {
 
 .optionBottom {
   padding: 10%;
+}
+
+.landingContainer {
+}
+
+.landingSectionA {
+  height: 60vh;
+  text-align: center;
+  width: 100%;
+  color: white;
+  clear: both;
+  margin-bottom: 9%;
+}
+
+.aBackground {
+  height: 70vh;
+  width: 100%;
+  z-index: -5;
+  background-color: darkgrey;
+  opacity: .9;
+  position: absolute;
+}
+
+.aInfo {
+  z-index: 1;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  padding-top: 10%;
 }
 
 /* Lucas' CSS */

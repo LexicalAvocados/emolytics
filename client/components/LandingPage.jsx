@@ -10,6 +10,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import ScrollableAnchor from 'react-scrollable-anchor';
 import TryItOutHome from './TryItOut/TryItOutHome.jsx';
+import { Button, Modal } from 'react-bootstrap';
 
 class LandingPage extends React.Component {
   constructor(props) {
@@ -32,13 +33,22 @@ class LandingPage extends React.Component {
 
   render() {
     return (
-      <div className='Landingcontainer'>
-        <h3> Welcome! </h3>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          <button onClick={this.handleClick}>Try it out </button>
-          {this.state.showTry ? (
-          <TryItOutHome tryerId={this.state.tryerId}/>
-          ) : ''}
+      <div className='landingContainer'>
+        <div className='landingSectionA'> 
+          <div className='aInfo'>
+            <h2> Know Your Audiences Emotions  </h2>
+            <br/>
+            <a href='#section1'><Button>Try it out </Button></a>
+          </div>
+          <div className='aBackground'>
+          </div>
+
+        </div>
+        <ScrollableAnchor id={'section1'}>
+          <div className="landingSectionB">
+            <TryItOutHome tryerId={this.state.tryerId}/>
+          </div>
+        </ScrollableAnchor>
       </div>
     )
   }
