@@ -157,8 +157,7 @@ router.post('/sendFrame', (req, res) => {
         })
 
 router.post('/likeVideo', (req, res) => {
-  console.log(req.body);
-  console.log(req.session)
+ 
   User.findAll({
     where: {
       username: req.session.username
