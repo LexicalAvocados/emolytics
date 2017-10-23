@@ -14,12 +14,14 @@ class DashboardHome extends React.Component {
     this.state = {
       projects: [],
       retrieved: false,
-      showCreate: false
+      showCreate: false,
+      displayEdit: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.getProjectsFromDatabase = this.getProjectsFromDatabase.bind(this);
     this.revealCreate = this.revealCreate.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -55,6 +57,12 @@ class DashboardHome extends React.Component {
     });
   }
 
+  toggleEdit() {
+    this.setState({
+      displayEdit: !this.state.displayEdit
+    });
+  }
+
   deleteProject(id) {
     if (confirm('Are you sure you want to delete this project?')) {
       let filteredProjects = this.state.projects.filter((project) => {
@@ -65,7 +73,8 @@ class DashboardHome extends React.Component {
           // console.log(response);
           this.setState({
             projects: filteredProjects
-          })
+          });
+          this.toggleEdit();
         })
         .catch((err) => {
           console.log('Error deleting project', err);
@@ -109,7 +118,8 @@ class DashboardHome extends React.Component {
                     deleteProject={this.deleteProject}
                     getProjectsFromDatabase={this.getProjectsFromDatabase}
                     project={project}
-                    
+                    toggleEdit={this.toggleEdit}
+                    displayEdit={this.state.displayEdit}
                   />
                 </Col>
               ))}
