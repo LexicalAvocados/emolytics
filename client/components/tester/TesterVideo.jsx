@@ -246,6 +246,18 @@ class TesterVideo extends React.Component {
                 //   }
                 // });
 
+                // var instance = axios.create({
+                //   headers: {
+                //     'Ocp-Apim-Subscription-Key': subscriptionKey,
+                //     'Content-Type': "application/octet-stream"
+                //   }
+                // });
+
+                // instance.post(uriBase, blobData)
+                //   .then(data => {
+                //     console.log((JSON.stringify(data.data, null, 2)));
+                //   })
+
                 // Request parameters.
                 var params = {
                   "returnFaceId": "true",
