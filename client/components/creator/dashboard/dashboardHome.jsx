@@ -50,6 +50,15 @@ class DashboardHome extends React.Component {
     .then((res) => {
       console.log('response from notifications endpoint', res.data)
       let exampleNotif = `${res.data.sourceUsername} reacted to your video ${res.data.optionName}` //link to res.data.optionId
+      this.setState({
+        notifications: res.data
+      }, () => {
+        var notifsForProjects = this.state.notifications.reduce((acc, curr) => {
+          acc[`${curr.projectId}`] ? acc[`${curr.projectId}`]+=1 : acc[`${curr.projectId}`] = 1;
+          return acc;
+        }, {})
+        console.log('notif obj for projects [id]:[number]', notifsForProjects)
+      })
     })
   };
 
