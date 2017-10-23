@@ -40,7 +40,7 @@ class TryItOutAnalytics extends React.Component {
     this.setDuration = this.setDuration.bind(this);
     this.generateCharts = this.generateCharts.bind(this);
     this.changeSideNavSelection = this.changeSideNavSelection.bind(this);
-    this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
+    // this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
     // this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     // this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
@@ -69,6 +69,11 @@ class TryItOutAnalytics extends React.Component {
     this.setState({
       player: player,
       emotionObj: initialEmoObj
+    }, () => {
+      let currentEmoObj = this.state.emotionObj;
+      let initialEmoArrays = [currentEmoObj.anger, currentEmoObj.contempt, currentEmoObj.disgust,
+                      currentEmoObj.fear, currentEmoObj.happiness, currentEmoObj.neutral, currentEmoObj.sadness, currentEmoObj.surprise];
+      this.generateCharts(initialEmoArrays);
     })
   };
 
@@ -128,7 +133,7 @@ class TryItOutAnalytics extends React.Component {
       this.props.actions.changeLineGraphData(lineData);
       // c3.select('.optionChart').unload();
       var lineGraph = c3.generate({
-        bindto: '.optionChart',
+        bindto: '.tryItOutLineGraph',
         selection: {
           enabled: true
         },
@@ -166,7 +171,7 @@ class TryItOutAnalytics extends React.Component {
       this.setState({
         graph: lineGraph
       })
-      this.forceUpdate();
+      // this.forceUpdate();
   }
 
   setDuration(dur) {
@@ -192,15 +197,6 @@ class TryItOutAnalytics extends React.Component {
     }, this.lineGraphDataSwitch);
   };
 
-  lineGraphDataSwitch() {
-    if (this.state.sideNavSelection === 'attention') {
-      this.generateCharts(this.state.attention);
-    }
-    if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
-      this.generateCharts(this.state.emotionsArrForRender)
-    }
-  };
-
   handleUserSelectCb(userArr) {
     this.setState({
       selectedUsers: userArr
@@ -221,11 +217,8 @@ class TryItOutAnalytics extends React.Component {
             <Col xs={12} md={8}>
               <TryItOutVideo setEmotionsArrFromObj={this.setEmotionsArrFromObj}/>
             </Col>
-          </Row>
-
-          <Row>
             <Col xs={12} md={8}>
-              <div className="optionChart"></div>
+              <div className="tryItOutLineGraph"></div>
             </Col>
           </Row>
 
