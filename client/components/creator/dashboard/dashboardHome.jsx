@@ -1,10 +1,11 @@
 import React from 'react';
 import ProjectList from './ProjectList.jsx';
+import CreateProject from '../create/createProject.jsx';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Modal } from 'react-bootstrap';
 
 
 class DashboardHome extends React.Component {
@@ -12,11 +13,13 @@ class DashboardHome extends React.Component {
     super(props);
     this.state = {
       projects: [],
-      retrieved: false
+      retrieved: false,
+      showCreate: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.getProjectsFromDatabase = this.getProjectsFromDatabase.bind(this);
+    this.revealCreate = this.revealCreate.bind(this);
   }
 
   componentDidMount() {
@@ -40,9 +43,16 @@ class DashboardHome extends React.Component {
         console.log(err);
       });
   }  
+
   onProjectClick(obj, sections) {
     obj['sections'] = sections;
     this.props.actions.changeCurrentProject(obj);
+  }
+
+  revealCreate() {
+    this.setState({
+      showCreate: !this.state.showCreate 
+    });
   }
 
   deleteProject(id) {
@@ -71,7 +81,21 @@ class DashboardHome extends React.Component {
       <div className="dashboardHomeContainer">
         <div className="dashboardHeader">
           <h2 style={inherit}>Projects</h2>
-          <Button className="addEntityButton" style={inherit}>Add Project</Button>
+          <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
+          <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
+            <Modal.Header closeButton>
+              <Modal.Title>Create A Project</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <CreateProject 
+                close={this.revealCreate}
+                getProjectsFromDatabase={this.getProjectsFromDatabase}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.revealCreate}>Close</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
         <hr/>
         <br/>

@@ -33,12 +33,8 @@ class CreateProject extends React.Component {
       description: this.state.description
     })
       .then((response) => {
-        // this.setState({
-        //   name: response.data.name,
-        //   description: response.data.description
-        // });
-        // this.props.actions.changeCurrentProject(response.data);
-        // this.props.history.push('/addSection');
+        this.props.getProjectsFromDatabase();
+        this.props.close();
       })
       .catch((err) => {
         console.error('Request to create new project NOT sent to server!', err);
@@ -48,13 +44,12 @@ class CreateProject extends React.Component {
   render() {
     return (
       <div className="CreateProject">
-        <h2>Create Project</h2>
         <form onSubmit={this.submitProjectClick}>
           Project Name: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Project Description: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
-          <input type="submit" value="Submit" />
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     );

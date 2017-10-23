@@ -36,14 +36,16 @@ class EditProject extends React.Component {
   }
 
   render() {
+    var width = {
+      width: '30%'
+    }
     return (
       <div className="EditProject">
-        <h2>Edit Your Project</h2>
         <form onSubmit={this.submitEditedProject}>
           Project Name: <br />
-          <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+          <input style={width} type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Project Description: <br />
-          <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+          <input style={width} type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           <Button type="submit">Submit</Button>
         </form>
       </div>

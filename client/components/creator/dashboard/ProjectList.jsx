@@ -91,7 +91,7 @@ class ProjectList extends React.Component {
         </div>
         <Modal bsSize="large" show={this.state.displayModal} onHide={this.toggleEdit}>
           <Modal.Header closeButton>
-            <Modal.Title>Project</Modal.Title>
+            <Modal.Title>Edit Your Project</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <EditProject 
@@ -101,11 +101,10 @@ class ProjectList extends React.Component {
             />
           </Modal.Body>
           <Modal.Footer>
+            <Button style={data} onClick={() => this.props.deleteProject(this.props.project.id)}>Delete this Project</Button>
             <Button onClick={this.toggleEdit}>Close</Button>
           </Modal.Footer>
         </Modal>
-        {/* <Button onClick={() => this.props.deleteProject(this.props.project.id)}>Delete</Button> */}
-        
       </div>
     );
   }
