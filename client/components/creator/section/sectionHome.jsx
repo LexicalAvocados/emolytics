@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import OptionListEntry from './OptionList.jsx';
+import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
@@ -29,6 +29,7 @@ class SectionHome extends React.Component {
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.assignFocusGroup = this.assignFocusGroup.bind(this);
+    this.deleteOption = this.deleteOption.bind(this)
   }
 
   componentWillMount() {
@@ -94,6 +95,22 @@ class SectionHome extends React.Component {
     this.setState({
       testersCopy: filtered
     });
+  }
+
+  deleteOption(id) {
+    this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
+      if (option.id !== id) {
+        return option;
+      }
+    });
+    this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
+    axios.delete('/api/deleteOption', { params: {optionId: id, toDelete: 'id'} })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log('Error deleting option', error);
+      })
   }
 
   renderPanel() {
@@ -183,6 +200,7 @@ class SectionHome extends React.Component {
               index={i}
               onOptionClick={this.onOptionClick}
               concatTesters={this.concatTesters}
+              deleteOption={this.deleteOption}
             />
           ))}
         </div>
