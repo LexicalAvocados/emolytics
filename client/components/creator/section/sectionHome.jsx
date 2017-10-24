@@ -234,7 +234,7 @@ class SectionHome extends React.Component {
                 );
               }
             })}
-            </Carousel>
+          </Carousel>
         </div>
 
         <Button onClick={this.compare}> Compare </Button>

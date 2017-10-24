@@ -39,7 +39,8 @@ class AddSection extends React.Component {
         });
         this.props.actions.changeCurrentSection(response.data);
         this.props.actions.addSectionsToCurrentProject(response.data);
-        this.props.history.push('/addOption');
+        // this.props.history.push('/addOption');
+        this.props.close();
       })
       .catch((err) => {
         console.error('Request to add new section NOT sent to server!', err);
