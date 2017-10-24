@@ -56,12 +56,20 @@ class TryItOutVideo extends React.Component {
 
 
     this.getWebcam();
-    setInterval(() => {
+    var timer = setInterval(() => {
       this.checkVideo()
-
     }, 1000)
+    this.setState({
+      timer: timer
+    }, () => {
+      this.state.timer();
+    })
     this.videoStart();
 
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
   }
 
   clearVideoCheck() {
