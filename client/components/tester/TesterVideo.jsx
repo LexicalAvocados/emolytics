@@ -11,6 +11,7 @@ import S3Upload from 's3-bucket-upload';
 // import cloudinary from 'cloudinary';
 import ToggleDisplay from 'react-toggle-display';
 import { Modal, Button } from 'react-bootstrap';
+import {Circle} from 'react-shapes';
 
 class TesterVideo extends React.Component {
 
@@ -28,7 +29,9 @@ class TesterVideo extends React.Component {
       show: false,
       key: '',
       height: 0,
-      width: 0
+      width: 0,
+      x: 0,
+      y: 0
     }
     this.videoStart = this.videoStart.bind(this);
     this.getWebcam = this.getWebcam.bind(this);
@@ -87,7 +90,7 @@ class TesterVideo extends React.Component {
     var timer = setInterval(() => {
       this.checkVideo()
 
-    }, 3000)
+    }, 500)
 
     this.setState({
       timer: timer
@@ -149,7 +152,12 @@ class TesterVideo extends React.Component {
     var time = Math.floor(video.getCurrentTime());
     var duration = Math.floor(video.getDuration());
     var prediction = window.webgazer.getCurrentPrediction();
+    this.setState({
+      x: prediction.x,
+      y: prediction.y
+    })
     console.log('prediction', prediction);
+
     if (!this.state.time.includes(time)) {
       console.log(time);
       this.takePicture();
@@ -210,7 +218,7 @@ class TesterVideo extends React.Component {
 
         // pure base64 data
         // var realData = data.replace(/^data:image\/(png|jpg);base64,/, "")
-        
+
         // // blob data
         // var blobData = this.state.img[0];
 
@@ -240,7 +248,7 @@ class TesterVideo extends React.Component {
         //   byteArr[i] = bytes.charCodeAt(i);
         // }
         let currentTesterOption = this.props.currentTesterOption;
-        return fetch(data) 
+        return fetch(data)
           .then(res => res.blob())
           .then(blobData => {
             // Microsoft Post Request
@@ -331,7 +339,7 @@ class TesterVideo extends React.Component {
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     // Display error message.
                     var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-                    errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ? 
+                    errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
                         jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
                      console.log(errorString);
                 });
@@ -379,7 +387,7 @@ class TesterVideo extends React.Component {
         show: false
       })
 
-        
+
     }
 
   render() {
@@ -388,8 +396,20 @@ class TesterVideo extends React.Component {
 
     }
 
+    var circleStyle = {
+      backgroundColor: 'red',
+      position: 'absolute',
+      left: this.state.x * 1.5,
+      top: this.state.y,
+      borderRadius: '6px',
+      width:'10px',
+      height: '10px',
+      zIndex: '1000'
+    }
+
     return (
       <div>
+        <div style={circleStyle}></div>
         <ToggleDisplay className="overlay"  show={this.state.show}>
           <TesterFinishedVideo />
         </ToggleDisplay>
@@ -399,13 +419,13 @@ class TesterVideo extends React.Component {
           <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} playing />
           <br/>
           <br/>
-          
+
           <h2> {this.state.video.name} </h2>
           <h4> {this.state.video.desc} </h4>
         </div>
 
 
-        <div >  
+        <div >
           <video className="testerVideo" id="video">Video stream not available.</video>
         </div>
         <canvas className="testerVideo" ref="canvas" id="canvas">

@@ -31,6 +31,10 @@ const SideBar = (props) => {
               <NavIcon><img height={25} width={25} src={'https://i.warosu.org/data/biz/img/0017/28/1484259015773.png'}/></NavIcon>
               <NavText className='sideNavItem'> Demographics+ </NavText>
           </Nav>
+          <Nav id='heatmap'>
+              <NavIcon><img height={25} width={25} src={'https://d30y9cdsu7xlg0.cloudfront.net/png/83851-200.png'}/></NavIcon>
+              <NavText className='sideNavItem'> HeatMap </NavText>
+          </Nav>
           <Nav id='settings'>
               <NavIcon><img height={25} width={25} src={'https://image.flaticon.com/icons/png/512/32/32441.png'}/></NavIcon>
               <NavText className='sideNavItem'> Settings </NavText>

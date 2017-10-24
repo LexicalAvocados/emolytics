@@ -16,6 +16,7 @@ import Feedback from './Subcomponents/Feedback.jsx';
 import UserSelect from './Subcomponents/UserSelect.jsx';
 import Annotations from './Subcomponents/Annotation.jsx';
 import DetailedDemographics from './Subcomponents/DetailedDemographics.jsx';
+import HeatMap from './Subcomponents/HeatMap.jsx'
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -436,6 +437,10 @@ class OptionHome extends React.Component {
 
           {this.state.sideNavSelection === 'annotations' ? (
               <Annotations graph={this.state.graph} player={this.state.player}/>
+          ) : ''}
+
+          {this.state.sideNavSelection === 'heatmap' ? (
+              <HeatMap />
           ) : ''}
 
           {this.state.sideNavSelection === 'detailedDemographics' ? (
