@@ -45,6 +45,7 @@ class SectionHome extends React.Component {
     this.revealAddSection = this.revealAddSection.bind(this);
     this.revealEdit = this.revealEdit.bind(this);
     this.getSections = this.getSections.bind(this);
+    this.onSectionClick = this.onSectionClick.bind(this);
   }
 
   componentWillMount() {
@@ -106,6 +107,25 @@ class SectionHome extends React.Component {
       });
     }
   }
+
+
+  onSectionClick(obj, options) {
+    axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
+      .then((options) => {
+        let sortedOptions = options.data.sort((one, two) => {
+          if (one.createdAt < two.createdAt) return 1;
+          if (one.createdAt > two.createdAt) return -1;
+        });
+        sortedOptions.push('End')
+        obj['options'] = sortedOptions;
+        this.props.actions.changeCurrentSection(obj, options);
+      })
+      .catch((err) => {
+        console.log('Request to get options for section NOT sent to server');
+      });  
+  }
+
+
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
@@ -219,6 +239,7 @@ class SectionHome extends React.Component {
             splitSections={this.state.splitSections}
             revealEdit={this.revealEdit}
             revealAddSection={this.revealAddSection}
+            onSectionClick={this.onSectionClick}
           />
         </div>
 
@@ -325,6 +346,7 @@ class SectionHome extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.revealEdit}>Close</Button>
+            <Button onClick={this.props.deleteSection}>Delete this Project</Button>
           </Modal.Footer>
         </Modal>
           
