@@ -42,6 +42,7 @@ class DashboardHome extends React.Component {
           projects: sortedProjects,
           retrieved: true
         });
+        console.log(this.state.projects)
       })
       .catch((err) => {
         console.log(err);
@@ -92,7 +93,6 @@ class DashboardHome extends React.Component {
           this.setState({
             projects: filteredProjects
           });
-          this.toggleEdit();
         })
         .catch((err) => {
           console.log('Error deleting project', err);
