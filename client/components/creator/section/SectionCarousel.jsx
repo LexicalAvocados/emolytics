@@ -10,7 +10,7 @@ const SectionCarousel = (props) => (
           return (
               <Carousel.Item>
               { sectionGroup.map((section, i) => (
-                  <Col md={3} className="sectionsScroll" key={i}>
+                  <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section)}>
                   <p>{section.name}</p>
                   <p>{section.description}</p>
                   <Button onClick={props.revealEdit}>Edit</Button> 
@@ -25,7 +25,7 @@ const SectionCarousel = (props) => (
               { sectionGroup.map((section, i) => {
                   if (section !== 'End') {
                   return (
-                      <Col md={3} className="sectionsScroll" key={i}>
+                      <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section)}>
                       <p>{section.name}</p>
                       <p>{section.description}</p>
                       <Button onClick={props.revealEdit}>Edit</Button> 
