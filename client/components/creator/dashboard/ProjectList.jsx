@@ -27,7 +27,6 @@ class ProjectList extends React.Component {
         this.setState({
           sections: sortedSections
         })
-        // console.log(this.state.sections);
       })
       .catch((err) => {
         console.log('Request to get relevant sections NOT sent to server!', err);
@@ -79,7 +78,7 @@ class ProjectList extends React.Component {
             </div>
           </div>
           <div style={del}>
-            <Button onClick={() => this.props.toggleEdit(this.props.project.id)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
+            <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
           </div>
         </div>
         <Modal bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
@@ -90,7 +89,6 @@ class ProjectList extends React.Component {
             <p>{this.props.project.name}</p>
             <EditProject 
               close={this.props.toggleEdit}
-              projectId={this.props.project.id}
               getProjectsFromDatabase={this.props.getProjectsFromDatabase}
             />
           </Modal.Body>
