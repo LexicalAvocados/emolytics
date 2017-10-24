@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -41,7 +41,8 @@ class SectionHome extends React.Component {
   }
 
   componentWillMount() {
-    this.props.currentSection.options.push('End')
+    this.props.currentProject.sections.push('End');
+    this.props.currentSection.options.push('End');
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -176,9 +177,31 @@ class SectionHome extends React.Component {
   render() {
     return (
       <div className="sectionHomeContainer">
-        <h3>Project Name: {this.props.currentProject.name}</h3>
-        <p>Project Description: {this.props.currentProject.description}</p>
-        <p>Section Name: {this.props.currentSection.name}</p>
+        <div>
+          <div>
+            <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
+          </div>
+          {/* <Row className="show-grid"> */}
+            <div className="sectionsScrollContainer">
+              { this.props.currentProject.sections.map((section, i) => {
+                if (section !== 'End') {
+                  return (
+                    <Col md={3} className="sectionsScroll" key={i}>
+                      <p>{section.name}</p>
+                      <p>{section.description}</p>
+                    </Col>
+                  );
+                } else {
+                  return (
+                    <Col md={3} className="sectionsScroll" key={i}>
+                      <h2>+</h2>
+                    </Col>
+                  );
+                }
+              })}
+            </div>
+          {/* </Row> */}
+        </div>
 
         <Button onClick={this.compare}> Compare </Button>
 

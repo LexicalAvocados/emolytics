@@ -526,7 +526,9 @@ button {
 
 .currentSectionOptionsList {
   height: 685px;
-  overflow: auto;
+  /* overflow: auto; */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sectionHomeContainer {
@@ -544,6 +546,23 @@ button {
   padding: 3%;
   border: 1px solid gray;
   border-radius: 3px;
+  /* padding-left: 1%; */
+}
+
+.sectionsScrollContainer{
+  width: 685px;
+  overflow: auto;
+}
+
+.sectionsScroll {
+  /* float: left; */
+  /* margin: 5%; */
+  /* width: 100%; */
+  background-color: white;
+  padding: 3%;
+  border: 1px solid gray;
+  border-radius: 3px;
+  display: inline-grid;
   /* padding-left: 1%; */
 }
 
