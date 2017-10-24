@@ -6,10 +6,11 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
+import AddSection from '../create/addSection.jsx';
 
 
 class SectionHome extends React.Component {
@@ -26,7 +27,8 @@ class SectionHome extends React.Component {
       testersCopy: [],
       optionData: [],
       compare: false,
-      optionsFinished: false
+      splitSections: [],
+      showAddSection: false
     }
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -38,11 +40,19 @@ class SectionHome extends React.Component {
     this.deleteOption = this.deleteOption.bind(this);
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
+    this.revealAddSection = this.revealAddSection.bind(this);
   }
 
   componentWillMount() {
     this.props.currentProject.sections.push('End');
     this.props.currentSection.options.push('End');
+    var splits = [];
+    for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {
+      splits.push(this.props.currentProject.sections.slice(i, i + 3))
+    }
+    this.setState({
+      splitSections: splits
+    })
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -174,6 +184,12 @@ class SectionHome extends React.Component {
     })
   }
 
+  revealAddSection() {
+    this.setState({
+      showAddSection: !this.state.showAddSection
+    });
+  }
+
   render() {
     return (
       <div className="sectionHomeContainer">
@@ -181,26 +197,44 @@ class SectionHome extends React.Component {
           <div>
             <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
           </div>
-          {/* <Row className="show-grid"> */}
-            <div className="sectionsScrollContainer">
-              { this.props.currentProject.sections.map((section, i) => {
-                if (section !== 'End') {
-                  return (
-                    <Col md={3} className="sectionsScroll" key={i}>
-                      <p>{section.name}</p>
-                      <p>{section.description}</p>
-                    </Col>
-                  );
-                } else {
-                  return (
-                    <Col md={3} className="sectionsScroll" key={i}>
-                      <h2>+</h2>
-                    </Col>
-                  );
-                }
-              })}
-            </div>
-          {/* </Row> */}
+          <Carousel>
+            { this.state.splitSections.map((sectionGroup) => {
+              if (sectionGroup.indexOf('End') === -1) {
+                return (
+                  <Carousel.Item>
+                    { sectionGroup.map((section, i) => (
+                      <Col md={3} className="sectionsScroll" key={i}>
+                        <p>{section.name}</p>
+                        <p>{section.description}</p>
+                      </Col>
+                    ))}
+                    
+                  </Carousel.Item>
+                );
+              } else {
+                return (
+                  <Carousel.Item>
+                    { sectionGroup.map((section, i) => {
+                      if (section !== 'End') {
+                        return (
+                          <Col md={3} className="sectionsScroll" key={i}>
+                            <p>{section.name}</p>
+                            <p>{section.description}</p>
+                          </Col>
+                        );
+                      } else {
+                        return (
+                          <Col md={3} className="sectionsScroll" onClick={this.revealAddSection}>
+                            <h2>+</h2>
+                          </Col>
+                        );
+                      }
+                    })}
+                  </Carousel.Item>
+                );
+              }
+            })}
+            </Carousel>
         </div>
 
         <Button onClick={this.compare}> Compare </Button>
@@ -283,6 +317,21 @@ class SectionHome extends React.Component {
 
           </ToggleDisplay>
 
+        <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add a Section</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AddSection
+              close={this.revealAddSection}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.revealAddSection}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+        
+          
       </div>
     );
   }

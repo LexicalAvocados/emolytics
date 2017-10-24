@@ -559,11 +559,12 @@ button {
   /* margin: 5%; */
   /* width: 100%; */
   background-color: white;
-  padding: 3%;
+  /* padding: 3%; */
   border: 1px solid gray;
   border-radius: 3px;
   display: inline-grid;
   /* padding-left: 1%; */
+  height: 125px;
 }
 
 .dashboardHeader {
