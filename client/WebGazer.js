@@ -10658,7 +10658,13 @@ var mosseFilterResponses = function() {
             'settings': settings,
             'data': regs[0].getData() || data
         };
-        window.localStorage.setItem(localstorageLabel, JSON.stringify(storage));
+        console.log(storage);
+        try {
+        	window.localStorage.setItem(localstorageLabel, JSON.stringify(storage));
+        } catch(e) {
+        	console.log(e);
+        }
+        
         //TODO data should probably be stored in webgazer object instead of each regression model
         //     -> requires duplication of data, but is likely easier on regression model implementors
     }

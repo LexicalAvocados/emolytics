@@ -14,6 +14,7 @@ import * as ChangeActions from '../../actions';
 class TesterQueuePage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this);
   }
 
   componentWillMount() {
@@ -37,7 +38,9 @@ class TesterQueuePage extends React.Component {
         <h1>Your Queue</h1><br/>
         {this.props.testerQueue.map((option, i) => {
           return (
-            <Link to={`/video/${option.id}`} key={i}>
+            <Link onClick={() => {
+              this.props.actions.changeTesterOption(option);
+            }} key={JSON.stringify(option.name)+i} to={`/video/${option.id}`}>
               <Col className='testerOptionListEntry' md={3}>
                 <TesterOptionEntry
                   option={option}
