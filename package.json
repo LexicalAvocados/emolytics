@@ -90,6 +90,7 @@
     "react-scrollable-anchor": "^0.5.0",
     "react-shapes": "^0.1.0",
     "react-sidenav": "^2.1.2",
+    "react-stripe-elements": "^1.2.0",
     "react-throttle": "^0.3.0",
     "react-toggle-display": "^2.2.0",
     "react-transition-group": "^2.2.0",
