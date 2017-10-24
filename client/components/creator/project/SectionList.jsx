@@ -49,7 +49,8 @@ class SectionList extends React.Component {
 
   onClickCallback() {
     this.props.onSectionClick(this.props.section, this.state.options);
-    this.props.history.push('/section' + this.props.section.id);
+    this.props.toggle();
+    // this.props.history.push('/section' + this.props.section.id);
   }
 
   render () {

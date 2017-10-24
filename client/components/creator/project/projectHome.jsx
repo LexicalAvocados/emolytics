@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
-import { Button, Panel, Row, Col } from 'react-bootstrap';
+import { Button, Panel, Collapse } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
@@ -17,6 +17,11 @@ class ProjectHome extends React.Component {
     this.onSectionClick = this.onSectionClick.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+
+  componentWillUnmount() {
+
   }
 
   onSectionClick(obj, options) {
@@ -52,12 +57,21 @@ class ProjectHome extends React.Component {
     }
   }
 
+  toggle() {
+    this.setState({
+      open: !this.state.open
+    })
+  }
+
   render() {
     return (
       <div className="projectHomeContainer">
-        <Panel header={`Project Title: ${this.props.currentProject.name}`} bsStyle="warning">
-          <h6>Description: {this.props.currentProject.description}</h6>
-        </Panel>
+        <Collapse in={this.state.open}>
+          <Panel header={`Project Title: ${this.props.currentProject.name}`} bsStyle="warning">
+            <h6>Description: {this.props.currentProject.description}</h6>
+          </Panel>
+        </Collapse>
+
         <Link to="/addSection">
           <Button className="addSectionButton">Add a section</Button>
         </Link>
@@ -66,6 +80,7 @@ class ProjectHome extends React.Component {
             // console.log('ITERATING THROUGH SECTIONS', section);
             return (
               <SectionList
+                toggle={this.toggle}
                 onSectionClick={this.onSectionClick}
                 deleteSection={this.deleteSection}
                 rerenderOptions={this.state.rerenderOptions}
@@ -98,3 +113,5 @@ export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
 ) (ProjectHome));
+
+
