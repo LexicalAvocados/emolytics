@@ -60,9 +60,7 @@ class ProjectHome extends React.Component {
           <Button className="addSectionButton">Add a section</Button>
         </Link>
         <div>
-          {this.props.currentProject.sections.map((section, i) => {
-            console.log('ITERATING THROUGH SECTIONS', section);
-          return (
+          {this.props.currentProject.sections.map((section, i) => (
             <SectionList
               onSectionClick={this.onSectionClick}
               deleteSection={this.deleteSection}
@@ -71,9 +69,7 @@ class ProjectHome extends React.Component {
               section={section}
               key={i}
             />
-
-          );
-          })}
+          ))}
         </div>
       </div>
     );

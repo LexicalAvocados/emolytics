@@ -28,7 +28,8 @@ class SectionHome extends React.Component {
       optionData: [],
       compare: false,
       splitSections: [],
-      showAddSection: false
+      showAddSection: false,
+      showEdit: false
     }
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -41,6 +42,7 @@ class SectionHome extends React.Component {
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
+    this.revealEdit = this.revealEdit.bind(this);
   }
 
   componentWillMount() {
@@ -98,7 +100,7 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    this.props.history.push('/option' + this.props.currentSection.options[index].id);
+    // this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 
   renderInvited() {
@@ -169,7 +171,7 @@ class SectionHome extends React.Component {
   getOptionsData() {
     axios.post('/api/section/getOptionsData', this.props.currentSection.options)
       .then(data => {
-        console.log(data);
+        // console.log(data);
         if (data.data) {
           this.setState({
             optionData: data.data
@@ -189,6 +191,12 @@ class SectionHome extends React.Component {
       showAddSection: !this.state.showAddSection
     });
   }
+  
+  revealEdit() {
+    this.setState({
+      showEdit: !this.state.showEdit
+    });
+  }
 
   render() {
     return (
@@ -206,6 +214,7 @@ class SectionHome extends React.Component {
                       <Col md={3} className="sectionsScroll" key={i}>
                         <p>{section.name}</p>
                         <p>{section.description}</p>
+                        <Button onClick={this.revealEdit}>Edit</Button> 
                       </Col>
                     ))}
                     
@@ -220,6 +229,7 @@ class SectionHome extends React.Component {
                           <Col md={3} className="sectionsScroll" key={i}>
                             <p>{section.name}</p>
                             <p>{section.description}</p>
+                            <Button onClick={this.revealEdit}>Edit</Button> 
                           </Col>
                         );
                       } else {
@@ -240,10 +250,6 @@ class SectionHome extends React.Component {
         <Button onClick={this.compare}> Compare </Button>
 
         <ToggleDisplay show={!this.state.compare}>
-
-        <Link to="/addOption">
-          <Button className="addSectionButton">Add an option</Button>
-        </Link>
 
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p>
@@ -330,7 +336,20 @@ class SectionHome extends React.Component {
             <Button onClick={this.revealAddSection}>Close</Button>
           </Modal.Footer>
         </Modal>
-        
+
+        <Modal bsSize="large" show={this.state.showEdit} onHide={this.revealEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit this Section</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AddSection
+              close={this.revealEdit}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.revealEdit}>Close</Button>
+          </Modal.Footer>
+        </Modal>
           
       </div>
     );
