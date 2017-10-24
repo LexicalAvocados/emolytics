@@ -9,8 +9,7 @@ class ProjectList extends React.Component {
     super(props);
     this.state = {
       sections: [],
-      date: '',
-      id: 0
+      date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this);
   }
@@ -64,7 +63,6 @@ class ProjectList extends React.Component {
             <div style={data}>
               <h4>{this.props.project.name}</h4>
               <p>{this.props.project.description}</p>
-              <p>{this.props.project.id}</p>
               <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
               {/* { this.state.sections.map((section, i) => {
                 return (
