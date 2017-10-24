@@ -16,7 +16,8 @@ class DashboardHome extends React.Component {
       retrieved: false,
       showCreate: false,
       displayEdit: false,
-      notifications: []
+      notifications: [],
+      idOfClickedOn: null
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -41,7 +42,6 @@ class DashboardHome extends React.Component {
           projects: sortedProjects,
           retrieved: true
         });
-        console.log(this.state.projects)
       })
       .catch((err) => {
         console.log(err);
@@ -74,26 +74,25 @@ class DashboardHome extends React.Component {
     });
   }
 
-  toggleEdit() {
+  toggleEdit(id) {
     this.setState({
-      displayEdit: !this.state.displayEdit
+      displayEdit: !this.state.displayEdit,
+      idOfClickedOn: id
     });
   }
 
-  deleteProject(id) {
-    console.log(this.state.projects);
-    console.log('DELETING', id);
+  deleteProject() {
     if (confirm('Are you sure you want to delete this project?')) {
       let filteredProjects = this.state.projects.filter((project) => {
-        if (project.id !== id) return project;
+        if (project.id !== this.state.idOfClickedOn) return project;
       });
-      console.log('filteredprojectessssss', filteredProjects);
-      axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
+      axios.delete('/api/deleteProject', { params: {projectId: this.state.idOfClickedOn, toDelete: 'id'}})
         .then((response) => {
           // console.log(response);
           this.setState({
             projects: filteredProjects
           });
+          this.toggleEdit();
         })
         .catch((err) => {
           console.log('Error deleting project', err);
