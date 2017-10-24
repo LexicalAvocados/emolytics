@@ -525,10 +525,8 @@ button {
 }
 
 .currentSectionOptionsList {
-  /* border: 1px solid black;
-  border-radius: 3px;
-  padding-left: 1%; */
-  /* width: 100%; */
+  height: 685px;
+  overflow: auto;
 }
 
 .sectionHomeContainer {
@@ -540,13 +538,13 @@ button {
 
 .currentSectionOptionListEntry {
   float: left;
-  margin: 5%;
-  width: 90%;
+  /* margin: 5%; */
+  width: 100%;
   background-color: white;
   padding: 3%;
-  /* border: 1px solid black;
+  border: 1px solid gray;
   border-radius: 3px;
-  padding-left: 1%; */
+  /* padding-left: 1%; */
 }
 
 .dashboardHeader {

@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -25,7 +25,8 @@ class SectionHome extends React.Component {
       testers: [],
       testersCopy: [],
       optionData: [],
-      compare: false
+      compare: false,
+      optionsFinished: false
     }
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -40,6 +41,7 @@ class SectionHome extends React.Component {
   }
 
   componentWillMount() {
+    this.props.currentSection.options.push('End')
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -207,9 +209,8 @@ class SectionHome extends React.Component {
         ) : (
           <p>Testers Invited!</p>
         )}
-
-        <div className="currentSectionOptionsList">
-          { this.props.currentSection.options.map((option, i) => (
+        <Col className="currentSectionOptionsList" md={3}>
+          { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
             <OptionListEntry
               option={option}
               key={i}
@@ -219,7 +220,7 @@ class SectionHome extends React.Component {
               deleteOption={this.deleteOption}
             />
           ))}
-        </div>
+        </Col>
 
         {this.props.focusGroups.length > 0 ?
           <div>
