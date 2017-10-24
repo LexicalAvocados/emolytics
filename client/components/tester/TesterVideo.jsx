@@ -26,7 +26,9 @@ class TesterVideo extends React.Component {
       time: [0],
       img: 0,
       show: false,
-      key: ''
+      key: '',
+      height: 0,
+      width: 0
     }
     this.videoStart = this.videoStart.bind(this);
     this.getWebcam = this.getWebcam.bind(this);
@@ -41,13 +43,19 @@ class TesterVideo extends React.Component {
 
   componentDidMount() {
     // console.log(this);
-    // window.webgazer.setRegression('ridge')
-    //   .setTracker('clmtrackr')
-    //   // .setGazeListener((data, clock) => {
-    //   //   console.log(data);
-    //   //   console.log(clock);
-    //   // })
-    //   .begin()
+    this.setState({
+      height: screen.height,
+      width: screen.width
+    }, () => {
+      console.log(this.state.height)
+    })
+    window.webgazer.setRegression('weightedRidge')
+      .setTracker('clmtrackr')
+      // .setGazeListener((data, clock) => {
+      //   console.log(data);
+      //   console.log(clock);
+      // })
+      .begin()
         // var prediction = window.webgazer.getCurrentPrediction();
     // console.log('prediction', prediction);
     // if (prediction) {
@@ -76,12 +84,23 @@ class TesterVideo extends React.Component {
     // })
 
     this.getWebcam();
-    setInterval(() => {
+    var timer = setInterval(() => {
       this.checkVideo()
 
-    }, 1000)
+    }, 3000)
+
+    this.setState({
+      timer: timer
+    }, () => {
+      this.state.timer();
+    })
     this.videoStart();
 
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+    window.webgazer.end();
   }
 
   clearVideoCheck() {
@@ -129,11 +148,14 @@ class TesterVideo extends React.Component {
     var video = this.refs.video;
     var time = Math.floor(video.getCurrentTime());
     var duration = Math.floor(video.getDuration());
+    var prediction = window.webgazer.getCurrentPrediction();
+    console.log('prediction', prediction);
     if (!this.state.time.includes(time)) {
       console.log(time);
       this.takePicture();
       this.state.time.push(time);
       this.processImage(time);
+
     }
 
   }
