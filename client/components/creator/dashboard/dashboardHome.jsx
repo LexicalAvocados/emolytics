@@ -76,7 +76,6 @@ class DashboardHome extends React.Component {
   }
 
   beginEdit(project) {
-    console.log('within toggle edit', project)
     this.setState({
       displayEdit: !this.state.displayEdit,
       idOfClickedOn: project.id
@@ -101,7 +100,7 @@ class DashboardHome extends React.Component {
           this.setState({
             projects: filteredProjects
           });
-          this.toggleEdit()
+          this.toggleEdit();
         })
         .catch((err) => {
           console.log('Error deleting project', err);
