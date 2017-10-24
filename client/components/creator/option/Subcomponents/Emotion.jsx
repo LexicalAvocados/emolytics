@@ -3,6 +3,7 @@ import React from 'react';
 const Emotion = (props) => {
 
   const calcMaxEmotion = (obj) => {
+    console.log('calcMaxEmotion obj:', obj);
     var total = 0;
     var max = ["emotion", 0]
     for (var key in obj) {

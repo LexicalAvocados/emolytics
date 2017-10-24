@@ -37,10 +37,9 @@ class TesterQueuePage extends React.Component {
         <h1>Your Queue</h1><br/>
         {this.props.testerQueue.map((option, i) => {
           return (
-            <Link to={`/video/${option.id}`}>
+            <Link to={`/video/${option.id}`} key={i}>
               <Col className='testerOptionListEntry' md={3}>
                 <TesterOptionEntry
-                  key={i}
                   option={option}
                   index={i}
                 />
