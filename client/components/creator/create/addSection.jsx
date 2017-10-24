@@ -33,13 +33,10 @@ class AddSection extends React.Component {
       projectId: this.props.currentProject.id
     })
       .then((response) => {
-        this.setState({
-          name: response.data.name,
-          description: response.data.description
-        });
         this.props.actions.changeCurrentSection(response.data);
-        this.props.actions.addSectionsToCurrentProject(response.data);
-        this.props.history.push('/addOption');
+        this.props.actions.addSectionsToCurrentProject(response.data); 
+        this.props.close();
+        
       })
       .catch((err) => {
         console.error('Request to add new section NOT sent to server!', err);

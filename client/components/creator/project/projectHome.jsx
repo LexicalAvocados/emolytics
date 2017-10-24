@@ -62,19 +62,16 @@ class ProjectHome extends React.Component {
           <Button className="addSectionButton">Add a section</Button>
         </Link>
         <div>
-          {this.props.currentProject.sections.map((section, i) => {
-            // console.log('ITERATING THROUGH SECTIONS', section);
-            return (
-              <SectionList
-                onSectionClick={this.onSectionClick}
-                deleteSection={this.deleteSection}
-                rerenderOptions={this.state.rerenderOptions}
-                associateOptions={this.associateOptions}
-                section={section}
-                key={i}
-              />
-            );
-          })}
+          {this.props.currentProject.sections.map((section, i) => (
+            <SectionList
+              onSectionClick={this.onSectionClick}
+              deleteSection={this.deleteSection}
+              rerenderOptions={this.state.rerenderOptions}
+              associateOptions={this.associateOptions}
+              section={section}
+              key={i}
+            />
+          ))}
         </div>
       </div>
     );

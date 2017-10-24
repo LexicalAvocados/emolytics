@@ -544,10 +544,10 @@ button:hover {
 }
 
 .currentSectionOptionsList {
-  /* border: 1px solid black;
-  border-radius: 3px;
-  padding-left: 1%; */
-  /* width: 100%; */
+  height: 685px;
+  /* overflow: auto; */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sectionHomeContainer {
@@ -559,13 +559,31 @@ button:hover {
 
 .currentSectionOptionListEntry {
   float: left;
-  margin: 5%;
-  width: 90%;
+  /* margin: 5%; */
+  width: 100%;
   background-color: white;
   padding: 3%;
-  /* border: 1px solid black;
+  border: 1px solid gray;
   border-radius: 3px;
-  padding-left: 1%; */
+  /* padding-left: 1%; */
+}
+
+.sectionsScrollContainer{
+  width: 685px;
+  overflow: auto;
+}
+
+.sectionsScroll {
+  /* float: left; */
+  /* margin: 5%; */
+  /* width: 100%; */
+  background-color: white;
+  /* padding: 3%; */
+  border: 1px solid gray;
+  border-radius: 3px;
+  display: inline-grid;
+  /* padding-left: 1%; */
+  height: 125px;
 }
 
 .dashboardHeader {
