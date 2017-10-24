@@ -26,7 +26,7 @@ class SectionList extends React.Component {
       this.grabOptions(nextProps.section);
       this.props.associateOptions();
       return true;
-    } 
+    }
     return true;
   }
 
