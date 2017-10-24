@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, withRouter } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-import EditProject from './EditProject.jsx';
+import EditPage from '../create/EditPage.jsx';
 
 class ProjectList extends React.Component {
   constructor(props) {
@@ -84,9 +84,9 @@ class ProjectList extends React.Component {
             <Modal.Title>Edit Your Project</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>{this.props.project.name}</p>
-            <EditProject 
+            <EditPage 
               close={this.props.toggleEdit}
+              toEdit={'Project'}
               getProjectsFromDatabase={this.props.getProjectsFromDatabase}
             />
           </Modal.Body>

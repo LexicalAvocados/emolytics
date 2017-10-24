@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-class EditProject extends React.Component {
+class EditPage extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -11,7 +11,7 @@ class EditProject extends React.Component {
       description: ''
     }
     this.handleChange = this.handleChange.bind(this);
-    this.submitEditedProject = this.submitEditedProject.bind(this);
+    this.submitEdit = this.submitEdit.bind(this);
   }
 
   handleChange(e) {
@@ -23,17 +23,23 @@ class EditProject extends React.Component {
     });
   }
 
-  submitEditedProject(e) {
+  submitEdit(e) {
     e.preventDefault();
-    // Change the stuff here, cause a rerender on the original page.
-    axios.get('/api/updateProject', { params: { id: this.props.currentProject.id, name: this.state.name, description: this.state.description}})
+    let toEdit = this.props.toEdit;
+    let reduxLocation = '' ;
+    if (this.props.toEdit === 'Project') reduxLocation = 'currentProject';
+    if (this.props.toEdit === 'Section') reduxLocation = 'currentSection';
+    axios.get('/api/updateProject', { params: { id: this.props[reduxLocation].id, name: this.state.name, description: this.state.description, toEdit: toEdit}})
       .then((response) => {
-        this.props.getProjectsFromDatabase();
+        if (toEdit === 'Project')  this.props.getProjectsFromDatabase();
+        if (toEdit === 'Section')  console.log(response);
+        // console.log(response);
         this.props.close();
       })
       .catch((error) => {
         console.log('Error updating project name', error);
       });
+
   }
 
   render() {
@@ -42,10 +48,10 @@ class EditProject extends React.Component {
     }
     return (
       <div className="EditProject">
-        <form onSubmit={this.submitEditedProject}>
-          Project Name: <br />
+        <form onSubmit={this.submitEdit}>
+          {this.props.toEdit} Name: <br />
           <input style={width} type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
-          Project Description: <br />
+          {this.props.toEdit} Description: <br />
           <input style={width} type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           <Button type="submit">Submit</Button>
         </form>
@@ -58,9 +64,10 @@ const mapStateToProps = (state) => {
   return({
     router: state.router,
     currentProject: state.currentProject,
+    currentSection: state.currentSection
   });
 };
 
 export default connect(
   mapStateToProps
-) (EditProject);
+) (EditPage);

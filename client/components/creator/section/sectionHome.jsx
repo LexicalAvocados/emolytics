@@ -12,6 +12,7 @@ import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
 import AddSection from '../create/addSection.jsx';
 import SectionCarousel from './SectionCarousel.jsx';
+import EditPage from '../create/EditPage.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -196,6 +197,7 @@ class SectionHome extends React.Component {
     this.setState({
       showEdit: !this.state.showEdit
     });
+
   }
 
   render() {
@@ -307,8 +309,9 @@ class SectionHome extends React.Component {
             <Modal.Title>Edit this Section</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddSection
+            <EditPage
               close={this.revealEdit}
+              toEdit={'Section'}
             />
           </Modal.Body>
           <Modal.Footer>
