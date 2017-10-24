@@ -37,10 +37,9 @@ class TesterHistoryPage extends React.Component {
         <h1>Your History</h1><br/>
         {this.props.testerHistory.map((option, i) => {
           return (
-            <Link to={`/video/${option.id}`}>
+            <Link to={`/history/${option.id}`} key={i} onClick={() => this.props.actions.changeTesterOption(option)}>
               <Col className='testerOptionListEntry' md={3}>
                 <TesterOptionEntry
-                  key={i}
                   option={option}
                   index={i}
                 />

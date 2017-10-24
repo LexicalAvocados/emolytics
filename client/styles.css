@@ -164,11 +164,20 @@ body {
   grid-template-columns: 50% 50%;
 }
 
-.rawValues{
+.personalFeedback {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.personalFeedbackLabel {
+  margin-top: 0px;
+}
+
+.rawValues {
   grid-column: 1;
 }
 
-.progressBars{
+.progressBars {
   grid-column: 2;
 }
 
@@ -176,7 +185,7 @@ body {
   text-align: center;
 }
 
-.overlay{
+.overlay {
   background: rgba(204, 204, 204, .8);
   position:fixed;
   width:100%;
@@ -227,6 +236,7 @@ body {
 }
 
 button {
+  margin: 0% 3%;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -235,25 +245,31 @@ button {
   display: inline-block;
   font-size: 16px;
   border-radius: 12px;
+}
 
+button:hover {
+  text-decoration: underline;
+}
+
+.optionNavButton {
+  background-color: #6095ff;
+}
+
+.optionNavButtonDisabled {
+  background-color: #6095ff;
+  opacity: 0.4;
+}
+
+.optionNavButtonDisabled:hover {
+  text-decoration: none;
 }
 
 .like {
   background-color: #4CAF50;
-  margin-right: 5%;
-}
-
-.like:hover {
-  text-decoration: underline;
 }
 
 .unlike {
   background-color: #f44336;
-}
-
-.unlike:hover {
-  text-decoration: underline;
-
 }
 
 .testerComments {

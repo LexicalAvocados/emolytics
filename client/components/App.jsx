@@ -20,6 +20,7 @@ import TesterProfile from './tester/TesterProfile.jsx';
 import TesterVideo from './tester/TesterVideo.jsx';
 import TesterQueuePage from './tester/TesterQueuePage.jsx';
 import TesterHistoryPage from './tester/TesterHistoryPage.jsx';
+import TesterOptionResults from './tester/TesterOptionResults.jsx';
 import ProjectHome from './creator/project/ProjectHome.jsx';
 import SectionHome from './creator/section/SectionHome.jsx';
 import OptionHome from './creator/option/OptionHome.jsx';
@@ -33,7 +34,6 @@ import LandingPage from './LandingPage.jsx';
 export class App extends React.Component {
   constructor(props) {
     super(props);
-    // console.log('App: this:', this);
   }
 
   render() {
@@ -62,7 +62,8 @@ export class App extends React.Component {
               <div className="appBody">
               <Switch>
                 <Route exact path="/" component={TesterHome}/>
-                <Route path="/history" component={TesterHistoryPage}/>
+                <Route exact path="/history" component={TesterHistoryPage}/>
+                <Route path="/history/:id" component={TesterOptionResults}/>
                 <Route path="/queue" component={TesterQueuePage}/>
                 <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>
@@ -83,10 +84,6 @@ export class App extends React.Component {
     );
   }
 }
-
-// example
-// {this.props.example.text}
-// <button onClick={this.onClick}> test </button><br/><br/>
 
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to

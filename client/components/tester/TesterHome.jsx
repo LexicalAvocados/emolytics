@@ -35,10 +35,9 @@ class TesterHome extends React.Component {
         <h3>Queue Quick Look</h3><br/>
         {this.props.testerQueue.slice(0, 3).map((option, i) => {
           return (
-            <Link to={`/video/${option.id}`}>
+            <Link to={`/video/${option.id}`} key={i}>
               <Col className='testerOptionListEntry' md={3}>
                 <TesterOptionEntry
-                  key={i}
                   option={option}
                   index={i}
                 />
