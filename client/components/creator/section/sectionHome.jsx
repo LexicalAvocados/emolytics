@@ -11,7 +11,7 @@ import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
 import AddSection from '../create/addSection.jsx';
-
+import SectionCarousel from './SectionCarousel.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -205,46 +205,11 @@ class SectionHome extends React.Component {
           <div>
             <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
           </div>
-          <Carousel>
-            { this.state.splitSections.map((sectionGroup) => {
-              if (sectionGroup.indexOf('End') === -1) {
-                return (
-                  <Carousel.Item>
-                    { sectionGroup.map((section, i) => (
-                      <Col md={3} className="sectionsScroll" key={i}>
-                        <p>{section.name}</p>
-                        <p>{section.description}</p>
-                        <Button onClick={this.revealEdit}>Edit</Button> 
-                      </Col>
-                    ))}
-                    
-                  </Carousel.Item>
-                );
-              } else {
-                return (
-                  <Carousel.Item>
-                    { sectionGroup.map((section, i) => {
-                      if (section !== 'End') {
-                        return (
-                          <Col md={3} className="sectionsScroll" key={i}>
-                            <p>{section.name}</p>
-                            <p>{section.description}</p>
-                            <Button onClick={this.revealEdit}>Edit</Button> 
-                          </Col>
-                        );
-                      } else {
-                        return (
-                          <Col md={3} className="sectionsScroll" onClick={this.revealAddSection}>
-                            <h2>+</h2>
-                          </Col>
-                        );
-                      }
-                    })}
-                  </Carousel.Item>
-                );
-              }
-            })}
-          </Carousel>
+          <SectionCarousel 
+            splitSections={this.state.splitSections}
+            revealEdit={this.revealEdit}
+            revealAddSection={this.revealAddSection}
+          />
         </div>
 
         <Button onClick={this.compare}> Compare </Button>
