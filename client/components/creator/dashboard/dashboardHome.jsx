@@ -23,6 +23,7 @@ class DashboardHome extends React.Component {
     this.deleteProject = this.deleteProject.bind(this);
     this.getProjectsFromDatabase = this.getProjectsFromDatabase.bind(this);
     this.revealCreate = this.revealCreate.bind(this);
+    this.beginEdit = this.beginEdit.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
@@ -74,11 +75,19 @@ class DashboardHome extends React.Component {
     });
   }
 
-  toggleEdit(id) {
+  beginEdit(project) {
+    console.log('within toggle edit', project)
     this.setState({
       displayEdit: !this.state.displayEdit,
-      idOfClickedOn: id
+      idOfClickedOn: project.id
     });
+    this.props.actions.changeCurrentProject(project);
+  }
+
+  toggleEdit() {
+    this.setState({
+      displayEdit: !this.state.displayEdit
+    })
   }
 
   deleteProject() {
@@ -136,6 +145,7 @@ class DashboardHome extends React.Component {
                     deleteProject={this.deleteProject}
                     getProjectsFromDatabase={this.getProjectsFromDatabase}
                     project={project}
+                    beginEdit={this.beginEdit}
                     toggleEdit={this.toggleEdit}
                     displayEdit={this.state.displayEdit}
                   />
