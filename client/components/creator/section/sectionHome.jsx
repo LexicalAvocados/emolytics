@@ -12,6 +12,7 @@ import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
 import AddSection from '../create/addSection.jsx';
 import SectionCarousel from './SectionCarousel.jsx';
+import EditPage from '../create/EditPage.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -43,18 +44,11 @@ class SectionHome extends React.Component {
     this.compare = this.compare.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
     this.revealEdit = this.revealEdit.bind(this);
+    this.getSections = this.getSections.bind(this);
   }
 
   componentWillMount() {
-    this.props.currentProject.sections.push('End');
-    this.props.currentSection.options.push('End');
-    var splits = [];
-    for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {
-      splits.push(this.props.currentProject.sections.slice(i, i + 3))
-    }
-    this.setState({
-      splitSections: splits
-    })
+    this.getSections();
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -67,6 +61,21 @@ class SectionHome extends React.Component {
       });
 
     this.getOptionsData();
+  }
+
+
+  getSections() {
+    if (!this.state.showEdit) {
+      this.props.currentProject.sections.push('End');
+      this.props.currentSection.options.push('End');
+    }
+    var splits = [];
+    for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {
+      splits.push(this.props.currentProject.sections.slice(i, i + 3))
+    }
+    this.setState({
+      splitSections: splits
+    });
   }
 
   concatTesters(testers, index) {
@@ -196,6 +205,7 @@ class SectionHome extends React.Component {
     this.setState({
       showEdit: !this.state.showEdit
     });
+
   }
 
   render() {
@@ -307,8 +317,10 @@ class SectionHome extends React.Component {
             <Modal.Title>Edit this Section</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddSection
+            <EditPage
               close={this.revealEdit}
+              toEdit={'Section'}
+              getSections={this.getSections}
             />
           </Modal.Body>
           <Modal.Footer>

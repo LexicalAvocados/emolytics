@@ -62,24 +62,27 @@ exports.createProject = function(req, res) {
 
 //{ id: '135', name: 'cooooll', description: 'ooooo' }
 exports.updateProject = (req, res) => {
-  Projects.findById(req.query.id)
-    .then((Project) => {
-      Project.update({
+  let toFind = req.query.toEdit;
+  toFind = db[toFind];
+  
+  toFind.findById(req.query.id)
+    .then((databaseEntry) => {
+      databaseEntry.update({
         name: req.query.name,
         description: req.query.description
       })
-        .then((success) => {
-          res.send('Updated');
+        .then((updated) => {
+          res.send(updated);
         })
         .catch((err) => {
           console.log(err);
           res.send(err);
-        })
+        });
     })
     .catch((err) => {
       console.log(err);
       res.send(err);
-    })
+    });
 }
 
 exports.deleteProject = (req, res) => {
