@@ -40,6 +40,7 @@ class DashboardHome extends React.Component {
           projects: sortedProjects,
           retrieved: true
         });
+        console.log(this.state.projects)
       })
       .catch((err) => {
         console.log(err);
@@ -64,17 +65,19 @@ class DashboardHome extends React.Component {
   }
 
   deleteProject(id) {
+    console.log(this.state.projects);
+    console.log('DELETING', id);
     if (confirm('Are you sure you want to delete this project?')) {
       let filteredProjects = this.state.projects.filter((project) => {
-        if (project.id !== id) return project
-      })
+        if (project.id !== id) return project;
+      });
+      console.log('filteredprojectessssss', filteredProjects);
       axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
         .then((response) => {
           // console.log(response);
           this.setState({
             projects: filteredProjects
           });
-          this.toggleEdit();
         })
         .catch((err) => {
           console.log('Error deleting project', err);
@@ -112,7 +115,7 @@ class DashboardHome extends React.Component {
           this.state.projects.length ? (
             <Row className="show-grid">
               { this.state.projects.map((project, i) => (
-                <Col className="projectListContainer" md={4} key={i}>
+                <Col className="projectListContainer" md={4} key={JSON.stringify(project.name)+i}>
                   <ProjectList
                     onProjectClick={this.onProjectClick}
                     deleteProject={this.deleteProject}
