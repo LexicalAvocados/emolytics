@@ -111,7 +111,6 @@ body {
   grid-row: 1;
   text-align: center;
   /*display: flex;*/
-
 }
 
 .optionPlayer {
@@ -270,6 +269,10 @@ button:hover {
 
 .unlike {
   background-color: #f44336;
+}
+
+.unlike:hover {
+  text-decoration: underline;
 }
 
 .testerComments {
@@ -446,6 +449,7 @@ button:hover {
 .optionPlayer {
   height: 42vh;
 }
+
 .testerAnalyticsContainer {
   background-color: #f7f7f7;
   padding: 5%;
@@ -512,7 +516,6 @@ button:hover {
 
 .landingFooter {
   height: 140px;
-
   background-color: lightgrey;
   padding: 5px 5%;
 }
@@ -588,8 +591,6 @@ button:hover {
   margin: 2%;
   background-color: white;
   overflow:auto;
-
-
 }
 
 .sectionCompareCharts {
