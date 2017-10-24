@@ -25,7 +25,7 @@ class ProjectList extends React.Component {
         });
         this.setState({
           sections: sortedSections
-        })
+        });
       })
       .catch((err) => {
         console.log('Request to get relevant sections NOT sent to server!', err);

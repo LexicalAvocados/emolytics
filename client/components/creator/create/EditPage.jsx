@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 
 class EditPage extends React.Component {
@@ -32,9 +34,15 @@ class EditPage extends React.Component {
     axios.get('/api/updateProject', { params: { id: this.props[reduxLocation].id, name: this.state.name, description: this.state.description, toEdit: toEdit}})
       .then((response) => {
         if (toEdit === 'Project')  this.props.getProjectsFromDatabase();
-        if (toEdit === 'Section')  console.log(response);
-        // console.log(response);
-        this.props.close();
+        if (toEdit === 'Section') {
+          for (var i = 0; i < this.props.currentProject.sections.length; i++) {
+            if (this.props.currentProject.sections[i].id === response.data.id) {
+              this.props.currentProject.sections.splice(i, 1, response.data);
+              this.props.getSections();
+            }
+          }
+          this.props.close();
+        }
       })
       .catch((error) => {
         console.log('Error updating project name', error);
@@ -68,6 +76,12 @@ const mapStateToProps = (state) => {
   });
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 ) (EditPage);
