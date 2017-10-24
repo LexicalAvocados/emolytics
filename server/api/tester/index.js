@@ -67,10 +67,10 @@ router.post('/getOptionResultsForTester', (req, res) => {
 
   Promise.all([frames, testerOptionData])
     .then(optionResults => {
-      res.send(optionResults)
+      res.send(optionResults);
     })
     .catch(err => {
-      res.send(err)
+      res.send(err);
     });
 
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import c3 from 'c3';
 import ReactPlayer from 'react-player';
+import { Col } from 'react-bootstrap';
 import axios from 'axios';
 import pad from 'array-pad';
 
@@ -27,14 +28,13 @@ class TesterOptionResults extends React.Component {
       like: null,
       comment: '',
       attentionArr: [],
-      emotionObj: {},
-      emotionArrs: []
+      emotionsObj: {},
+      emotionsArrs: []
     }
     this.generateCharts = this.generateCharts.bind(this);
   }
 
-  componentWillMount() {
-
+  componentDidMount() {
     axios.post('/api/tester/getOptionResultsForTester', {
       userId: this.props.loggedInUser.id,
       optionId: this.props.currentTesterOption.id
@@ -44,14 +44,14 @@ class TesterOptionResults extends React.Component {
         let frames = res.data[0];
         let testerOptionData = res.data[1];
 
-        let anger = ['Anger', ...frames.map(frame => frame.anger)];
-        let contempt = ['Contempt', ...frames.map(frame => frame.contempt)];
-        let disgust = ['Disgust', ...frames.map(frame => frame.disgust)];
-        let fear = ['Fear', ...frames.map(frame => frame.fear)];
-        let happiness = ['Happiness', ...frames.map(frame => frame.happiness)];
-        let neutral = ['Neutral', ...frames.map(frame => frame.neutral)];
-        let sadness = ['Sadness', ...frames.map(frame => frame.sadness)];
-        let surprise = ['Surprise', ...frames.map(frame => frame.surprise)];
+        let anger = ['Anger', ...frames.map(frame => +frame.anger)];
+        let contempt = ['Contempt', ...frames.map(frame => +frame.contempt)];
+        let disgust = ['Disgust', ...frames.map(frame => +frame.disgust)];
+        let fear = ['Fear', ...frames.map(frame => +frame.fear)];
+        let happiness = ['Happiness', ...frames.map(frame => +frame.happiness)];
+        let neutral = ['Neutral', ...frames.map(frame => +frame.neutral)];
+        let sadness = ['Sadness', ...frames.map(frame => +frame.sadness)];
+        let surprise = ['Surprise', ...frames.map(frame => +frame.surprise)];
 
         this.setState({
           player: this.refs.player,
@@ -59,10 +59,10 @@ class TesterOptionResults extends React.Component {
           finished: testerOptionData.finished,
           like: testerOptionData.like,
           comment: testerOptionData.comment,
-          attentionArr: [['Attention', ...frames.map(frame => frame.attention)]],
-          emotionObj: {anger, contempt, disgust, fear, happiness, neutral, sadness, surprise},
-          emotionArrs: [anger, contempt, disgust, fear, happiness, neutral, sadness, surprise]
-        }, () => this.generateCharts(this.state.emotionObj));
+          attentionArr: [['Attention', ...frames.map(frame => +frame.attention)]],
+          emotionsObj: {anger, contempt, disgust, fear, happiness, neutral, sadness, surprise},
+          emotionsArrs: [anger, contempt, disgust, fear, happiness, neutral, sadness, surprise]
+        }, () => this.generateCharts(this.state.emotionsArrs));
       })
       .catch(err => {
         console.log('Error fetching Option Data from database:', err);
@@ -88,85 +88,69 @@ class TesterOptionResults extends React.Component {
             }, () => {
               var player = this.refs.player;
               player.seekTo(this.state.timestamp)
-            })
+            });
           },
           columns: lineGraphData,
         }
       });
-
+      console.log('lineGraph:', lineGraph);
       var pieChart = c3.generate({
         bindto: '.emotionChart',
         data: {
           columns: [
-            ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
+            ['Anger', this.state.emotionsObj.anger.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Contempt', this.state.emotionsObj.contempt.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Disgust', this.state.emotionsObj.disgust.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Fear', this.state.emotionsObj.fear.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Happiness', this.state.emotionsObj.happiness.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Neutral', this.state.emotionsObj.neutral.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Sadness', this.state.emotionsObj.sadness.slice(1).reduce((sum, val) => sum += +val, 0)],
+            ['Surprise', this.state.emotionsObj.surprise.slice(1).reduce((sum, val) => sum += +val, 0)]
           ],
-          type : 'pie'
+          type: 'pie'
         }
       });
       this.setState({
         graph: lineGraph
-      })
+      });
       this.forceUpdate();
   }
 
   render() {
     return (
-      <div className='optionAnalyticsContainer'>
+      <div>
 
-        <div className='leftSide'>
-          <div className='optionPlayer'>
-            <ReactPlayer
-              className='optionPlayer'
-              url={this.props.currentTesterOption.youtubeUrl}
-              ref='player'
-              controls={true}
-              height='90%'
-              width='95%'
-              config={{
-                youtube: {
-                  playerVars: { showinfo: 1 }
-                }
-              }}
-            />
-          </div>
-
+        <Col lg={6}>
+          <ReactPlayer
+            className='optionPlayer'
+            url={this.props.currentTesterOption.youtubeUrl}
+            ref='player'
+            controls={true}
+            width='95%'
+            config={{
+              youtube: {
+                playerVars: { showinfo: 1 }
+              }
+            }}
+          />
           <div className='optionChart'>
           </div>
+        </Col>
 
-        </div>
-
-        {/*<div className='rightSide'>
-          <div className='testerAnalyticsContainer'>
-
-            <div className='optionContainer'>
-              <Feedback
-                likeRatio={props.likeRatio}
-                completionStatus={props.completionStatus}
-              />
-            </div>
-
-            <div className='optionContainer'>
-              <Emotion
-                emotionsObj={props.emotionsObj}
-              />
-            </div>
-
-            <div className='optionContainer'>
-              <Attention
-                attention={props.attention}
-                timestampCallback={props.timestampCallback}
-              />
-            </div>
-
+        <Col lg={6}>
+          <div className='personalFeedback'>
+            <h3 className='personalFeedbackLabel'>Your Personal Feedback</h3>
+            You <span style={{'font-weight': 'bold'}}>{this.state.finished ? 'finished' : 'did not finish'}</span> this video
+            {this.state.finished ?
+              <div>
+                <div>You <span style={{'font-weight': 'bold'}}>{this.state.like ? 'liked' : 'did not like'}</span> this video</div>
+                <div>{this.state.comment ? `Your comment on this video: ${this.state.comment}` : null}</div>
+              </div>
+            :
+              null}
           </div>
-        </div>*/}
+          <Emotion emotionsObj={this.state.emotionsObj} />
+        </Col>
 
       </div>
     )
