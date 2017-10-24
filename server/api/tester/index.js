@@ -90,6 +90,7 @@ router.post('/getVideo', (req, res) => {
 })
 
 router.post('/sendFrame', (req, res) => {
+  console.log('REQ.SESSION.USERNAME:', req.session.username);
   var emotions = req.body.emotions;
 	User.findAll({
 		where: {

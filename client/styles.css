@@ -223,6 +223,7 @@ body {
 }
 
 button {
+  margin: 0% 3%;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -231,25 +232,31 @@ button {
   display: inline-block;
   font-size: 16px;
   border-radius: 12px;
+}
 
+button:hover {
+  text-decoration: underline;
+}
+
+.optionNavButton {
+  background-color: #6095ff;
+}
+
+.optionNavButtonDisabled {
+  background-color: #6095ff;
+  opacity: 0.4;
+}
+
+.optionNavButtonDisabled:hover {
+  text-decoration: none;
 }
 
 .like {
   background-color: #4CAF50;
-  margin-right: 5%;
-}
-
-.like:hover {
-  text-decoration: underline;
 }
 
 .unlike {
   background-color: #f44336;
-}
-
-.unlike:hover {
-  text-decoration: underline;
-
 }
 
 .testerComments {
