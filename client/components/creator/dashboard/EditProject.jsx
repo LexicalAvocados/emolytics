@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 class EditProject extends React.Component {
@@ -25,7 +26,7 @@ class EditProject extends React.Component {
   submitEditedProject(e) {
     e.preventDefault();
     // Change the stuff here, cause a rerender on the original page.
-    axios.get('/api/updateProject', { params: { id: this.props.projectId, name: this.state.name, description: this.state.description}})
+    axios.get('/api/updateProject', { params: { id: this.props.currentProject.id, name: this.state.name, description: this.state.description}})
       .then((response) => {
         this.props.getProjectsFromDatabase();
         this.props.close();
@@ -53,4 +54,13 @@ class EditProject extends React.Component {
   }
 }
 
-export default EditProject;
+const mapStateToProps = (state) => {
+  return({
+    router: state.router,
+    currentProject: state.currentProject,
+  });
+};
+
+export default connect(
+  mapStateToProps
+) (EditProject);
