@@ -24,14 +24,17 @@ class TesterVideo extends React.Component {
         desc: ''
       },
       complete: false,
-      time: [0],
+      time: {
+        0: true
+      },
       img: 0,
       show: false,
       key: '',
       height: 0,
       width: 0,
-      x: 0,
-      y: 0
+      eyeTime:{
+        0: true
+      },
     }
     this.videoStart = this.videoStart.bind(this);
     this.getWebcam = this.getWebcam.bind(this);
@@ -41,73 +44,101 @@ class TesterVideo extends React.Component {
     this.showOverlay = this.showOverlay.bind(this);
     this.likeClick = this.likeClick.bind(this);
     this.processImage = this.processImage.bind(this);
+    this.eyeTracking = this.eyeTracking.bind(this);
     // this.upload = this.upload.bind(this);
+  }
+  componentWillMount() {
+    // console.log(this);
+    // axios.post('/api/tester/getVideo', {id: this.props.match.params.id})
+    //   .then((data) => {
+    //     console.log(data);
+    //     this.setState({
+    //       video: {
+    //         url: data.data[0].youtubeUrl,
+    //         name: data.data[0].name,
+    //         desc: data.data[0].description
+    //       }
+    //     })
+
+    //     this.props.actions.changeTesterOption(data.data[0]);
+    //     console.log(this);
+    //   })
+    this.setState({
+      video: {
+        url: this.props.currentTesterOption.youtubeUrl,
+        name: this.props.currentTesterOption.name,
+        desc: this.props.currentTesterOption.description
+      }
+    })
   }
 
   componentDidMount() {
-    // console.log(this);
+
     this.setState({
       height: screen.height,
       width: screen.width
     }, () => {
-      console.log(this.state.height)
+      // console.log(this.state.height)
     })
     window.webgazer.setRegression('weightedRidge')
       .setTracker('clmtrackr')
-      // .setGazeListener((data, clock) => {
-      //   console.log(data);
-      //   console.log(clock);
-      // })
       .begin()
-        // var prediction = window.webgazer.getCurrentPrediction();
-    // console.log('prediction', prediction);
-    // if (prediction) {
-    //     var x = prediction.x;
-    //     var y = prediction.y;
-    //     console.log('predictions', x, y);
-    // }
-    axios.post('/api/tester/getVideo', {id: this.props.match.params.id})
-      .then((data) => {
-        console.log(data);
-        this.setState({
-          video: {
-            url: data.data[0].youtubeUrl,
-            name: data.data[0].name,
-            desc: data.data[0].description
-          }
-        })
-
-        this.props.actions.changeTesterOption(data.data[0]);
-        console.log(this);
-      })
-
-    // let check =  setInterval(this.checkVideo, 1000)
-    // this.setState({
-    //   checkVideo: check
-    // })
 
     this.getWebcam();
-    var timer = setInterval(() => {
+    var runTimer = setInterval(() => {
       this.checkVideo()
+    }, 1000)
 
-    }, 500)
+    var eyeTrackingTimer = setInterval(() => {
+      this.eyeTracking();
+    }, 250)
 
     this.setState({
-      timer: timer
+      runTimer: runTimer,
+      eyeTrackingTimer: eyeTrackingTimer
     }, () => {
       this.state.timer();
+      this.state.eyeTrackingTimer();
     })
     this.videoStart();
 
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.timer);
+    // console.log(this);
+    clearInterval(this.state.runTimer);
+    clearInterval(this.state.eyeTrackingTimer);
     window.webgazer.end();
   }
 
   clearVideoCheck() {
     clearInterval(this.state.checkVideo);
+  }
+
+  eyeTracking() {
+    let prediction = window.webgazer.getCurrentPrediction();
+    // console.log('prediction', prediction);
+    var video = this.refs.video;
+    var time = (Math.round(video.getCurrentTime() * 4) / 4).toFixed(2);
+    // console.log(this.state.eyeTime);
+    if (!this.state.eyeTime[time]) {
+      // console.log(prediction);
+      let newPrediction = {};
+      newPrediction.x = (prediction.x/this.state.width).toFixed(3);
+      newPrediction.y = (prediction.y/this.state.height).toFixed(3);
+      this.state.eyeTime[time] = true;
+      let sendObj = {
+        prediction: newPrediction,
+        time: time,
+        option: this.props.currentTesterOption
+      }
+      // console.log('sending');
+      axios.post('/api/tester/addEyeTracking', sendObj)
+        // .then(data => {
+        //   console.log(data);
+        // })
+    }
+
   }
 
 
@@ -151,17 +182,9 @@ class TesterVideo extends React.Component {
     var video = this.refs.video;
     var time = Math.floor(video.getCurrentTime());
     var duration = Math.floor(video.getDuration());
-    var prediction = window.webgazer.getCurrentPrediction();
-    this.setState({
-      x: prediction.x,
-      y: prediction.y
-    })
-    console.log('prediction', prediction);
-
-    if (!this.state.time.includes(time)) {
-      console.log(time);
+    if (!this.state.time[time]) {
       this.takePicture();
-      this.state.time.push(time);
+      this.state.time[time] = true;
       this.processImage(time);
 
     }
@@ -254,101 +277,42 @@ class TesterVideo extends React.Component {
             // Microsoft Post Request
             axios.get('/api/tester/getKey')
               .then(data => {
-                console.log('DATA', data)
+
                 var subscriptionKey = data.data[0].key;
                 var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
-                // var uriBase = "https://requestb.in/1ijcwry1";
 
-                // axios.get(uriBase);
-
-                // axios.post(uriBase, {data: byteArr});
-                // var instance = axios.create({
-                //   headers: {
-                //     "Content-Type" : "application/octet-stream"
-                //   }
-                // });
-                // instance.post('https://requestb.in/wpray0wp', byteArr);
-
-                // var url ='https://requestb.in/zdz1bczd'
-                // request(url, function (error, response, body) {
-                //   if (!error) {
-                //     console.log(body);
-                //   }
-                // });
-
-                // var instance = axios.create({
-                //   headers: {
-                //     'Ocp-Apim-Subscription-Key': subscriptionKey,
-                //     'Content-Type': "application/octet-stream"
-                //   }
-                // });
-
-                // instance.post(uriBase, blobData)
-                //   .then(data => {
-                //     console.log((JSON.stringify(data.data, null, 2)));
-                //   })
-
-                // Request parameters.
-                var params = {
-                  "returnFaceId": "true",
-                  "returnFaceLandmarks": "false",
-                  "returnFaceAttributes": "emotion",
-                };
-
-                $.ajax({
-                    // url: uriBase + "?" + $.param(params),
-                    url: uriBase,
-
-                    // Request headers.
-                    beforeSend: function(xhrObj){
-                        xhrObj.setRequestHeader("Content-Type", "application/octet-stream");
-                        // xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
-                        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-                    },
-
-                    type: "POST",
-
-                    // Request body.
-                    data: blobData,
-                    processData: false,
-                })
-                .done(function(data) {
-                    // Show formatted JSON on webpage.
-                    console.log((JSON.stringify(data, null, 2)));
-                    if (data[0]) {
-                      let sendObj = {
-                        emotions: data[0].scores,
-                        time: time,
-                        option: currentTesterOption
-                      }
-                      axios.post('/api/tester/sendFrame', sendObj)
-                        .then(res => {
-                          console.log(res);
-                        })
-                    } else {
-                      let sendObj = {
-                        time: time,
-                        option: currentTesterOption
-                      }
-                      axios.post('/api/tester/sendFrame', sendObj)
-                        .then(res => {
-                          console.log(res);
-                        })
-                    }
-                })
-                .fail(function(jqXHR, textStatus, errorThrown) {
-                    // Display error message.
-                    var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-                    errorString += (jqXHR.responseText === "") ? "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
-                        jQuery.parseJSON(jqXHR.responseText).message : jQuery.parseJSON(jqXHR.responseText).error.message;
-                     console.log(errorString);
+                var instance = axios.create({
+                  headers: {
+                    'Ocp-Apim-Subscription-Key': subscriptionKey,
+                    'Content-Type': "application/octet-stream"
+                  }
                 });
+
+                instance.post(uriBase, blobData)
+                  .then(data => {
+                    // console.log((JSON.stringify(data.data, null, 2)));
+                    if (data.data[0]) {
+                      let sendObj = {
+                        emotions: data.data[0].scores,
+                        time: time,
+                        option: currentTesterOption
+                      }
+                      axios.post('/api/tester/sendFrame', sendObj)
+                    }
+                    else {
+                      let sendObj = {
+                        time: time,
+                        option: currentTesterOption
+                      }
+                      axios.post('/api/tester/sendFrame', sendObj)
+                    }
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  })
+
               })
           });
-
-        //var dataBlob = canvas.toBlob()
-        // console.log('byteArr', byteArr);
-        // this.state.img[0] = byteArr;
 
 
 
@@ -439,7 +403,7 @@ class TesterVideo extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
+  // console.log('state', state);
   return ({
     currentTesterOption: state.currentTesterOption
   })

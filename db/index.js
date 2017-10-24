@@ -177,6 +177,22 @@ const Key = sequelize.define('key', {
 
 Key.sync({force: false});
 
+
+// ~~~~~~~~~~~~~~~~~~~ //
+// Eye Tracking Schema //
+// ~~~~~~~~~~~~~~~~~~~ //
+
+const EyeTracking = sequelize.define('eyeTracking', {
+  x: Sequelize.DECIMAL,
+  y: Sequelize.DECIMAL,
+  time: Sequelize.DECIMAL
+});
+
+EyeTracking.belongsTo(Option);
+EyeTracking.belongsTo(User);
+
+EyeTracking.sync({force: false});
+
 // ~~~~~~~~~~ //
 // Section Comments Schema //
 // ~~~~~~~~~~ //
@@ -223,5 +239,6 @@ module.exports = {
   OptionAndAnnotation,
   Key,
   SectionComments,
-  Notification
+  Notification,
+  EyeTracking
 };

@@ -208,7 +208,7 @@ body {
   margin-top: 4%;
   position: relative;
   height: 40vh;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 .tryItOutLineGraph {

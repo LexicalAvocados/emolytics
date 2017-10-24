@@ -11,6 +11,7 @@ const SectionComments = db.SectionComments;
 const Notifications = db.Notification;
 const Section = db.Section;
 const Project = db.Project;
+const EyeTracking = db.EyeTracking;
 const router = express.Router();
 const base64Img = require('base64-img');
 const request = require('request-promise-native');
@@ -26,6 +27,44 @@ const axios = require('axios');
 // 	thumbnail: 'asdf',
 // 	length: 100
 // })
+
+router.post('/addEyeTracking', (req, res) => {
+  console.log(req.body);
+  let prediction = req.body.prediction;
+
+  User.findAll({
+    where: {
+      username: req.session.username
+    }
+  })
+    .then(user => {
+      if (prediction) {
+        EyeTracking.findOne({where: {optionId: req.body.option.id, userId: user[0].dataValues.id, time: req.body.time}})
+          .then(eyeTracking => {
+            if(eyeTracking) {
+              eyeTracking.update({
+                x: prediction.x,
+                y: prediction.y
+              })
+                .then(entry => {
+                  res.send(entry);
+                })
+            } else {
+              EyeTracking.create({
+                time: req.body.time,
+                userId: user[0].dataValues.id,
+                optionId: req.body.option.id,
+                x: prediction.x,
+                y: prediction.y
+              })
+                .then(entry => {
+                  res.send(entry);
+                })
+            }
+          })
+      }
+    })
+})
 
 router.post('/getOptionsForTester', (req, res) => {
   console.log('getOptionsForTester req.body:', req.body);
@@ -79,8 +118,8 @@ router.post('/getOptionResultsForTester', (req, res) => {
 });
 
 router.post('/getVideo', (req, res) => {
-	console.log('req session', req.session);
-  console.log(req.body);
+	// console.log('req session', req.session);
+  // console.log(req.body);
   var id = parseInt(req.body.id)
 	Option.findAll({
 		where: {
@@ -95,7 +134,8 @@ router.post('/getVideo', (req, res) => {
 router.post('/sendFrame', (req, res) => {
   console.log('REQ.SESSION.USERNAME:', req.session.username);
   var emotions = req.body.emotions;
-  console.log('REQ SESSION', req.session)
+  // console.log('REQ SESSION', req.session)
+  console.log('FRAMES', req.body);
 	User.findAll({
 		where: {
 			username: req.session.username
@@ -193,10 +233,10 @@ router.post('/likeVideo', (req, res) => {
     }
   })
     .then(user => {
-      console.log(user[0].dataValues);
+      // console.log(user[0].dataValues);
       TesterAndOption.findOrCreate({where: {optionId: req.body.option.id, userId: user[0].dataValues.id}})
         .spread((entry, created) => {
-          console.log('ENTRY', entry)
+          // console.log('ENTRY', entry)
           entry.update({
             finished: true,
             like: req.body.like,
@@ -204,7 +244,7 @@ router.post('/likeVideo', (req, res) => {
           })
           .then((data) => {
             aggregateComments(req.body.option)
-            console.log(created);
+            // console.log(created);
             res.send('finished');
           })
         })
@@ -258,18 +298,18 @@ router.post('/likeVideo', (req, res) => {
 })
 
 router.post('/startVideo', (req, res) => {
-  console.log('startVideo', req.body)
+  // console.log('startVideo', req.body)
   User.findOne({
     where: {
       username: req.session.username
     }
   })
     .then(user => {
-      console.log(user.dataValues);
+      // console.log(user.dataValues);
       TesterAndOption
         .findOne({where: {optionId: req.body.option.id, userId: user.dataValues.id}})
         .then(data => {
-          console.log(data);
+          // console.log(data);
           if (!data) {
             TesterAndOption.create({
               optionId: req.body.option.id,
@@ -297,7 +337,7 @@ router.post('/startVideo', (req, res) => {
 })
 
 router.get('/getKey', (req, res) => {
-  console.log("GETTTTTTING KEYYYYY")
+  // console.log("GETTTTTTING KEYYYYY")
   sequelize.query("SELECT key FROM keys ORDER BY RANDOM() LIMIT 1", { type: sequelize.QueryTypes.SELECT})
     .then(key => {
     // We don't need spread here, since only the results will be returned for select queries
@@ -391,7 +431,7 @@ const aggregateComments = (option, res) => {
     .then((toApiString) => {
       axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
       .then((summary) => {
-        console.log('API summary request success', summary);
+        // console.log('API summary request success', summary);
         return summary.data
       })
       .then((summary) => {
@@ -416,7 +456,7 @@ const aggregateComments = (option, res) => {
           })
         })
         .catch((err) => {
-          console.log('Error with summary api request', err);
+          // console.log('Error with summary api request', err);
         })
       })
   };

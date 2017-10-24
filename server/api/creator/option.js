@@ -6,8 +6,10 @@ const User = db.User;
 const Frame = db.Frame;
 const Key = db.Key;
 const OptionAndAnnotation = db.OptionAndAnnotation;
+const EyeTracking = db.EyeTracking;
 const sequelize = db.sequelize;
 const router = express.Router();
+
 
 
 

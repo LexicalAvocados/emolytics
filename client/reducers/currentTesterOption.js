@@ -1,7 +1,7 @@
 const currentTesterOption = (state = {}, action) => {
   switch (action.type) {
     case 'CHANGE_TESTER_OPTION':
-      return Object.assign({}, state, action.obj);
+      return Object.assign({}, {}, action.obj);
     case 'SET_LOGGED_OUT':
       return {};
     default:
