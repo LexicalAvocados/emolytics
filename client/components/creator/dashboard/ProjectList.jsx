@@ -9,11 +9,9 @@ class ProjectList extends React.Component {
     super(props);
     this.state = {
       sections: [],
-      date: '',
-      id: 0
+      date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this);
-    this.delete = this.delete.bind(this);
   }
 
   componentDidMount() {
@@ -28,7 +26,6 @@ class ProjectList extends React.Component {
         this.setState({
           sections: sortedSections
         })
-        // console.log(this.state.sections);
       })
       .catch((err) => {
         console.log('Request to get relevant sections NOT sent to server!', err);
@@ -80,11 +77,10 @@ class ProjectList extends React.Component {
             </div>
           </div>
           <div style={del}>
-            <Button onClick={this.props.toggleEdit} style={edit}>Edit</Button> {/* Finish the styling on this later */}
+            <Button onClick={() => this.props.toggleEdit(this.props.project.id)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
           </div>
         </div>
-        <div>
-        <Modal { ...this.props.project} id={this.props.project.id} bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
+        <Modal bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Your Project</Modal.Title>
           </Modal.Header>
@@ -97,14 +93,10 @@ class ProjectList extends React.Component {
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button style={data} onClick={() => {
-              console.log(this.props);
-              this.props.deleteProject(this.props.project.id)
-              }}>Delete this Project</Button>
+            <Button style={data} onClick={this.props.deleteProject}>Delete this Project</Button>
             <Button onClick={this.props.toggleEdit}>Close</Button>
           </Modal.Footer>
         </Modal>
-        </div>
       </div>
     );
   }
