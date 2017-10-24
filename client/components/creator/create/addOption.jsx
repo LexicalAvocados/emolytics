@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
@@ -102,8 +103,8 @@ class AddOption extends React.Component {
 
   completeSubmitionsClick(e) {
     e.preventDefault();
-
-        this.props.history.push('/project' + `${this.props.currentProject.id}`);
+    // this.props.history.push('/project' + `${this.props.currentProject.id}`);
+    this.props.close();
   }
 
   convert(string, sequence) {
@@ -136,7 +137,7 @@ class AddOption extends React.Component {
             <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
             <input type="submit" value="Submit New Option" /><br />
           </form>
-          <button onClick={this.completeSubmitionsClick}>Complete Submitions</button><br />
+          <Button onClick={this.completeSubmitionsClick}>Complete Submitions</Button><br />
         </div>
         <div className="ThumbnailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (

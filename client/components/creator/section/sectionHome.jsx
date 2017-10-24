@@ -6,11 +6,12 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
-
+import AddSection from '../create/addSection.jsx';
+import SectionCarousel from './SectionCarousel.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -25,7 +26,10 @@ class SectionHome extends React.Component {
       testers: [],
       testersCopy: [],
       optionData: [],
-      compare: false
+      compare: false,
+      splitSections: [],
+      showAddSection: false,
+      showEdit: false
     }
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -37,9 +41,20 @@ class SectionHome extends React.Component {
     this.deleteOption = this.deleteOption.bind(this);
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
+    this.revealAddSection = this.revealAddSection.bind(this);
+    this.revealEdit = this.revealEdit.bind(this);
   }
 
   componentWillMount() {
+    this.props.currentProject.sections.push('End');
+    this.props.currentSection.options.push('End');
+    var splits = [];
+    for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {
+      splits.push(this.props.currentProject.sections.slice(i, i + 3))
+    }
+    this.setState({
+      splitSections: splits
+    })
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -85,7 +100,7 @@ class SectionHome extends React.Component {
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    this.props.history.push('/option' + this.props.currentSection.options[index].id);
+    // this.props.history.push('/option' + this.props.currentSection.options[index].id);
   }
 
   renderInvited() {
@@ -156,7 +171,7 @@ class SectionHome extends React.Component {
   getOptionsData() {
     axios.post('/api/section/getOptionsData', this.props.currentSection.options)
       .then(data => {
-        console.log(data);
+        // console.log(data);
         if (data.data) {
           this.setState({
             optionData: data.data
@@ -171,20 +186,35 @@ class SectionHome extends React.Component {
     })
   }
 
+  revealAddSection() {
+    this.setState({
+      showAddSection: !this.state.showAddSection
+    });
+  }
+  
+  revealEdit() {
+    this.setState({
+      showEdit: !this.state.showEdit
+    });
+  }
+
   render() {
     return (
       <div className="sectionHomeContainer">
-        <h3>Project Name: {this.props.currentProject.name}</h3>
-        <p>Project Description: {this.props.currentProject.description}</p>
-        <p>Section Name: {this.props.currentSection.name}</p>
+        <div>
+          <div>
+            <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
+          </div>
+          <SectionCarousel 
+            splitSections={this.state.splitSections}
+            revealEdit={this.revealEdit}
+            revealAddSection={this.revealAddSection}
+          />
+        </div>
 
         <Button onClick={this.compare}> Compare </Button>
 
         <ToggleDisplay show={!this.state.compare}>
-
-        <Link to="/addOption">
-          <Button className="addSectionButton">Add an option</Button>
-        </Link>
 
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p>
@@ -207,9 +237,8 @@ class SectionHome extends React.Component {
         ) : (
           <p>Testers Invited!</p>
         )}
-
-        <div className="currentSectionOptionsList">
-          { this.props.currentSection.options.map((option, i) => (
+        <Col className="currentSectionOptionsList" md={3}>
+          { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
             <OptionListEntry
               option={option}
               key={i}
@@ -219,7 +248,7 @@ class SectionHome extends React.Component {
               deleteOption={this.deleteOption}
             />
           ))}
-        </div>
+        </Col>
 
         {this.props.focusGroups.length > 0 ?
           <div>
@@ -259,6 +288,34 @@ class SectionHome extends React.Component {
 
           </ToggleDisplay>
 
+        <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add a Section</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AddSection
+              close={this.revealAddSection}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.revealAddSection}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal bsSize="large" show={this.state.showEdit} onHide={this.revealEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit this Section</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AddSection
+              close={this.revealEdit}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.revealEdit}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+          
       </div>
     );
   }

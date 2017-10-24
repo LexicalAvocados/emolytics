@@ -33,7 +33,6 @@ class SectionList extends React.Component {
   grabOptions(section) {
     axios.get('/api/getOptionsForSection', { params: {sectionId: section.id}})
       .then((options) => {
-        console.log('OPTIONS ASSOCIATED WITH SECTION', options);
         let sortedOptions = options.data.sort((one, two) => {
           if (one.createdAt < two.createdAt) return 1;
           if (one.createdAt > two.createdAt) return -1;
