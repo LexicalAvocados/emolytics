@@ -18,7 +18,8 @@ class DashboardHome extends React.Component {
       displayEdit: false,
       notifications: [],
       idOfClickedOn: null,
-      credits: 0
+      credits: 0,
+      fromDashboard: true
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -131,6 +132,7 @@ class DashboardHome extends React.Component {
               <CreateProject
                 close={this.revealCreate}
                 getProjectsFromDatabase={this.getProjectsFromDatabase}
+                fromDashboard={this.state.fromDashboard}
               />
             </Modal.Body>
             <Modal.Footer>

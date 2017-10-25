@@ -152,7 +152,7 @@ class DisplaySections extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.revealEdit}>Close</Button>
-            <Button onClick={this.deleteSection}>Delete this Section</Button> {/* Implement onCLick later */}
+            <Button onClick={this.deleteSection}>Delete this Section</Button> 
           </Modal.Footer>
         </Modal>
       </div>
