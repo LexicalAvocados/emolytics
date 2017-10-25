@@ -359,20 +359,20 @@ class TesterVideo extends React.Component {
 
     }
 
-    var circleStyle = {
-      backgroundColor: 'red',
-      position: 'absolute',
-      left: this.state.x * 1.5,
-      top: this.state.y,
-      borderRadius: '6px',
-      width:'10px',
-      height: '10px',
-      zIndex: '1000'
-    }
+    // var circleStyle = {
+    //   backgroundColor: 'red',
+    //   position: 'absolute',
+    //   left: this.state.x * 1.5,
+    //   top: this.state.y,
+    //   borderRadius: '6px',
+    //   width:'10px',
+    //   height: '10px',
+    //   zIndex: '1000'
+    // }
 
     return (
       <div>
-        <div style={circleStyle}></div>
+        {/*<div style={circleStyle}></div>*/}
         <ToggleDisplay className="overlay"  show={this.state.show}>
           <TesterFinishedVideo />
         </ToggleDisplay>
