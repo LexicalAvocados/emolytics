@@ -416,6 +416,11 @@ body {
   text-align: center;
 }
 
+.optionListThumbnail{
+  height: 92px;
+  width: 122px;
+}
+
 .annotations {
   padding: 10px;
   background-color: white;
@@ -556,11 +561,6 @@ body {
   height: 200vh;
   clear: right;
   padding: 1% 2% 2% 2%;
-}
-
-img {
-  height: 92px;
-  width: 122px;
 }
 
 .currentSectionOptionListEntry {
