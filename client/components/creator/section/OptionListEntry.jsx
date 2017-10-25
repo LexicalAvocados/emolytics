@@ -108,7 +108,7 @@ class OptionListEntry extends React.Component {
         { this.props.option !== 'End'  ? (
           <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
             <div className="optionListEntry">
-              <img src={this.props.option.thumbnail} alt=""/>
+              <img className="optionListThumbnail" src={this.props.option.thumbnail} alt=""/>
               <p className="closerText">{this.props.option.name}</p>
               <p className="closerText">{this.props.option.description}</p>
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}

@@ -10,11 +10,13 @@ const SectionCarousel = (props) => (
           return (
               <Carousel.Item key={overI}>
               { sectionGroup.map((section, i) => (
-                  <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
-                  <p>{section.name}</p>
-                  <p>{section.description}</p>
-                  <Button onClick={props.revealEdit}>Edit</Button> 
-                  </Col>
+                <Col md={3} className="sectionsScroll" key={i}>
+                  <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
+                    <p>{section.name}</p>
+                    <p>{section.description}</p>
+                  </div>
+                    <Button onClick={() => props.revealEdit(section)}>Edit</Button> 
+                </Col>
               ))}
               </Carousel.Item>
           );
@@ -24,11 +26,13 @@ const SectionCarousel = (props) => (
               { sectionGroup.map((section, i) => {
                   if (section !== 'End') {
                   return (
-                      <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
-                      <p>{section.name}</p>
-                      <p>{section.description}</p>
-                      <Button onClick={props.revealEdit}>Edit</Button> 
-                      </Col>
+                    <Col md={3} className="sectionsScroll" key={i}>
+                      <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
+                        <p>{section.name}</p>
+                        <p>{section.description}</p>
+                      </div>
+                       <Button onClick={() => props.revealEdit(section)}>Edit</Button> 
+                    </Col>
                   );
                   } else {
                   return (
