@@ -35,10 +35,7 @@ class TesterFinishedVideo extends React.Component {
         })
         .catch((err) => {
           console.log(err);
-        })
-
-      // })
-    
+        });
   }
 
   routeHome() {
@@ -51,7 +48,7 @@ class TesterFinishedVideo extends React.Component {
     var val = e.target.value;
     this.setState({
       [name]: val
-    })
+    });
   }
 
   render() {

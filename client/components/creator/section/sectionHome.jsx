@@ -160,7 +160,7 @@ class SectionHome extends React.Component {
         this.renderAssigned();
       })
       .catch(err => {
-        console.log('Error assigning Focus Group to Section:', err);
+        console.log('Error assigning Group to Section:', err);
       })
   }
 
@@ -247,9 +247,9 @@ class SectionHome extends React.Component {
                 <Button
                   bsStyle='primary'
                   onClick={this.assignFocusGroup}
-                >Assign Focus Group to Section</Button>
+                >Assign Group to Section</Button>
                 {this.state.assigned ?
-                  'Focus Group Assigned!'
+                  'Group Assigned!'
                 :
                   null}
               </div>
