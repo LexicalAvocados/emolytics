@@ -218,9 +218,9 @@ class SectionHome extends React.Component {
       <div className="sectionHomeContainer">
         <div>
           <div>
-            <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
+            <h3>Project Name: {this.props.currentProject.name} | Description: {this.props.currentProject.description}</h3>
           </div>
-          <DisplaySections 
+          <DisplaySections
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
           />
@@ -231,7 +231,7 @@ class SectionHome extends React.Component {
         ): (
           <p>Choose two options</p>
         )}
-        
+
 
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p>
@@ -303,17 +303,16 @@ class SectionHome extends React.Component {
             <OptionHome />
          ):(
            null
-         )} 
+         )}
 
          { this.state.compareOptions.length === 2 ? (
-           <Compare 
+           <Compare
              optionsToCompare={this.state.compareOptions}
              compare={this.compare}
            />
          ) : (
            null
          )}
-       
 
       </div>
     );

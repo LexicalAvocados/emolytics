@@ -6,16 +6,16 @@ const TesterAndOptions = db.TesterAndOption;
 const Notifications = db.Notification;
 const nodemailer = require('nodemailer');
 
-const routeForTesters = "http://localhost:3000/login"
+const routeForTesters = 'http://localhost:3000/login';
 
 
 exports.sendEmails = function(req, res) {
-  console.log('within emails', req.body);
+  // console.log('within emails', req.body);
   let transporter = nodemailer.createTransport({
-    service: "Gmail",
+    service: 'Gmail',
     auth: {
-      user: "reactionsyncer@gmail.com",
-      pass: "reactionsync1"
+      user: 'reactionsyncer@gmail.com',
+      pass: 'reactionsync1'
     }
   });
 
@@ -40,7 +40,7 @@ exports.sendEmails = function(req, res) {
         // return console.log(error);
         res.send('FAILURE');
       } else {
-        console.log('I think the email was sent.', info);
+        // console.log('I think the email was sent.', info);
         res.send('Success');
       }
     });
@@ -49,7 +49,7 @@ exports.sendEmails = function(req, res) {
 
 
 exports.createNewFocusGroup = (req, res) => {
-  console.log('createNewFocusGroup req.body:', req.body);
+  // console.log('createNewFocusGroup req.body:', req.body);
   User.findOne({
     where: {
       username: req.body.creatorUsername
@@ -73,7 +73,7 @@ exports.createNewFocusGroup = (req, res) => {
 
 
 exports.deleteFocusGroup = (req, res) => {
-  console.log('deleteFocusGroup req.body:', req.body);
+  // console.log('deleteFocusGroup req.body:', req.body);
   User.findOne({
     where: {
       username: req.body.creatorUsername
@@ -98,8 +98,7 @@ exports.deleteFocusGroup = (req, res) => {
 
 
 exports.addTesterToFocusGroup = (req, res) => {
-  console.log('addTesterToFocusGroup req.body:', req.body);
-
+  // console.log('addTesterToFocusGroup req.body:', req.body);
   let tester = User.findOne({
     where: {
       username: req.body.testerUsername
@@ -126,7 +125,7 @@ exports.addTesterToFocusGroup = (req, res) => {
     .catch(err => {
       console.log('Error associating Tester with Focus Group:', err);
       res.send(false);
-    })
+    });
 };
 
 
@@ -147,7 +146,7 @@ exports.removeTesterFromFocusGroup = (req, res) => {
 
   Promise.all([tester, focusGroup])
     .then(values => {
-      console.log('values:', values);
+      // console.log('values:', values);
       return FocusGroupAndTester.destroy({
         where: {
           userId: values[0].id,
@@ -156,7 +155,7 @@ exports.removeTesterFromFocusGroup = (req, res) => {
       });
     })
     .then(numOfDeletedRows => {
-      console.log('numOfDeletedRows:', numOfDeletedRows);
+      // console.log('numOfDeletedRows:', numOfDeletedRows);
       if (numOfDeletedRows === 1) res.send(true);
       else res.send(false);
     })
@@ -165,9 +164,8 @@ exports.removeTesterFromFocusGroup = (req, res) => {
     });
 };
 
-
 exports.getCreatorFocusGroups = (req, res) => {
-  console.log('getCreatorFocusGroups req.query:', req.query);
+  // console.log('getCreatorFocusGroups req.query:', req.query);
   let creatorFocusGroups = [];
 
   User.findOne({
@@ -176,7 +174,7 @@ exports.getCreatorFocusGroups = (req, res) => {
     }
   })
     .then(creator => {
-      console.log('1st then block');
+      // console.log('1st then block');
       return FocusGroup.findAll({
         where: {
           userId: creator.dataValues.id
@@ -184,7 +182,7 @@ exports.getCreatorFocusGroups = (req, res) => {
       });
     })
     .then(groups => {
-      console.log('2nd then block');
+      // console.log('2nd then block');
       groups = groups.map(group => {
         group = group.dataValues;
         delete group.createdAt;
@@ -205,7 +203,7 @@ exports.getCreatorFocusGroups = (req, res) => {
       }));
     })
     .then(groupsAndTesters => {
-      console.log('3rd then block');
+      // console.log('3rd then block');
       console.log('groupsAndTesters:', groupsAndTesters.map(x => x.map(y => y.dataValues)));
       console.log('creatorFocusGroups:', creatorFocusGroups);
 
@@ -216,8 +214,8 @@ exports.getCreatorFocusGroups = (req, res) => {
               creatorFocusGroups[i].testerIds.push(dbEntry.dataValues.userId);
             }
           }
-        })
-      })
+        });
+      });
 
       return Promise.all(groupsAndTesters.map(testersPerGroup => {
         return Promise.all(testersPerGroup.map(tester => {
@@ -230,7 +228,7 @@ exports.getCreatorFocusGroups = (req, res) => {
       }));
     })
     .then(userDBEntries => {
-      console.log('4th then block');
+      // console.log('4th then block');
       console.log('creatorFocusGroups:', creatorFocusGroups);
       console.log('userDBEntries:', userDBEntries.map(x => x.map(y => y.dataValues)));
       userDBEntries.forEach(group => {
@@ -244,7 +242,7 @@ exports.getCreatorFocusGroups = (req, res) => {
           }
         });
       });
-      console.log('final product:', creatorFocusGroups);
+      // console.log('final product:', creatorFocusGroups);
       res.send(creatorFocusGroups);
     })
     .catch(err => {
@@ -259,15 +257,15 @@ exports.getAllNotificationsForUser = (req, res) => {
       username: req.session.username || req.session.passport.user.username
     }
   })
-  .then( (user) => {
-    console.log('user for notifications', user.dataValues.id)
-    Notifications.findAll({
-      where: {
-        userId: user.dataValues.id
-      }
-    })
-    .then( (allNotifs) => {
-      res.send(JSON.stringify(allNotifs))
-    })
-  })
-}
+    .then( (user) => {
+      // console.log('user for notifications', user.dataValues.id);
+      Notifications.findAll({
+        where: {
+          userId: user.dataValues.id
+        }
+      })
+        .then( (allNotifs) => {
+          res.send(JSON.stringify(allNotifs));
+        });
+    });
+};
