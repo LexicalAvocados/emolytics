@@ -13,18 +13,12 @@ class CompareFeedback extends React.Component {
     console.log(this);
   }
 
-  componentWillReceiveProps(nProps) {
-    if(this.props.emo !== nProps.emo) {
-      console.log(this);
-    }
-  }
-
   render () {
     return (
     	<div className="optionDemographics">
 
         <h4> Feedback </h4>
-        <div classname="optionDemographicsBody">
+        <div className="optionDemographicsBody">
 
           <h5> Completed Views: {this.props.demo.finished} </h5>
           <h5> Liked: {this.props.demo.liked} </h5>
@@ -41,8 +35,3 @@ class CompareFeedback extends React.Component {
 }
 
 export default CompareFeedback;
-
-
-{/* <Checkbox onChange={(e) => this.props.handleInvites(e, this.props.index)}>
-Name: {this.props.tester.username} Age: {this.props.tester.age} Sex: {this.props.tester.sex} Race: {this.props.tester.race}
-</Checkbox> */}
