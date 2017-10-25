@@ -15,7 +15,7 @@ const SectionCarousel = (props) => (
                     <p>{section.name}</p>
                     <p>{section.description}</p>
                   </div>
-                    <Button onClick={() => props.revealEdit(section)}>Edit</Button> 
+                    <Button onClick={() => props.beginEdit(section)}>Edit</Button> 
                 </Col>
               ))}
               </Carousel.Item>
@@ -31,7 +31,7 @@ const SectionCarousel = (props) => (
                         <p>{section.name}</p>
                         <p>{section.description}</p>
                       </div>
-                       <Button onClick={() => props.revealEdit(section)}>Edit</Button> 
+                       <Button onClick={() => props.beginEdit(section)}>Edit</Button> 
                     </Col>
                   );
                   } else {
