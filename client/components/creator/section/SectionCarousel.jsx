@@ -11,7 +11,7 @@ const SectionCarousel = (props) => (
               <Carousel.Item key={overI}>
               { sectionGroup.map((section, i) => (
                 <Col md={3} className="sectionsScroll" key={i}>
-                  <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
+                  <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null, props.fromSectionHome || null)}>
                     <p>{section.name}</p>
                     <p>{section.description}</p>
                   </div>
@@ -27,7 +27,7 @@ const SectionCarousel = (props) => (
                   if (section !== 'End') {
                   return (
                     <Col md={3} className="sectionsScroll" key={i}>
-                      <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
+                      <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null, props.fromSectionHome || null)}>
                         <p>{section.name}</p>
                         <p>{section.description}</p>
                       </div>
