@@ -44,7 +44,6 @@ class DisplaySections extends React.Component {
         sortedOptions.push('End')
         obj['options'] = sortedOptions;
         this.props.actions.changeCurrentSection(obj, options);
-        console.log('SETTING BEFORE NEXT', this.props.currentProject);
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');

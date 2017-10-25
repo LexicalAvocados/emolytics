@@ -606,6 +606,10 @@ body {
 
 }
 
+.focusGroupButtonToolbar{
+  height: 50px;
+}
+
 .addEntityButton {
   float: right;
 }
