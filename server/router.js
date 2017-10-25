@@ -3,7 +3,7 @@ const router = require('express').Router();
 const testerRoutes = require('./api/tester');
 const creatorOptionRoutes = require('./api/creator/option.js');
 const creatorSectionRoutes = require('./api/creator/section.js');
-const projectRoutes = require('./api/creator/projectRoutes.js')
+const projectRoutes = require('./api/creator/projectRoutes.js');
 const sectionRoutes = require('./api/creator/sectionRoutes.js');
 const optionRoutes = require('./api/creator/optionRoutes.js');
 const frameRoutes = require('./api/creator/frameRoutes.js');
@@ -45,7 +45,7 @@ router.post('/getUsersNamesWhoWatced', optionRoutes.getUsersNamesWhoWatced);
 
 router.post('/addOption', optionRoutes.addOption);
 
-router.post('/updateAfterFb', updateUserRoleRoutes.updateCreatorAfterSignup)
+router.post('/updateAfterFb', updateUserRoleRoutes.updateCreatorAfterSignup);
 
 router.post('/creator/newFocusGroup', indexRoutes.createNewFocusGroup);
 
@@ -57,7 +57,7 @@ router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGro
 
 router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
 
-router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange)
+router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange);
 
 router.get('/creator/getEyeTrackingForOption', eyeTrackingRoutes.getEyeTrackingForOption)
 
@@ -79,6 +79,6 @@ router.get('/getCreditBalance', creditRoutes.getCreditBalance);
 
 router.post('/addCreditsToOption', creditRoutes.addCreditsToOption);
 
-router.get('/allSponsoredOptions', creditRoutes.allSponsoredOptions)
+router.get('/allSponsoredOptions', creditRoutes.allSponsoredOptions);
 
 module.exports = router;
