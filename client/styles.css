@@ -234,7 +234,7 @@ body {
   text-align: center;
 }
 
-button {
+.optionNavButton, .optionNavButtonDisabled, .like, .unlike {
   margin: 0% 3%;
   border: none;
   color: white;
@@ -246,7 +246,7 @@ button {
   border-radius: 12px;
 }
 
-button:hover {
+.optionNavButton:hover, .like:hover, .unlike:hover {
   text-decoration: underline;
 }
 
@@ -597,8 +597,13 @@ img {
   width: 100%
 }
 
-.focusGroupButtonToolbar{
-  height: 50px;
+.focusGroupTesterList {
+  list-style: none;
+  padding: 0px;
+}
+
+.focusGroupTesterListEntry {
+
 }
 
 .addEntityButton {

@@ -117,9 +117,11 @@ class FocusGroupsPage extends React.Component {
         {currentFocusGroup ?
           <div>
 
-            <div>
-              <Button bsStyle='danger' onClick={this.deleteFocusGroup}>Delete Group</Button>
-            </div>
+            <Button
+              bsSize='xsmall'
+              bsStyle='danger'
+              onClick={this.deleteFocusGroup}
+            > Delete Group </Button>
 
             <h2>Add Tester to {currentFocusGroup.name}</h2>
 
@@ -136,9 +138,13 @@ class FocusGroupsPage extends React.Component {
             <h2>{currentFocusGroup.name} Members</h2>
 
             {currentFocusGroup.testers.length > 0 ?
-              <ul>
+              <ul className='focusGroupTesterList'>
                 {currentFocusGroup.testers.map((tester, i) => (
-                  <li key={i} onClick={this.removeTesterFromFocusGroup.bind(null, tester)}>{tester}</li>
+                  <li
+                    className='focusGroupTesterListEntry'
+                    key={i}
+                    onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
+                  > {tester} </li>
                 ))}
               </ul>
             :
