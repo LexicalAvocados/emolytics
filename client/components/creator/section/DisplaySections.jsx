@@ -98,6 +98,7 @@ class DisplaySections extends React.Component {
           <Modal.Body>
             <AddSection
               close={this.revealAddSection}
+              splitSections={this.splitSections}
             />
           </Modal.Body>
           <Modal.Footer>

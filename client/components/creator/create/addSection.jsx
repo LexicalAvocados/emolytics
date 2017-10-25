@@ -35,6 +35,7 @@ class AddSection extends React.Component {
       .then((response) => {
         this.props.actions.changeCurrentSection(response.data);
         this.props.actions.addSectionsToCurrentProject(response.data); 
+        this.props.splitSections();
         this.props.close();
         
       })
