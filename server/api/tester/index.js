@@ -297,64 +297,67 @@ router.post('/likeVideo', (req, res) => {
             optionId: req.body.option.id,
             creatorId: user.dataValues.userId
           })
-        })
-      })
-    })
-    .then(() => {
-      var optionPerViewCredit;
-      var testerIdClosure;
+          .then(() => {
+            var optionPerViewCredit;
+            var testerIdClosure;
 
-      Option.findOne({
-        where: {
-          id: req.body.option.id
-        }
-      })
-      .then((option) => {
-        optionPerViewCredit = option.creditsperview || 0;
-        let remainingCredits = option.totalcredits - option.creditsperview
-        option.update({
-          totalcredits: remainingCredits
-        })
-      })
-
-      .then(()=> {
-        User.findOne({
-          where: {
-            username: req.session.username
-          }
-        })
-        .then((user) => {
-          let newCredits = user.credits + optionPerViewCredit;
-          testerIdClosure = user.id;
-          user.update({
-            credits:newCredits
-          })
-        })
-        .then(() => {
-          Transaction.findOne({
-            where: {
-              optionId: req.body.optionId,
-              creatorId: creatorId
-            }
-          })
-          .then((trans) => {
-            trans.update({
-              testerId: testerIdClosure,
-              amount: optionPerViewCredit || 0
+            Option.findOne({
+              where: {
+                id: req.body.option.id
+              }
             })
-          })
-        })
-      })
-      .then(() => {
-        User.findOne({
-          where: {
-            id: creatorId
-          }
-        })
-        .then((user) => {
-          let remainingCredits = user.totalcredits - optionPerViewCredit;
-          user.update({
-            credits: remainingCredits
+            .then((option) => {
+              optionPerViewCredit = option.creditsperview || 0;
+              let remainingCredits = option.totalcredits - option.creditsperview
+              option.update({
+                totalcredits: remainingCredits
+              })
+            })
+
+            .then(()=> {
+              User.findOne({
+                where: {
+                  username: req.session.username
+                }
+              })
+              .then((user) => {
+                let newCredits = user.credits + optionPerViewCredit;
+                testerIdClosure = user.id;
+                user.update({
+                  credits:newCredits
+                })
+              })
+              .then(() => {
+                Transaction.findOne({
+                  where: {
+                    optionId: req.body.option.id,
+                    creatorId: creatorId
+                  }
+                })
+                .then((trans) => {
+                  console.log('TRANSACTION FOUND', trans)
+                  trans.update({
+                    testerId: testerIdClosure,
+                    amount: optionPerViewCredit
+                  })
+                  .then(() => {
+                    console.log('CReATORID', creatorId)
+                    User.findOne({
+                      where: {
+                        id: creatorId
+                      }
+                    })
+                    .then((user) => {
+                      console.log('USER FOUND', user)
+                      let remainingCredits = user.dataValues.credits - optionPerViewCredit;
+                      user.update({
+                        credits: remainingCredits
+                      })
+                    })
+                  })
+                })
+              })
+            })
           })
         })
       })

@@ -3,6 +3,11 @@ import axios from 'axios';
 import BrowseListEntry from './BrowseListEntry.jsx';
 import {ButtonToolbar, ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
 
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions';
+
 class Browse extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +16,7 @@ class Browse extends React.Component {
       sort: 1
     }
     this.handleSort = this.handleSort.bind(this);
+    this.redirectUser = this.redirectUser.bind(this);
   }
 
   componentDidMount() {
@@ -38,6 +44,10 @@ class Browse extends React.Component {
     }, () => console.log('sorted state', this.state.videos))
   }
 
+  redirectUser(option) {
+    this.props.actions.changeTesterOption(option);
+  }
+
 
   render() {
     return (
@@ -54,7 +64,7 @@ class Browse extends React.Component {
 
         {this.state.videos.length > 0 ? (
           this.state.videos.map((item, i) => (
-            <BrowseListEntry item={item} key={i}/>
+            <BrowseListEntry item={item} key={i} handleWatch={this.redirectUser}/>
           ))
         ) : ''}
       </div>
@@ -62,4 +72,18 @@ class Browse extends React.Component {
   }
 };
 
-export default Browse;
+const mapStateToProps = (state) => {
+  // console.log('state', state);
+  return ({
+    currentTesterOption: state.currentTesterOption
+  })
+}
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+) (Browse);
