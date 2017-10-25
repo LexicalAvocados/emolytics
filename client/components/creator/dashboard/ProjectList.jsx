@@ -64,11 +64,6 @@ class ProjectList extends React.Component {
               <h4>{this.props.project.name}</h4>
               <p>{this.props.project.description}</p>
               <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
-              {/* { this.state.sections.map((section, i) => {
-                return (
-                  <p key={i}>{section.name}</p>
-                );
-              })} */}
             </div>
             <div style={time}>
               <br/>
