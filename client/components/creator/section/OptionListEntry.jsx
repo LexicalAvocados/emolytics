@@ -114,7 +114,6 @@ class OptionListEntry extends React.Component {
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
-<<<<<<< HEAD
             <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete</Button>
             <Button onClick={this.showAddCreditsForm}>Add Credits</Button>
 
@@ -168,9 +167,6 @@ class OptionListEntry extends React.Component {
 
             </div>
 
-=======
-            {/* <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete</Button> */}
->>>>>>> hello
           </div>
         ) : (
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">
