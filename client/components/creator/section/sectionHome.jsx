@@ -30,7 +30,8 @@ class SectionHome extends React.Component {
       testersCopy: [],
       optionData: [],
       compare: false,
-      showData: false
+      showData: false,
+      compareOptions: []
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -92,12 +93,27 @@ class SectionHome extends React.Component {
 
 
   onOptionClick(index) { // Functional
-    console.log(index);
-    console.log('SHOUuld be currently clicked thing', this.props.currentSection.options[index]);
-    this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    this.setState({ // Revise to remove OptionHome on certain conditions
-      showData: true
-    });
+    if (this.state.compare) { // We are setting up to compare
+      if (this.state.compareOptions.length < 2) { // Need two options
+        this.setState({
+          compareOptions: [ ...this.state.compareOptions, this.props.currentSection.options[index]],
+          showData: false
+        });
+      } else {
+        this.setState({
+          compareOptions: [],
+          compare: false,
+          showData: true
+        });
+        this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+      }
+    } else { // Clicked on option
+      this.setState({
+        showData: true,
+        compareOptions: []
+      });
+      this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+    }
   }
 
   renderInvited() {
@@ -193,9 +209,12 @@ class SectionHome extends React.Component {
           <DisplaySections />
         </div>
 
-        <Button onClick={this.compare}> Compare </Button>
-
-        <ToggleDisplay show={!this.state.compare}>
+        { !this.state.compare ? (
+          <Button onClick={this.compare}> Compare </Button>
+        ): (
+          <p>Choose two options</p>
+        )}
+        
 
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p>
@@ -261,20 +280,22 @@ class SectionHome extends React.Component {
           null}
 
 
-          </ToggleDisplay>
 
-          <ToggleDisplay show={this.state.compare}>
-
-            <Compare/>
-
-
-          </ToggleDisplay>
 
          { this.state.showData ? (
             <OptionHome />
          ):(
            null
          )} 
+
+         { this.state.compareOptions.length === 2 ? (
+           <Compare 
+             optionsToCompare={this.state.compareOptions}
+             compare={this.compare}
+           />
+         ) : (
+           null
+         )}
        
 
       </div>

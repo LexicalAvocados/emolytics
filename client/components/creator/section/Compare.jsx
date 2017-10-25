@@ -11,28 +11,24 @@ class CompareOptions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: [],
-      option1: 0,
-      option2: 0,
-
     }
-    console.log(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
-    this.setState({
-      options: this.props.currentSection.options
-    })
+    // this.setState({
+    //   options: this.props.currentSection.options
+    // })
+
   }
 
-  handleChange(e) {
-    e.preventDefault();
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-    console.log(this);
-  }
+  // handleChange(e) {
+  //   e.preventDefault();
+  //   this.setState({
+  //     [e.target.name]: e.target.value
+  //   })
+  //   console.log(this);
+  // }
 
   render () {
 
@@ -44,47 +40,27 @@ class CompareOptions extends React.Component {
       clear: 'right',
 
     }
-    var selections = this.state.options.map( (elem, i) => {
-      return <option value={i}>{elem.name}</option>
-    })
 
     return (
       <div>
-      { this.state.options.length >= 2 ? (
         <div>
           <div className="sectionComparison">
           <div style={heading}>
-            <h3  >Comparison</h3>
+            <h3>Comparison</h3>
           </div>
           <br/>
-
           <div>
           <Col md={6}>
-            <select name="option1" value={this.state.option1} onChange={this.handleChange}>
-
-              {selections}
-              
-            </select>
-            <CompareCharts idx={1} option={this.props.currentSection.options[this.state.option1]}/>
-
+            <CompareCharts idx={1} option={this.props.optionsToCompare[0]}/>
           </Col>
 
           <Col md={6} style={divStyle}>
-            <select name="option2" value={this.state.option2} onChange={this.handleChange}>
-
-              {selections}
-              
-            </select>
-            <CompareCharts idx={2} option={this.props.currentSection.options[this.state.option2]}/>
+            <CompareCharts idx={2} option={this.props.optionsToCompare[1]}/>
           </Col>
           </div>
         </div>
         </div>
-    ) : (
-      null
-    )}
-
-  </div>
+      </div>
 
     );
   }
