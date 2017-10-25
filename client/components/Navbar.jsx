@@ -37,7 +37,7 @@ class Navbar extends React.Component {
                   <p className='navItem'>Home</p>
                 </Link>
                 <Link to='/createProject' style={noUnderline}>
-                  <p className='navItem'>Create Project</p>
+                  <p className='navItem'>New</p>
                 </Link>
                 <Link to='/groups' style={noUnderline}>
                   <p className='navItem'>Groups</p>
