@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 import pad from 'array-pad';
+import {ButtonToolbar, ToggleButtonGroup, ToggleButton}  from 'react-bootstrap';
+import $ from 'jquery';
 
 import SideBar from './SideBar.jsx';
 import Overview from './Subcomponents/Overview.jsx';
@@ -16,7 +18,7 @@ import Feedback from './Subcomponents/Feedback.jsx';
 import UserSelect from './Subcomponents/UserSelect.jsx';
 import Annotations from './Subcomponents/Annotation.jsx';
 import DetailedDemographics from './Subcomponents/DetailedDemographics.jsx';
-import HeatMap from './Subcomponents/HeatMap.jsx'
+import HeatMap from './Subcomponents/HeatMap.jsx';
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -39,6 +41,9 @@ class OptionHome extends React.Component {
       selectedUsers: [],
       graph: null,
       player: null,
+      heatmapSetting: 1,
+      videoTime: 0,
+      playVideoForHM: false
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
@@ -49,6 +54,8 @@ class OptionHome extends React.Component {
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
     this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
+    this.handleHeatmapData = this.handleHeatmapData.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
     // console.log(this);
   }
 
@@ -265,9 +272,14 @@ class OptionHome extends React.Component {
   };
 
   changeSideNavSelection(item) {
-    this.setState({
-      sideNavSelection: item
-    }, this.lineGraphDataSwitch);
+
+      this.setState({
+        sideNavSelection: item
+      }, () => {
+        console.log('sidenav state', this.state.sideNavSelection)
+        if (this.state.sideNavSelection !== 'heatmap') this.lineGraphDataSwitch()
+      });
+
   };
 
   lineGraphDataSwitch() {
@@ -277,6 +289,7 @@ class OptionHome extends React.Component {
     if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
       this.generateCharts(this.state.emotionsArrForRender)
     }
+    else {}
   };
 
   recalculateChartsBasedOnUserSelect(userIdsArray){
@@ -367,91 +380,199 @@ class OptionHome extends React.Component {
     })
   };
 
+  handleHeatmapData(num) {
+    this.setState({
+      heatmapSetting: num
+    }, () => {
+      if (num === 2) {
+        this.setState({
+          playVideoForHM: true
+        })
+      } else {
+        this.setState({
+          playVideoForHM: false
+        })
+      }
+    })
+  }
+
+  updateProgress(timeObj) {
+    // console.log('timeObj', timeObj);
+    this.setState({
+      videoTime: Math.floor(timeObj.playedSeconds)
+    })
+  }
+
   render() {
     return (
       <div className='optionAnalyticsContainer'>
         <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
-        <div className='leftSide'>
-        <div className="optionPlayer">
-          <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-            ref="player"
-            controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
-            config={{
-              youtube: {
-                playerVars: { showinfo: 1}
-              }
-            }}/>
+
+        { this.state.sideNavSelection !== 'heatmap' ? (
+
+          <div className='nonHeatmapContainer'>
+
+          <div className='leftSide'>
+          <div className="optionPlayer">
+            <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
+              ref="player"
+              progressFrequency={1000} onProgress={this.updateProgress}
+              controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+              config={{
+                youtube: {
+                  playerVars: { showinfo: 1}
+                }
+              }}/>
+              </div>
+            <div className="optionChart">
             </div>
-          <div className="optionChart">
           </div>
-        </div>
-        <div className="rightSide">
-          {this.state.sideNavSelection === 'overview' ?
-            (<Overview
-              allUsers={this.state.allUsers}
-              selectedUsers={this.state.selectedUsers}
-              viewer={this.state.user}
-              attention={this.state.attention[0]}
-              user={this.state.user}
-              timestampCallback={this.timestampCallback}
-              emotionsObj={this.state.emotionObj}
-              likeRatio={this.state.likeRatio}
-              completionStatus={this.state.completion}
-              sideNavSelection={this.state.sideNavSelection}
-              />
-            ): ''
-          }
 
-          {this.state.sideNavSelection === 'attention' ? (
-            <div className='attentionRightPanelContainer'>
-              <div className="optionContainer">
+          <div className="rightSide">
+            {this.state.sideNavSelection === 'overview' ?
+              (<Overview
+                allUsers={this.state.allUsers}
+                selectedUsers={this.state.selectedUsers}
+                viewer={this.state.user}
+                attention={this.state.attention[0]}
+                user={this.state.user}
+                timestampCallback={this.timestampCallback}
+                emotionsObj={this.state.emotionObj}
+                likeRatio={this.state.likeRatio}
+                completionStatus={this.state.completion}
+                sideNavSelection={this.state.sideNavSelection}
+                />
+              ): ''
+            }
+
+            {this.state.sideNavSelection === 'attention' ? (
+              <div className='attentionRightPanelContainer'>
+                <div className="optionContainer">
+                  <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                </div>
+                <div className="optionContainer">
+                  <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+                </div>
+              </div>
+            ) : ''}
+
+            {this.state.sideNavSelection === 'feedback' ? (
+              <div className='feedbackRightPanelContainer'>
                 <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                <Feedback feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
               </div>
-              <div className="optionContainer">
-                <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+            ) : ''}
+
+            {this.state.sideNavSelection === 'emotions' ? (
+              <div className='emotionsRightPanelContainer'>
+                <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                <Emotion emotionsObj={this.state.emotionObj} />
               </div>
+            ) : ''}
+
+            {this.state.sideNavSelection === 'settings' ? (
+              <div className='emotionsRightPanelContainer'>
+                <UserSelect user={this.state.user} optionId={this.props.currentSection.option.id}
+                            userSelectCb={this.handleUserSelectCb} changeSideNavSelection={this.changeSideNavSelection}
+                            selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+              </div>
+            ) : ''}
+
+            {this.state.sideNavSelection === 'annotations' ? (
+                <Annotations graph={this.state.graph} player={this.state.player}/>
+            ) : ''}
+
+            {this.state.sideNavSelection === 'detailedDemographics' ? (
+                <DetailedDemographics selectedUsers={this.state.selectedUsers}/>
+            ) : ''}
+
             </div>
-          ) : ''}
+          </div>
+        ) : (
 
-          {this.state.sideNavSelection === 'feedback' ? (
-            <div className='feedbackRightPanelContainer'>
-              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Feedback feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
-            </div>
-          ) : ''}
+            <div className='heatmapComponentContainer' style={heatmapComponentContainerStyle}>
 
-          {this.state.sideNavSelection === 'emotions' ? (
-            <div className='emotionsRightPanelContainer'>
-              <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-              <Emotion emotionsObj={this.state.emotionObj} />
-            </div>
-          ) : ''}
+              <div className='videoPlayerUnder' style={videoPlayerUnderStyle}>
+                <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
+                  ref="player"
+                  progressFrequency={1000} onProgress={this.updateProgress}
+                  playing={this.state.playVideoForHM}
+                  controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+                  config={{
+                    youtube: {
+                      playerVars: { showinfo: 1}
+                    }
+                  }}/>
+              </div>
 
-          {this.state.sideNavSelection === 'settings' ? (
-            <div className='emotionsRightPanelContainer'>
-              <UserSelect user={this.state.user} optionId={this.props.currentSection.option.id}
-                          userSelectCb={this.handleUserSelectCb} changeSideNavSelection={this.changeSideNavSelection}
-                          selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-            </div>
-          ) : ''}
+              <div className='heatmapSuperimposed' style={heatmapSuperimposedStyle}>
+                <HeatMap option={this.props.currentSection.option} setting={this.state.heatmapSetting} time={this.state.videoTime}/>
+              </div>
 
-          {this.state.sideNavSelection === 'annotations' ? (
-              <Annotations graph={this.state.graph} player={this.state.player}/>
-          ) : ''}
+              <div className='buttons' style={buttonStyle}>
+                <br/><br/>
+                <ButtonToolbar>
+                  <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
+                    <ToggleButton value={1}>Aggregate</ToggleButton>
+                    <ToggleButton value={2}>Over Time</ToggleButton>
+                  </ToggleButtonGroup>
+                </ButtonToolbar>
+              </div>
 
-          {this.state.sideNavSelection === 'heatmap' ? (
-              <HeatMap />
-          ) : ''}
+          </div>
 
-          {this.state.sideNavSelection === 'detailedDemographics' ? (
-              <DetailedDemographics selectedUsers={this.state.selectedUsers}/>
-          ) : ''}
-
-        </div>
+        )
+      }
       </div>
     )
   }
 }
+
+const heatmapComponentContainerStyle = {
+  width: "86%",
+  height: "100%",
+  position: "relative",
+  marginLeft: '5%'
+}
+
+const videoPlayerUnderStyle = {
+  width: "100%",
+  height: "100%",
+  position: "absolute",
+  top: '0',
+  left: '0'
+}
+
+const heatmapSuperimposedStyle = {
+  width: "100%",
+  height: "100%",
+  position: "absolute",
+  top: '0',
+  left: '0',
+  marginTop: '6%',
+  zIndex: "100"
+}
+
+const buttonStyle = {
+  position: 'absolute',
+  top: '87%',
+  left: '40%',
+  zIndex: '102'
+}
+
+/*
+
+<div className='buttons'>
+  <br/><br/>
+  <ButtonToolbar>
+    <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
+      <ToggleButton value={1}>Aggregate</ToggleButton>
+      <ToggleButton value={2}>Over Time</ToggleButton>
+    </ToggleButtonGroup>
+  </ButtonToolbar>
+</div>
+
+*/
 
 const mapStateToProps = (state) => {
   return ({
