@@ -694,6 +694,17 @@ img {
   margin-bottom: 0%;
 }
 
-.addSectionButton{
+.addSectionButton {
   float: right;
+}
+
+.ccInput {
+  margin-top: 100px;
+  border: 1px;
+  border-style: solid;
+  border-color: #CFD7E0;
+  border-radius: 4px;
+  padding: 0px 20px 20px 20px;
+  text-align: center;
+  width: 50%;
 }

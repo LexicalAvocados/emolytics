@@ -29,7 +29,7 @@ import AddSection from './creator/create/addSection.jsx';
 import AddOption from './creator/create/addOption.jsx';
 import Loading from './auth/loading.jsx';
 import LandingPage from './LandingPage.jsx';
-import Account from './creator/dashboard/Account.jsx';
+import CreatorAccount from './creator/dashboard/CreatorAccount.jsx';
 import Browse from './tester/Browse/Browse.jsx';
 
 
@@ -59,7 +59,7 @@ export class App extends React.Component {
                 <Route path="/createProject" component={CreateProject}/>
                 <Route path="/addSection" component={AddSection}/>
                 <Route path="/addOption" component={AddOption}/>
-                <Route path="/account" component={Account}/>
+                <Route path="/account" component={CreatorAccount}/>
               </Switch>
               </div>
             ) : (
