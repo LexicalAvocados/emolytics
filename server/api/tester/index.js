@@ -186,7 +186,7 @@ router.post('/sendFrame', (req, res) => {
         })
 
 router.post('/likeVideo', (req, res) => {
- 
+  var creatorId; //for closure access
   User.findAll({
     where: {
       username: req.session.username
@@ -244,13 +244,57 @@ router.post('/likeVideo', (req, res) => {
         .then( (user) => {
           // console.log('USEROOOOO SOURCE', user.dataValues.userId);
           closureObj.projectName = user.dataValues.name;
-
+          creatorId = user.dataValues.userId;
           Notifications.create({
             sourceUsername: req.session.username,
             optionId: req.body.option.id,
             optionName: req.body.option.name,
             userId: user.dataValues.userId,
             projectId: closureObj.projectId
+          })
+        })
+      })
+    })
+    .then(() => {
+      var optionPerViewCredit;
+
+      Option.findOne({
+        where: {
+          id: req.body.option.id
+        }
+      })
+      .then((option) => {
+        optionPerViewCredit = option.creditsperview;
+        let remainingCredits = option.totalcredits - option.creditsperview
+        option.update({
+          totalcredits: remainingCredits
+        })
+      })
+
+      .then(()=> {
+        User.findOne({
+          where: {
+            username: req.session.username
+          }
+        })
+        .then((user) => {
+          let newCredits = user.credits + optionPerViewCredit;
+          user.update({
+            credits:newCredits
+          })
+        })
+      })
+      
+      .then(() => {
+        User.findOne({
+          where: {
+            id: creatorId
+          }
+        })
+        .then((user) => {
+          let remainingCredits = user.totalcredits - optionPerViewCredit;
+          user.update({
+            credits: remainingCredits
           })
         })
       })

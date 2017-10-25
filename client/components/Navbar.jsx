@@ -42,6 +42,9 @@ class Navbar extends React.Component {
                 <Link to='/focusgroups' style={noUnderline}>
                   <p className='navItem'>Focus Groups</p>
                 </Link>
+                <Link to='/account' style={noUnderline}>
+                  <p className='navItem'>Account</p>
+                </Link>
                 <Link to='/login' style={noUnderline} onClick={this.handleLogout}>
                   <p className='navItem'>Log out</p>
                 </Link>
@@ -59,6 +62,9 @@ class Navbar extends React.Component {
                 </Link>
                 <Link to='/profile' style={noUnderline}>
                   <p className='navItem'>Profile</p>
+                </Link>
+                <Link to='/browse' style={noUnderline}>
+                  <p className='navItem'>Browse</p>
                 </Link>
                 <Link to='/login' style={noUnderline} onClick={this.props.actions.setLoggedOut}>
                   <p className='navItem'>Log Out</p>

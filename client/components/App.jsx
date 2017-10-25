@@ -29,6 +29,8 @@ import AddSection from './creator/create/addSection.jsx';
 import AddOption from './creator/create/addOption.jsx';
 import Loading from './auth/loading.jsx';
 import LandingPage from './LandingPage.jsx';
+import Account from './creator/dashboard/Account.jsx';
+import Browse from './tester/Browse/Browse.jsx';
 
 
 export class App extends React.Component {
@@ -40,7 +42,7 @@ export class App extends React.Component {
     return (
       <div className="app">
         <Navbar />
-        
+
         {
           this.props.loggedInUser.username ? (
             this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
@@ -56,6 +58,7 @@ export class App extends React.Component {
                 <Route path="/createProject" component={CreateProject}/>
                 <Route path="/addSection" component={AddSection}/>
                 <Route path="/addOption" component={AddOption}/>
+                <Route path="/account" component={Account}/>
               </Switch>
               </div>
             ) : (
@@ -67,6 +70,7 @@ export class App extends React.Component {
                 <Route path="/queue" component={TesterQueuePage}/>
                 <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>
+                <Route path="/browse" component={Browse}/>
               </Switch>
               </div>
             )
@@ -79,7 +83,7 @@ export class App extends React.Component {
             </Switch>
           )
         }
-       
+
       </div>
     );
   }

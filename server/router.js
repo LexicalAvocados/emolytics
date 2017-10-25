@@ -10,6 +10,7 @@ const frameRoutes = require('./api/creator/frameRoutes.js');
 const indexRoutes = require('./api/creator/index.js');
 const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
 const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRoutes.js');
+const creditRoutes = require('./api/tester/creditRoutes.js');
 
 router.use('/tester', testerRoutes);
 
@@ -68,5 +69,13 @@ router.delete('/deleteProject', projectRoutes.deleteProject);
 router.get('/creator/allNotifications', indexRoutes.getAllNotificationsForUser);
 
 router.get('/updateProject', projectRoutes.updateProject);
+
+router.post('/addCredits', creditRoutes.addCredits);
+
+router.get('/getCreditBalance', creditRoutes.getCreditBalance);
+
+router.post('/addCreditsToOption', creditRoutes.addCreditsToOption);
+
+router.get('/allSponsoredOptions', creditRoutes.allSponsoredOptions)
 
 module.exports = router;

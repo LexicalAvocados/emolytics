@@ -11,6 +11,9 @@ import { Link } from 'react-router-dom';
 class TesterHome extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      credits: 0
+    }
   }
 
   componentWillMount() {
@@ -25,7 +28,14 @@ class TesterHome extends React.Component {
       })
       .catch(err => {
         console.log('Error fetching Tester Queue from database:', err);
+      });
+
+    axios.post('/api/getCreditBalance')
+    .then((res) => {
+      this.setState({
+        credits: res.data
       })
+    })
   }
 
   render() {
