@@ -19,13 +19,12 @@ class FocusGroupsList extends React.Component {
     let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
-        <h2>Your Focus Groups</h2>
+        <h2>Your Groups</h2>
         <div>
           <ButtonToolbar className="focusGroupButtonToolbar">
             <ToggleButtonGroup
               type='radio'
-              name='focusGroups'
-              value={focusGroups[focusGroups.indexOf(currentFocusGroup)]}
+              name='groups'
               onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
             >
               {focusGroups.map((group, i) => (

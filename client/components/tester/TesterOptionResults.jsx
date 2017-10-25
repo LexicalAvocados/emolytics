@@ -3,7 +3,6 @@ import c3 from 'c3';
 import ReactPlayer from 'react-player';
 import { Col } from 'react-bootstrap';
 import axios from 'axios';
-import pad from 'array-pad';
 
 import Attention from '../creator/option/Subcomponents/Attention.jsx';
 import Emotion from '../creator/option/Subcomponents/Emotion.jsx';
