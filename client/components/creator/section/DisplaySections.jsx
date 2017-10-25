@@ -41,18 +41,18 @@ class DisplaySections extends React.Component {
         sortedOptions.push('End')
         obj['options'] = sortedOptions;
         this.props.actions.changeCurrentSection(obj, options);
+        console.log('SETTING BEFORE NEXT', this.props.currentProject);
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
       });
     if (fromProjectHome) {
-      console.log('yall made it');//NOPE
       this.props.history.push('/section' + obj.id);
     }
   }
 
   splitSections() {
-    if (!this.state.showEdit) {
+    if (!this.state.showEdit && !this.props.currentProject.sections.includes('End')) {
       this.props.currentProject.sections.push('End');
     }
     var splits = [];
