@@ -54,7 +54,9 @@ class DisplaySections extends React.Component {
   splitSections() {
     if (!this.state.showEdit) {
       this.props.currentProject.sections.push('End');
-      this.props.currentSection.options.push('End');
+      if (this.props.currentSection.options.length) {
+        this.props.currentSection.options.push('End'); // Should fix earlier bug
+      }
     }
     var splits = [];
     for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {
@@ -71,7 +73,8 @@ class DisplaySections extends React.Component {
     });
   }
 
-  revealEdit() {
+  revealEdit(section) {
+    this.props.actions.changeCurrentSection(section);
     this.setState({
       showEdit: !this.state.showEdit
     });
