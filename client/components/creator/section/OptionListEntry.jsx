@@ -37,15 +37,15 @@ class OptionListEntry extends React.Component {
     return (
       <div>
         { this.props.option !== 'End'  ? (
-          <div className="currentSectionOptionListEntry">
-            <div className="optionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
+          <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
+            <div className="optionListEntry">
               <img src={this.props.option.thumbnail} alt=""/>
-              <p className="closerText">Option Name: {this.props.option.name}</p>
-              <p className="closerText">Option Description: {this.props.option.description}</p>
+              <p className="closerText">{this.props.option.name}</p>
+              <p className="closerText">{this.props.option.description}</p>
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
-            <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete</Button>
+            {/* <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete</Button> */}
           </div>
         ) : (
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">

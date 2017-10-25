@@ -79,7 +79,7 @@ body {
   grid-template-rows: 50% 50%;
   padding: 10px;
   grid-row-gap: 15px;
-  width: 100%;
+  width: 85%;
   border: solid black 1px;
 }
 
@@ -548,6 +548,7 @@ button:hover {
   /* overflow: auto; */
   overflow-y: auto;
   overflow-x: hidden;
+  width: 15%;
 }
 
 .sectionHomeContainer {
@@ -557,10 +558,15 @@ button:hover {
   padding: 1% 2% 2% 2%;
 }
 
+img {
+  height: 92px;
+  width: 122px;
+}
+
 .currentSectionOptionListEntry {
   float: left;
   /* margin: 5%; */
-  width: 100%;
+  width: 102%;
   background-color: white;
   padding: 3%;
   border: 1px solid gray;
@@ -589,6 +595,10 @@ button:hover {
 .dashboardHeader {
   display: inline-block;
   width: 100%
+}
+
+.focusGroupButtonToolbar{
+  height: 50px;
 }
 
 .addEntityButton {

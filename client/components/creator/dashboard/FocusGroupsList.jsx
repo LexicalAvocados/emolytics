@@ -21,7 +21,7 @@ class FocusGroupsList extends React.Component {
       <div>
         <h2>Your Focus Groups</h2>
         <div>
-          <ButtonToolbar>
+          <ButtonToolbar className="focusGroupButtonToolbar">
             <ToggleButtonGroup
               type='radio'
               name='focusGroups'
