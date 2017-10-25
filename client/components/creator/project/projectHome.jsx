@@ -92,7 +92,7 @@ class ProjectHome extends React.Component {
               />
             );
           })} */}
-          <DisplaySections 
+          <DisplaySections
             fromProjectHome={this.state.fromHome}
           />
         </div>
