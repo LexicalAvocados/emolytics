@@ -17,7 +17,6 @@ class ProjectHome extends React.Component {
       fromHome: true
     };
     this.onSectionClick = this.onSectionClick.bind(this);
-    this.deleteSection = this.deleteSection.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
     this.toggle = this.toggle.bind(this);
   }
@@ -37,28 +36,6 @@ class ProjectHome extends React.Component {
     });
   }
 
-  deleteSection(id) {
-    if (confirm('Are you sure you want to delete this section?')) {
-      this.props.currentProject.sections = this.props.currentProject.sections.filter((section) => {
-        if (section.id !== id) {
-          return section;
-        }
-      });
-      // console.log('This should be the current project', this.props.currentProject);
-      axios.delete('/api/deleteSection', { params: {sectionId: id, toDelete: 'id'} })
-        .then((response) => {
-          // console.log(response);
-          this.props.actions.removeSectionFromSections(this.props.currentProject.sections);
-          this.setState({
-            rerenderOptions: true
-          });
-        })
-        .catch((error) => {
-          console.log('Error deleting section', error);
-        });
-    }
-  }
-
   toggle() {
     this.setState({
       open: !this.state.open
@@ -75,20 +52,6 @@ class ProjectHome extends React.Component {
         </Collapse>
 
         <div>
-          {/* {this.props.currentProject.sections.map((section, i) => {
-            // console.log('ITERATING THROUGH SECTIONS', section);
-            return (
-              <SectionList
-                toggle={this.toggle}
-                onSectionClick={this.onSectionClick}
-                deleteSection={this.deleteSection}
-                rerenderOptions={this.state.rerenderOptions}
-                associateOptions={this.associateOptions}
-                section={section}
-                key={i}
-              />
-            );
-          })} */}
           <DisplaySections 
             fromProjectHome={this.state.fromHome}
           />

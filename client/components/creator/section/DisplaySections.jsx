@@ -18,12 +18,15 @@ class DisplaySections extends React.Component {
     this.state = {
       splitSections: [],
       showAddSection: false,
-      showEdit: false
+      showEdit: false,
+      idOfClickedOnSection: null
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
     this.onSectionClick = this.onSectionClick.bind(this);
     this.splitSections = this.splitSections.bind(this);
+    this.deleteSection = this.deleteSection.bind(this);
+    this.beginEdit = this.beginEdit.bind(this);
   }
 
   componentWillMount() {
@@ -64,16 +67,43 @@ class DisplaySections extends React.Component {
     });
   }
 
+  deleteSection() {
+    if (confirm('Are you sure you want to delete this section?')) {
+      this.props.currentProject.sections = this.props.currentProject.sections.filter((section) => {
+        if (section.id !== this.state.idOfClickedOnSection) {
+          return section;
+        }
+      });
+      axios.delete('/api/deleteSection', { params: {sectionId: this.state.idOfClickedOnSection, toDelete: 'id'} })
+        .then((response) => {
+          // console.log(response);
+          this.props.actions.removeSectionFromSections(this.props.currentProject.sections);
+          this.splitSections();
+          this.revealEdit();
+        })
+        .catch((error) => {
+          console.log('Error deleting section', error);
+        });
+    }
+  }
+
   revealAddSection() {
     this.setState({
       showAddSection: !this.state.showAddSection
     });
   }
 
-  revealEdit(section) {
+  beginEdit(section) {
     this.props.actions.changeCurrentSection(section);
     this.setState({
-      showEdit: !this.state.showEdit
+      showEdit: !this.state.showEdit,
+      idOfClickedOnSection: section.id
+    });
+  }
+
+  revealEdit() {
+    this.setState({
+      showEdit: !this.state.showEdit,
     });
   }
 
@@ -82,7 +112,7 @@ class DisplaySections extends React.Component {
       <div>
         <SectionCarousel
           splitSections={this.state.splitSections}
-          revealEdit={this.revealEdit}
+          beginEdit={this.beginEdit}
           revealAddSection={this.revealAddSection}
           onSectionClick={this.onSectionClick}
           fromProjectHome={this.props.fromProjectHome}
@@ -116,7 +146,7 @@ class DisplaySections extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.revealEdit}>Close</Button>
-            <Button>Delete this Section</Button> {/* Implement onCLick later */}
+            <Button onClick={this.deleteSection}>Delete this Section</Button> {/* Implement onCLick later */}
           </Modal.Footer>
         </Modal>
       </div>
