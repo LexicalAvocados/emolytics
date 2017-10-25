@@ -15,15 +15,12 @@ class DashboardHome extends React.Component {
       projects: [],
       retrieved: false,
       showCreate: false,
-      displayEdit: false,
-      notifications: [],
-      idOfClickedOn: null
+      displayEdit: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.getProjectsFromDatabase = this.getProjectsFromDatabase.bind(this);
     this.revealCreate = this.revealCreate.bind(this);
-    this.beginEdit = this.beginEdit.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
   }
 
@@ -47,22 +44,7 @@ class DashboardHome extends React.Component {
       .catch((err) => {
         console.log(err);
       });
-
-    axios.get('/api/creator/allNotifications')
-    .then((res) => {
-      console.log('response from notifications endpoint', res.data)
-      let exampleNotif = `${res.data.sourceUsername} reacted to your video ${res.data.optionName}` //link to res.data.optionId
-      this.setState({
-        notifications: res.data
-      }, () => {
-        var notifsForProjects = this.state.notifications.reduce((acc, curr) => {
-          acc[`${curr.projectId}`] ? acc[`${curr.projectId}`]+=1 : acc[`${curr.projectId}`] = 1;
-          return acc;
-        }, {})
-        console.log('notif obj for projects [id]:[number]', notifsForProjects)
-      })
-    })
-  };
+  }
 
   onProjectClick(obj, sections) {
     obj['sections'] = sections;
@@ -75,26 +57,18 @@ class DashboardHome extends React.Component {
     });
   }
 
-  beginEdit(project) {
-    this.setState({
-      displayEdit: !this.state.displayEdit,
-      idOfClickedOn: project.id
-    });
-    this.props.actions.changeCurrentProject(project);
-  }
-
   toggleEdit() {
     this.setState({
       displayEdit: !this.state.displayEdit
-    })
+    });
   }
 
-  deleteProject() {
+  deleteProject(id) {
     if (confirm('Are you sure you want to delete this project?')) {
       let filteredProjects = this.state.projects.filter((project) => {
-        if (project.id !== this.state.idOfClickedOn) return project;
-      });
-      axios.delete('/api/deleteProject', { params: {projectId: this.state.idOfClickedOn, toDelete: 'id'}})
+        if (project.id !== id) return project
+      })
+      axios.delete('/api/deleteProject', { params: {projectId: id, toDelete: 'id'}})
         .then((response) => {
           // console.log(response);
           this.setState({
@@ -138,13 +112,12 @@ class DashboardHome extends React.Component {
           this.state.projects.length ? (
             <Row className="show-grid">
               { this.state.projects.map((project, i) => (
-                <Col className="projectListContainer" md={4} key={JSON.stringify(project.name)+i}>
+                <Col className="projectListContainer" md={4} key={i}>
                   <ProjectList
                     onProjectClick={this.onProjectClick}
                     deleteProject={this.deleteProject}
                     getProjectsFromDatabase={this.getProjectsFromDatabase}
                     project={project}
-                    beginEdit={this.beginEdit}
                     toggleEdit={this.toggleEdit}
                     displayEdit={this.state.displayEdit}
                   />
