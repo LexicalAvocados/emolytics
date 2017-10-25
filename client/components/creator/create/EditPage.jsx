@@ -41,8 +41,8 @@ class EditPage extends React.Component {
               this.props.splitSections();
             }
           }
-          this.props.close();
         }
+        this.props.close();
       })
       .catch((error) => {
         console.log('Error updating project name', error);

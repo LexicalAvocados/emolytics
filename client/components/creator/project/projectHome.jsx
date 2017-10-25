@@ -74,9 +74,6 @@ class ProjectHome extends React.Component {
           </Panel>
         </Collapse>
 
-        <Link to="/addSection">
-          <Button className="addSectionButton">Add a section</Button>
-        </Link>
         <div>
           {/* {this.props.currentProject.sections.map((section, i) => {
             // console.log('ITERATING THROUGH SECTIONS', section);
