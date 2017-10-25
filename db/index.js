@@ -41,7 +41,8 @@ const User = sequelize.define('user', {
   television: Sequelize.ARRAY(Sequelize.TEXT),
   games: Sequelize.ARRAY(Sequelize.TEXT),
   location: Sequelize.STRING,
-  lastloggedin: Sequelize.DATE
+  lastloggedin: Sequelize.DATE,
+  credits: {type: Sequelize.INTEGER, defaultValue: 0}
 });
 
 User.sync({force: false});
@@ -105,7 +106,9 @@ const Option = sequelize.define('option', {
   description: Sequelize.TEXT,
   youtubeUrl: Sequelize.TEXT,
   thumbnail: Sequelize.TEXT,
-  length: Sequelize.INTEGER
+  length: Sequelize.INTEGER,
+  totalcredits: {type: Sequelize.INTEGER, defaultValue: 0},
+  creditsperview: {type: Sequelize.INTEGER, defaultValue: 0}
 });
 
 Option.belongsTo(Section);

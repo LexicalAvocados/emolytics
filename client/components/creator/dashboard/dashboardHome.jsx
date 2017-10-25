@@ -15,7 +15,10 @@ class DashboardHome extends React.Component {
       projects: [],
       retrieved: false,
       showCreate: false,
-      displayEdit: false
+      displayEdit: false,
+      notifications: [],
+      idOfClickedOn: null,
+      credits: 0
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -26,6 +29,12 @@ class DashboardHome extends React.Component {
 
   componentDidMount() {
     this.getProjectsFromDatabase();
+    axios.get('/api/getCreditBalance')
+    .then((res)=> {
+      this.setState({
+        credits: res.data
+      })
+    })
   }
 
   getProjectsFromDatabase() {
@@ -110,6 +119,7 @@ class DashboardHome extends React.Component {
         <br/>
         { this.state.retrieved ? (
           this.state.projects.length ? (
+            <div>
             <Row className="show-grid">
               { this.state.projects.map((project, i) => (
                 <Col className="projectListContainer" md={4} key={i}>
@@ -124,6 +134,16 @@ class DashboardHome extends React.Component {
                 </Col>
               ))}
             </Row>
+            <Row>
+
+                <div className='creditDisplay' style={creditDisplayStyle}>
+                  <a> Credits: </a>
+                  <br/>
+                  <a> {this.state.credits || 0} </a>
+                </div>
+
+            </Row>
+            </div>
           ) : (
             <div>
               <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
@@ -139,7 +159,13 @@ class DashboardHome extends React.Component {
   }
 }
 
-
+const creditDisplayStyle = {
+  textAlign: "center",
+  float: "right",
+  border: "solid black 1px",
+  borderRadius: "10px",
+  padding: "10px"
+}
 
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN DASHBOARD', state);

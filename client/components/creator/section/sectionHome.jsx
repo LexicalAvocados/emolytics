@@ -225,7 +225,7 @@ class SectionHome extends React.Component {
       showAddSection: !this.state.showAddSection
     });
   }
-  
+
   revealEdit() {
     this.setState({
       showEdit: !this.state.showEdit
@@ -240,7 +240,7 @@ class SectionHome extends React.Component {
           <div>
             <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
           </div>
-          <SectionCarousel 
+          <SectionCarousel
             splitSections={this.state.splitSections}
             revealEdit={this.revealEdit}
             revealAddSection={this.revealAddSection}
@@ -282,6 +282,7 @@ class SectionHome extends React.Component {
               onOptionClick={this.onOptionClick}
               concatTesters={this.concatTesters}
               deleteOption={this.deleteOption}
+              credits={this.props.loggedInUser.credits}
             />
           ))}
         </Col>
@@ -361,7 +362,7 @@ class SectionHome extends React.Component {
             <Button onClick={this.props.deleteSection}>Delete this Project</Button>
           </Modal.Footer>
         </Modal>
-          
+
       </div>
     );
   }
