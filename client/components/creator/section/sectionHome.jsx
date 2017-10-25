@@ -187,7 +187,7 @@ class SectionHome extends React.Component {
       <div className="sectionHomeContainer">
         <div>
           <div>
-            <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
+            <h3>Project Name: {this.props.currentProject.name} | Description: {this.props.currentProject.description}</h3>
           </div>
           <DisplaySections />
         </div>
@@ -273,8 +273,8 @@ class SectionHome extends React.Component {
             <OptionHome />
          ):(
            null
-         )} 
-       
+         )}
+
 
       </div>
     );

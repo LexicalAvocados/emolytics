@@ -49,7 +49,9 @@ class DashboardHome extends React.Component {
         this.setState({
           projects: sortedProjects,
           retrieved: true
-        });
+        }
+        // axios get for getAllNotificationsforUser
+        );
       })
       .catch((err) => {
         console.log(err);
