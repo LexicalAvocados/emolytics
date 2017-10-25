@@ -310,7 +310,7 @@ router.post('/likeVideo', (req, res) => {
         }
       })
       .then((option) => {
-        optionPerViewCredit = option.creditsperview;
+        optionPerViewCredit = option.creditsperview || 0;
         let remainingCredits = option.totalcredits - option.creditsperview
         option.update({
           totalcredits: remainingCredits
@@ -340,7 +340,7 @@ router.post('/likeVideo', (req, res) => {
           .then((trans) => {
             trans.update({
               testerId: testerIdClosure,
-              amount: optionPerViewCredit
+              amount: optionPerViewCredit || 0
             })
           })
         })
