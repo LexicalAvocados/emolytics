@@ -44,44 +44,48 @@ class CompareOptions extends React.Component {
       clear: 'right',
 
     }
-
     var selections = this.state.options.map( (elem, i) => {
-      return (
-        <option value={i}>{elem.name}</option>
-        )
-      })
+      return <option value={i}>{elem.name}</option>
+    })
 
     return (
-    	<div className="sectionComparison">
-        <div style={heading}>
-          <h3  >Comparison</h3>
-        </div>
-        <br/>
-
+      <div>
+      { this.state.options.length >= 2 ? (
         <div>
-        <Col md={6}>
-          <select name="option1" value={this.state.option1} onChange={this.handleChange}>
+          <div className="sectionComparison">
+          <div style={heading}>
+            <h3  >Comparison</h3>
+          </div>
+          <br/>
 
-            {selections}
-            
-          </select>
-          <CompareCharts idx={1} option={this.props.currentSection.options[this.state.option1]}/>
+          <div>
+          <Col md={6}>
+            <select name="option1" value={this.state.option1} onChange={this.handleChange}>
 
-        </Col>
+              {selections}
+              
+            </select>
+            <CompareCharts idx={1} option={this.props.currentSection.options[this.state.option1]}/>
 
-        <Col md={6} style={divStyle}>
-          <select name="option2" value={this.state.option2} onChange={this.handleChange}>
+          </Col>
 
-            {selections}
-            
-          </select>
-          <CompareCharts idx={2} option={this.props.currentSection.options[this.state.option2]}/>
-        </Col>
+          <Col md={6} style={divStyle}>
+            <select name="option2" value={this.state.option2} onChange={this.handleChange}>
+
+              {selections}
+              
+            </select>
+            <CompareCharts idx={2} option={this.props.currentSection.options[this.state.option2]}/>
+          </Col>
+          </div>
         </div>
+        </div>
+    ) : (
+      null
+    )}
 
+  </div>
 
-
-      </div>
     );
   }
 }
