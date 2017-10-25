@@ -30,7 +30,9 @@ class SectionHome extends React.Component {
       testersCopy: [],
       optionData: [],
       compare: false,
-      showData: false
+      showData: false,
+      compareOptions: [],
+      fromSectionHome: true
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -42,6 +44,7 @@ class SectionHome extends React.Component {
     this.deleteOption = this.deleteOption.bind(this);
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
+    this.clearOnNewSection = this.clearOnNewSection.bind(this);
   }
 
   componentWillMount() {
@@ -59,6 +62,13 @@ class SectionHome extends React.Component {
     this.getOptionsData();
   }
 
+  clearOnNewSection() {
+    this.setState({
+      compareOptions: [],
+      showData: false,
+      compare: false,
+    });
+  }
 
   concatTesters(testers, index) {
     var freeOfDuplicates = [];
@@ -92,12 +102,27 @@ class SectionHome extends React.Component {
 
 
   onOptionClick(index) { // Functional
-    console.log(index);
-    console.log('SHOUuld be currently clicked thing', this.props.currentSection.options[index]);
-    this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
-    this.setState({ // Revise to remove OptionHome on certain conditions
-      showData: true
-    });
+    if (this.state.compare) { // We are setting up to compare
+      if (this.state.compareOptions.length < 2) { // Need two options
+        this.setState({
+          compareOptions: [ ...this.state.compareOptions, this.props.currentSection.options[index]],
+          showData: false
+        });
+      } else {
+        this.setState({
+          compareOptions: [],
+          compare: false,
+          showData: true
+        });
+        this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+      }
+    } else { // Clicked on option
+      this.setState({
+        showData: true,
+        compareOptions: []
+      });
+      this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+    }
   }
 
   renderInvited() {
@@ -178,9 +203,14 @@ class SectionHome extends React.Component {
   }
 
   compare() {
-    this.setState({
-      compare: !this.state.compare
-    })
+    console.log(this.props.currentSection.options.length);
+    if (this.props.currentSection.options.length < 3) { // Adjust for dummy option
+      alert('You\'ll need at least two options before you can compare them!');
+    } else {
+      this.setState({
+        compare: !this.state.compare
+      });
+    }
   }
 
   render() {
@@ -190,12 +220,18 @@ class SectionHome extends React.Component {
           <div>
             <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
           </div>
-          <DisplaySections />
+          <DisplaySections 
+            clearOnNewSection={this.clearOnNewSection}
+            fromSectionHome={this.state.fromSectionHome}
+          />
         </div>
 
-        <Button onClick={this.compare}> Compare </Button>
-
-        <ToggleDisplay show={!this.state.compare}>
+        { !this.state.compare ? (
+          <Button onClick={this.compare}> Compare </Button>
+        ): (
+          <p>Choose two options</p>
+        )}
+        
 
         { this.state.haveInvited ? (
           <p className="closerText">You have previously invited testers to view this option</p>
@@ -261,20 +297,22 @@ class SectionHome extends React.Component {
           null}
 
 
-          </ToggleDisplay>
 
-          <ToggleDisplay show={this.state.compare}>
-
-            <Compare/>
-
-
-          </ToggleDisplay>
 
          { this.state.showData ? (
             <OptionHome />
          ):(
            null
          )} 
+
+         { this.state.compareOptions.length === 2 ? (
+           <Compare 
+             optionsToCompare={this.state.compareOptions}
+             compare={this.compare}
+           />
+         ) : (
+           null
+         )}
        
 
       </div>

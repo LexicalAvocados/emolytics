@@ -34,7 +34,7 @@ class DisplaySections extends React.Component {
   }
 
 
-  onSectionClick(obj, fromProjectHome) { // Make this functional
+  onSectionClick(obj, fromProjectHome, fromSectionHome) { // Make this functional
     axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
       .then((options) => {
         let sortedOptions = options.data.sort((one, two) => {
@@ -50,6 +50,9 @@ class DisplaySections extends React.Component {
       });
     if (fromProjectHome) {
       this.props.history.push('/section' + obj.id);
+    }
+    if (fromSectionHome) {
+      this.props.clearOnNewSection();
     }
   }
 
@@ -115,6 +118,7 @@ class DisplaySections extends React.Component {
           revealAddSection={this.revealAddSection}
           onSectionClick={this.onSectionClick}
           fromProjectHome={this.props.fromProjectHome}
+          fromSectionHome={this.props.fromSectionHome}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>

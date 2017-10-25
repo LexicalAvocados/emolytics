@@ -13,10 +13,6 @@ class CompareDemo extends React.Component {
     console.log(this);
   }
 
-  componentWillReceiveProps(nProps) {
-
-  }
-
   render () {
     return (
     	<div className="optionDemographics">
