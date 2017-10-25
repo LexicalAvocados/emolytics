@@ -38,7 +38,7 @@ class EditPage extends React.Component {
           for (var i = 0; i < this.props.currentProject.sections.length; i++) {
             if (this.props.currentProject.sections[i].id === response.data.id) {
               this.props.currentProject.sections.splice(i, 1, response.data);
-              this.props.getSections();
+              this.props.splitSections();
             }
           }
           this.props.close();

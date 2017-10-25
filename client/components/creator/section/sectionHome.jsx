@@ -14,6 +14,7 @@ import AddSection from '../create/addSection.jsx';
 import SectionCarousel from './SectionCarousel.jsx';
 import EditPage from '../create/EditPage.jsx';
 import OptionHome from '../option/OptionHome.jsx';
+import DisplaySections from './DisplaySections.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -29,9 +30,6 @@ class SectionHome extends React.Component {
       testersCopy: [],
       optionData: [],
       compare: false,
-      splitSections: [],
-      showAddSection: false,
-      showEdit: false,
       showData: false
     };
     this.onOptionClick = this.onOptionClick.bind(this);
@@ -44,14 +42,9 @@ class SectionHome extends React.Component {
     this.deleteOption = this.deleteOption.bind(this);
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
-    this.revealAddSection = this.revealAddSection.bind(this);
-    this.revealEdit = this.revealEdit.bind(this);
-    this.getSections = this.getSections.bind(this);
-    this.onSectionClick = this.onSectionClick.bind(this);
   }
 
   componentWillMount() {
-    this.getSections();
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -66,20 +59,6 @@ class SectionHome extends React.Component {
     this.getOptionsData();
   }
 
-
-  getSections() {
-    if (!this.state.showEdit) {
-      this.props.currentProject.sections.push('End');
-      this.props.currentSection.options.push('End');
-    }
-    var splits = [];
-    for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {
-      splits.push(this.props.currentProject.sections.slice(i, i + 3))
-    }
-    this.setState({
-      splitSections: splits
-    });
-  }
 
   concatTesters(testers, index) {
     var freeOfDuplicates = [];
@@ -111,28 +90,11 @@ class SectionHome extends React.Component {
   }
 
 
-  onSectionClick(obj, options) {
-    axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
-      .then((options) => {
-        let sortedOptions = options.data.sort((one, two) => {
-          if (one.createdAt < two.createdAt) return 1;
-          if (one.createdAt > two.createdAt) return -1;
-        });
-        sortedOptions.push('End')
-        obj['options'] = sortedOptions;
-        this.props.actions.changeCurrentSection(obj, options);
-      })
-      .catch((err) => {
-        console.log('Request to get options for section NOT sent to server');
-      });  
-  }
-
-
 
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
     // this.props.history.push('/option' + this.props.currentSection.options[index].id);
-    this.setState({
+    this.setState({ // Revise to remove OptionHome on certain conditions
       showData: true
     })
   }
@@ -220,19 +182,6 @@ class SectionHome extends React.Component {
     })
   }
 
-  revealAddSection() {
-    this.setState({
-      showAddSection: !this.state.showAddSection
-    });
-  }
-
-  revealEdit() {
-    this.setState({
-      showEdit: !this.state.showEdit
-    });
-
-  }
-
   render() {
     return (
       <div className="sectionHomeContainer">
@@ -240,12 +189,7 @@ class SectionHome extends React.Component {
           <div>
             <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
           </div>
-          <SectionCarousel
-            splitSections={this.state.splitSections}
-            revealEdit={this.revealEdit}
-            revealAddSection={this.revealAddSection}
-            onSectionClick={this.onSectionClick}
-          />
+          <DisplaySections />
         </div>
 
         <Button onClick={this.compare}> Compare </Button>
@@ -331,37 +275,6 @@ class SectionHome extends React.Component {
            null
          )} 
        
-
-        <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add a Section</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <AddSection
-              close={this.revealAddSection}
-            />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.revealAddSection}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal bsSize="large" show={this.state.showEdit} onHide={this.revealEdit}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit this Section</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <EditPage
-              close={this.revealEdit}
-              toEdit={'Section'}
-              getSections={this.getSections}
-            />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.revealEdit}>Close</Button>
-            <Button onClick={this.props.deleteSection}>Delete this Project</Button>
-          </Modal.Footer>
-        </Modal>
 
       </div>
     );

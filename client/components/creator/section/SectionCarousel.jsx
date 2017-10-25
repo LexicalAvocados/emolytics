@@ -5,27 +5,26 @@ import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
 const SectionCarousel = (props) => (
 
       <Carousel>
-      { props.splitSections.map((sectionGroup) => {
+      { props.splitSections.map((sectionGroup, overI) => {
           if (sectionGroup.indexOf('End') === -1) {
           return (
-              <Carousel.Item>
+              <Carousel.Item key={overI}>
               { sectionGroup.map((section, i) => (
-                  <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section)}>
+                  <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
                   <p>{section.name}</p>
                   <p>{section.description}</p>
                   <Button onClick={props.revealEdit}>Edit</Button> 
                   </Col>
               ))}
-              
               </Carousel.Item>
           );
           } else {
           return (
-              <Carousel.Item>
+              <Carousel.Item key={overI}>
               { sectionGroup.map((section, i) => {
                   if (section !== 'End') {
                   return (
-                      <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section)}>
+                      <Col md={3} className="sectionsScroll" key={i} onClick={() => props.onSectionClick(section, props.fromProjectHome || null)}>
                       <p>{section.name}</p>
                       <p>{section.description}</p>
                       <Button onClick={props.revealEdit}>Edit</Button> 
@@ -33,7 +32,7 @@ const SectionCarousel = (props) => (
                   );
                   } else {
                   return (
-                      <Col md={3} className="sectionsScroll" onClick={props.revealAddSection}>
+                      <Col md={3} className="sectionsScroll" key={i} onClick={props.revealAddSection}>
                       <h2>+</h2>
                       </Col>
                   );
