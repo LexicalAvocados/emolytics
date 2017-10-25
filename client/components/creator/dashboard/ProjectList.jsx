@@ -72,7 +72,7 @@ class ProjectList extends React.Component {
             </div>
             <div style={time}>
               <br/>
-              <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 24)} </small></p>
+              <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
             </div>
           </div>
           <div style={del}>
@@ -84,7 +84,7 @@ class ProjectList extends React.Component {
             <Modal.Title>Edit Your Project</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <EditPage 
+            <EditPage
               close={this.props.toggleEdit}
               toEdit={'Project'}
               getProjectsFromDatabase={this.props.getProjectsFromDatabase}

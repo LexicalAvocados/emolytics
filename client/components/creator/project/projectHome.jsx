@@ -22,7 +22,6 @@ class ProjectHome extends React.Component {
   }
 
   componentWillUnmount() {
-
   }
 
   onSectionClick(obj, options) {
@@ -52,6 +51,7 @@ class ProjectHome extends React.Component {
         </Collapse>
 
         <div>
+
           <DisplaySections 
             fromProjectHome={this.state.fromHome}
           />
