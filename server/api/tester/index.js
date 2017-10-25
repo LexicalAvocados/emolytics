@@ -12,6 +12,7 @@ const Notifications = db.Notification;
 const Section = db.Section;
 const Project = db.Project;
 const EyeTracking = db.EyeTracking;
+const Transaction = db.Transaction;
 const router = express.Router();
 const base64Img = require('base64-img');
 const request = require('request-promise-native');
@@ -292,11 +293,16 @@ router.post('/likeVideo', (req, res) => {
             userId: user.dataValues.userId,
             projectId: closureObj.projectId
           })
+          Transaction.create({
+            optionId: req.body.option.id,
+            creatorId: user.dataValues.userId
+          })
         })
       })
     })
     .then(() => {
       var optionPerViewCredit;
+      var testerIdClosure;
 
       Option.findOne({
         where: {
@@ -319,12 +325,26 @@ router.post('/likeVideo', (req, res) => {
         })
         .then((user) => {
           let newCredits = user.credits + optionPerViewCredit;
+          testerIdClosure = user.id;
           user.update({
             credits:newCredits
           })
         })
+        .then(() => {
+          Transaction.findOne({
+            where: {
+              optionId: req.body.optionId,
+              creatorId: creatorId
+            }
+          })
+          .then((trans) => {
+            trans.update({
+              testerId: testerIdClosure,
+              amount: optionPerViewCredit
+            })
+          })
+        })
       })
-      
       .then(() => {
         User.findOne({
           where: {
