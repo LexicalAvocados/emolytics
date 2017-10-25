@@ -80,7 +80,7 @@ class TesterVideo extends React.Component {
     }, () => {
       // console.log(this.state.height)
     })
-    window.webgazer.setRegression('weightedRidge')
+    window.webgazer.setRegression('ridge')
       .setTracker('clmtrackr')
       .begin()
 
@@ -96,11 +96,8 @@ class TesterVideo extends React.Component {
     this.setState({
       runTimer: runTimer,
       eyeTrackingTimer: eyeTrackingTimer
-    }, () => {
-      this.state.timer();
-      this.state.eyeTrackingTimer();
     })
-    this.videoStart();
+
 
   }
 
@@ -121,7 +118,7 @@ class TesterVideo extends React.Component {
     var video = this.refs.video;
     var time = (Math.round(video.getCurrentTime() * 4) / 4).toFixed(2);
     // console.log(this.state.eyeTime);
-    if (!this.state.eyeTime[time]) {
+    if (!this.state.eyeTime[time] && prediction) {
       // console.log(prediction);
       let newPrediction = {};
       newPrediction.x = (prediction.x/this.state.width).toFixed(3);
@@ -147,6 +144,8 @@ class TesterVideo extends React.Component {
     axios.post('/api/tester/startVideo', {
       option: this.props.currentTesterOption
     })
+    this.state.runTimer();
+    this.state.eyeTrackingTimer();
   }
 
   getWebcam() {
