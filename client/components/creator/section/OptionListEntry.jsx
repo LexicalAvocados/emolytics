@@ -5,6 +5,10 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import axios from 'axios';
 import OptionData from './OptionData.jsx';
 import AddOption from '../create/addOption.jsx';
+import EditPage from '../create/EditPage.jsx';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions';
 
 class OptionListEntry extends React.Component {
   constructor(props) {
@@ -15,7 +19,8 @@ class OptionListEntry extends React.Component {
       showAddCredits: false,
       total: 0,
       perView: 0,
-      notEnoughCredits: false
+      notEnoughCredits: false,
+      showEdit: false
     };
     this.revealAddOption = this.revealAddOption.bind(this);
     this.showAddCreditsForm = this.showAddCreditsForm.bind(this);
@@ -23,6 +28,8 @@ class OptionListEntry extends React.Component {
     this.updateTotal = this.updateTotal.bind(this);
     this.updatePerView = this.updatePerView.bind(this);
     this.submitCredits = this.submitCredits.bind(this);
+    this.beginEdit = this.beginEdit.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +46,19 @@ class OptionListEntry extends React.Component {
   revealAddOption() {
     this.setState({
       showAddOption: !this.state.showAddOption
+    });
+  }
+
+  beginEdit(option) {
+    this.props.actions.changeOption(option);
+    this.setState({
+      showEdit: !this.state.showEdit
+    });
+  }
+
+  toggleEdit() {
+    this.setState({
+      showEdit: !this.state.showEdit
     });
   }
 
@@ -115,6 +135,7 @@ class OptionListEntry extends React.Component {
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
             <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete</Button>
+            <Button onClick={() => this.beginEdit(this.props.option)}>Edit</Button>
             <Button onClick={this.showAddCreditsForm}>Add Credits</Button>
 
             <div className='addCreditsFormContainer'>
@@ -172,22 +193,38 @@ class OptionListEntry extends React.Component {
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">
             <div className="optionListEntry">
               <h1>+</h1> {/* Style this later */}
-              <Modal bsSize="large" show={this.state.showAddOption} onHide={this.revealAddOption}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Add an Option</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <AddOption
-                    close={this.revealAddOption}
-                  />
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button onClick={this.revealAddOption}>Close</Button>
-                </Modal.Footer>
-              </Modal>
             </div>
           </div>
         )}
+        <Modal bsSize="large" show={this.state.showAddOption} onHide={this.revealAddOption}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add an Option</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <AddOption
+              close={this.revealAddOption}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.revealAddOption}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal bsSize="large" show={this.state.showEdit} onHide={this.toggleEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit this Option</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <EditPage
+              close={this.toggleEdit}
+              toEdit={'Option'}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.toggleEdit}>Close</Button>
+            <Button onClick={this.deleteSection}>Delete this Option</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
@@ -199,4 +236,17 @@ const errorStyle = {
   fontWeight: "bold"
 }
 
-export default OptionListEntry;
+const mapStateToProps = (state) => ({
+  router: state.router,
+  currentSection: state.currentSection
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OptionListEntry);

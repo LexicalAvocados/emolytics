@@ -31,6 +31,7 @@ class EditPage extends React.Component {
     let reduxLocation = '' ;
     if (this.props.toEdit === 'Project') reduxLocation = 'currentProject';
     if (this.props.toEdit === 'Section') reduxLocation = 'currentSection';
+    if (this.props.toEdit === 'Option') reduxLocation = 'currentOption';  // set to current option, update currentSection.options
     axios.get('/api/updateProject', { params: { id: this.props[reduxLocation].id, name: this.state.name, description: this.state.description, toEdit: toEdit}})
       .then((response) => {
         if (toEdit === 'Project')  this.props.getProjectsFromDatabase();
@@ -41,6 +42,15 @@ class EditPage extends React.Component {
               this.props.splitSections();
             }
           }
+        }
+        if (toEdit === 'Option') {
+          let newOptions = this.props.currentSection.options.map((option) => {
+            if (option.id !== response.data.id) {
+              return option;
+            }
+            return response.data;
+          })
+          this.props.actions.addOptionsToCurrentSection(newOptions);
         }
         this.props.close();
       })
@@ -72,7 +82,8 @@ const mapStateToProps = (state) => {
   return({
     router: state.router,
     currentProject: state.currentProject,
-    currentSection: state.currentSection
+    currentSection: state.currentSection,
+    currentOption: state.currentOption
   });
 };
 
