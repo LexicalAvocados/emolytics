@@ -50,8 +50,7 @@ class ProjectHome extends React.Component {
         </Collapse>
 
         <div>
-
-          <DisplaySections 
+          <DisplaySections
             fromProjectHome={this.state.fromHome}
           />
         </div>
