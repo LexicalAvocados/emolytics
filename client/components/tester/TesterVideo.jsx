@@ -106,6 +106,26 @@ class TesterVideo extends React.Component {
     clearInterval(this.state.runTimer);
     clearInterval(this.state.eyeTrackingTimer);
     window.webgazer.end();
+    // vid.pause();
+    // vid.src = "";
+    console.log(window.localstream.getTracks());
+    console.log(window.localstream.getVideoTracks());
+    var video = document.getElementById('video');
+    video.pause();
+    video.srcObject = null;
+    window.localstream.getTracks()[0].stop();
+    window.localstream.getVideoTracks()[0].stop();
+    window.localstream.getTracks()[0].enabled = false;
+    console.log(window.localstream.getTracks());
+    console.log(video.srcObject);
+    var list = document.getElementById("video"); 
+    console.log('LIST', list);
+    list.removeChild(list.childNodes[0])
+    console.log(list);
+    var lists = document.getElementById("videoCanvas"); 
+    lists.removeChild(lists.childNodes[0])
+
+
   }
 
   clearVideoCheck() {
@@ -150,21 +170,31 @@ class TesterVideo extends React.Component {
 
   getWebcam() {
     var width = 320;    // We will scale the photo width to this
-    var height = 0;     // This will be computed based on the input stream
+    var height = 300;     // This will be computed based on the input stream
 
     var streaming = false;
 
     var video = document.getElementById('video');
     var canvas = document.getElementById('canvas');
+    var localstream;
 
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(function(stream) {
-          video.srcObject = stream;
-          video.play();
-      })
-      .catch(function(err) {
-          console.log("An error occured! " + err);
-      });
+    // navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+    //   .then(function(stream) {
+    //       video.srcObject = stream;
+    //       window.localstream = stream;
+          
+    //       video.play();
+    //   })
+    //   .catch(function(err) {
+    //       console.log("An error occured! " + err);
+    //   });
+    navigator.webkitGetUserMedia({ video: true, audio: false }, function(stream) {
+      video.srcObject = stream;
+      window.localstream = stream;
+      video.play();
+    }, function (e) {
+      console.log(e);
+    })
   }
 
   takePicture() {
@@ -173,6 +203,7 @@ class TesterVideo extends React.Component {
 
     canvas.width = 300;
     canvas.height = 250;
+    // console.log('VIDEO', video.srcObject);
     context.drawImage(video, 0, 0, 300, 250);
 
     }
@@ -289,7 +320,7 @@ class TesterVideo extends React.Component {
 
                 instance.post(uriBase, blobData)
                   .then(data => {
-                    // console.log((JSON.stringify(data.data, null, 2)));
+                    console.log((JSON.stringify(data.data, null, 2)));
                     if (data.data[0]) {
                       let sendObj = {
                         emotions: data.data[0].scores,
@@ -388,11 +419,12 @@ class TesterVideo extends React.Component {
         </div>
 
 
-        <div >
+        <div id="videoCanvas">
           <video className="testerVideo" id="video">Video stream not available.</video>
+          <canvas className="testerVideo" ref="canvas" id="canvas">
+          </canvas>
         </div>
-        <canvas className="testerVideo" ref="canvas" id="canvas">
-        </canvas>
+
       </div>
 
     )

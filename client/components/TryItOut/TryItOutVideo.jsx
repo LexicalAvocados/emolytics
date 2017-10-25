@@ -61,15 +61,15 @@ class TryItOutVideo extends React.Component {
     }, 1000)
     this.setState({
       timer: timer
-    }, () => {
-      this.state.timer();
     })
-    this.videoStart();
+    // this.videoStart();
 
   }
 
   componentWillUnmount() {
     clearInterval(this.state.timer);
+    var list = document.getElementById("video"); 
+    list.removeChild(list.childNodes[0])
   }
 
   clearVideoCheck() {
@@ -82,6 +82,7 @@ class TryItOutVideo extends React.Component {
     // axios.post('/api/tester/startVideo', {
     //   option: this.props.currentTesterOption
     // })
+    this.state.timer();
   }
 
   getWebcam() {
@@ -95,6 +96,7 @@ class TryItOutVideo extends React.Component {
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(function(stream) {
+          window.localstream = stream;
           video.srcObject = stream;
           video.play();
       })
