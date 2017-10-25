@@ -33,8 +33,12 @@ class CreateProject extends React.Component {
       description: this.state.description
     })
       .then((response) => {
-        this.props.getProjectsFromDatabase();
-        this.props.close();
+        if (this.props.fromDashboard) {
+          this.props.getProjectsFromDatabase();
+          this.props.close(); 
+        } else {
+          this.props.history.push('/');
+        }
       })
       .catch((err) => {
         console.error('Request to create new project NOT sent to server!', err);
