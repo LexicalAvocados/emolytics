@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import SectionList from './SectionList.jsx';
 import { connect } from 'react-redux';
 import { Button, Panel, Collapse } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
