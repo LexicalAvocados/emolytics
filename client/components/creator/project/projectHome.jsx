@@ -23,7 +23,6 @@ class ProjectHome extends React.Component {
   }
 
   componentWillUnmount() {
-
   }
 
   onSectionClick(obj, options) {
