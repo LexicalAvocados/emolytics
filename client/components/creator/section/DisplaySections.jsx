@@ -37,13 +37,15 @@ class DisplaySections extends React.Component {
   onSectionClick(obj, fromProjectHome, fromSectionHome) { // Make this functional
     axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
       .then((options) => {
-        let sortedOptions = options.data.sort((one, two) => {
-          if (one.createdAt < two.createdAt) return 1;
-          if (one.createdAt > two.createdAt) return -1;
-        });
-        sortedOptions.push('End')
-        obj['options'] = sortedOptions;
-        this.props.actions.changeCurrentSection(obj, options);
+        if (options) {
+          let sortedOptions = options.data.sort((one, two) => {
+            if (one.createdAt < two.createdAt) return 1;
+            if (one.createdAt > two.createdAt) return -1;
+          });
+          sortedOptions.push('End')
+          obj['options'] = sortedOptions;
+        } 
+        this.props.actions.changeCurrentSection(obj, options || []);
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
