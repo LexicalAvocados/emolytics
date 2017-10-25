@@ -4,7 +4,6 @@ import {Button} from 'react-bootstrap';
 
 const BrowseListEntry = (props) => {
 
-
   return (
     <div className='BrowseListItem' style={BrowseListEntryStyle}>
       <p> Title: {props.item.name} </p>
@@ -14,7 +13,7 @@ const BrowseListEntry = (props) => {
       <img src={props.item.thumbnail}></img>
       <br/><br/>
       <Link to={'/video/'+props.item.id}>
-        <Button>Watch</Button>
+        <Button onClick={() => props.handleWatch(props.item)}>Watch</Button>
       </Link>
     </div>
   )
