@@ -21,6 +21,7 @@ class ProjectHome extends React.Component {
   }
 
   componentWillUnmount() {
+
   }
 
   onSectionClick(obj, options) {
@@ -44,7 +45,7 @@ class ProjectHome extends React.Component {
     return (
       <div className="projectHomeContainer">
         <Collapse in={this.state.open}>
-          <Panel header={`Project Title: ${this.props.currentProject.name}`} bsStyle="warning">
+          <Panel header={`Project Name: ${this.props.currentProject.name}`} bsStyle="warning">
             <h6>Description: {this.props.currentProject.description}</h6>
           </Panel>
         </Collapse>
