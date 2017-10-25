@@ -30,8 +30,9 @@ class TesterHome extends React.Component {
         console.log('Error fetching Tester Queue from database:', err);
       });
 
-    axios.post('/api/getCreditBalance')
+    axios.get('/api/getCreditBalance')
     .then((res) => {
+      console.log('res from credit balance', res)
       this.setState({
         credits: res.data
       })
@@ -57,16 +58,17 @@ class TesterHome extends React.Component {
             </Link>
           )
         })}
-        <div className='creditDisplay' style={creditDisplayStyle}>
-          <a> Credits: </a>
-          <br/>
-          <a> {this.state.credits || 0} </a>
-        </div>
-        
+        <Button className="addEntityButton">Credits: {this.state.credits || 0}</Button>
       </div>
     )
   }
 };
+
+const creditDisplayStyle = {
+  textAlign: "center",
+  float: "right",
+  padding: "10px"
+}
 
 const mapStateToProps = (state) => {
   return ({

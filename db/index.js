@@ -227,6 +227,21 @@ Notification.belongsTo(Project);
 
 Notification.sync({force: false});
 
+// ~~~~~~~~~~ //
+// Transaction Schema //
+// ~~~~~~~~~~ //
+
+const Transaction = sequelize.define('transactions', {
+  paid: {type: Sequelize.BOOLEAN, defaultValue: false},
+  amount: Sequelize.INTEGER
+})
+
+Transaction.belongsTo(User, {as: 'creator'});
+Transaction.belongsTo(User, {as: 'tester'});
+Transaction.belongsTo(Option);
+
+Transaction.sync({force: false});
+
 // Key.create({key: 'cb1e44a3d50c4a5291591ca117880155'})
 
 module.exports = {
@@ -243,5 +258,6 @@ module.exports = {
   Key,
   SectionComments,
   Notification,
+  Transaction,
   EyeTracking
 };

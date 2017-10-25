@@ -42,7 +42,8 @@ class Browse extends React.Component {
   render() {
     return (
       <div className='browseContainer'>
-
+        <h3> Browse </h3>
+        <br/><br/>
         <ButtonToolbar>
           <ToggleButtonGroup type="radio" name='sort' defaultValue={1} onChange={this.handleSort}>
             <ToggleButton value={1}>Credits</ToggleButton>
