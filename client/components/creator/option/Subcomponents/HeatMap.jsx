@@ -6,26 +6,36 @@ class HeatMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      frames: [],
+      allFrames: [],
       heatmapArr: []
     }
     this.massageData = this.massageData.bind(this);
+    // console.log('this in heatmap const', this)
   }
 
   componentDidMount() {
-    //axios
-  }
+    // console.log('Props in heatMap', this.props.option.id)
+    axios.get('/api/creator/getEyeTrackingForOption', {
+      params: {
+        optionId: this.props.option.id
+      }
+    })
+    .then( (res) => {
+      // console.log('response from heatmap frames', res)
+      this.massageData(res.data)
+    })
+  };
 
-  massageData() {
-    var counterForHeatmap = this.state.frames.reduce((acc, curr) => {
-      //pythagorean distance
+  massageData(frames) {
+    var counterForHeatmap = frames.reduce((acc, curr) => {
+
       acc[`${curr.x}_${curr.y}`] ? (
         acc[`${curr.x}_${curr.y}`].value += 1
       ) : (
         acc[`${curr.x}_${curr.y}`] = {
-          x: curr.x,
-          y: curr.y,
-          time: curr.time,
+          x: parseInt(+curr.x*100),
+          y: parseInt(+curr.y*100),
+          time: +curr.time,
           value: 1
         }
       );
@@ -33,19 +43,40 @@ class HeatMap extends React.Component {
     }, {})
 
     var arrayForHeatMap = [];
-    for (var key in dataForHeatmap) {
-      arrayForHeatMap.push(dataForHeatmap[key])
+    for (var key in counterForHeatmap) {
+      arrayForHeatMap.push(counterForHeatmap[key])
     }
+    arrayForHeatMap = arrayForHeatMap.sort((a,b) => a.time - b.time)
+    console.log('arrayForHeatMap', arrayForHeatMap)
     this.setState({
-      heatmapArr: arrayForHeatMap
+      heatmapArr: arrayForHeatMap,
+      allFrames: arrayForHeatMap
     })
   };
+
+  componentWillReceiveProps() {
+    console.log('PROPS', this.props);
+
+    if(this.props.setting === 2) {
+      var arrayInTimeRange = this.state.allFrames.filter(item => Math.floor(item.time) === this.props.time);
+      console.log('array in time range', arrayInTimeRange);
+      this.setState({
+        heatmapArr: arrayInTimeRange
+      })
+    } else {
+      this.setState({
+        heatmapArr: this.state.allFrames
+      })
+    }
+
+  }
 
   render() {
     return (
       <div className='heatmapContainer' style={heatmapStyle}>
-        <p> Text from Heatmap </p>
-        <ReactHeatmap max={5} data={this.state.heatmapArr || dummydata} />
+
+          <ReactHeatmap max={2} data={this.state.heatmapArr || dummydata} />
+
       </div>
     )
   }
@@ -56,6 +87,6 @@ const heatmapStyle = {
   width: '100%'
 }
 
-const dummydata = [{ x: 10, y: 15, value: 5}, { x: 50, y: 50, value: 2}];
+const dummydata = [{ x: 10, y: 15, value: 1}, { x: 50, y: 50, value: 2}];
 
 export default HeatMap;
