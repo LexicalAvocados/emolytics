@@ -33,10 +33,8 @@ class CompareCharts extends React.Component {
     console.log(this);
   }
 
-  componentWillReceiveProps(nProps) {
-    
-    if(this.props.option !== nProps.option) {
-      axios.post('/api/option/getDemographics', nProps.option)
+  componentWillMount() {
+      axios.post('/api/option/getDemographics', this.props.option)
         .then(data => {
           console.log(data);
           this.setState({
@@ -45,15 +43,13 @@ class CompareCharts extends React.Component {
             console.log(this);
           })
         })
-      axios.post('/api/option/getEmotion', nProps.option)
+      axios.post('/api/option/getEmotion', this.props.option)
         .then(data => {
           console.log('EMOTION', data);
           this.setState({
             emotions: data.data[0]
           })
         })
-    }
-
   }
 
   render () {
