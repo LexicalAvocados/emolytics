@@ -13,6 +13,7 @@ import ToggleDisplay from 'react-toggle-display';
 import AddSection from '../create/addSection.jsx';
 import SectionCarousel from './SectionCarousel.jsx';
 import EditPage from '../create/EditPage.jsx';
+import OptionHome from '../option/OptionHome.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -30,8 +31,9 @@ class SectionHome extends React.Component {
       compare: false,
       splitSections: [],
       showAddSection: false,
-      showEdit: false
-    }
+      showEdit: false,
+      showData: false
+    };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
     // this.renderHaveInvited = this.renderHaveInvited.bind(this);
@@ -45,6 +47,7 @@ class SectionHome extends React.Component {
     this.revealAddSection = this.revealAddSection.bind(this);
     this.revealEdit = this.revealEdit.bind(this);
     this.getSections = this.getSections.bind(this);
+    this.onSectionClick = this.onSectionClick.bind(this);
   }
 
   componentWillMount() {
@@ -107,9 +110,31 @@ class SectionHome extends React.Component {
     }
   }
 
+
+  onSectionClick(obj, options) {
+    axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
+      .then((options) => {
+        let sortedOptions = options.data.sort((one, two) => {
+          if (one.createdAt < two.createdAt) return 1;
+          if (one.createdAt > two.createdAt) return -1;
+        });
+        sortedOptions.push('End')
+        obj['options'] = sortedOptions;
+        this.props.actions.changeCurrentSection(obj, options);
+      })
+      .catch((err) => {
+        console.log('Request to get options for section NOT sent to server');
+      });  
+  }
+
+
+
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
     // this.props.history.push('/option' + this.props.currentSection.options[index].id);
+    this.setState({
+      showData: true
+    })
   }
 
   renderInvited() {
@@ -219,6 +244,7 @@ class SectionHome extends React.Component {
             splitSections={this.state.splitSections}
             revealEdit={this.revealEdit}
             revealAddSection={this.revealAddSection}
+            onSectionClick={this.onSectionClick}
           />
         </div>
 
@@ -298,6 +324,13 @@ class SectionHome extends React.Component {
 
           </ToggleDisplay>
 
+         { this.state.showData ? (
+            <OptionHome />
+         ):(
+           null
+         )} 
+       
+
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>
           <Modal.Header closeButton>
             <Modal.Title>Add a Section</Modal.Title>
@@ -325,6 +358,7 @@ class SectionHome extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.revealEdit}>Close</Button>
+            <Button onClick={this.props.deleteSection}>Delete this Project</Button>
           </Modal.Footer>
         </Modal>
           
