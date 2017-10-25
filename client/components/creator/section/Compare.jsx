@@ -51,10 +51,12 @@ class CompareOptions extends React.Component {
           <br/>
           <div>
           <Col md={6}>
+            <p>{this.props.optionsToCompare[0].name}</p>
             <CompareCharts idx={1} option={this.props.optionsToCompare[0]}/>
           </Col>
 
           <Col md={6} style={divStyle}>
+            <p>{this.props.optionsToCompare[1].name}</p>
             <CompareCharts idx={2} option={this.props.optionsToCompare[1]}/>
           </Col>
           </div>

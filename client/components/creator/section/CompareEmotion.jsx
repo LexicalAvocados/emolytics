@@ -14,9 +14,6 @@ class CompareEmotion extends React.Component {
     console.log(this);
   }
 
-  componentWillReceiveProps(nProps) {
-  }
-
   render () {
 
     var pieChart = c3.generate({
