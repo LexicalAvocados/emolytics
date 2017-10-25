@@ -44,7 +44,7 @@ class DisplaySections extends React.Component {
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
-      });  
+      });
     if (fromProjectHome) {
       console.log('yall made it');//NOPE
       this.props.history.push('/section' + obj.id);
@@ -54,7 +54,7 @@ class DisplaySections extends React.Component {
   splitSections() {
     if (!this.state.showEdit) {
       this.props.currentProject.sections.push('End');
-      this.props.currentSection.options.push('End');
+      // this.props.currentSection.options.push('End');
     }
     var splits = [];
     for (var i = 0; i < this.props.currentProject.sections.length; i += 3) {

@@ -55,7 +55,7 @@ exports.allSponsoredOptions = (req, res) => {
   Option.findAll({})
   .then((options) => {
     // console.log('OPTINOS', options)
-    return options.filter(item => item.totalcredits !== null || item.creditsperview > item.totalcredits);
+    return options.filter(item => item.totalcredits !== null && item.totalcredits > 0 && item.creditsperview < item.totalcredits);
   })
   .then((filteredOptions) => {
     res.send(JSON.stringify(filteredOptions))
