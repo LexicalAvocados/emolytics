@@ -49,13 +49,23 @@ class DashboardHome extends React.Component {
         this.setState({
           projects: sortedProjects,
           retrieved: true
-        }
-        // axios get for getAllNotificationsforUser
-        );
+        });
       })
       .catch((err) => {
         console.log(err);
       });
+    axios.get('/api/creator/allNotifications')
+      .then((res) => {
+        this.setState({
+          notifications: res.data
+        }, () => {
+          var projectNotifs = this.state.notifications.reduce((acc, curr) => {
+            acc[`${curr.projectId}`] ? acc[`${curr.projectId}`]+=1 : acc[`${curr.projectId}`] = 1;
+            return acc;
+          }, {});
+        });
+      });
+
   }
 
   onProjectClick(obj, sections) {

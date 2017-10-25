@@ -91,13 +91,12 @@ class SectionHome extends React.Component {
 
 
 
-  onOptionClick(index) { // Functional
-    console.log(index);
-    console.log('SHOUuld be currently clicked thing', this.props.currentSection.options[index]);
+  onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
+    // this.props.history.push('/option' + this.props.currentSection.options[index].id);
     this.setState({ // Revise to remove OptionHome on certain conditions
       showData: true
-    });
+    })
   }
 
   renderInvited() {

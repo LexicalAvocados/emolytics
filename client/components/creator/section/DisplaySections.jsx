@@ -49,7 +49,8 @@ class DisplaySections extends React.Component {
         console.log('Request to get options for section NOT sent to server');
       });
     if (fromProjectHome) {
-      this.props.history.push('/section' + obj.id);
+      // this.props.history.push('/section' + obj.id);
+      this.props.collapse();
     }
   }
 

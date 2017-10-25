@@ -19,10 +19,14 @@ class ProjectHome extends React.Component {
     this.onSectionClick = this.onSectionClick.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.redirectToSection = this.redirectToSection.bind(this);
   }
 
-  componentWillUnmount() {
-  }
+
+  // componentWillUnmount() {
+  //   console.log('we are unmounting');
+  //   this.toggle();
+  // }
 
   onSectionClick(obj, options) {
     obj['options'] = options;
@@ -41,18 +45,23 @@ class ProjectHome extends React.Component {
     })
   }
 
+  redirectToSection() {
+    this.props.history.push('/section' + this.props.currentSection.id);
+  }
+
   render() {
+    const height = {
+      height: '250px'
+    };
     return (
       <div className="projectHomeContainer">
-        <Collapse in={this.state.open}>
-          <Panel header={`Project Name: ${this.props.currentProject.name}`} bsStyle="warning">
-            <h6>Description: {this.props.currentProject.description}</h6>
-          </Panel>
-        </Collapse>
-
+        <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`} expanded={this.state.open} onExited={this.redirectToSection}>
+            Description: {this.props.currentProject.description}
+        </Panel>
         <div>
           <DisplaySections
             fromProjectHome={this.state.fromHome}
+            collapse={this.toggle}
           />
         </div>
       </div>
@@ -64,7 +73,8 @@ const mapStateToProps = (state) => {
   // console.log('LOG WITHIN PROJECTHOME', state);
   return ({
     router: state.router,
-    currentProject: state.currentProject
+    currentProject: state.currentProject,
+    currentSection: state.currentSection
   });
 };
 
@@ -78,4 +88,12 @@ export default withRouter(connect(
   mapDispatchToProps
 ) (ProjectHome));
 
+
+
+/*
+<Panel header={`Project Name: ${this.props.currentProject.name}`} bsStyle="warning" style={height}>
+<Collapse in={this.state.open} onExited={this.redirectToSection}>
+  <h6>Description: {this.props.currentProject.description}</h6>
+</Collapse>
+*/
 
