@@ -33,6 +33,7 @@ class CheckoutForm extends React.Component {
     this.props.stripe.createToken({name: 'Test Creator'})
       .then(token => {
         console.log('Stripe Token Received:', token);
+        this.props.addCreditsToAccount();
       })
       .catch(err => {
         console.log('Stripe Token Error:', err);

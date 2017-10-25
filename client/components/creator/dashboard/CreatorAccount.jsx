@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, FormControl, ControlLabel, Button, Col } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, InputGroup, ControlLabel, Button, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Elements } from 'react-stripe-elements';
@@ -16,68 +16,84 @@ class CreatorAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 10,
+      amount: '',
       paying: false,
       complete: false
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateTypedAmount = this.updateTypedAmount.bind(this);
+    this.transitionToPayment = this.transitionToPayment.bind(this);
+    this.addCreditsToAccount = this.addCreditsToAccount.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({
-      amount: e.target.value
-    })
+  updateTypedAmount(e) {
+    this.setState({amount: e.target.value});
   }
 
-  handleSubmit() {
-    //axios call
+  transitionToPayment(e) {
+    e.preventDefault();
+    this.setState({paying: true});
+  }
+
+  addCreditsToAccount() {
     axios.post('/api/addCredits', {
-      amount: this.state.amount*100
+      amount: this.state.amount * 100
     })
-    this.setState({
-      complete: true
-    })
+      .then(res => {
+        this.setState({complete: true});
+      })
+      .catch(err => {
+        console.log('Error crediting account:', err);
+      });
   }
 
   render() {
     return (
       <div className='accountContainer'>
         <h3>Add Credits to your Account</h3>
-        <h5>(You can use these to sponsor options so viewers will watch them...)</h5>
-        <br/><br/><br/>
-          <Form horizontal>
-            <FormGroup controlId="amount" >
-              <Col sm={1}>
-                Amount:
-              </Col>
+        <div>Use these to sponsor options so viewers will be more likely to watch then</div>
+        <div>Rate: $1 for 100 credits</div>
+        <br/><br/>
+          <Form horizontal onSubmit={this.transitionToPayment}>
+            <FormGroup controlId="amount">
               <Col sm={3}>
-                <FormControl type="number" placeholder="eg. 20" onChange={this.handleChange}/>
-              </Col>
-              <Col sm={1}>
-                <a> = {this.state.amount * 5 || 0} credits</a>
+                <InputGroup>
+                  <InputGroup.Addon>$</InputGroup.Addon>
+                  <FormControl
+                    type="number"
+                    value={this.state.amount}
+                    placeholder='Enter amount'
+                    onChange={this.updateTypedAmount}
+                  />
+                </InputGroup>
               </Col>
             </FormGroup>
-            <Button onClick={() => this.setState({paying: true})}>Proceed to Payment</Button>
+
+            {this.state.amount ?
+              <Button bsStyle='primary' type='submit'>Proceed to Payment</Button>
+            :
+              null}
+
           </Form>
 
           {this.state.paying ?
             <Elements>
               <CheckoutForm
                 amount={this.state.amount}
+                addCreditsToAccount={this.addCreditsToAccount}
               />
             </Elements>
           :
             null}
 
-          {this.state.complete ? (
+          {this.state.complete ?
             <div className='complete'>
               <p> Payment processed!</p>
               <Link to='/'>
                 <Button> Done </Button>
               </Link>
             </div>
-          ) : ''}
+          :
+            null}
       </div>
     )
   }
