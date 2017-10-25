@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Form, FormGroup, FormControl, ControlLabel, Button, Col } from 'react-bootstrap';
+import { Form, FormControl } from 'react-bootstrap';
 import { CardElement, PaymentRequestButtonElement, injectStripe } from 'react-stripe-elements';
 
 // React-Redux connect() boilerplate
@@ -13,51 +13,62 @@ import * as ChangeActions from '../../../actions';
 class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
-
-    const paymentRequest = props.stripe.paymentRequest({
-      country: 'US',
-      currency: 'usd',
-      total: {
-        label: 'Payment for Credits',
-        amount: props.amount,
-      }
-    });
-
-    paymentRequest.canMakePayment()
-      .then(result => {
-        this.setState({canMakePayment: !!result});
-      });
-
     this.state = {
-      canMakePayment: false,
-      paymentRequest
+      submitButtonDisabled: true,
+      submitButtonClass: 'ccSubmitDeactivated'
     }
+    this.createStripeToken = this.createStripeToken.bind(this);
+    this.toggleSubmitButton = this.toggleSubmitButton.bind(this);
+  }
+
+  toggleSubmitButton(e) {
+    this.setState({
+      submitButtonDisabled: e.complete ? false : true,
+      submitButtonClass: e.complete ? 'ccSubmit' : 'ccSubmitDeactivated'
+    });
+  }
+
+  createStripeToken(e) {
+    e.preventDefault();
+    this.props.stripe.createToken({name: 'Test Creator'})
+      .then(token => {
+        console.log('Stripe Token Received:', token);
+      })
+      .catch(err => {
+        console.log('Stripe Token Error:', err);
+      })
   }
 
   render() {
     return (
       <div>
-        <div className='ccInput'>
-          <h3>Enter Card Details</h3>
-          <CardElement
-            style={{
-              base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                lineHeight: '40px',
-                fontWeight: 300,
-                fontSize: '20px',
+        <div className='ccForm'>
+          <Form onSubmit={this.createStripeToken}>
+            <h3>Card Details</h3>
+            <div>
+              <CardElement
+                onChange={this.toggleSubmitButton}
+                style={{
+                  base: {
+                    iconColor: '#666EE8',
+                    color: '#31325F',
+                    lineHeight: '40px',
+                    fontSize: '20px',
 
-                '::placeholder': {
-                    color: '#CFD7E0'
-                }
-              }
-            }}
-          />
+                    '::placeholder': {
+                        color: '#CFD7E0'
+                    }
+                  }
+                }}
+              />
+            </div>
+            <button
+              type='submit'
+              className={this.state.submitButtonClass}
+              disabled={this.state.submitButtonDisabled}
+            > Pay {this.props.amount} </button>
+          </Form>
         </div>
-        {/*<PaymentRequestButtonElement 
-          paymentRequest={this.state.paymentRequest}
-        />*/}
       </div>
     )
   }

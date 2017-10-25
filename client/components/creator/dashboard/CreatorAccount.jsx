@@ -16,19 +16,12 @@ class CreatorAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 0,
+      amount: 10,
       paying: false,
       complete: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({
-      amount: 0,
-      complete: false
-    })
   }
 
   handleChange(e) {
