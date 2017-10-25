@@ -52,10 +52,10 @@ class FocusGroupsPage extends React.Component {
     })
       .then(res => {
         if (res.data) this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
-        else console.log('Error deleting Focus Group');
+        else console.log('Error deleting Group');
       })
       .catch(err => {
-        console.log('Error deleting Focus Group:', err);
+        console.log('Error deleting Group:', err);
       });
   }
 
@@ -69,11 +69,11 @@ class FocusGroupsPage extends React.Component {
     })
       .then(res => {
         if (res.data) this.props.actions.addTesterToFocusGroup(focusGroupName, testerUsername);
-        else console.log('Error associating Tester with Focus Group:', res);
+        else console.log('Error associating Tester with Group:', res);
         this.setState({typedTesterUsername: ''});
       })
       .catch(err => {
-        console.log('Error adding Tester to Focus Group:', err);
+        console.log('Error adding Tester to Group:', err);
       });
   }
 
@@ -86,10 +86,10 @@ class FocusGroupsPage extends React.Component {
     })
       .then(res => {
         if (res.data) this.props.actions.removeTesterFromFocusGroup(focusGroupName, testerUsername);
-        else console.log('Error removing Tester from Focus Group');
+        else console.log('Error removing Tester from Group');
       })
       .catch(err => {
-        console.log('Error removing Tester from Focus Group:', err);
+        console.log('Error removing Tester from Group:', err);
       });
   }
 
@@ -98,12 +98,12 @@ class FocusGroupsPage extends React.Component {
     let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
-        <h2>Create New Focus Group</h2>
+        <h2>New Group</h2>
         <form onSubmit={this.createNewFocusGroup}>
           <FormControl
             type='text'
             value={this.state.typedFocusGroupName}
-            placeholder='Focus Group Name'
+            placeholder='Group Name'
             onChange={this.updateTypedFocusGroupName}
           />
           <Button bsStyle='primary' type='submit'>Create Group</Button>
@@ -118,7 +118,7 @@ class FocusGroupsPage extends React.Component {
           <div>
 
             <div>
-              <Button bsStyle='danger' onClick={this.deleteFocusGroup}>Delete Focus Group</Button>
+              <Button bsStyle='danger' onClick={this.deleteFocusGroup}>Delete Group</Button>
             </div>
 
             <h2>Add Tester to {currentFocusGroup.name}</h2>

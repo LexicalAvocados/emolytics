@@ -46,9 +46,10 @@ export class App extends React.Component {
             this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
               <div className="appBody">
               <Switch>
+                {/* routes for CREATOR */}
                 <Route exact path="/" component={DashboardHome}/>
                 <Route path="/new" component={DashboardHome}/>
-                <Route path='/focusgroups' component={FocusGroupsPage}/>
+                <Route path='/groups' component={FocusGroupsPage}/>
                 <Route path="/testvideo" component={TesterVideo}/>
                 <Route path="/project:id" component={ProjectHome}/>
                 <Route path="/section:id" component={SectionHome}/>
@@ -61,6 +62,7 @@ export class App extends React.Component {
             ) : (
               <div className="appBody">
               <Switch>
+                {/* routes for TESTER */}
                 <Route exact path="/" component={TesterHome}/>
                 <Route exact path="/history" component={TesterHistoryPage}/>
                 <Route path="/history/:id" component={TesterOptionResults}/>
@@ -72,6 +74,7 @@ export class App extends React.Component {
             )
           ) : (
             <Switch>
+              {/* routes for NOT LOGGED IN */}
               <Route exact path="/" component={LandingPage}/>
               <Route exact path="/loading" component={Loading}/>
               <Route exact path="/signup" component={Signup}/>

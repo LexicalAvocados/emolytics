@@ -39,11 +39,11 @@ class Navbar extends React.Component {
                 <Link to='/createProject' style={noUnderline}>
                   <p className='navItem'>Create Project</p>
                 </Link>
-                <Link to='/focusgroups' style={noUnderline}>
-                  <p className='navItem'>Focus Groups</p>
+                <Link to='/groups' style={noUnderline}>
+                  <p className='navItem'>Groups</p>
                 </Link>
                 <Link to='/login' style={noUnderline} onClick={this.handleLogout}>
-                  <p className='navItem'>Log out</p>
+                  <p className='navItem'>Log Out</p>
                 </Link>
               </div>
             ) : (
@@ -68,10 +68,10 @@ class Navbar extends React.Component {
           ) : (
             <div className='navContainer' style={navbarContainerStyle}>
               <Link to='/login' style={noUnderline}>
-                <p className='navItem'>Log in</p>
+                <p className='navItem'>Log In</p>
               </Link>
               <Link to='/signup' style={noUnderline}>
-                <p className='navItem'>Sign up</p>
+                <p className='navItem'>Sign Up</p>
               </Link>
             </div>
           )
