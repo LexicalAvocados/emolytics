@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Panel } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -218,7 +218,9 @@ class SectionHome extends React.Component {
       <div className="sectionHomeContainer">
         <div>
           <div>
-            <h3>Project Name: {this.props.currentProject.name} | Description: {this.props.currentProject.description}</h3>
+            <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`}>
+              Description: {this.props.currentProject.description}
+            </Panel>
           </div>
           <DisplaySections
             clearOnNewSection={this.clearOnNewSection}
