@@ -31,7 +31,8 @@ class SectionHome extends React.Component {
       optionData: [],
       compare: false,
       showData: false,
-      compareOptions: []
+      compareOptions: [],
+      fromSectionHome: true
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -43,6 +44,7 @@ class SectionHome extends React.Component {
     this.deleteOption = this.deleteOption.bind(this);
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
+    this.clearOnNewSection = this.clearOnNewSection.bind(this);
   }
 
   componentWillMount() {
@@ -60,6 +62,13 @@ class SectionHome extends React.Component {
     this.getOptionsData();
   }
 
+  clearOnNewSection() {
+    this.setState({
+      compareOptions: [],
+      showData: false,
+      compare: false,
+    });
+  }
 
   concatTesters(testers, index) {
     var freeOfDuplicates = [];
@@ -194,9 +203,14 @@ class SectionHome extends React.Component {
   }
 
   compare() {
-    this.setState({
-      compare: !this.state.compare
-    })
+    console.log(this.props.currentSection.options.length);
+    if (this.props.currentSection.options.length < 3) { // Adjust for dummy option
+      alert('You\'ll need at least two options before you can compare them!');
+    } else {
+      this.setState({
+        compare: !this.state.compare
+      });
+    }
   }
 
   render() {
@@ -206,7 +220,10 @@ class SectionHome extends React.Component {
           <div>
             <h3>Project Name: {this.props.currentProject.name} | Project Description: {this.props.currentProject.description}</h3>
           </div>
-          <DisplaySections />
+          <DisplaySections 
+            clearOnNewSection={this.clearOnNewSection}
+            fromSectionHome={this.state.fromSectionHome}
+          />
         </div>
 
         { !this.state.compare ? (
