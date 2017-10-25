@@ -13,6 +13,7 @@ import ToggleDisplay from 'react-toggle-display';
 import AddSection from '../create/addSection.jsx';
 import SectionCarousel from './SectionCarousel.jsx';
 import EditPage from '../create/EditPage.jsx';
+import OptionHome from '../option/OptionHome.jsx';
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -30,8 +31,9 @@ class SectionHome extends React.Component {
       compare: false,
       splitSections: [],
       showAddSection: false,
-      showEdit: false
-    }
+      showEdit: false,
+      showData: false
+    };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
     // this.renderHaveInvited = this.renderHaveInvited.bind(this);
@@ -130,6 +132,9 @@ class SectionHome extends React.Component {
   onOptionClick(index) {
     this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
     // this.props.history.push('/option' + this.props.currentSection.options[index].id);
+    this.setState({
+      showData: true
+    })
   }
 
   renderInvited() {
@@ -318,6 +323,13 @@ class SectionHome extends React.Component {
 
 
           </ToggleDisplay>
+
+         { this.state.showData ? (
+            <OptionHome />
+         ):(
+           null
+         )} 
+       
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>
           <Modal.Header closeButton>
