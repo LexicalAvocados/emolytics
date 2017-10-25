@@ -57,6 +57,12 @@ class TesterHome extends React.Component {
             </Link>
           )
         })}
+        <div className='creditDisplay' style={creditDisplayStyle}>
+          <a> Credits: </a>
+          <br/>
+          <a> {this.state.credits || 0} </a>
+        </div>
+        
       </div>
     )
   }
