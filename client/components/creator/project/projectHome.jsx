@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Panel, Collapse } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+import DisplaySections from '../section/DisplaySections.jsx';
 import axios from 'axios';
 
 class ProjectHome extends React.Component {
@@ -12,7 +13,8 @@ class ProjectHome extends React.Component {
     super(props);
     this.state = {
       rerenderOptions: false,
-      open: true
+      open: true,
+      fromHome: true
     };
     this.onSectionClick = this.onSectionClick.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
@@ -76,7 +78,7 @@ class ProjectHome extends React.Component {
           <Button className="addSectionButton">Add a section</Button>
         </Link>
         <div>
-          {this.props.currentProject.sections.map((section, i) => {
+          {/* {this.props.currentProject.sections.map((section, i) => {
             // console.log('ITERATING THROUGH SECTIONS', section);
             return (
               <SectionList
@@ -89,7 +91,10 @@ class ProjectHome extends React.Component {
                 key={i}
               />
             );
-          })}
+          })} */}
+          <DisplaySections 
+            fromProjectHome={this.state.fromHome}
+          />
         </div>
       </div>
     );
