@@ -8,6 +8,7 @@ import axios from 'axios';
 import pad from 'array-pad';
 import {ButtonToolbar, ToggleButtonGroup, ToggleButton}  from 'react-bootstrap';
 import $ from 'jquery';
+import Slider, { Range } from 'rc-slider';
 
 import SideBar from './SideBar.jsx';
 import Overview from './Subcomponents/Overview.jsx';
@@ -56,6 +57,9 @@ class OptionHome extends React.Component {
     this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
     this.handleHeatmapData = this.handleHeatmapData.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
+    this.sliderCallback = this.sliderCallback.bind(this);
+    this.playVideoButtonCallback = this.playVideoButtonCallback.bind(this);
+    this.playVideoButtonIcon = this.playVideoButtonIcon.bind(this);
     // console.log(this);
   }
 
@@ -401,6 +405,24 @@ class OptionHome extends React.Component {
     this.setState({
       videoTime: Math.floor(timeObj.playedSeconds)
     })
+  };
+
+  sliderCallback(time) {
+    this.setState({
+      playVideoForHM: false
+    }, () => {
+      this.timestampCallback(time);
+    })
+  }
+
+  playVideoButtonIcon() {
+    return this.state.playVideoForHM ? 'https://cdn1.iconfinder.com/data/icons/material-audio-video/20/pause-circle-outline-128.png' : 'https://image.flaticon.com/icons/svg/26/26025.svg';
+  }
+
+  playVideoButtonCallback() {
+    this.setState({
+      playVideoForHM: !this.state.playVideoForHM
+    }, this.playVideoButtonIcon )
   }
 
   render() {
@@ -510,6 +532,13 @@ class OptionHome extends React.Component {
               </div>
 
               <div className='buttons' style={buttonStyle}>
+                {this.state.heatmapSetting === 2 ? (
+                  <div style={sliderStyle}>
+                    <Slider max={this.state.duration} onChange={this.sliderCallback} value={Math.floor(this.state.videoTime)}/>
+                    <img src={this.playVideoButtonIcon()} height={20} width={20}
+                         style={iconStyle} onClick={this.playVideoButtonCallback} className='playPauseIcon'></img>
+                  </div>
+                ): ''}
                 <br/><br/>
                 <ButtonToolbar>
                   <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
@@ -518,7 +547,7 @@ class OptionHome extends React.Component {
                   </ToggleButtonGroup>
                 </ButtonToolbar>
               </div>
-
+              <br/><br/><br/><br/><br/><br/>
           </div>
 
         )
@@ -526,6 +555,22 @@ class OptionHome extends React.Component {
       </div>
     )
   }
+}
+
+const iconStyle = {
+  position: 'absolute',
+  top: '-10%',
+  left: '-19%',
+  zIndex: '105'
+}
+
+const sliderStyle = {
+  position: 'absolute',
+  top: '100%',
+  left: '2%',
+  zIndex: '104',
+  width: '100%',
+  marginTop: "5%"
 }
 
 const heatmapComponentContainerStyle = {
@@ -555,7 +600,7 @@ const heatmapSuperimposedStyle = {
 
 const buttonStyle = {
   position: 'absolute',
-  top: '87%',
+  top: '84%',
   left: '40%',
   zIndex: '102'
 }
