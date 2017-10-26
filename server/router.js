@@ -12,6 +12,7 @@ const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
 const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRoutes.js');
 const creditRoutes = require('./api/tester/creditRoutes.js');
 const eyeTrackingRoutes = require('./api/creator/eyeTrackingRoutes.js');
+const optionHomeUtilityRoutes = require('./api/creator/optionHomeUtilityRoutes.js')
 
 router.use('/tester', testerRoutes);
 
@@ -80,5 +81,9 @@ router.get('/getCreditBalance', creditRoutes.getCreditBalance);
 router.post('/addCreditsToOption', creditRoutes.addCreditsToOption);
 
 router.get('/allSponsoredOptions', creditRoutes.allSponsoredOptions);
+
+router.post('/organizeFramesByEmotion', optionHomeUtilityRoutes.organizeFramesByEmotion);
+
+router.post('/calculateCompletionPercentage', optionHomeUtilityRoutes.calculateCompletionPercentage);
 
 module.exports = router;
