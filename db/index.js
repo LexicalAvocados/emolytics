@@ -77,7 +77,8 @@ FocusGroupAndTester.sync({force: false});
 
 const Project = sequelize.define('project', {
   name: Sequelize.STRING,
-  description: Sequelize.TEXT
+  description: Sequelize.TEXT,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 Project.belongsTo(User);
@@ -90,7 +91,8 @@ Project.sync({force: false});
 
 const Section = sequelize.define('section', {
   name: Sequelize.STRING,
-  description: Sequelize.TEXT
+  description: Sequelize.TEXT,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 Section.belongsTo(Project);
@@ -108,7 +110,8 @@ const Option = sequelize.define('option', {
   thumbnail: Sequelize.TEXT,
   length: Sequelize.INTEGER,
   totalcredits: {type: Sequelize.INTEGER, defaultValue: 0},
-  creditsperview: {type: Sequelize.INTEGER, defaultValue: 0}
+  creditsperview: {type: Sequelize.INTEGER, defaultValue: 0},
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 Option.belongsTo(Section);
@@ -123,7 +126,8 @@ const OptionAndAnnotation = sequelize.define('optionAndAnnotation', {
   time: Sequelize.INTEGER,
   end: Sequelize.INTEGER,
   emotion: Sequelize.TEXT,
-  desc: Sequelize.TEXT
+  desc: Sequelize.TEXT,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 })
 
 OptionAndAnnotation.belongsTo(Option);
@@ -138,7 +142,8 @@ OptionAndAnnotation.sync({force: false});
 const TesterAndOption = sequelize.define('testerAndOption', {
   like: Sequelize.BOOLEAN,
   finished: Sequelize.BOOLEAN,
-  comment: Sequelize.TEXT
+  comment: Sequelize.TEXT,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 })
 
 Option.belongsToMany(User, {through: 'testerAndOption'});
@@ -161,7 +166,8 @@ const Frame = sequelize.define('frame', {
   happiness: Sequelize.DECIMAL,
   neutral: Sequelize.DECIMAL,
   sadness: Sequelize.DECIMAL,
-  surprise: Sequelize.DECIMAL
+  surprise: Sequelize.DECIMAL,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 Frame.belongsTo(User);
@@ -188,7 +194,8 @@ Key.sync({force: false});
 const EyeTracking = sequelize.define('eyeTracking', {
   x: Sequelize.DECIMAL,
   y: Sequelize.DECIMAL,
-  time: Sequelize.DECIMAL
+  time: Sequelize.DECIMAL,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 EyeTracking.belongsTo(Option);
@@ -202,7 +209,8 @@ EyeTracking.sync({force: false});
 
 const SectionComments = sequelize.define('sectionComments', {
   summary: Sequelize.TEXT,
-  aggregateComments: Sequelize.TEXT
+  aggregateComments: Sequelize.TEXT,
+  deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 SectionComments.belongsTo(Option);

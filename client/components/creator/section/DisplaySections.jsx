@@ -80,7 +80,7 @@ class DisplaySections extends React.Component {
           }
         }
       });
-      axios.delete('/api/deleteSection', { params: {sectionId: this.state.idOfClickedOnSection, toDelete: 'id'} })
+      axios.delete('/api/deleteSection', { params: {toDelete: 'id', id: this.state.idOfClickedOnSection} })
         .then((response) => {
           // console.log(response);
           this.props.actions.removeSectionFromSections(this.props.currentProject.sections);

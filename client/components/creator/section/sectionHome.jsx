@@ -158,7 +158,7 @@ class SectionHome extends React.Component {
         }
       });
       this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
-      axios.delete('/api/deleteOption', { params: {optionId: this.state.idOfClickedOnOption, toDelete: 'id'} })
+      axios.delete('/api/deleteOption', { params: {toDelete: 'id', id: this.state.idOfClickedOnOption} })
         .then((response) => {
           this.toggleEdit();
         })
