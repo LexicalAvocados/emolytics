@@ -42,9 +42,9 @@ class Loading extends React.Component {
         }
       }
     })
-    // .then( () => {
-    //   this.props.history.push('/');
-    // })
+    .then( () => {
+      setTimeout(() => this.props.history.push('/'), 700); //tentative fix
+    })
     .catch((err) => console.log('error happened', err))
   }
 

@@ -33,8 +33,8 @@ class HeatMap extends React.Component {
         acc[`${curr.x}_${curr.y}`].value += 1
       ) : (
         acc[`${curr.x}_${curr.y}`] = {
-          x: parseInt(+curr.x*100),
-          y: parseInt(+curr.y*100),
+          x: parseInt(+curr.x*140),
+          y: parseInt(+curr.y*110),
           time: +curr.time,
           value: 1
         }
