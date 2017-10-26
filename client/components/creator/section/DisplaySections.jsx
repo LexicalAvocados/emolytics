@@ -34,18 +34,16 @@ class DisplaySections extends React.Component {
   }
 
 
-  onSectionClick(obj, fromProjectHome, fromSectionHome) { // Make this functional
+  onSectionClick(obj, fromProjectHome) { // Make this functional
     axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
       .then((options) => {
-        if (options) {
-          let sortedOptions = options.data.sort((one, two) => {
-            if (one.createdAt < two.createdAt) return 1;
-            if (one.createdAt > two.createdAt) return -1;
-          });
-          sortedOptions.push('End')
-          obj['options'] = sortedOptions;
-        } 
-        this.props.actions.changeCurrentSection(obj, options || []);
+        let sortedOptions = options.data.sort((one, two) => {
+          if (one.createdAt < two.createdAt) return 1;
+          if (one.createdAt > two.createdAt) return -1;
+        });
+        sortedOptions.push('End')
+        obj['options'] = sortedOptions;
+        this.props.actions.changeCurrentSection(obj, options);
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
@@ -53,9 +51,6 @@ class DisplaySections extends React.Component {
     if (fromProjectHome) {
       // this.props.history.push('/section' + obj.id);
       this.props.collapse();
-    }
-    if (fromSectionHome) {
-      this.props.clearOnNewSection();
     }
   }
 
@@ -121,7 +116,6 @@ class DisplaySections extends React.Component {
           revealAddSection={this.revealAddSection}
           onSectionClick={this.onSectionClick}
           fromProjectHome={this.props.fromProjectHome}
-          fromSectionHome={this.props.fromSectionHome}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>

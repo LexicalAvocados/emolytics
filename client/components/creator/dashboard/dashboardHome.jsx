@@ -70,7 +70,6 @@ export class DashboardHome extends React.Component {
           }, {});
         });
       });
-
   }
 
   onProjectClick(obj, sections) {
@@ -116,14 +115,14 @@ export class DashboardHome extends React.Component {
         })
         .catch((err) => {
           console.log('Error deleting project', err);
-        })
+        });
     }
   }
 
   render () {
     var inherit = {
-      display: "inherit"
-    }
+      display: 'inherit'
+    };
     return (
       <div className="dashboardHomeContainer">
         <div className="dashboardHeader">
@@ -186,11 +185,11 @@ export class DashboardHome extends React.Component {
 }
 
 const creditDisplayStyle = {
-  textAlign: "center",
-  float: "right",
-  padding: "10px",
-  color: "black"
-}
+  textAlign: 'center',
+  float: 'right',
+  padding: '10px',
+  color: 'black'
+};
 
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN DASHBOARD', state);
