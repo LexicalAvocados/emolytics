@@ -84,13 +84,7 @@ export class Login extends React.Component {
   }
 
   submitPatreonLogin() {
-    axios.get('/auth/patreon', {
-      params: {
-        response_type: 'code',
-        client_id: patreon.id,
-        redirect_uri: patreon.redirect_uri,
-      }
-    })
+    axios.get('/auth/patreon')
   }
 
   resetInputForms() {
@@ -98,6 +92,8 @@ export class Login extends React.Component {
   }
 
   render() {
+    const patreonOAuthLink = `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon`;
+    console.log('patreonOAuthLink:', patreonOAuthLink);
     return (
       <div className='auth'>
         <h2 className='loginHeader'>Log In</h2>
@@ -125,11 +121,9 @@ export class Login extends React.Component {
           <a href='/auth/facebook'>
             <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
           </a>
-          <img
-            className='patreonLogin'
-            src='patreon.png'
-            onClick={this.submitPatreonLogin}
-          ></img>
+          <a href={patreonOAuthLink}>
+            <img src='patreon.png'></img>
+          </a>
       </div>
     )
   }
@@ -138,12 +132,10 @@ export class Login extends React.Component {
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  return ({
-    loggedInUser: state.loggedInUser,
-    router: state.router
-  })
-};
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  router: state.router
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)

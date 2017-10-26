@@ -126,20 +126,6 @@ exports.editProfile = (req, res) => {
 };
 
 
-exports.loginWithPatreon = (req, res) => {
-  axios.get('www.patreon.com/oauth2/authorize', {
-    params: {
-      response_type: 'code',
-      client_id: req.query.client_id,
-      redirect_uri: req.query.redirect_uri
-    }
-  })
-    .then(response => {
-      console.log('Patreon response:', response);
-    })
-};
-
-
 exports.checkUser = (req, res, next) => {
   if (req.session.username === undefined) {
     console.log('Not authorized, logging out');

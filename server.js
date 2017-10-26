@@ -6,6 +6,7 @@ const Bluebird = require('bluebird');
 const router = require('./server/router');
 const db = require('./db');
 const auth = require('./server/auth');
+const patreon = require('./server/auth/patreon');
 const cron = require('./server/crontab.js')
 
 const passport = require('passport'),
@@ -99,7 +100,7 @@ app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', (req, res) => auth.logout(req, res));
 app.put('/profile', (req, res) => auth.editProfile(req, res));
-app.get('/auth/patreon', (req, res) => auth.loginWithPatreon(req, res));
+app.get('/oauth/patreon', (req, res) => patreon.handleOAuthRedirect(req, res));
 
 // app.use(auth.checkUser);
 app.use(passport.initialize());
