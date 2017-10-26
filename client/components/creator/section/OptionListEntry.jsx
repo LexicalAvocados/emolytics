@@ -42,19 +42,6 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  // beginEdit(option) {
-  //   this.props.actions.changeOption(option);
-  //   this.setState({
-  //     showEdit: !this.state.showEdit
-  //   });
-  // }
-
-  // toggleEdit() {
-  //   this.setState({
-  //     showEdit: !this.state.showEdit
-  //   });
-  // }
-
   updateTotal(e) {
     if(e.target.value > this.props.loggedInUser.credits) {
       this.setState({
