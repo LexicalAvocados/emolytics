@@ -19,7 +19,8 @@ class DashboardHome extends React.Component {
       notifications: [],
       idOfClickedOn: null,
       credits: 0,
-      fromDashboard: true
+      fromDashboard: true,
+      refreshSections: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -39,7 +40,7 @@ class DashboardHome extends React.Component {
     })
   }
 
-  getProjectsFromDatabase() {
+  getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
         // console.log(response.data);
@@ -50,13 +51,16 @@ class DashboardHome extends React.Component {
         this.setState({
           projects: sortedProjects,
           retrieved: true
-        }
-        // axios get for getAllNotificationsforUser
-        );
+        });
       })
       .catch((err) => {
         console.log(err);
       });
+    if (refresh) {
+      this.setState({
+        refreshSections: true
+      });
+    }
     axios.get('/api/creator/allNotifications')
       .then((res) => {
         this.setState({
@@ -85,14 +89,16 @@ class DashboardHome extends React.Component {
   beginEdit(project) {
     this.setState({
       displayEdit: !this.state.displayEdit,
-      idOfClickedOn: project.id
+      idOfClickedOn: project.id,
+      refreshSections: true
     });
     this.props.actions.changeCurrentProject(project);
   }
 
   toggleEdit() {
     this.setState({
-      displayEdit: !this.state.displayEdit
+      displayEdit: !this.state.displayEdit,
+      refreshSections: false
     });
   }
 
@@ -107,6 +113,7 @@ class DashboardHome extends React.Component {
           this.setState({
             projects: filteredProjects
           });
+          this.getProjectsFromDatabase(true);
           this.toggleEdit();
         })
         .catch((err) => {
@@ -145,22 +152,23 @@ class DashboardHome extends React.Component {
         { this.state.retrieved ? (
           this.state.projects.length ? (
             <div>
-            <Row className="show-grid">
-              { this.state.projects.map((project, i) => (
-                <Col className="projectListContainer" md={4} key={i}>
-                  <ProjectList
-                    onProjectClick={this.onProjectClick}
-                    deleteProject={this.deleteProject}
-                    getProjectsFromDatabase={this.getProjectsFromDatabase}
-                    project={project}
-                    beginEdit={this.beginEdit}
-                    toggleEdit={this.toggleEdit}
-                    displayEdit={this.state.displayEdit}
-                  />
-                </Col>
-              ))}
-            </Row>
-            <Button className="addEntityButton" style={inherit}>Credits: {this.state.credits || 0}</Button>
+              <Row className="show-grid">
+                { this.state.projects.map((project, i) => (
+                  <Col className="projectListContainer" md={4} key={i}>
+                    <ProjectList
+                      onProjectClick={this.onProjectClick}
+                      deleteProject={this.deleteProject}
+                      getProjectsFromDatabase={this.getProjectsFromDatabase}
+                      project={project}
+                      beginEdit={this.beginEdit}
+                      toggleEdit={this.toggleEdit}
+                      displayEdit={this.state.displayEdit}
+                      refreshSections={this.state.refreshSections}
+                    />
+                  </Col>
+                ))}
+              </Row>
+              <Button className="addEntityButton" style={inherit}>Credits: {this.state.credits || 0}</Button>
             </div>
           ) : (
             <div>

@@ -12,10 +12,22 @@ class ProjectList extends React.Component {
       date: ''
     };
     this.onClickCallback = this.onClickCallback.bind(this);
+    this.getRelatedSections = this.getRelatedSections.bind(this);
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
+    this.getRelatedSections();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('heavy', nextProps.refreshSections);
+    if (nextProps.refreshSections) {
+      this.getRelatedSections();
+    }
+  }
+
+  getRelatedSections() {
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
