@@ -19,7 +19,6 @@ export class DashboardHome extends React.Component {
       displayEdit: false,
       notifications: [],
       idOfClickedOn: null,
-      credits: 0,
       fromDashboard: true,
       refreshSections: false
     };
@@ -35,11 +34,8 @@ export class DashboardHome extends React.Component {
     this.getProjectsFromDatabase();
     axios.get('/api/getCreditBalance')
     .then((res)=> {
-      this.setState({
-        credits: res.data
-      })
-    })
-    
+      this.props.actions.setCredits(res.data); // Redundant on first login
+    });
   }
 
   getProjectsFromDatabase(refresh) {
@@ -171,7 +167,7 @@ export class DashboardHome extends React.Component {
                 ))}
               </Row>
               <Link to='/account'>
-                <Button className="addEntityButton" style={inherit}>Credits: {this.state.credits || 0}</Button>
+                <Button className="addEntityButton" style={inherit}>Credits: {this.props.loggedInUser.credits || 0}</Button>
               </Link>
             </div>
           ) : (

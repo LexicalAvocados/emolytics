@@ -99,6 +99,8 @@ class OptionListEntry extends React.Component {
       })
       .then((res)=>{
         // console.log('res from deducting credits from user', res);
+        let credits = this.props.loggedInUser.credits - this.state.total;
+        this.props.actions.setCredits(credits); // Redundant on first login
         this.setState({
           total: 0,
           perView: 0
