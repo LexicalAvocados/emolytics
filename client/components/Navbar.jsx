@@ -12,9 +12,8 @@ import * as ChangeActions from '../actions';
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
-
-  this.handleLogout = this.handleLogout.bind(this);
-}
+    this.handleLogout = this.handleLogout.bind(this);
+  }
 
   handleLogout() {
     this.props.actions.setLoggedOut();
@@ -37,10 +36,13 @@ class Navbar extends React.Component {
                   <p className='navItem'>Home</p>
                 </Link>
                 <Link to='/createProject' style={noUnderline}>
-                  <p className='navItem'>New</p>
+                  <p className='navItem'>Create</p>
                 </Link>
                 <Link to='/groups' style={noUnderline}>
                   <p className='navItem'>Groups</p>
+                </Link>
+                <Link to='/allNotifications' style={noUnderline}>
+                  <p className="navItem">Notifications</p>
                 </Link>
                 <Link to='/account' style={noUnderline}>
                   <p className='navItem'>Account</p>
