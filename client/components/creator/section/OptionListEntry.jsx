@@ -18,15 +18,12 @@ class OptionListEntry extends React.Component {
       date: '',
       total: 0,
       perView: 0,
-      notEnoughCredits: false,
-      showEdit: false
+      notEnoughCredits: false
     };
     this.revealAddOption = this.revealAddOption.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
     this.updatePerView = this.updatePerView.bind(this);
     this.submitCredits = this.submitCredits.bind(this);
-    this.beginEdit = this.beginEdit.bind(this);
-    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -45,18 +42,18 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  beginEdit(option) {
-    this.props.actions.changeOption(option);
-    this.setState({
-      showEdit: !this.state.showEdit
-    });
-  }
+  // beginEdit(option) {
+  //   this.props.actions.changeOption(option);
+  //   this.setState({
+  //     showEdit: !this.state.showEdit
+  //   });
+  // }
 
-  toggleEdit() {
-    this.setState({
-      showEdit: !this.state.showEdit
-    });
-  }
+  // toggleEdit() {
+  //   this.setState({
+  //     showEdit: !this.state.showEdit
+  //   });
+  // }
 
   updateTotal(e) {
     if(e.target.value > this.props.loggedInUser.credits) {
@@ -121,7 +118,7 @@ class OptionListEntry extends React.Component {
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
-            <Button onClick={() => this.beginEdit(this.props.option)}>Option Settings</Button>
+            <Button onClick={() => this.props.beginEdit(this.props.option)}>Option Settings</Button>
           </div>
         ) : (
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">
@@ -144,13 +141,13 @@ class OptionListEntry extends React.Component {
           </Modal.Footer>
         </Modal>
 
-        <Modal bsSize="large" show={this.state.showEdit} onHide={this.toggleEdit}>
+        <Modal bsSize="large" show={this.props.showEdit} onHide={this.props.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit this Option</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <EditPage
-              close={this.toggleEdit}
+              close={this.props.toggleEdit}
               toEdit={'Option'}
             />
             <AddCredits 
@@ -162,8 +159,8 @@ class OptionListEntry extends React.Component {
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.toggleEdit}>Close</Button>
-            <Button onClick={() => this.props.deleteOption(this.props.option.id)}>Delete this Option</Button>
+            <Button onClick={this.props.toggleEdit}>Close</Button>
+            <Button onClick={this.props.deleteOption}>Delete this Option</Button>
           </Modal.Footer>
         </Modal>
       </div>
