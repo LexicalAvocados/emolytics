@@ -33,7 +33,6 @@ class OptionListEntry extends React.Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0);
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);

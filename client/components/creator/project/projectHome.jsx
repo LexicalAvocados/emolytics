@@ -44,12 +44,12 @@ class ProjectHome extends React.Component {
 
   render() {
     const height = {
-      height: '250px'
+      height: '150px'
     };
     return (
       <div className="projectHomeContainer">
         <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`} expanded={this.state.open} onExited={this.redirectToSection}>
-            Description: {this.props.currentProject.description}
+            <p style={height}>Description: {this.props.currentProject.description}</p>
         </Panel>
         <div>
           <DisplaySections
