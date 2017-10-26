@@ -56,7 +56,6 @@ class CreateProject extends React.Component {
 
     return (
       <div className="CreateProject">
-        <h3>Create Project</h3>
         <form onSubmit={this.submitProjectClick}>
         {header}
           Project Name: <br />
