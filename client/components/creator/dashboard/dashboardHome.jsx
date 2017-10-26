@@ -39,6 +39,7 @@ export class DashboardHome extends React.Component {
         credits: res.data
       })
     })
+    
   }
 
   getProjectsFromDatabase(refresh) {
