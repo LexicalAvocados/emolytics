@@ -122,90 +122,51 @@ class OptionHome extends React.Component {
   }
 
   calculateCompletionPerc(array) {
-    let userCompletionObj = array.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-      if (!acc[curr.userId]) acc[curr.userId] = 0;
-      if (acc[curr.userId] >= 0) {
-        if (curr.time > acc[curr.userId]) acc[curr.userId] = curr.time / this.state.duration
-      }
-      return acc;
-    }, {})
-    // console.log('completionObj', userCompletionObj);
-    var avgCompletion = 0;
-    var numberOfUsers = 0;
-    for (var key in userCompletionObj) {
-      avgCompletion += userCompletionObj[key];
-      numberOfUsers++
-    };
-    avgCompletion = Math.floor(1000*(avgCompletion / numberOfUsers))/10;
-    this.setState({
-      completion: avgCompletion
+    axios.post('/api/calculateCompletionPercentage', {
+      array: array,
+      duration: this.state.duration
+    })
+    .then( (res) => {
+      this.setState({
+        completion: res.data
+      })
     })
   }
 
-  // changeOption(obj) {
-
-  // }
-
   setStateAfterDuration() {
-    var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
-                    "neutral", "sadness", "surprise" ]
 
     axios.post('/api/getFrames', {
       optionId: this.props.currentSection.option.id
     })
     .then((res) => {
-      let tempEmotionObj = {};
+
       this.calculateCompletionPerc(res.data)
       // console.log('refresher on what is res.data', res.data)
-      emotions.forEach(emo => {
-        let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
-        tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-            if (emo === 'neutral') {
-              if (acc[curr.time]) {
-                acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
-                return acc;
-              } else {
-                acc.push(+curr[emo] / 8);
-                return acc;
-              }
-            }
-            else {
-              if (acc[curr.time]) {
-                acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
-                return acc;
-              } else {
-                acc.push(+curr[emo]); // eventually want to use acc[curr.time] = +curr[emo] and pad the array with null values interspersed
-                return acc;
-              }
-            }
-          }, [capitalized]);
-        if (tempEmotionObj[emo].length < this.state.duration) {
-          var diff = this.state.duration - tempEmotionObj[emo].length - 1;
+      axios.post('/api/organizeFramesByEmotion', {
+        frames: res.data,
+        duration: this.state.duration
+      })
+      .then((res) => {
+        var emoObj = res.data;
+        // console.log('EMO OBJ BACK IN FRONT', emoObj)
+        let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
+          emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
+          this.setState({
+            emotionObj: emoObj,
+            emotionsArrForRender: emoArray
+          })
+        })
+        .then( () => {
+          this.generateCharts(this.state.emotionsArrForRender);
+        })
+        .then( () => {
+          let diff = this.state.duration - this.state.attention[0].length - 1;
           let padArr = pad([], diff, null);
-          tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
-        }
-      })
-      // console.log('tempEmotionObj', tempEmotionObj)
-      return tempEmotionObj;
-    })
-    .then((emoObj) => {
-      let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
-                      emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
-      this.setState({
-        emotionObj: emoObj,
-        emotionsArrForRender: emoArray
-      })
-    })
-    .then( () => {
-      this.generateCharts(this.state.emotionsArrForRender);
-    })
-    .then( () => {
-      let diff = this.state.duration - this.state.attention[0].length - 1;
-      let padArr = pad([], diff, null);
-      let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
-      this.setState({
-        attention: paddedAttentionArr
-      })
+          let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
+          this.setState({
+            attention: paddedAttentionArr
+          })
+        })
     })
   }
 
@@ -276,7 +237,6 @@ class OptionHome extends React.Component {
   };
 
   changeSideNavSelection(item) {
-
       this.setState({
         sideNavSelection: item
       }, () => {
@@ -297,80 +257,44 @@ class OptionHome extends React.Component {
   };
 
   recalculateChartsBasedOnUserSelect(userIdsArray){
-    var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
-                    "neutral", "sadness", "surprise" ];
     axios.post('/api/getFrames', {
       optionId: this.props.currentSection.option.id
     })
     .then((res) => {
-      let tempEmotionObj = {};
       let filteredFramesArr = res.data.filter(item => userIdsArray.includes(item.userId));
       // console.log('filteredFramesArr', filteredFramesArr)
       this.calculateCompletionPerc(filteredFramesArr);
-      // console.log('in recalculation', res.data)
-      // console.log('selected user ids', userIdsArray)
-      emotions.forEach(emo => {
-        let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
-        tempEmotionObj[emo] = res.data.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-        if (userIdsArray.includes(curr.userId) && curr.time !== null) {
-              if (emo === 'neutral') {
-                if (acc[curr.time]) {
-                  acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
-                } else {
-                  acc.push(+curr[emo] / 8);
-                }
-              }
-              else {
-                if (acc[curr.time]) {
-                  acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
-                } else {
-                  acc.push(+curr[emo]);
-                }
-              }
-            }
-              return acc;
-            }, [capitalized]);
-            if (tempEmotionObj[emo].length < this.state.duration) {
-              var diff = this.state.duration - tempEmotionObj[emo].length - 1;
-              let padArr = pad([], diff, null);
-              tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
-            }
+
+      axios.post('/api/organizeFramesByEmotion', {
+        frames: filteredFramesArr,
+        duration: this.state.duration
+      })
+      .then((res) => {
+        var emoObj = res.data;
+        let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
+          emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
+          this.setState({
+            emotionObj: emoObj,
+            emotionsArrForRender: emoArray
           })
-          // console.log('tempEmotionObj', tempEmotionObj)
-          return tempEmotionObj;
+        })
+        axios.post('/api/getLikes', {
+          optionId: this.props.currentSection.option.id
+        })
+        .then( (res) => {
+          let likeCount = res.data.reduce((tot, curr) => {
+            if(curr.like === true && userIdsArray.includes(curr.userId)) tot++
+            return tot;
+          }, 0)
+          let likeRatio = `${likeCount}/${this.state.selectedUsers.length}`
+          this.setState({
+            likeRatio: likeRatio
+          })
+        })
+        .then( () => {
+          this.generateCharts(this.state.emotionsArrForRender);
+        })
     })
-    .then((emoObj) => {
-      let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
-                      emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
-      this.setState({
-        emotionObj: emoObj,
-        emotionsArrForRender: emoArray
-      })
-    })
-    axios.post('/api/getLikes', {
-      optionId: this.props.currentSection.option.id
-    })
-    .then( (res) => {
-      let likeCount = res.data.reduce((tot, curr) => {
-        if(curr.like === true && userIdsArray.includes(curr.userId)) tot++
-        return tot;
-      }, 0)
-      let likeRatio = `${likeCount}/${this.state.selectedUsers.length}`
-      this.setState({
-        likeRatio: likeRatio
-      })
-    })
-    .then( () => {
-      this.generateCharts(this.state.emotionsArrForRender);
-    })
-    // .then( () => {
-    //   let diff = this.state.duration - this.state.attention[0].length - 1;
-    //   let padArr = pad([], diff, null);
-    //   let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
-    //   this.setState({
-    //     attention: paddedAttentionArr
-    //   })
-    // })
   }
 
   handleUserSelectCb(userArr) {
@@ -385,18 +309,11 @@ class OptionHome extends React.Component {
   };
 
   handleHeatmapData(num) {
+    var boolForPlayVideo;
+    num === 2 ? boolForPlayVideo = true : boolForPlayVideo = false;
     this.setState({
-      heatmapSetting: num
-    }, () => {
-      if (num === 2) {
-        this.setState({
-          playVideoForHM: true
-        })
-      } else {
-        this.setState({
-          playVideoForHM: false
-        })
-      }
+      heatmapSetting: num,
+      playVideoForHM: boolForPlayVideo
     })
   }
 
@@ -604,20 +521,6 @@ const buttonStyle = {
   left: '40%',
   zIndex: '102'
 }
-
-/*
-
-<div className='buttons'>
-  <br/><br/>
-  <ButtonToolbar>
-    <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
-      <ToggleButton value={1}>Aggregate</ToggleButton>
-      <ToggleButton value={2}>Over Time</ToggleButton>
-    </ToggleButtonGroup>
-  </ButtonToolbar>
-</div>
-
-*/
 
 const mapStateToProps = (state) => {
   return ({
