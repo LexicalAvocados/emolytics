@@ -44,7 +44,7 @@ class ProjectHome extends React.Component {
 
   render() {
     const height = {
-      height: '250px'
+      height: '150px'
     };
     return (
       <div className="projectHomeContainer">
