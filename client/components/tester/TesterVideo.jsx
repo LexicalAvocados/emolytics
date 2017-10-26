@@ -19,9 +19,9 @@ class TesterVideo extends React.Component {
     super(props);
     this.state = {
       video: {
-        url: null,
-        name: '',
-        desc: ''
+        url: this.props.currentTesterOption.youtubeUrl,
+        name: this.props.currentTesterOption.name,
+        desc: this.props.currentTesterOption.description
       },
       complete: false,
       time: {
@@ -48,28 +48,6 @@ class TesterVideo extends React.Component {
     // this.upload = this.upload.bind(this);
   }
   componentWillMount() {
-    // console.log(this);
-    // axios.post('/api/tester/getVideo', {id: this.props.match.params.id})
-    //   .then((data) => {
-    //     console.log(data);
-    //     this.setState({
-    //       video: {
-    //         url: data.data[0].youtubeUrl,
-    //         name: data.data[0].name,
-    //         desc: data.data[0].description
-    //       }
-    //     })
-
-    //     this.props.actions.changeTesterOption(data.data[0]);
-    //     console.log(this);
-    //   })
-    this.setState({
-      video: {
-        url: this.props.currentTesterOption.youtubeUrl,
-        name: this.props.currentTesterOption.name,
-        desc: this.props.currentTesterOption.description
-      }
-    })
   }
 
   componentDidMount() {
@@ -77,26 +55,9 @@ class TesterVideo extends React.Component {
     this.setState({
       height: screen.height,
       width: screen.width
-    }, () => {
-      // console.log(this.state.height)
     })
-    window.webgazer.setRegression('ridge')
-      .setTracker('clmtrackr')
-      .begin()
-
     this.getWebcam();
-    var runTimer = setInterval(() => {
-      this.checkVideo()
-    }, 1000)
 
-    var eyeTrackingTimer = setInterval(() => {
-      this.eyeTracking();
-    }, 250)
-
-    this.setState({
-      runTimer: runTimer,
-      eyeTrackingTimer: eyeTrackingTimer
-    })
 
 
   }
@@ -124,22 +85,18 @@ class TesterVideo extends React.Component {
     console.log(list);
     var lists = document.getElementById("videoCanvas"); 
     lists.removeChild(lists.childNodes[0])
+    console.log(this);
+    window.URL.revokeObjectURL(window.src);
+    console.log(this);
 
 
-  }
-
-  clearVideoCheck() {
-    clearInterval(this.state.checkVideo);
   }
 
   eyeTracking() {
     let prediction = window.webgazer.getCurrentPrediction();
-    // console.log('prediction', prediction);
     var video = this.refs.video;
     var time = (Math.round(video.getCurrentTime() * 4) / 4).toFixed(2);
-    // console.log(this.state.eyeTime);
     if (!this.state.eyeTime[time] && prediction) {
-      // console.log(prediction);
       let newPrediction = {};
       newPrediction.x = (prediction.x/this.state.width).toFixed(3);
       newPrediction.y = (prediction.y/this.state.height).toFixed(3);
@@ -149,11 +106,8 @@ class TesterVideo extends React.Component {
         time: time,
         option: this.props.currentTesterOption
       }
-      // console.log('sending');
       axios.post('/api/tester/addEyeTracking', sendObj)
-        // .then(data => {
-        //   console.log(data);
-        // })
+
     }
 
   }
@@ -161,16 +115,32 @@ class TesterVideo extends React.Component {
 
 
   videoStart() {
+    window.webgazer.setRegression('ridge')
+      .begin()
     axios.post('/api/tester/startVideo', {
       option: this.props.currentTesterOption
     })
-    this.state.runTimer();
-    this.state.eyeTrackingTimer();
+    var runTimer = setInterval(() => {
+      this.checkVideo()
+    }, 1000)
+
+    var eyeTrackingTimer = setInterval(() => {
+      this.eyeTracking();
+    }, 250)
+
+    this.setState({
+      runTimer: runTimer,
+      eyeTrackingTimer: eyeTrackingTimer
+    }, () => {
+      this.state.runTimer();
+      this.state.eyeTrackingTimer();
+    })
+
   }
 
   getWebcam() {
-    var width = 320;    // We will scale the photo width to this
-    var height = 300;     // This will be computed based on the input stream
+    var width = 320;   
+    var height = 300;    
 
     var streaming = false;
 
@@ -188,8 +158,11 @@ class TesterVideo extends React.Component {
     //   .catch(function(err) {
     //       console.log("An error occured! " + err);
     //   });
-    navigator.webkitGetUserMedia({ video: true, audio: false }, function(stream) {
-      video.srcObject = stream;
+    navigator.webkitGetUserMedia({ video: true, audio: false }, (stream) => {
+      // console.log('window.url', window.URL);
+
+      window.src = window.URL.createObjectURL(stream);
+      video.src = window.src;
       window.localstream = stream;
       video.play();
     }, function (e) {
@@ -203,7 +176,6 @@ class TesterVideo extends React.Component {
 
     canvas.width = 300;
     canvas.height = 250;
-    // console.log('VIDEO', video.srcObject);
     context.drawImage(video, 0, 0, 300, 250);
 
     }
@@ -216,12 +188,8 @@ class TesterVideo extends React.Component {
       this.takePicture();
       this.state.time[time] = true;
       this.processImage(time);
-
     }
-
   }
-
-
 
   showOverlay() {
     this.setState({
@@ -229,181 +197,74 @@ class TesterVideo extends React.Component {
       })
   }
 
-  // upload(img) {
-  //   cloudinary.config({
-  //     cloud_name: 'dcp74bsm8',
-  //     api_key: '169847461734926',
-  //     api_secret: 'Gqk2mNBC1D8q3LJQe0b1fLokn-Y'
-  //   });
-  //   cloudinary.uploader.upload(
-  //     img,
-  //     function(res) {
-  //       console.log('res from cloudinary', res)
-        // Microsoft Post Request
-        // var subscriptionKey = "4fc26d1500d04025a699f1ae74597ab3";
-        // var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
-        // // var uriBase = "https://requestb.in/1ijcwry1";
-
-        // // axios.get(uriBase);
-
-        // // axios.post(uriBase, {data: byteArr});
-        // // var instance = axios.create({
-        // //   headers: {
-        // //     "Content-Type" : "application/octet-stream"
-        // //   }
-        // // });
-        // // instance.post('https://requestb.in/wpray0wp', byteArr);
-
-        // // var url ='https://requestb.in/zdz1bczd'
-        // // request(url, function (error, response, body) {
-        // //   if (!error) {
-        // //     console.log(body);
-        // //   }
-        // // });
-  //     }
-  //   )
-  // }
-
   processImage(time) {
 
     var data = canvas.toDataURL('image/jpeg');
 
+    let currentTesterOption = this.props.currentTesterOption;
+    return fetch(data)
+      .then(res => res.blob())
+      .then(blobData => {
+        // Microsoft Post Request
+        axios.get('/api/tester/getKey')
+          .then(data => {
 
-        // pure base64 data
-        // var realData = data.replace(/^data:image\/(png|jpg);base64,/, "")
+            var subscriptionKey = data.data[0].key;
+            var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
 
-        // // blob data
-        // var blobData = this.state.img[0];
+            var instance = axios.create({
+              headers: {
+                'Ocp-Apim-Subscription-Key': subscriptionKey,
+                'Content-Type': "application/octet-stream"
+              }
+            });
 
-        // // file format
-        // var file = new File([blobData], 'test');
-
-        // // form format
-        // var fd = new FormData();
-        // fd.append('data', blobData);
-
-        // console.log('file format', file);
-        // console.log('blob format', blobData);
-        // console.log('form data', fd);
-
-        // // test to see if image about to send is the correct one
-        // var test = this.refs.test;
-        // test.setAttribute('src', data);
-
-        // var dataTest = data.split(',')[1];
-        // var mimeType = data.split(';')[0].slice(5);
-
-        // var bytes = window.atob(dataTest);
-        // var buf = new ArrayBuffer(bytes.length);
-        // var byteArr = new Uint8Array(buf);
-
-        // for (var i = 0; i < bytes.length; i++) {
-        //   byteArr[i] = bytes.charCodeAt(i);
-        // }
-        let currentTesterOption = this.props.currentTesterOption;
-        return fetch(data)
-          .then(res => res.blob())
-          .then(blobData => {
-            // Microsoft Post Request
-            axios.get('/api/tester/getKey')
+            instance.post(uriBase, blobData)
               .then(data => {
-
-                var subscriptionKey = data.data[0].key;
-                var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
-
-                var instance = axios.create({
-                  headers: {
-                    'Ocp-Apim-Subscription-Key': subscriptionKey,
-                    'Content-Type': "application/octet-stream"
+                // console.log((JSON.stringify(data.data, null, 2)));
+                if (data.data[0]) {
+                  let sendObj = {
+                    emotions: data.data[0].scores,
+                    time: time,
+                    option: currentTesterOption
                   }
-                });
-
-                instance.post(uriBase, blobData)
-                  .then(data => {
-                    console.log((JSON.stringify(data.data, null, 2)));
-                    if (data.data[0]) {
-                      let sendObj = {
-                        emotions: data.data[0].scores,
-                        time: time,
-                        option: currentTesterOption
-                      }
-                      axios.post('/api/tester/sendFrame', sendObj)
-                    }
-                    else {
-                      let sendObj = {
-                        time: time,
-                        option: currentTesterOption
-                      }
-                      axios.post('/api/tester/sendFrame', sendObj)
-                    }
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  })
-
+                  axios.post('/api/tester/sendFrame', sendObj)
+                }
+                else {
+                  let sendObj = {
+                    time: time,
+                    option: currentTesterOption
+                  }
+                  axios.post('/api/tester/sendFrame', sendObj)
+                }
               })
-          });
-
-
-
-        // Kairos post request
-        // var instance = axios.create({
-        //   timeout: 5000,
-        //   headers: {
-        //     "Content-Type" : "application/x-www-form-urlencoded",
-        //     "app_id": '87bbd5b0',
-        //     "app_key": '113158cf12ebfe904380eff729e99034'
-        //   }
-        // });
-
-        // instance.post('https://api.kairos.com/v2/media', {
-        //   source: fd
-        // })
-        //   .then(res => console.log(res))
-        //   .catch(err => console.log(err))
-
-        // var uriBase = 'https://requestb.in/wpray0wp';
-
-        // axios.post(uriBase, byteArr);
-
-
-        // instance.get('https://api.kairos.com/v2/analytics/59dfc67f3f273')
-        //   .then(res => console.log(res))
-
+              .catch(err => {
+                console.log(err);
+              })
+          })
+      });
     };
-    likeClick(e) {
-      e.preventDefault();
+    
+  likeClick(e) {
+    e.preventDefault();
 
-      axios.post('/api/tester/getVideo', {
-        like: e.target.value
-      })
-      this.setState({
-        show: false
-      })
+    axios.post('/api/tester/getVideo', {
+      like: e.target.value
+    })
+    this.setState({
+      show: false
+    })
 
 
-    }
+  }
 
   render() {
     var imgStyle = {
       opacity: 0
-
     }
-
-    // var circleStyle = {
-    //   backgroundColor: 'red',
-    //   position: 'absolute',
-    //   left: this.state.x * 1.5,
-    //   top: this.state.y,
-    //   borderRadius: '6px',
-    //   width:'10px',
-    //   height: '10px',
-    //   zIndex: '1000'
-    // }
 
     return (
       <div>
-        {/*<div style={circleStyle}></div>*/}
         <ToggleDisplay className="overlay"  show={this.state.show}>
           <TesterFinishedVideo />
         </ToggleDisplay>
@@ -434,7 +295,6 @@ class TesterVideo extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log('state', state);
   return ({
     currentTesterOption: state.currentTesterOption
   })

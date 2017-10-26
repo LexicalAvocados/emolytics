@@ -18,14 +18,13 @@ class TryItOutVideo extends React.Component {
     super(props);
     this.state = {
       video: {
-        url: null,
-        name: '',
-        desc: ''
+        url: 'https://www.youtube.com/watch?v=gCcx85zbxz4',
+        name: 'Try it out - Bladerunner trailer',
+        desc: 'Just watch the video and see your reactions on the graph!'
       },
       complete: false,
       time: [0],
       img: 0,
-      show: false,
       key: ''
     }
     this.videoStart = this.videoStart.bind(this);
@@ -33,35 +32,14 @@ class TryItOutVideo extends React.Component {
     this.takePicture = this.takePicture.bind(this);
     this.checkVideo = this.checkVideo.bind(this);
     this.processImage = this.processImage.bind(this);
-    this.showOverlay = this.showOverlay.bind(this);
-    this.likeClick = this.likeClick.bind(this);
     this.processImage = this.processImage.bind(this);
     // this.upload = this.upload.bind(this);
   }
 
   componentDidMount() {
 
-    let tryItOutVideo = {
-      url: 'https://www.youtube.com/watch?v=gCcx85zbxz4',
-      name: 'Try it out - Bladerunner trailer',
-      desc: 'Just watch the video and see your reactions on the graph!'
-    }
-
-    this.setState({
-      video: tryItOutVideo
-    })
-
-    // this.props.actions.changeTesterOption(tryItOutVideo);
-    // console.log(this);
-
-
     this.getWebcam();
-    var timer = setInterval(() => {
-      this.checkVideo()
-    }, 1000)
-    this.setState({
-      timer: timer
-    })
+
     // this.videoStart();
 
   }
@@ -82,7 +60,15 @@ class TryItOutVideo extends React.Component {
     // axios.post('/api/tester/startVideo', {
     //   option: this.props.currentTesterOption
     // })
-    this.state.timer();
+    var timer = setInterval(() => {
+      this.checkVideo()
+    }, 1000)
+    this.setState({
+      timer: timer
+    }, () => {
+      this.state.timer();
+    })
+    
   }
 
   getWebcam() {
@@ -120,7 +106,6 @@ class TryItOutVideo extends React.Component {
     var time = Math.floor(video.getCurrentTime());
     var duration = Math.floor(video.getDuration());
     if (!this.state.time.includes(time)) {
-      console.log(time);
       this.takePicture();
       this.state.time.push(time);
       this.processImage(time);
@@ -128,63 +113,42 @@ class TryItOutVideo extends React.Component {
 
   }
 
-
-
-  showOverlay() {
-    // this.setState({
-    //     show: true
-    //   })
-  }
-
   processImage(time) {
 
     var data = canvas.toDataURL('image/jpeg');
 
-        let currentTesterOption = this.props.currentTesterOption;
-        return fetch(data)
-          .then(res => res.blob())
-          .then(blobData => {
-            // Microsoft Post Request
-            axios.get('/api/tester/getKey')
-              .then(data => {
-                // console.log('DATA', data)
-                var subscriptionKey = data.data[0].key;
-                var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
+    let currentTesterOption = this.props.currentTesterOption;
+    return fetch(data)
+      .then(res => res.blob())
+      .then(blobData => {
+        // Microsoft Post Request
+        axios.get('/api/tester/getKey')
+          .then(data => {
+            // console.log('DATA', data)
+            var subscriptionKey = data.data[0].key;
+            var uriBase = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
 
-                var instance = axios.create({
-                  headers: {
-                    'Ocp-Apim-Subscription-Key': subscriptionKey,
-                    'Content-Type': 'application/octet-stream'
-                  }
-                });
+            var instance = axios.create({
+              headers: {
+                'Ocp-Apim-Subscription-Key': subscriptionKey,
+                'Content-Type': 'application/octet-stream'
+              }
+            });
 
-               instance.post(uriBase, blobData)
-                .then(data => {
-                  // return (JSON.stringify(data.data, null, 2));
-                  return data.data
-                })
-              .then( (emoObj) => {
-                // console.log('emo obj after promise', emoObj[0].scores)
-                if (emoObj[0]){
-                  this.props.setEmotionsArrFromObj(emoObj[0].scores, time);
-                }
-              })
-          });
-        });
-    };
-
-    likeClick(e) {
-      e.preventDefault();
-
-      axios.post('/api/tester/getVideo', {
-        like: e.target.value
-      })
-      this.setState({
-        show: false
-      })
-
-
-    }
+           instance.post(uriBase, blobData)
+            .then(data => {
+              // return (JSON.stringify(data.data, null, 2));
+              return data.data
+            })
+          .then( (emoObj) => {
+            // console.log('emo obj after promise', emoObj[0].scores)
+            if (emoObj[0]){
+              this.props.setEmotionsArrFromObj(emoObj[0].scores, time);
+            }
+          })
+      });
+    });
+  };
 
   render() {
     var imgStyle = {
@@ -194,12 +158,9 @@ class TryItOutVideo extends React.Component {
 
     return (
       <div>
-        <ToggleDisplay className="overlay"  show={this.state.show}>
-          <TryerFinishedVideo />
-        </ToggleDisplay>
 
         <div className="videoPlayer">
-          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} />
+          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} />
           <br/><br/>
         </div>
 
@@ -218,7 +179,6 @@ class TryItOutVideo extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return ({
     currentTesterOption: state.currentTesterOption
   })
