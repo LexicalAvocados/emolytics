@@ -48,6 +48,7 @@ class CreateProject extends React.Component {
   render() {
     return (
       <div className="CreateProject">
+        <h3>Create Project</h3>
         <form onSubmit={this.submitProjectClick}>
           Project Name: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
