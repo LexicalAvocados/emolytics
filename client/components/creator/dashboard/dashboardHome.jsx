@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import { Row, Col, Button, Modal } from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
 
 class DashboardHome extends React.Component {
@@ -158,7 +159,9 @@ class DashboardHome extends React.Component {
                 </Col>
               ))}
             </Row>
-            <Button className="addEntityButton" style={inherit}>Credits: {this.state.credits || 0}</Button>
+            <Link to='/account'>
+              <Button className="addEntityButton" style={inherit}>Credits: {this.state.credits || 0}</Button>
+            </Link>
             </div>
           ) : (
             <div>
