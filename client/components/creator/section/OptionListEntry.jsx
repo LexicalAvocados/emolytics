@@ -59,7 +59,7 @@ class OptionListEntry extends React.Component {
   }
 
   updateTotal(e) {
-    if(e.target.value > this.props.credits) {
+    if(e.target.value > this.props.loggedInUser.credits) {
       this.setState({
         notEnoughCredits: true
       })
@@ -154,11 +154,11 @@ class OptionListEntry extends React.Component {
               toEdit={'Option'}
             />
             <AddCredits 
-              credits={this.props.credits}
               notEnoughCredits={this.state.notEnoughCredits}
               submitCredits={this.submitCredits}
               updateTotal={this.updateTotal}
               updatePerView={this.updatePerView}
+              credits={this.props.loggedInUser.credits}
             />
           </Modal.Body>
           <Modal.Footer>
