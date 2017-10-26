@@ -1,3 +1,4 @@
+const axios = require('axios');
 const bcrypt = require('bcrypt');
 const User = require('../../db').User;
 
@@ -121,8 +122,22 @@ exports.editProfile = (req, res) => {
       console.log('dbResponse ([ 1 ] is good):', dbResponse);
       if (dbResponse[0] === 1) res.send(true);
       else res.send(false);
+    });
+};
+
+
+exports.loginWithPatreon = (req, res) => {
+  axios.get('www.patreon.com/oauth2/authorize', {
+    params: {
+      response_type: 'code',
+      client_id: req.query.client_id,
+      redirect_uri: req.query.redirect_uri
+    }
+  })
+    .then(response => {
+      console.log('Patreon response:', response);
     })
-}
+};
 
 
 exports.checkUser = (req, res, next) => {

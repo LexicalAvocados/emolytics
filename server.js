@@ -99,6 +99,7 @@ app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', (req, res) => auth.logout(req, res));
 app.put('/profile', (req, res) => auth.editProfile(req, res));
+app.get('/auth/patreon', (req, res) => auth.loginWithPatreon(req, res));
 
 // app.use(auth.checkUser);
 app.use(passport.initialize());
@@ -111,7 +112,7 @@ app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {successRedirect: '/loading', failureRedirect: '/login' }));
 
 app.get('/userdata', (req, res) => {
-  res.send(JSON.stringify(req.session))
+  res.send(JSON.stringify(req.session));
 })
 
 app.get('*', (req, res) => {

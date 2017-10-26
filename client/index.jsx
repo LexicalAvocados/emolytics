@@ -9,6 +9,7 @@ import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-r
 import { persistStore, autoRehydrate } from 'redux-persist';
 import App from './components/App.jsx';
 import rootReducer from './reducers';
+import { stripe } from '../key.js';
 
 const history = createHistory();
 const historyMiddleware = routerMiddleware(history);
@@ -27,7 +28,7 @@ persistStore(store);
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <StripeProvider apiKey="pk_test_DiQlFoCYavgbW6PewRIoeumv">
+      <StripeProvider apiKey={stripe.APIKey}>
         <App/>
       </StripeProvider>
     </ConnectedRouter>

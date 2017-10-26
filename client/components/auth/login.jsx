@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import axios from 'axios';
+import { patreon } from '../../../key.js';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -20,6 +21,7 @@ export class Login extends React.Component {
     this.updateTypedUsername = this.updateTypedUsername.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
+    this.submitPatreonLogin = this.submitPatreonLogin.bind(this);
     this.resetInputForms = this.resetInputForms.bind(this);
   }
 
@@ -81,6 +83,16 @@ export class Login extends React.Component {
       });
   }
 
+  submitPatreonLogin() {
+    axios.get('/auth/patreon', {
+      params: {
+        response_type: 'code',
+        client_id: patreon.id,
+        redirect_uri: patreon.redirect_uri,
+      }
+    })
+  }
+
   resetInputForms() {
     this.setState({typedUsername: '', typedPassword: ''});
   }
@@ -110,9 +122,14 @@ export class Login extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-           <a href='/auth/facebook'>
-             <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
-           </a>
+          <a href='/auth/facebook'>
+            <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
+          </a>
+          <img
+            className='patreonLogin'
+            src='patreon.png'
+            onClick={this.submitPatreonLogin}
+          ></img>
       </div>
     )
   }
