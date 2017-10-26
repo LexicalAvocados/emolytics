@@ -21,7 +21,6 @@ class ProjectList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('heavy', nextProps.refreshSections);
     if (nextProps.refreshSections) {
       this.getRelatedSections();
     }
