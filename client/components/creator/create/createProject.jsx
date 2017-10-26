@@ -34,7 +34,7 @@ class CreateProject extends React.Component {
     })
       .then((response) => {
         if (this.props.fromDashboard) {
-          this.props.getProjectsFromDatabase();
+          this.props.getProjectsFromDatabase(true);
           this.props.close(); 
         } else {
           this.props.history.push('/');
