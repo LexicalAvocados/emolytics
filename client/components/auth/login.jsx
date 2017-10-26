@@ -93,7 +93,6 @@ export class Login extends React.Component {
 
   render() {
     const patreonOAuthLink = `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon`;
-    console.log('patreonOAuthLink:', patreonOAuthLink);
     return (
       <div className='auth'>
         <h2 className='loginHeader'>Log In</h2>
@@ -118,12 +117,14 @@ export class Login extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
+        <div className='oauthButtons'>
           <a href='/auth/facebook'>
-            <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
+            <img className='fbLoginBtn' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
           </a>
           <a href={patreonOAuthLink}>
-            <img src='patreon.png'></img>
+            <img className='patreonLoginBtn' src='patreon.jpg'></img>
           </a>
+        </div>
       </div>
     )
   }

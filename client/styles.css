@@ -39,10 +39,18 @@ body {
   color: black;
 }
 
-.fblogin {
-  height: 100%;
-  width: 100%;
+.oauthButtons {
   text-align: center;
+}
+
+.fbLoginBtn {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.patreonLoginBtn {
+  width: 97%;
+  border-radius: 4px;
 }
 
 .navItem {
