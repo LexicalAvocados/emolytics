@@ -265,7 +265,6 @@ class SectionHome extends React.Component {
               onOptionClick={this.onOptionClick}
               concatTesters={this.concatTesters}
               deleteOption={this.deleteOption}
-              credits={this.props.loggedInUser.credits}
             />
           ))}
         </Col>
