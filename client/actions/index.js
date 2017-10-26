@@ -70,10 +70,10 @@ export const setRace = (race) => ({
   race
 });
 
-export const setCredits = (credits) => {
+export const setCredits = (credits) => ({
 	type: SET_CREDITS,
 	credits
-}
+});
 
 export const addFocusGroup = (focusGroupName) => ({
   type: ADD_FOCUS_GROUP,

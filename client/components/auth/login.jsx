@@ -41,7 +41,6 @@ export class Login extends React.Component {
         if (res.data.loggedIn) {
           let {id, username, name, age, sex, race, isCreator, credits} = res.data.userData;
           this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
-
           if (isCreator) {
             axios.get('/api/creator/getCreatorFocusGroups', {
               params: {
