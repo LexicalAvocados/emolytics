@@ -67,7 +67,8 @@ const mapStateToProps = (state) => {
   return ({
     router: state.router,
     currentProject: state.currentProject,
-    currentSection: state.currentSection
+    currentSection: state.currentSection,
+    notifications: state.notifications
   });
 };
 
@@ -89,4 +90,3 @@ export default withRouter(connect(
   <h6>Description: {this.props.currentProject.description}</h6>
 </Collapse>
 */
-

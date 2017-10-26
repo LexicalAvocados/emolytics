@@ -254,7 +254,8 @@ router.post('/likeVideo', (req, res) => {
       //Notification
       var closureObj = {
         projectId: 0,
-        projectName: ''
+        projectName: '',
+        sectionId: 0
       }
 
       Option.findOne({
@@ -264,7 +265,7 @@ router.post('/likeVideo', (req, res) => {
         }
       })
       .then( (section) => {
-        // console.log('SECTIONOOO', section.dataValues.sectionId)
+        closureObj.sectionId = section.dataValues.sectionId;
         return Section.findOne({
           attributes: ['projectId'],
           where: {
@@ -291,7 +292,8 @@ router.post('/likeVideo', (req, res) => {
             optionId: req.body.option.id,
             optionName: req.body.option.name,
             userId: user.dataValues.userId,
-            projectId: closureObj.projectId
+            projectId: closureObj.projectId,
+            sectionId: closureObj.sectionId
           })
           Transaction.create({
             optionId: req.body.option.id,

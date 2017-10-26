@@ -17,10 +17,10 @@ export class DashboardHome extends React.Component {
       retrieved: false,
       showCreate: false,
       displayEdit: false,
-      notifications: [],
       idOfClickedOn: null,
       fromDashboard: true,
-      refreshSections: false
+      refreshSections: false,
+      notifsObj: {}
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -28,6 +28,7 @@ export class DashboardHome extends React.Component {
     this.revealCreate = this.revealCreate.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.calculateNotifsForProject = this.calculateNotifsForProject.bind(this);
   }
 
   componentDidMount() {
@@ -61,14 +62,16 @@ export class DashboardHome extends React.Component {
     }
     axios.get('/api/creator/allNotifications')
       .then((res) => {
-        this.setState({
-          notifications: res.data
-        }, () => {
-          var projectNotifs = this.state.notifications.reduce((acc, curr) => {
+        let reduxObj = { allUserNotifs: res.data }
+        this.props.actions.setNotifications(reduxObj)
+
+          var projectNotifs = this.props.notifications.allUserNotifs.reduce((acc, curr) => {
             acc[`${curr.projectId}`] ? acc[`${curr.projectId}`]+=1 : acc[`${curr.projectId}`] = 1;
             return acc;
           }, {});
-        });
+          this.setState({
+            notifsObj: projectNotifs
+          })
       });
   }
 
@@ -119,6 +122,17 @@ export class DashboardHome extends React.Component {
     }
   }
 
+  calculateNotifsForProject(projObj) {
+    let id = projObj.id;
+    // console.log('project', projObj)
+    for (var key in this.state.notifsObj) {
+      if (+key === id) {
+        return this.state.notifsObj[id]
+      }
+    }
+    return 0;
+  }
+
   render () {
     var inherit = {
       display: 'inherit'
@@ -161,6 +175,8 @@ export class DashboardHome extends React.Component {
                       toggleEdit={this.toggleEdit}
                       displayEdit={this.state.displayEdit}
                       refreshSections={this.state.refreshSections}
+                      notifs={this.calculateNotifsForProject(project)}
+                      allNotifications={this.props.notifications}
                     />
                   </Col>
                 ))}
@@ -196,7 +212,8 @@ const mapStateToProps = (state) => {
   return ({
     router: state.router,
     currentProject: state.currentProject,
-    loggedInUser: state.loggedInUser
+    loggedInUser: state.loggedInUser,
+    notifications: state.notifications
   });
 };
 

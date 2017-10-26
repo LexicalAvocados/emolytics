@@ -29,7 +29,7 @@ class DisplaySections extends React.Component {
     this.beginEdit = this.beginEdit.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.splitSections();
   }
 
@@ -146,7 +146,7 @@ class DisplaySections extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.revealEdit}>Close</Button>
-            <Button onClick={this.deleteSection}>Delete this Section</Button> 
+            <Button onClick={this.deleteSection}>Delete this Section</Button>
           </Modal.Footer>
         </Modal>
       </div>
