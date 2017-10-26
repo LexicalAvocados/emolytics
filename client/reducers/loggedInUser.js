@@ -36,6 +36,8 @@ const loggedInUser = (state = {
       return Object.assign({}, state, {sex: action.sex});
     case 'SET_RACE':
       return Object.assign({}, state, {race: action.race});
+    case 'SET_CREDITS':
+      return Object.assign({}, state, {credits: action.credits})
     case 'persist/REHYDRATE':
       if (action.payload.loggedInUser) return action.payload.loggedInUser;
       else return state;
