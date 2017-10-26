@@ -185,11 +185,11 @@ export class DashboardHome extends React.Component {
 }
 
 const creditDisplayStyle = {
-  textAlign: "center",
-  float: "right",
-  padding: "10px",
-  color: "black"
-}
+  textAlign: 'center',
+  float: 'right',
+  padding: '10px',
+  color: 'black'
+};
 
 const mapStateToProps = (state) => {
   console.log('LOG WITHIN DASHBOARD', state);

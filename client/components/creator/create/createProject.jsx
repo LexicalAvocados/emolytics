@@ -33,10 +33,12 @@ class CreateProject extends React.Component {
       description: this.state.description
     })
       .then((response) => {
+        // console.log('response', response)
         if (this.props.fromDashboard) {
           this.props.getProjectsFromDatabase(true);
-          this.props.close(); 
+          this.props.close();
         } else {
+          // console.log('this.props.fromDashboard', this.props.fromDashboard);
           this.props.history.push('/');
         }
       })
@@ -46,10 +48,16 @@ class CreateProject extends React.Component {
   }
 
   render() {
+    const fromDashboard = this.props.fromDashboard;
+    let header = null;
+    if (!fromDashboard) {
+      header = <h3>Create A Project</h3>
+    }
+
     return (
       <div className="CreateProject">
-        <h3>Create Project</h3>
         <form onSubmit={this.submitProjectClick}>
+        {header}
           Project Name: <br />
           <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           Project Description: <br />
