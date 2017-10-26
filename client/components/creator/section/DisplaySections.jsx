@@ -69,9 +69,15 @@ class DisplaySections extends React.Component {
 
   deleteSection() {
     if (confirm('Are you sure you want to delete this section?')) {
-      this.props.currentProject.sections = this.props.currentProject.sections.filter((section) => {
+      this.props.currentProject.sections = this.props.currentProject.sections.filter((section, i) => {
         if (section.id !== this.state.idOfClickedOnSection) {
           return section;
+        } else {
+          if (i + 2 !== this.props.currentProject.sections.length) { // Adjust for artificial end
+            this.props.actions.changeCurrentSection(this.props.currentProject.sections[i + 1]);
+          } else {
+            this.props.actions.changeCurrentSection(this.props.currentProject.sections[0]);
+          }
         }
       });
       axios.delete('/api/deleteSection', { params: {sectionId: this.state.idOfClickedOnSection, toDelete: 'id'} })
