@@ -78,6 +78,7 @@
     "passport-facebook": "^2.1.1",
     "pg": "^7.3.0",
     "prop-types": "^15.6.0",
+    "rc-slider": "^8.3.5",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^15.6.1",

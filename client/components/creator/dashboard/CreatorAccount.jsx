@@ -18,11 +18,21 @@ class CreatorAccount extends React.Component {
     this.state = {
       amount: '',
       paying: false,
-      complete: false
+      complete: false,
+      prevBalance: 0
     }
     this.updateTypedAmount = this.updateTypedAmount.bind(this);
     this.transitionToPayment = this.transitionToPayment.bind(this);
     this.addCreditsToAccount = this.addCreditsToAccount.bind(this);
+  }
+
+  componentDidMount() {
+    axios.get('/api/getCreditBalance')
+    .then((res) => {
+      this.setState({
+        prevBalance: res.data
+      })
+    })
   }
 
   updateTypedAmount(e) {
@@ -52,7 +62,9 @@ class CreatorAccount extends React.Component {
         <h3>Add Credits to your Account</h3>
         <div>Use these to sponsor options so viewers will be more likely to watch then</div>
         <div>Rate: $1 for 100 credits</div>
-        <br/><br/>
+        <br/>
+        <div>Current Balance: {this.state.prevBalance || 0} credits</div>
+        <br/>
           <Form horizontal onSubmit={this.transitionToPayment}>
             <FormGroup controlId="amount">
               <Col sm={3}>
