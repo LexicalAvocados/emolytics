@@ -147,17 +147,30 @@ class SectionHome extends React.Component {
     });
   }
 
+
+  // if (section.id !== this.state.idOfClickedOnSection) {
+  //         return section;
+  //       } else {
+  //         if (i + 2 !== this.props.currentProject.sections.length) { // Adjust for artificial end
+  //           this.props.actions.changeCurrentSection(this.props.currentProject.sections[i + 1]);
+  //         } else {
+  //           this.props.actions.changeCurrentSection(this.props.currentProject.sections[0]);
+  //         }
+  //       }
+
   deleteOption() {
     if (confirm('Are you sure you want to delete this option?')) {
-      this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
+      this.props.currentSection.options = this.props.currentSection.options.filter((option, i) => {
         if (option.id !== this.state.idOfClickedOnOption) {
           return option;
+        } else {
+          this.props.actions.changeCurrentOption([]); // Set to nothing
+          this.clearOnNewSection();
         }
       });
       this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
       axios.delete('/api/deleteOption', { params: {optionId: this.state.idOfClickedOnOption, toDelete: 'id'} })
         .then((response) => {
-          // console.log(response);
           this.toggleEdit();
         })
         .catch((error) => {
