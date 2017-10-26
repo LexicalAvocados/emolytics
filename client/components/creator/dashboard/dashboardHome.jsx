@@ -8,7 +8,7 @@ import * as ChangeActions from '../../../actions';
 import { Row, Col, Button, Modal } from 'react-bootstrap';
 
 
-class DashboardHome extends React.Component {
+export class DashboardHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
