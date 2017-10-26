@@ -25,6 +25,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+var localstream;
+
 var objectdetect = (function() {
 	"use strict";
     	
@@ -10741,6 +10743,7 @@ var mosseFilterResponses = function() {
             navigator.getUserMedia(options,
                     function(stream){
                         console.log('video stream created');
+                        localstream = stream;
                         init(window.URL.createObjectURL(stream));
                     },
                     function(e){
@@ -10804,6 +10807,9 @@ var mosseFilterResponses = function() {
         document.body.removeChild(videoElementCanvas);
 
         setGlobalData();
+        console.log('webgazer', localstream);
+        console.log('webgazer localStream', localstream.getTracks());
+        //localstream.getTracks()[0].stop();
         return webgazer;
     };
 
