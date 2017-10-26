@@ -5,6 +5,7 @@ export const SET_NAME = 'SET_NAME';
 export const SET_AGE = 'SET_AGE';
 export const SET_SEX = 'SET_SEX';
 export const SET_RACE = 'SET_RACE';
+export const SET_CREDITS = 'SET_CREDITS';
 export const ADD_FOCUS_GROUP = 'ADD_FOCUS_GROUP';
 export const DELETE_FOCUS_GROUP = 'DELETE_FOCUS_GROUP';
 export const ADD_TESTER_TO_FOCUS_GROUP = 'ADD_TESTER_TO_FOCUS_GROUP';
@@ -68,6 +69,11 @@ export const setRace = (race) => ({
   type: SET_RACE,
   race
 });
+
+export const setCredits = (credits) => {
+	type: SET_CREDITS,
+	credits
+}
 
 export const addFocusGroup = (focusGroupName) => ({
   type: ADD_FOCUS_GROUP,
