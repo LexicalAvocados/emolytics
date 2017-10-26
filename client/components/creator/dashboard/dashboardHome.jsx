@@ -31,11 +31,11 @@ class DashboardHome extends React.Component {
   componentDidMount() {
     this.getProjectsFromDatabase();
     axios.get('/api/getCreditBalance')
-    .then((res)=> {
-      this.setState({
-        credits: res.data
-      })
-    })
+      .then((res)=> {
+        this.setState({
+          credits: res.data
+        });
+      });
   }
 
   getProjectsFromDatabase() {
@@ -49,9 +49,7 @@ class DashboardHome extends React.Component {
         this.setState({
           projects: sortedProjects,
           retrieved: true
-        }
-        // axios get for getAllNotificationsforUser
-        );
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -67,7 +65,6 @@ class DashboardHome extends React.Component {
           }, {});
         });
       });
-
   }
 
   onProjectClick(obj, sections) {
@@ -110,14 +107,14 @@ class DashboardHome extends React.Component {
         })
         .catch((err) => {
           console.log('Error deleting project', err);
-        })
+        });
     }
   }
 
   render () {
     var inherit = {
-      display: "inherit"
-    }
+      display: 'inherit'
+    };
     return (
       <div className="dashboardHomeContainer">
         <div className="dashboardHeader">
