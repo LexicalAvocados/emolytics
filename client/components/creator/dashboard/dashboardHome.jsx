@@ -9,7 +9,7 @@ import { Row, Col, Button, Modal } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 
-class DashboardHome extends React.Component {
+export class DashboardHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
