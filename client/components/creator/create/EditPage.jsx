@@ -34,7 +34,7 @@ class EditPage extends React.Component {
     if (this.props.toEdit === 'Option') reduxLocation = 'currentOption';  // set to current option, update currentSection.options
     axios.get('/api/updateProject', { params: { id: this.props[reduxLocation].id, name: this.state.name, description: this.state.description, toEdit: toEdit}})
       .then((response) => {
-        if (toEdit === 'Project')  this.props.getProjectsFromDatabase();
+        if (toEdit === 'Project')  this.props.getProjectsFromDatabase(true);
         if (toEdit === 'Section') {
           for (var i = 0; i < this.props.currentProject.sections.length; i++) {
             if (this.props.currentProject.sections[i].id === response.data.id) {
