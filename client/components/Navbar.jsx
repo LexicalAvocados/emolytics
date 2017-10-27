@@ -96,11 +96,11 @@ const navbarContainerStyle = {
   // marginLeft: "3%",
   // right: 0,
   // fontSize: "20px"
-}
+};
 
 const noUnderline = {
-  textDecoration: "none"
-}
+  textDecoration: 'none'
+};
 
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
