@@ -237,10 +237,12 @@ class SectionHome extends React.Component {
 
   getNotificationsForOption(option) {
     var idForOption = option.id;
-    var notifsForOption = this.props.notifications.allUserNotifs.filter((item) => {
-      return item.optionId === idForOption
-    })
-    return notifsForOption;
+    if (this.props.notifications.allUserNotifs) {
+      var notifsForOption = this.props.notifications.allUserNotifs.filter((item) => {
+        return item.optionId === idForOption;
+      });
+    }
+    return notifsForOption || [];
   }
 
   render() {

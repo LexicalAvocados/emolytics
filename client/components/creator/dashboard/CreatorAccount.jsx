@@ -20,7 +20,7 @@ class CreatorAccount extends React.Component {
       paying: false,
       complete: false,
       prevBalance: 0
-    }
+    };
     this.updateTypedAmount = this.updateTypedAmount.bind(this);
     this.transitionToPayment = this.transitionToPayment.bind(this);
     this.addCreditsToAccount = this.addCreditsToAccount.bind(this);
@@ -28,11 +28,11 @@ class CreatorAccount extends React.Component {
 
   componentDidMount() {
     axios.get('/api/getCreditBalance')
-    .then((res) => {
-      this.setState({
-        prevBalance: res.data
-      })
-    })
+      .then((res) => {
+        this.setState({
+          prevBalance: res.data
+        });
+      });
   }
 
   updateTypedAmount(e) {
@@ -65,51 +65,50 @@ class CreatorAccount extends React.Component {
         <br/>
         <div>Current Balance: {this.state.prevBalance || 0} credits</div>
         <br/>
-          <Form horizontal onSubmit={this.transitionToPayment}>
-            <FormGroup controlId="amount">
-              <Col sm={3}>
-                <InputGroup>
-                  <InputGroup.Addon>$</InputGroup.Addon>
-                  <FormControl
-                    type="number"
-                    value={this.state.amount}
-                    placeholder='Enter amount'
-                    onChange={this.updateTypedAmount}
-                  />
-                </InputGroup>
-              </Col>
-            </FormGroup>
+        <Form horizontal onSubmit={this.transitionToPayment}>
+          <FormGroup controlId="amount">
+            <Col sm={3}>
+              <InputGroup>
+                <InputGroup.Addon>$</InputGroup.Addon>
+                <FormControl
+                  type="number"
+                  value={this.state.amount}
+                  placeholder='Enter amount'
+                  onChange={this.updateTypedAmount}
+                />
+              </InputGroup>
+            </Col>
+          </FormGroup>
 
-            {this.state.amount ?
-              <Button bsStyle='primary' type='submit'>Proceed to Payment</Button>
+          {this.state.amount ?
+            <Button bsStyle='primary' type='submit'>Proceed to Payment</Button>
             :
-              null}
-
-          </Form>
-
-          {this.state.paying ?
-            <Elements>
-              <CheckoutForm
-                amount={this.state.amount}
-                addCreditsToAccount={this.addCreditsToAccount}
-              />
-            </Elements>
-          :
             null}
+        </Form>
 
-          {this.state.complete ?
-            <div className='complete'>
-              <p> Payment processed!</p>
-              <Link to='/'>
-                <Button> Done </Button>
-              </Link>
-            </div>
+        {this.state.paying ?
+          <Elements>
+            <CheckoutForm
+              amount={this.state.amount}
+              addCreditsToAccount={this.addCreditsToAccount}
+            />
+          </Elements>
           :
-            null}
+          null}
+
+        {this.state.complete ?
+          <div className='complete'>
+            <p> Payment processed!</p>
+            <Link to='/'>
+              <Button> Done </Button>
+            </Link>
+          </div>
+          :
+          null}
       </div>
-    )
+    );
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   loggedInUser: state.loggedInUser,

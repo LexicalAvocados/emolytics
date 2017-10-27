@@ -34,9 +34,9 @@ export class DashboardHome extends React.Component {
   componentDidMount() {
     this.getProjectsFromDatabase();
     axios.get('/api/getCreditBalance')
-    .then((res)=> {
-      this.props.actions.setCredits(res.data); // Redundant on first login
-    });
+      .then((res)=> {
+        this.props.actions.setCredits(res.data); // Redundant on first login
+      });
   }
 
   getProjectsFromDatabase(refresh) {
@@ -62,16 +62,16 @@ export class DashboardHome extends React.Component {
     }
     axios.get('/api/creator/allNotifications')
       .then((res) => {
-        let reduxObj = { allUserNotifs: res.data }
-        this.props.actions.setNotifications(reduxObj)
+        let reduxObj = { allUserNotifs: res.data };
+        this.props.actions.setNotifications(reduxObj);
 
-          var projectNotifs = this.props.notifications.allUserNotifs.reduce((acc, curr) => {
-            acc[`${curr.projectId}`] ? acc[`${curr.projectId}`]+=1 : acc[`${curr.projectId}`] = 1;
-            return acc;
-          }, {});
-          this.setState({
-            notifsObj: projectNotifs
-          })
+        var projectNotifs = this.props.notifications.allUserNotifs.reduce((acc, curr) => {
+          acc[`${curr.projectId}`] ? acc[`${curr.projectId}`]+=1 : acc[`${curr.projectId}`] = 1;
+          return acc;
+        }, {});
+        this.setState({
+          notifsObj: projectNotifs
+        });
       });
   }
 
@@ -127,7 +127,7 @@ export class DashboardHome extends React.Component {
     // console.log('project', projObj)
     for (var key in this.state.notifsObj) {
       if (+key === id) {
-        return this.state.notifsObj[id]
+        return this.state.notifsObj[id];
       }
     }
     return 0;
@@ -208,7 +208,7 @@ const creditDisplayStyle = {
 };
 
 const mapStateToProps = (state) => {
-  console.log('LOG WITHIN DASHBOARD', state);
+  // console.log('LOG WITHIN DASHBOARD', state);
   return ({
     router: state.router,
     currentProject: state.currentProject,

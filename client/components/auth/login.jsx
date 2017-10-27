@@ -16,7 +16,7 @@ export class Login extends React.Component {
       typedUsername: '',
       typedPassword: '',
       loginError: null
-    }
+    };
     this.updateTypedUsername = this.updateTypedUsername.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
@@ -49,7 +49,7 @@ export class Login extends React.Component {
             })
               .then(res => {
                 let focusGroups = res.data;
-                console.log('focusGroups:', focusGroups);
+                // console.log('focusGroups:', focusGroups);
                 if (focusGroups.length > 0) this.props.actions.populateCreatorFocusGroups(focusGroups);
               })
               .catch(err => {
@@ -61,7 +61,7 @@ export class Login extends React.Component {
             })
               .then(res => {
                 let queue = res.data;
-                console.log('queue:', queue);
+                // console.log('queue:', queue);
                 if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
               })
               .catch(err => {
@@ -91,29 +91,29 @@ export class Login extends React.Component {
         <Form horizontal className='authForm' onSubmit={this.submitLogin}>
           <FormGroup>
             <Col className='authInput'>
-            <FormControl
-              type='text'
-              value={this.state.typedUsername}
-              placeholder='Username'
-              onChange={this.updateTypedUsername}
-            /></Col>
+              <FormControl
+                type='text'
+                value={this.state.typedUsername}
+                placeholder='Username'
+                onChange={this.updateTypedUsername}
+              /></Col>
             <Col className='authInput'>
-            <FormControl
-              type='password'
-              value={this.state.typedPassword}
-              placeholder='Password'
-              onChange={this.updateTypedPassword}
-            /></Col>
+              <FormControl
+                type='password'
+                value={this.state.typedPassword}
+                placeholder='Password'
+                onChange={this.updateTypedPassword}
+              /></Col>
             <Button className='authSubmit' type='submit'>Submit</Button><br/>
             {<div>this.state.loginError</div> && this.state.loginError}
           </FormGroup>
         </Form>
         <hr/>
-           <a href='/auth/facebook'>
-             <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
-           </a>
+        <a href='/auth/facebook'>
+          <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
+        </a>
       </div>
-    )
+    );
   }
 }
 
@@ -124,7 +124,7 @@ const mapStateToProps = (state) => {
   return ({
     loggedInUser: state.loggedInUser,
     router: state.router
-  })
+  });
 };
 
 const mapDispatchToProps = (dispatch) => ({

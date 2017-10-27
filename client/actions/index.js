@@ -31,8 +31,8 @@ export const REMOVE_SECTION_FROM_SECTIONS = 'REMOVE_SECTION_FROM_SECTIONS';
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
 
 export const changeExample = (text) => ({
-	type: CHANGE_EXAMPLE,
-	text
+  type: CHANGE_EXAMPLE,
+  text
 });
 
 export const setLoggedIn = (id, username, name, age, sex, race, isCreator, credits) => ({
@@ -44,7 +44,7 @@ export const setLoggedIn = (id, username, name, age, sex, race, isCreator, credi
   sex,
   race,
   isCreator,
-	credits
+  credits
 });
 
 export const setLoggedOut = () => ({
@@ -120,8 +120,8 @@ export const populateTesterHistory = (history) => ({
 });
 
 export const changeCurrentProject = (obj) => ({
-	type: CHANGE_CURRENT_PROJECT,
-	obj
+  type: CHANGE_CURRENT_PROJECT,
+  obj
 });
 
 export const addSectionsToCurrentProject = (sectionObj) => ({
@@ -132,11 +132,11 @@ export const addSectionsToCurrentProject = (sectionObj) => ({
 export const removeSectionFromSections = (obj) => ({
   type: REMOVE_SECTION_FROM_SECTIONS,
   obj
-})
+});
 
 export const changeCurrentSection = (obj) => ({
-	type: CHANGE_CURRENT_SECTION,
-	obj
+  type: CHANGE_CURRENT_SECTION,
+  obj
 });
 
 export const changeCurrentOption = (optionObj) => ({
@@ -152,7 +152,7 @@ export const addOptionsToCurrentSection = (optionObj) => ({
 export const removeOptionFromOptions = (obj) => ({
   type: REMOVE_OPTION_FROM_OPTIONS,
   obj
-})
+});
 
 export const changeTesterOption = (obj) => ({
   type: CHANGE_TESTER_OPTION,
@@ -161,37 +161,37 @@ export const changeTesterOption = (obj) => ({
 
 
 export const setRoleForNewFbUser = (obj) => ({
-	type: SET_ROLE_FOR_NEW_FB_USER,
-	obj
+  type: SET_ROLE_FOR_NEW_FB_USER,
+  obj
 });
 
 export const changeOptionAnnotations = (obj) => ({
   type: CHANGE_OPTION_ANNOTATIONS,
   obj
-})
+});
 
 export const changeOption = (obj) => ({
   type: CHANGE_OPTION,
   obj
-})
+});
 
 
 export const changeAnnotations = (obj) => ({
   type: CHANGE_ANNOTATIONS,
   obj
-})
+});
 
 export const changeLineGraphData = (obj) => ({
   type: CHANGE_LINE_GRAPH_DATA,
   obj
-})
+});
 
 export const addFeedbackToOption = (feedbackString) => ({
   type: ADD_FEEDBACK_TO_OPTION,
   feedbackString
-})
+});
 
 export const setNotifications = (notifs) => ({
-	type: SET_NOTIFICATIONS,
-	notifs
-})
+  type: SET_NOTIFICATIONS,
+  notifs
+});

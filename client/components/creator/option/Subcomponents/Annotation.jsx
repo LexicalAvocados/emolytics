@@ -23,8 +23,7 @@ class Annotations extends React.Component {
       Sadness: 6,
       Surprise: 7,
       error: false
-      
-    }
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.addAnnotation = this.addAnnotation.bind(this);
@@ -32,7 +31,7 @@ class Annotations extends React.Component {
     this.deSelect = this.deSelect.bind(this);
     this.findLargest = this.findLargest.bind(this);
     this.preview = this.preview.bind(this);
-    console.log(this);
+    // console.log(this);
 
   }
 
@@ -46,8 +45,8 @@ class Annotations extends React.Component {
     let val = e.target.value;
     this.setState({
       [name]: val
-    })
-    console.log(this);
+    });
+    // console.log(this);
   }
 
   addAnnotation(e) {
@@ -59,7 +58,7 @@ class Annotations extends React.Component {
       emotion: this.state.emotion,
       option: this.props.currentOption,
       desc: this.state.desc
-    }
+    };
     axios.post('/api/option/addAnnotation', annotation);
 
     this.props.annotations.annotations.push(annotation);
@@ -69,17 +68,15 @@ class Annotations extends React.Component {
         anno.emotion = this.state.emotion;
         anno.desc = this.state.description;
       }
-    })
+    });
     var temp = {
       annotations: this.props.annotations.annotations
-    }
+    };
     this.props.actions.changeAnnotations(temp);
-    
-    
   }
 
   zoom(ann) {
-    console.log('zoom');
+    // console.log('zoom');
     if (ann.end) {
       this.props.graph.zoom([ann.time - 3, ann.end + 3]);
     } else {
@@ -104,34 +101,34 @@ class Annotations extends React.Component {
         test += this.props.lineGraphData.data[this.state[ann.emotion]][i]
       }
       test = test / (ann.end - ann.time);
-      console.log('test', test);
+      // console.log('test', test);
       this.props.lineGraphData.data.forEach(elem => {
-        console.log('WORKINGGGG');
+        // console.log('WORKINGGGG');
         var temp = 0;
         for(var i = ann.time; i < ann.end; i++) {
           temp += elem[i]
         }
         temp = temp / (ann.end - ann.time);
-        console.log(elem[0], temp);
+        // console.log(elem[0], temp);
         if (temp > test) {
           test = temp;
           emotion = elem[0];
         }
         
-      })
-      console.log(test, emotion)
+      });
+      // console.log(test, emotion)
       if (emotion) {
         return (
           <p> {emotion}: {test} </p>
-          )
+        );
       } else {
         return (
           <p> {ann.emotion} </p>
-          )
+        );
       }
 
     } else {
-      var test = this.props.lineGraphData.data[this.state[ann.emotion]][ann.time]
+      var test = this.props.lineGraphData.data[this.state[ann.emotion]][ann.time];
       this.props.lineGraphData.data.forEach(elem => {
         if (elem[0] !== ann.emotion) {
           if (elem[ann.time] > test) {
@@ -139,15 +136,15 @@ class Annotations extends React.Component {
             emotion = elem[0];
           }
         }
-      })
+      });
       if (emotion) {
         return (
           <p> {emotion}: {test} </p>
-          )
+        );
       } else {
         return (
           <p> {ann.emotion} </p>
-          )
+        );
       }
     }
 
@@ -160,13 +157,13 @@ class Annotations extends React.Component {
 
 
 
-render() {
+  render() {
     let annotations = this.props.annotations.annotations.map((ann, i) => {
       return (
         
         <div onClick={() => {
-            this.zoom(ann);
-          }} className="annotations">
+          this.zoom(ann);
+        }} className="annotations">
           <Col md={6}>
             <p> Start: {Math.floor(ann.time/60)}:{ann.time%60 < 10 ? '0' + ann.time%60 : ann.time%60}  </p>
             {ann.end ? (<p> End: {Math.floor(ann.end/60)}:{ann.end%60 < 10 ? '0' + ann.end%60 : ann.end%60} </p>)  : null}
@@ -183,64 +180,55 @@ render() {
             
           </Col>
         </div>
-        
-
-        )
-    })
+      );
+    });
     var unselect = {
       float: 'right',
       marginRight: '16px'
     };
     return (
       <Col md={12}>
-      <h3 className="optionAnnotationsTitle"> Annotations </h3>
-      <div className="optionAnnotations">
-        
-
-        
-        
-        <div className="annotationForm">
-          <h5> Add Annoation </h5>
-          <form>
-            <label> 
+        <h3 className="optionAnnotationsTitle"> Annotations </h3>
+        <div className="optionAnnotations">
+          <div className="annotationForm">
+            <h5> Add Annoation </h5>
+            <form>
+              <label> 
             Start: 
-            <input type="number" name="time" value={this.state.time} onChange={this.handleChange} required/>
-            </label>
-            <label> 
+                <input type="number" name="time" value={this.state.time} onChange={this.handleChange} required/>
+              </label>
+              <label> 
             End: 
-            <input type="number" name="end" value={this.state.end} onChange={this.handleChange} placeholder="Optional"/>
-            </label>
-             <br/>
-            <label>
+                <input type="number" name="end" value={this.state.end} onChange={this.handleChange} placeholder="Optional"/>
+              </label>
+              <br/>
+              <label>
               Emotion: 
-              <select name="emotion" value={this.state.emotion} onChange={this.handleChange}>
-                <option value="Anger">Anger</option>
-                <option value="Contempt">Contempt</option>
-                <option value="Disgust">Disgust</option>
-                <option value="Fear">Fear</option>
-                <option value="Happiness">Happiness</option>
-                <option value="Neutral">Neutral</option>
-                <option value="Sadness">Sadness</option>
-                <option value="Surprise">Surprise</option>
-              </select>
-            </label>
-            <br/>
-            <label>
+                <select name="emotion" value={this.state.emotion} onChange={this.handleChange}>
+                  <option value="Anger">Anger</option>
+                  <option value="Contempt">Contempt</option>
+                  <option value="Disgust">Disgust</option>
+                  <option value="Fear">Fear</option>
+                  <option value="Happiness">Happiness</option>
+                  <option value="Neutral">Neutral</option>
+                  <option value="Sadness">Sadness</option>
+                  <option value="Surprise">Surprise</option>
+                </select>
+              </label>
+              <br/>
+              <label>
             Description:
-            <input name="desc" value={this.state.desc} onChange={this.handleChange}/>
-            </label>
-            <br/>
-            <Button onClick={this.preview}> Preview </Button>
-            <Button onClick={this.addAnnotation}> Add </Button>
-            <Button style={unselect} onClick={this.deSelect}> Unselect </Button>
-          </form>
+                <input name="desc" value={this.state.desc} onChange={this.handleChange}/>
+              </label>
+              <br/>
+              <Button onClick={this.preview}> Preview </Button>
+              <Button onClick={this.addAnnotation}> Add </Button>
+              <Button style={unselect} onClick={this.deSelect}> Unselect </Button>
+            </form>
+          </div>
+
+          {annotations}
         </div>
-
-        
-
-        {annotations}
-
-      </div>
       </Col>
     );
   }

@@ -4,37 +4,36 @@ exports.organizeFramesByEmotion = (req, res) => {
   var originalFrames = req.body.frames;
   var duration = req.body.duration;
   var tempEmotionObj = {};
-  var emotions = ["anger", "contempt", "disgust", "fear", "happiness",
-                  "neutral", "sadness", "surprise" ]
+  var emotions = ["anger", "contempt", "disgust", "fear", "happiness", "neutral", "sadness", "surprise" ]
 
   emotions.forEach(emo => {
     let capitalized = emo.slice(0, 1).toUpperCase() + emo.slice(1);
     tempEmotionObj[emo] = originalFrames.sort((a, b) => a.time - b.time).reduce((acc, curr) => {
-        if (emo === 'neutral') {
-          if (acc[curr.time]) {
-            acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
-            return acc;
-          } else {
-            acc.push(+curr[emo] / 8);
-            return acc;
-          }
+      if (emo === 'neutral') {
+        if (acc[curr.time]) {
+          acc[curr.time] = (acc[curr.time] + +curr[emo] / 8) / 2;
+          return acc;
+        } else {
+          acc.push(+curr[emo] / 8);
+          return acc;
         }
-        else {
-          if (acc[curr.time]) {
-            acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
-            return acc;
-          } else {
-            acc.push(+curr[emo]); // eventually want to use acc[curr.time] = +curr[emo] and pad the array with null values interspersed
-            return acc;
-          }
+      }
+      else {
+        if (acc[curr.time]) {
+          acc[curr.time] = (acc[curr.time] + +curr[emo] )/ 2;
+          return acc;
+        } else {
+          acc.push(+curr[emo]); // eventually want to use acc[curr.time] = +curr[emo] and pad the array with null values interspersed
+          return acc;
         }
-      }, [capitalized]);
+      }
+    }, [capitalized]);
     if (tempEmotionObj[emo].length < duration) {
       var diff = duration - tempEmotionObj[emo].length - 1;
       let padArr = pad([], diff, null);
       tempEmotionObj[emo] = tempEmotionObj[emo].concat(padArr);
     }
-  })
+  });
   // console.log('tempEmotionObj', tempEmotionObj)
   res.send(JSON.stringify(tempEmotionObj));
 };
@@ -50,14 +49,14 @@ exports.calculateCompletionPercentage = (req, res) => {
       if (curr.time > acc[curr.userId]) acc[curr.userId] = curr.time / duration
     }
     return acc;
-  }, {})
+  }, {});
   // console.log('completionObj', userCompletionObj);
   var avgCompletion = 0;
   var numberOfUsers = 0;
   for (var key in userCompletionObj) {
     avgCompletion += userCompletionObj[key];
-    numberOfUsers++
-  };
+    numberOfUsers++;
+  }
   avgCompletion = Math.floor(1000*(avgCompletion / numberOfUsers))/10;
-  res.send(JSON.stringify(avgCompletion))
-}
+  res.send(JSON.stringify(avgCompletion));
+};
