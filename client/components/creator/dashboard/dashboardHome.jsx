@@ -30,10 +30,11 @@ export class DashboardHome extends React.Component {
     this.beginEdit = this.beginEdit.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.calculateNotifsForProject = this.calculateNotifsForProject.bind(this);
-    this.projectToolTip = this.projectToolTip.bind(this);
+    this.projectPopover = this.projectPopover.bind(this);
+    this.hiddenProjectPopover = this.hiddenProjectPopover.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getProjectsFromDatabase();
     axios.get('/api/getCreditBalance')
       .then((res)=> {
@@ -44,7 +45,7 @@ export class DashboardHome extends React.Component {
   getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
-        console.log(response.data[0].id);
+        // console.log(response.data[0].id);
         if (response.data[0].id !== 0) {
           let sortedProjects = response.data.sort((one, two) => {
             if (one.createdAt < two.createdAt) return 1;
@@ -145,9 +146,18 @@ export class DashboardHome extends React.Component {
     return 0;
   }
 
-  projectToolTip() {
+  projectPopover() {
     return (
       <Popover id="popover-trigger-hover" title="Hi!">Projects are organized into sections. You can see the number of sections within this project to the left. Click on the project to see its sections</Popover>
+    );
+  }
+
+  hiddenProjectPopover() {
+    let hidden = {
+      display: 'none'
+    }
+    return (
+      <Popover id="popover-trigger-focus" style={hidden}></Popover>
     );
   }
 
@@ -172,7 +182,6 @@ export class DashboardHome extends React.Component {
         ): (
           null
         )}
-
           <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
           <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
             <Modal.Header closeButton>
@@ -193,7 +202,7 @@ export class DashboardHome extends React.Component {
         <hr/>
         <br/>
         { this.state.retrieved ? (
-          !this.state.projects.id === 0 ? (
+          this.state.projects.id !== 0 ? (
             <div>
               <Row className="show-grid">
                 { this.state.projects.map((project, i) => (
@@ -209,7 +218,7 @@ export class DashboardHome extends React.Component {
                       refreshSections={this.state.refreshSections}
                       notifs={this.calculateNotifsForProject(project)}
                       allNotifications={this.props.notifications}
-                      something={this.state.nothing}
+                      popover={this.hiddenProjectPopover()}
                     />
                   </Col>
                 ))}
@@ -233,7 +242,7 @@ export class DashboardHome extends React.Component {
                         refreshSections={this.state.refreshSections}
                         notifs={this.calculateNotifsForProject(this.state.projects)}
                         allNotifications={this.props.notifications}
-                        something={this.projectToolTip()}
+                        popover={this.projectPopover()}
                       />
                     </Col>
                 </Row>

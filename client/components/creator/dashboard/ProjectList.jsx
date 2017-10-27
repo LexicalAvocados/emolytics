@@ -138,37 +138,37 @@ class ProjectList extends React.Component {
       <div>
         
         {/* HERE */}
-        <OverlayTrigger placement="right" overlay={this.props.something || null}>
-        <div className='projectsContainer'>
-          <div style={gridBoxForProject}>
+        <OverlayTrigger placement="right" overlay={this.props.popover}>
+          <div className='projectsContainer'>
+            <div style={gridBoxForProject}>
 
-            <div style={rightSideDisplay} className='timeAndNotifs'>
+              <div style={rightSideDisplay} className='timeAndNotifs'>
 
-              <div style={notifDisplayStyle}>
-                { this.props.notifs > 0 ? (
-                  <div>
-                    <BellIcon width='20' height='20' active={false} animate={false}/>
-                    <a>  {this.props.notifs}</a>
-                  </div>
-                ) : '' }
+                <div style={notifDisplayStyle}>
+                  { this.props.notifs > 0 ? (
+                    <div>
+                      <BellIcon width='20' height='20' active={false} animate={false}/>
+                      <a>  {this.props.notifs}</a>
+                    </div>
+                  ) : '' }
+                </div>
+
+                <div style={timeDisplayStyle}>
+                  <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
+                </div>
               </div>
-
-              <div style={timeDisplayStyle}>
-                <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
+              <div onClick={this.onClickCallback}>
+                <div style={titleDisplayStyle}>
+                  <h4>{this.props.project.name}</h4>
+                  <p>{this.props.project.description}</p>
+                </div>
               </div>
             </div>
-            <div onClick={this.onClickCallback}>
-              <div style={titleDisplayStyle}>
-                <h4>{this.props.project.name}</h4>
-                <p>{this.props.project.description}</p>
-              </div>
+            <div style={del}>
+              <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
+              <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
             </div>
           </div>
-          <div style={del}>
-            <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
-            <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
-          </div>
-        </div>
         </OverlayTrigger>
         {/* HERE */}
         <Modal bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
