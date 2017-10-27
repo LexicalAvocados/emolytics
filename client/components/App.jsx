@@ -27,6 +27,7 @@ import OptionHome from './creator/option/OptionHome.jsx';
 import CreateProject from './creator/create/createProject.jsx';
 import AddSection from './creator/create/addSection.jsx';
 import AddOption from './creator/create/addOption.jsx';
+import PatreonLoginLoading from './auth/PatreonLoginLoading.jsx';
 import Loading from './auth/loading.jsx';
 import LandingPage from './LandingPage.jsx';
 import CreatorAccount from './creator/dashboard/CreatorAccount.jsx';
@@ -80,8 +81,9 @@ export class App extends React.Component {
             <Switch>
               {/* routes for NOT LOGGED IN */}
               <Route exact path="/" component={LandingPage}/>
-              <Route exact path="/loading" component={Loading}/>
-              <Route exact path="/signup" component={Signup}/>
+              <Route exact path="/loading/patreon" component={PatreonLoginLoading}/>
+              <Route path="/loading" component={Loading}/>
+              <Route path="/signup" component={Signup}/>
               <Route path="*" component={Login}/>
             </Switch>
           )

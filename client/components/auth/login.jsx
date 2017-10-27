@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import axios from 'axios';
+import { patreon } from '../../../key.js';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -20,6 +21,7 @@ export class Login extends React.Component {
     this.updateTypedUsername = this.updateTypedUsername.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
+    this.submitPatreonLogin = this.submitPatreonLogin.bind(this);
     this.resetInputForms = this.resetInputForms.bind(this);
   }
 
@@ -80,11 +82,16 @@ export class Login extends React.Component {
       });
   }
 
+  submitPatreonLogin() {
+    axios.get('/auth/patreon')
+  }
+
   resetInputForms() {
     this.setState({typedUsername: '', typedPassword: ''});
   }
 
   render() {
+    const patreonOAuthLink = `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon`;
     return (
       <div className='auth'>
         <h2 className='loginHeader'>Log In</h2>
@@ -109,9 +116,14 @@ export class Login extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-        <a href='/auth/facebook'>
-          <img className='fblogin' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
-        </a>
+        <div className='oauthButtons'>
+          <a href='/auth/facebook'>
+            <img className='fbLoginBtn' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
+          </a>
+          <a href={patreonOAuthLink}>
+            <img className='patreonLoginBtn' src='patreon.jpg'></img>
+          </a>
+        </div>
       </div>
     );
   }
@@ -120,12 +132,11 @@ export class Login extends React.Component {
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  return ({
-    loggedInUser: state.loggedInUser,
-    router: state.router
-  });
-};
+
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  router: state.router
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)

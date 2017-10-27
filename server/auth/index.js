@@ -1,3 +1,4 @@
+const axios = require('axios');
 const bcrypt = require('bcrypt');
 const User = require('../../db').User;
 
@@ -121,8 +122,8 @@ exports.editProfile = (req, res) => {
       console.log('dbResponse ([ 1 ] is good):', dbResponse);
       if (dbResponse[0] === 1) res.send(true);
       else res.send(false);
-    })
-}
+    });
+};
 
 
 exports.checkUser = (req, res, next) => {
