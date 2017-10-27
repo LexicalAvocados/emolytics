@@ -90,6 +90,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
     "react-scrollable-anchor": "^0.5.0",
+    "react-select": "^1.0.0-rc.10",
     "react-shapes": "^0.1.0",
     "react-sidenav": "^2.1.2",
     "react-stripe-elements": "^1.2.0",
