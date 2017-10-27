@@ -67,10 +67,10 @@ exports.getUserInfoAfterOAuth = (req, res) => {
 const mergePatreonInfoWithExistingUser = (existingAccount, patreonAccount) => {
   return existingAccount.update(
     {
-      lastLoggedIn: new Date(),
+      lastloggedin: new Date(),
       patreonId: patreonAccount.id,
       patreonAbout: patreonAccount.about,
-      patreonCreatedAt: patreonAccount.created_at,
+      patreonCreatedAt: patreonAccount.created,
       patreonEmail: patreonAccount.email,
       patreonImageUrl: patreonAccount.image_url,
       patreonUrl: patreonAccount.url,
@@ -88,10 +88,10 @@ const createNewAccountWithPatreonInfo = (patreonAccount) => {
     email: patreonAccount.email,
     name: patreonAccount.full_name,
     isCreator: true,
-    lastLoggedIn: new Date(),
+    lastloggedin: new Date(),
     patreonId: patreonAccount.id,
     patreonAbout: patreonAccount.about,
-    patreonCreatedAt: patreonAccount.created_at,
+    patreonCreatedAt: patreonAccount.created,
     patreonEmail: patreonAccount.email,
     patreonImageUrl: patreonAccount.image_url,
     patreonUrl: patreonAccount.url,
