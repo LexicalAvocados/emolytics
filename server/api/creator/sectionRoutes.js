@@ -7,7 +7,8 @@ const Options = db.Option;
 exports.getRelatedSection = function(req, res) {
   Sections.findAll({
     where: {
-      projectId: req.query.projectId
+      projectId: req.query.projectId,
+      deleted: false
     }
   })
     .then((sectionsArray) => {
@@ -62,13 +63,13 @@ exports.deleteSection = (req, res) => {
           deleted: true
         });
         optionRoutes.deleteOption({ query: { toDelete: 'sectionId', id: section.id }}, null);
+        if (res !== null) {
+          res.send('Success')
+        }
       });
     })
     .catch((err) => {
       console.log(err);
-      if (res !== null) {
-        res.send(err);
-      }
     })
 
 
