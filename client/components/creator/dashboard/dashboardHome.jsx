@@ -20,7 +20,8 @@ export class DashboardHome extends React.Component {
       idOfClickedOn: null,
       fromDashboard: true,
       refreshSections: false,
-      notifsObj: {}
+      notifsObj: {},
+      demo: false
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -42,15 +43,22 @@ export class DashboardHome extends React.Component {
   getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
-        // console.log(response.data);
-        let sortedProjects = response.data.sort((one, two) => {
-          if (one.createdAt < two.createdAt) return 1;
-          if (one.createdAt > two.createdAt) return -1;
-        });
-        this.setState({
-          projects: sortedProjects,
-          retrieved: true
-        });
+        if (response.data.id !== 0) {
+          let sortedProjects = response.data.sort((one, two) => {
+            if (one.createdAt < two.createdAt) return 1;
+            if (one.createdAt > two.createdAt) return -1;
+          });
+          this.setState({
+            projects: sortedProjects,
+            retrieved: true,
+            demo: false
+          });
+        } else {
+          this.setState({ 
+            projects: response.data,
+            demo: true
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -102,17 +110,15 @@ export class DashboardHome extends React.Component {
     });
   }
 
-  deleteProject(id) {
+  deleteProject() {
+    // if id is 0, nooo
+    if (this.state.idOfClickedOn === 0) {
+      alert('Sneaky! You cannot delete the demo project! It will disappear when you create a project');
+      return;
+    }
     if (confirm('Are you sure you want to delete this project?')) {
-      // let filteredProjects = this.state.projects.filter((project) => {
-      //   if (project.id !== this.state.idOfClickedOn) return project;
-      // });
       axios.delete('/api/deleteProject', { params: {toDelete: 'id', id: this.state.idOfClickedOn}})
         .then((response) => {
-          // console.log(response);
-          // this.setState({
-          //   projects: filteredProjects
-          // });
           this.getProjectsFromDatabase(true);
           this.toggleEdit();
         })
@@ -161,7 +167,7 @@ export class DashboardHome extends React.Component {
         <hr/>
         <br/>
         { this.state.retrieved ? (
-          this.state.projects.length ? (
+          this.state.projects.length && !this.state.demo ? (
             <div>
               <Row className="show-grid">
                 { this.state.projects.map((project, i) => (
@@ -187,8 +193,24 @@ export class DashboardHome extends React.Component {
             </div>
           ) : (
             <div>
-              <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
-              <p>Why don't you click the 'Create Projects' button in the Navigation Bar and start doing something with your life!</p>
+              <Row className="show-grid">
+              { this.state.projects.map((project, i) => (
+                <Col className="projectListContainer" md={4} key={i}>
+                  <ProjectList
+                    onProjectClick={this.onProjectClick}
+                    deleteProject={this.deleteProject}
+                    getProjectsFromDatabase={this.getProjectsFromDatabase}
+                    project={project}
+                    beginEdit={this.beginEdit}
+                    toggleEdit={this.toggleEdit}
+                    displayEdit={this.state.displayEdit}
+                    refreshSections={this.state.refreshSections}
+                    notifs={this.calculateNotifsForProject(project)}
+                    allNotifications={this.props.notifications}
+                  />
+                </Col>
+              ))}
+            </Row>      
             </div>
           )
         ) : (

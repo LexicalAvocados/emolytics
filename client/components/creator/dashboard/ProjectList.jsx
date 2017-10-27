@@ -31,6 +31,13 @@ class ProjectList extends React.Component {
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
+        console.log('data from sectiondafoiasdfasdf', sections.data)
+        if (sections.data.id === 0) { // Filter for demo section
+          this.setState({
+            sections: sections.data
+          });
+          return;
+        }
         let sortedSections = sections.data.sort((one, two) => {
           if (one.createdAt < two.createdAt) return 1;
           if (one.createdAt > two.createdAt) return -1;
