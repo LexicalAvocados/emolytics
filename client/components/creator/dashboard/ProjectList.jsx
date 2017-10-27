@@ -1,9 +1,10 @@
 import React from 'react';
 import {Link, withRouter } from 'react-router-dom';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import EditPage from '../create/EditPage.jsx';
 import BellIcon from 'react-bell-icon';
+import ProjectPopover from './ProjectPopover.jsx';
 
 class ProjectList extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class ProjectList extends React.Component {
     };
     this.onClickCallback = this.onClickCallback.bind(this);
     this.getRelatedSections = this.getRelatedSections.bind(this);
+    // this.projectPopover = this.projectPopover.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +31,6 @@ class ProjectList extends React.Component {
   }
 
   getRelatedSections() {
-    console.log('WHALDSAKJSHDFKJHAD', this.props.project)
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
@@ -76,6 +77,8 @@ class ProjectList extends React.Component {
     this.props.onProjectClick(this.props.project, this.state.sections);
     this.props.history.push('/project' + this.props.project.id);
   }
+
+
 
   render() {
     var time = {
@@ -128,10 +131,15 @@ class ProjectList extends React.Component {
       textAlign: 'right'
     };
 
+
+
+
     return (
       <div>
+        
+        {/* HERE */}
+        <OverlayTrigger placement="right" overlay={this.props.something || null}>
         <div className='projectsContainer'>
-
           <div style={gridBoxForProject}>
 
             <div style={rightSideDisplay} className='timeAndNotifs'>
@@ -161,6 +169,8 @@ class ProjectList extends React.Component {
             <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
           </div>
         </div>
+        </OverlayTrigger>
+        {/* HERE */}
         <Modal bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Your Project</Modal.Title>
@@ -182,4 +192,4 @@ class ProjectList extends React.Component {
   }
 }
 
-export default withRouter(ProjectList);
+export default withRouter(ProjectList);  

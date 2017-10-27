@@ -5,7 +5,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import { Row, Col, Button, Modal } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Popover } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 
@@ -21,7 +21,7 @@ export class DashboardHome extends React.Component {
       fromDashboard: true,
       refreshSections: false,
       notifsObj: {},
-      demo: false
+      nothing: null
     };
     this.onProjectClick = this.onProjectClick.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -30,9 +30,10 @@ export class DashboardHome extends React.Component {
     this.beginEdit = this.beginEdit.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.calculateNotifsForProject = this.calculateNotifsForProject.bind(this);
+    this.projectToolTip = this.projectToolTip.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getProjectsFromDatabase();
     axios.get('/api/getCreditBalance')
       .then((res)=> {
@@ -43,21 +44,22 @@ export class DashboardHome extends React.Component {
   getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
-        if (response.data.id !== 0) {
+        console.log(response.data[0].id);
+        if (response.data[0].id !== 0) {
           let sortedProjects = response.data.sort((one, two) => {
             if (one.createdAt < two.createdAt) return 1;
             if (one.createdAt > two.createdAt) return -1;
           });
           this.setState({
             projects: sortedProjects,
-            retrieved: true,
-            demo: false
+            retrieved: true
           });
         } else {
           this.setState({ 
-            projects: response.data,
-            demo: true
+            projects: response.data[0],
+            retrieved: true
           });
+          console.log('THIS SHOULD BE THE PROJECT', this.state.projects);
         }
       })
       .catch((err) => {
@@ -120,8 +122,9 @@ export class DashboardHome extends React.Component {
       axios.delete('/api/deleteProject', { params: {toDelete: 'id', id: this.state.idOfClickedOn}})
         .then((response) => {
           this.setState({
-            projects: []
-          })
+            projects: [],
+            retrieved: false // Hopefully doesn't introduce problems
+          });
           this.getProjectsFromDatabase(true);
           this.toggleEdit();
         })
@@ -142,14 +145,34 @@ export class DashboardHome extends React.Component {
     return 0;
   }
 
+  projectToolTip() {
+    return (
+      <Popover id="popover-trigger-hover" title="Hi!">Projects are organized into sections. You can see the number of sections within this project to the left. Click on the project to see its sections</Popover>
+    );
+  }
+
   render () {
     var inherit = {
       display: 'inherit'
     };
+    var secondLine = {
+      display: 'inherit',
+      marginLeft: '3%'
+    }
+    
     return (
       <div className="dashboardHomeContainer">
         <div className="dashboardHeader">
           <h2 style={inherit}>Projects</h2>
+        {this.state.retrieved ? (
+           this.state.projects.id === 0 ? (
+            <p style={secondLine}> -- Welcome to ReactionSync. Below you will find a dummy project, hover over it to learn more.</p> 
+          ): (
+            null)
+        ): (
+          null
+        )}
+
           <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
           <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
             <Modal.Header closeButton>
@@ -170,7 +193,7 @@ export class DashboardHome extends React.Component {
         <hr/>
         <br/>
         { this.state.retrieved ? (
-          this.state.projects.length && !this.state.demo ? (
+          !this.state.projects.id === 0 ? (
             <div>
               <Row className="show-grid">
                 { this.state.projects.map((project, i) => (
@@ -186,6 +209,7 @@ export class DashboardHome extends React.Component {
                       refreshSections={this.state.refreshSections}
                       notifs={this.calculateNotifsForProject(project)}
                       allNotifications={this.props.notifications}
+                      something={this.state.nothing}
                     />
                   </Col>
                 ))}
@@ -196,24 +220,23 @@ export class DashboardHome extends React.Component {
             </div>
           ) : (
             <div>
-              <Row className="show-grid">
-              { this.state.projects.map((project, i) => (
-                <Col className="projectListContainer" md={4} key={i}>
-                  <ProjectList
-                    onProjectClick={this.onProjectClick}
-                    deleteProject={this.deleteProject}
-                    getProjectsFromDatabase={this.getProjectsFromDatabase}
-                    project={project}
-                    beginEdit={this.beginEdit}
-                    toggleEdit={this.toggleEdit}
-                    displayEdit={this.state.displayEdit}
-                    refreshSections={this.state.refreshSections}
-                    notifs={this.calculateNotifsForProject(project)}
-                    allNotifications={this.props.notifications}
-                  />
-                </Col>
-              ))}
-            </Row>      
+                <Row className="show-grid">
+                    <Col className="projectListContainer" md={4}>
+                      <ProjectList
+                        onProjectClick={this.onProjectClick}
+                        deleteProject={this.deleteProject}
+                        getProjectsFromDatabase={this.getProjectsFromDatabase}
+                        project={this.state.projects}
+                        beginEdit={this.beginEdit}
+                        toggleEdit={this.toggleEdit}
+                        displayEdit={this.state.displayEdit}
+                        refreshSections={this.state.refreshSections}
+                        notifs={this.calculateNotifsForProject(this.state.projects)}
+                        allNotifications={this.props.notifications}
+                        something={this.projectToolTip()}
+                      />
+                    </Col>
+                </Row>
             </div>
           )
         ) : (
