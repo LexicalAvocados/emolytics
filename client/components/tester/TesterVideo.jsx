@@ -12,6 +12,7 @@ import S3Upload from 's3-bucket-upload';
 import ToggleDisplay from 'react-toggle-display';
 import { Modal, Button } from 'react-bootstrap';
 import {Circle} from 'react-shapes';
+import Select from 'react-select';
 
 class TesterVideo extends React.Component {
 
@@ -35,6 +36,7 @@ class TesterVideo extends React.Component {
       eyeTime:{
         0: true
       },
+
     }
     this.videoStart = this.videoStart.bind(this);
     this.getWebcam = this.getWebcam.bind(this);
@@ -61,6 +63,7 @@ class TesterVideo extends React.Component {
 
 
   }
+
 
   componentWillUnmount() {
     // console.log(this);
@@ -277,6 +280,8 @@ class TesterVideo extends React.Component {
 
           <h2> {this.state.video.name} </h2>
           <h4> {this.state.video.desc} </h4>
+
+
         </div>
 
 

@@ -13,7 +13,7 @@ body {
 
 .appBody {
   background-color: #f7f7f7;
-  padding: 4%;
+  padding: 3%;
   overflow: auto;
   width: 100vw;
 }
@@ -78,37 +78,66 @@ body {
   text-align: center;
 }
 
+/* Option Home */
+
 .optionAnalyticsContainer {
-  width: 85%;
-  display: grid;
+  width: 100%;
+/*  display: grid;
   grid-template-columns: 12% 88%;
-  grid-template-rows: 50% 50%;
+  grid-template-rows: 50% 50%;*/
   padding: 10px;
-  grid-row-gap: 15px;
-  border: solid black 1px;
+  /*grid-row-gap: 15px;*/
+  /*border: solid black 1px;*/
+}
+
+.optionHomeContainer {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  padding: 4% 2% 3% 2%;
+  border-radius: 4px;
+  margin-bottom: 3%;
+
+}
+
+.sidemenucontainer {
+/*  grid-column: 1;
+  grid-row: 1;
+  text-align: center;
+  width: 6%;*/
+  /*display: flex;*/
 }
 
 .nonHeatmapContainer {
   /*width: 100%;*/
-  grid-column: 2;
+/*  grid-column: 2;
   display: grid;
   grid-template-columns: 1% 49% 50%;
-  grid-template-rows: 50% 50%;
+  grid-template-rows: 50% 50%;*/
 }
 
 .heatmapComponentContainer {
-  grid-column: 2;
+  /*grid-column: 2;*/
 
+}
+
+.optionHomeTop {
+  
+}
+
+.optionHomeBottom {
+  clear: both;
 }
 
 .leftSide {
-  grid-column: 2;
-  grid-row: 1;
+/*  grid-column: 2;
+  grid-row: 1;*/
 }
 
+
+
 .rightSide, .testerAnalyticsContainer {
-  grid-column: 3;
-  grid-row: 1;
+/*  grid-column: 3;
+  grid-row: 1;*/
 }
 
 .ageDistributionChart {
@@ -134,18 +163,11 @@ body {
   grid-row: 1;
 }
 
-.sidemenucontainer {
-  grid-column: 1;
-  grid-row: 1;
-  text-align: center;
-  width: 6%;
-  /*display: flex;*/
-}
-
 .optionPlayer {
   grid-column: 2;
   grid-row: 1;
-  margin-left: 3%
+  margin-left: 3%;
+  height: 45vh;
 }
 
 .testerDetails {
@@ -227,7 +249,7 @@ body {
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: -1000;
   opacity: 0;
 }
 
@@ -480,13 +502,10 @@ body {
   font-size: 12px;
 }
 
-.optionPlayer {
-  height: 42vh;
-}
 
 .testerAnalyticsContainer {
-  background-color: #f7f7f7;
-  padding: 5%;
+  /*background-color: #f7f7f7;*/
+  /*padding: 5%;*/
   border-radius: 4px;
 }
 
@@ -583,6 +602,7 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   width: 15%;
+  margin-top: 60px;
 }
 
 .sectionHomeContainer {
