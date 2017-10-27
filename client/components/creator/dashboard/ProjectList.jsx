@@ -18,19 +18,16 @@ class ProjectList extends React.Component {
 
   componentDidMount() {
     // window.scrollTo(0, 0);
-    console.log('SHOULD BE THE PROJECT BEING PASSED', this.props.project);
     this.getRelatedSections();
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('VALUE OF REFRESH SECTIONS', nextProps.refreshSections)
     if (nextProps.refreshSections) {
       this.getRelatedSections();
     }
   }
 
   getRelatedSections() {
-    console.log('HSOULD BE GETTING SECTIONS FOR THIS PROJET', this.props.project)
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);

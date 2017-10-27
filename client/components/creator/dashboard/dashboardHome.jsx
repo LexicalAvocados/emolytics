@@ -41,7 +41,6 @@ export class DashboardHome extends React.Component {
   }
 
   getProjectsFromDatabase(refresh) {
-    console.log('why isnt this workingLJLKJ', refresh)
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
         if (response.data.id !== 0) {
@@ -65,7 +64,6 @@ export class DashboardHome extends React.Component {
         console.log(err);
       });
     if (refresh) {
-      console.log('WE SHOULD BE REFRESHING THE SECTOINS NOWNOWONWON')
       this.setState({
         refreshSections: true
       });
