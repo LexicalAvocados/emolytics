@@ -1,6 +1,7 @@
 const url = require('url');
 const axios = require('axios');
 const User = require('../../db').User;
+const PatreonCampaign = require('../../db').PatreonCampaign;
 const keys = require('../../key.js');
 const patreon = require('patreon');
 const patreonAPI = patreon.patreon;
@@ -9,17 +10,22 @@ const clientId = keys.patreon.clientId;
 const clientSecret = keys.patreon.clientSecret;
 const oauthClient = patreon.oauth(clientId, clientSecret);
 
-exports.handleOAuthRedirect = (req, res) => {
+exports.handleOAuth = (req, res, mode) => {
   const oauthGrantCode = url.parse(req.url, true).query.code;
+  let redirectUri;
+  if (mode === 'login') redirectUri = 'http://localhost:3000/oauth/patreon/login';
+  if (mode === 'creator') redirectUri = 'http://localhost:3000/oauth/patreon/signup/creator';
+  if (mode === 'tester') redirectUri = 'http://localhost:3000/oauth/patreon/signup/tester';
 
-  oauthClient.getTokens(oauthGrantCode, 'http://localhost:3000/oauth/patreon')
+  oauthClient.getTokens(oauthGrantCode, redirectUri)
     .then(tokensResponse => {
       const patreonAPIClient = patreonAPI(tokensResponse.access_token);
       return patreonAPIClient('/current_user/campaigns');
     })
     .then(({store}) => {
+      console.log('data store received from patreon');
       let patreonAccount = store.graph.user[Object.keys(store.graph.user)[0]];
-      let patreonAccountCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
+      let patreonCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
       
       return User.findOne({
         where: {
@@ -28,9 +34,9 @@ exports.handleOAuthRedirect = (req, res) => {
       })
         .then(existingAccount => {
           if (existingAccount) {
-            return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount);
+            return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount, mode, patreonCampaign);
           } else {
-            return createNewAccountWithPatreonInfo(patreonAccount);
+            return createNewAccountWithPatreonInfo(patreonAccount, mode, patreonCampaign);
           }
         })
         .catch(err => {
@@ -39,7 +45,7 @@ exports.handleOAuthRedirect = (req, res) => {
     })
     .then(user => {
       req.session.username = user.username;
-      res.redirect('/loading/patreon');
+      res.redirect(`/loading/patreon?type=${mode === 'login' ? 'login' : (mode === 'creator' ? 'creator' : 'tester')}`);
     })
     .catch(err => {
       console.error('Patreon OAuth error:', err);
@@ -64,39 +70,93 @@ exports.getUserInfoAfterOAuth = (req, res) => {
     });
 };
 
-const mergePatreonInfoWithExistingUser = (existingAccount, patreonAccount) => {
-  return existingAccount.update(
+const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => {
+  console.log('campaign:', campaign);
+  return existing.update(
     {
       lastloggedin: new Date(),
-      patreonId: patreonAccount.id,
-      patreonAbout: patreonAccount.about,
-      patreonCreatedAt: patreonAccount.created,
-      patreonEmail: patreonAccount.email,
-      patreonImageUrl: patreonAccount.image_url,
-      patreonUrl: patreonAccount.url,
-      patreonVanity: patreonAccount.vanity
+      patreonId: patreon.id,
+      patreonAbout: patreon.about,
+      patreonCreatedAt: patreon.created,
+      patreonEmail: patreon.email,
+      patreonImageUrl: patreon.image_url,
+      patreonUrl: patreon.url,
+      patreonVanity: patreon.vanity
     },
     {
       returning: true
     }
-  );
+  )
+    .then(user => {
+      if (mode === 'creator') {
+        PatreonCampaign.create({
+          creationCount: campaign.creation_count,
+          displayPatronGoals: campaign.display_patron_goals,
+          earningsVisibility: campaign.earnings_visibility,
+          isChargedImmediately: campaign.is_charged_immediately,
+          isMonthly: campaign.is_monthly,
+          isNsfw: campaign.is_nsfw,
+          isPlural: campaign.is_plural,
+          mainVideoUrl: campaign.main_video_url,
+          patronCount: campaign.patron_count,
+          payPerName: campaign.pay_per_name,
+          pledgeSum: campaign.pledge_sum,
+          pledgeUrl: campaign.pledge_url,
+          publishedAt: campaign.published_at,
+          summary: campaign.summary,
+          thanksMsg: campaign.thanks_msg,
+          thanksVideoUrl: campaign.thanks_video_url
+        });
+      }
+      return user;
+    })
+    .catch(err => {
+      console.log('Error merging Patreon into DB:', err);
+    });
 };
 
-const createNewAccountWithPatreonInfo = (patreonAccount) => {
+const createNewAccountWithPatreonInfo = (patreon, mode, campaign) => {
   return User.create({
-    username: patreonAccount.vanity,
-    email: patreonAccount.email,
-    name: patreonAccount.full_name,
+    username: patreon.vanity,
+    email: patreon.email,
+    name: patreon.full_name,
     isCreator: true,
     lastloggedin: new Date(),
-    patreonId: patreonAccount.id,
-    patreonAbout: patreonAccount.about,
-    patreonCreatedAt: patreonAccount.created,
-    patreonEmail: patreonAccount.email,
-    patreonImageUrl: patreonAccount.image_url,
-    patreonUrl: patreonAccount.url,
-    patreonVanity: patreonAccount.vanity
-  });
+    patreonId: patreon.id,
+    patreonAbout: patreon.about,
+    patreonCreatedAt: patreon.created,
+    patreonEmail: patreon.email,
+    patreonImageUrl: patreon.image_url,
+    patreonUrl: patreon.url,
+    patreonVanity: patreon.vanity
+  })
+    .then(newUser => {
+      if (mode === 'creator') {
+        PatreonCampaign.create({
+          creationCount: campaign.creation_count,
+          displayPatronGoals: campaign.display_patron_goals,
+          earningsVisibility: campaign.earnings_visibility,
+          isChargedImmediately: campaign.is_charged_immediately,
+          isMonthly: campaign.is_monthly,
+          isNsfw: campaign.is_nsfw,
+          isPlural: campaign.is_plural,
+          mainVideoUrl: campaign.main_video_url,
+          patronCount: campaign.patron_count,
+          payPerName: campaign.pay_per_name,
+          pledgeSum: campaign.pledge_sum,
+          pledgeUrl: campaign.pledge_url,
+          publishedAt: campaign.published_at,
+          summary: campaign.summary,
+          thanksMsg: campaign.thanks_msg,
+          thanksVideoUrl: campaign.thanks_video_url,
+          userId: newUser.id
+        });
+      }
+      return newUser;
+    })
+    .catch(err => {
+      console.log('Error creating new DB entries with Patreon data:', err);
+    });
 };
 
 // PATREON API '/current_user/campaigns/'' RESPONSE DATA EXAMPLE

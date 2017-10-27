@@ -14,7 +14,7 @@ export class PatreonLoginLoading extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(this.fetchUserAndRedirect.bind(this), 1500);
+    setTimeout(this.fetchUserAndRedirect.bind(this), 3000);
   }
   
   fetchUserAndRedirect() {
@@ -30,9 +30,12 @@ export class PatreonLoginLoading extends React.Component {
   }
 
   render() {
+    let isLogin = this.props.match.params.type === 'login' ? true : false;
+    if (isLogin) var loginType = isLogin === 'creator' ? 'creator' : 'tester';
     return (
       <div className='patreonLoginLoading'>
-        <h2>You have successfully logged in with Patreon.</h2>
+        <h2>You have successfully {isLogin ? 'logged in' : 'signed up'} with Patreon.</h2>
+        {isLogin ? null : <h3>Your account type: {loginType === 'creator' ? 'Creator' : 'Tester'}</h3>}
         <h3>Redirecting...</h3>
       </div>
     )

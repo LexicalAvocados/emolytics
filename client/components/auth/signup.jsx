@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
+import { patreon } from '../../../key.js';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -77,6 +78,8 @@ export class Signup extends React.Component {
   }
 
   render() {
+    const patreonOAuthLink = 
+      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
     return (
       <div className='auth'>
         <h2 className='signupHeader'>New Account</h2>
@@ -117,9 +120,14 @@ export class Signup extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-        <a href='/auth/facebook'>
-          <img className='fblogin' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
-        </a>
+        <div className='oauthButtons'>
+          <a href='/auth/facebook'>
+            <img className='fbLoginBtn' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
+          </a>
+          <a href={patreonOAuthLink}>
+            <img className='patreonLoginBtn' src='patreon.jpg'></img>
+          </a>
+        </div>
         <p style={center}> Don't forget to select Tester/Creator!</p>
       </div>
     );

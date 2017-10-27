@@ -54,6 +54,33 @@ const User = sequelize.define('user', {
 
 User.sync({force: false});
 
+// ~~~~~~~~~~~~~~~~~~~~~~~ //
+// Patreon Campaign Schema //
+// ~~~~~~~~~~~~~~~~~~~~~~~ //
+
+const PatreonCampaign = sequelize.define('patreonCampaign', {
+  creationCount: Sequelize.INTEGER,
+  displayPatronGoals: Sequelize.BOOLEAN,
+  earningsVisibility: Sequelize.STRING,
+  isChargedImmediately: Sequelize.BOOLEAN,
+  isMonthly: Sequelize.BOOLEAN,
+  isNsfw: Sequelize.BOOLEAN,
+  isPlural: Sequelize.BOOLEAN,
+  mainVideoUrl: Sequelize.STRING,
+  patronCount: Sequelize.INTEGER,
+  payPerName: Sequelize.STRING,
+  pledgeSum: Sequelize.INTEGER,
+  pledgeUrl: Sequelize.STRING,
+  publishedAt: Sequelize.DATE,
+  summary: Sequelize.STRING,
+  thanksMsg: Sequelize.STRING,
+  thanksVideoUrl: Sequelize.STRING
+});
+
+PatreonCampaign.belongsTo(User);
+
+PatreonCampaign.sync({force: false});
+
 // ~~~~~~~~~~~~~~~~~~ //
 // Focus Group Schema //
 // ~~~~~~~~~~~~~~~~~~ //
@@ -259,10 +286,10 @@ Transaction.belongsTo(Option);
 Transaction.sync({force: false});
 
 
-
 module.exports = {
   sequelize,
   User,
+  PatreonCampaign,
   FocusGroup,
   FocusGroupAndTester,
   Project,
