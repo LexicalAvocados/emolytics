@@ -30,8 +30,9 @@ export class PatreonLoginLoading extends React.Component {
   }
 
   render() {
-    let isLogin = this.props.match.params.type === 'login' ? true : false;
-    if (isLogin) var loginType = isLogin === 'creator' ? 'creator' : 'tester';
+    let query = window.location.href.slice(window.location.href.indexOf('=') + 1);
+    let isLogin = query === 'login' ? true : false;
+    if (!isLogin) var loginType = query === 'creator' ? 'creator' : 'tester';
     return (
       <div className='patreonLoginLoading'>
         <h2>You have successfully {isLogin ? 'logged in' : 'signed up'} with Patreon.</h2>

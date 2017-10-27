@@ -45,7 +45,9 @@ exports.handleOAuth = (req, res, mode) => {
     })
     .then(user => {
       req.session.username = user.username;
-      res.redirect(`/loading/patreon?type=${mode === 'login' ? 'login' : (mode === 'creator' ? 'creator' : 'tester')}`);
+      let queryString = (mode === 'login' ? 'login' : (mode === 'creator' ? 'creator' : 'tester'));
+      console.log('queryString right before redirect:', queryString);
+      res.redirect(`/loading/patreon?type=${queryString}`);
     })
     .catch(err => {
       console.error('Patreon OAuth error:', err);
@@ -71,7 +73,6 @@ exports.getUserInfoAfterOAuth = (req, res) => {
 };
 
 const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => {
-  console.log('campaign:', campaign);
   return existing.update(
     {
       lastloggedin: new Date(),
