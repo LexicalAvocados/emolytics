@@ -149,6 +149,10 @@ class SectionHome extends React.Component {
   }
 
   deleteOption() {
+    if (this.state.idOfClickedOnOption === 0 || this.state.idOfClickedOnOption === 1) {
+      alert('You cannot delete demo options! They will disappear when you create a project');
+      return;
+    }
     if (confirm('Are you sure you want to delete this option?')) {
       this.props.currentSection.options = this.props.currentSection.options.filter((option, i) => {
         if (option.id !== this.state.idOfClickedOnOption) {

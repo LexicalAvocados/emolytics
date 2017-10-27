@@ -5,7 +5,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
-import { Row, Col, Button, Modal } from 'react-bootstrap';
+import { Row, Col, Button, Modal, Popover } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 
@@ -29,6 +29,8 @@ export class DashboardHome extends React.Component {
     this.beginEdit = this.beginEdit.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.calculateNotifsForProject = this.calculateNotifsForProject.bind(this);
+    this.projectPopover = this.projectPopover.bind(this);
+    this.hiddenProjectPopover = this.hiddenProjectPopover.bind(this);
   }
 
   componentDidMount() {
@@ -42,15 +44,21 @@ export class DashboardHome extends React.Component {
   getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
-        // console.log(response.data);
-        let sortedProjects = response.data.sort((one, two) => {
-          if (one.createdAt < two.createdAt) return 1;
-          if (one.createdAt > two.createdAt) return -1;
-        });
-        this.setState({
-          projects: sortedProjects,
-          retrieved: true
-        });
+        if (response.data[0].id !== 0) {
+          let sortedProjects = response.data.sort((one, two) => {
+            if (one.createdAt < two.createdAt) return 1;
+            if (one.createdAt > two.createdAt) return -1;
+          });
+          this.setState({
+            projects: sortedProjects,
+            retrieved: true
+          });
+        } else {
+          this.setState({ 
+            projects: response.data[0],
+            retrieved: true
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -102,17 +110,19 @@ export class DashboardHome extends React.Component {
     });
   }
 
-  deleteProject(id) {
+  deleteProject() {
+    // if id is 0, nooo
+    if (this.state.idOfClickedOn === 0) {
+      alert('Sneaky! You cannot delete the demo project! It will disappear when you create a project');
+      return;
+    }
     if (confirm('Are you sure you want to delete this project?')) {
-      // let filteredProjects = this.state.projects.filter((project) => {
-      //   if (project.id !== this.state.idOfClickedOn) return project;
-      // });
       axios.delete('/api/deleteProject', { params: {toDelete: 'id', id: this.state.idOfClickedOn}})
         .then((response) => {
-          // console.log(response);
-          // this.setState({
-          //   projects: filteredProjects
-          // });
+          this.setState({
+            projects: [],
+            retrieved: false // Hopefully doesn't introduce problems
+          });
           this.getProjectsFromDatabase(true);
           this.toggleEdit();
         })
@@ -133,14 +143,42 @@ export class DashboardHome extends React.Component {
     return 0;
   }
 
+  projectPopover() {
+    return (
+      <Popover id="popover-trigger-hover" title="Hi!">Projects are organized into sections. You can see the number of sections within this project to the left. Click on the project to see its sections</Popover>
+    );
+  }
+
+  hiddenProjectPopover() {
+    let hidden = {
+      display: 'none'
+    }
+    return (
+      <Popover id="popover-trigger-focus" style={hidden}></Popover>
+    );
+  }
+
   render () {
     var inherit = {
       display: 'inherit'
     };
+    var secondLine = {
+      display: 'inherit',
+      marginLeft: '3%'
+    }
+    
     return (
       <div className="dashboardHomeContainer">
         <div className="dashboardHeader">
           <h2 style={inherit}>Projects</h2>
+          {this.state.retrieved ? (
+            this.state.projects.id === 0 ? (
+              <p style={secondLine}> -- Welcome to ReactionSync. Below you will find a dummy project, hover over it to learn more.</p> 
+            ) : (
+              null)
+          ) : (
+            null
+          )}
           <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
           <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
             <Modal.Header closeButton>
@@ -161,7 +199,7 @@ export class DashboardHome extends React.Component {
         <hr/>
         <br/>
         { this.state.retrieved ? (
-          this.state.projects.length ? (
+          this.state.projects.id !== 0 ? (
             <div>
               <Row className="show-grid">
                 { this.state.projects.map((project, i) => (
@@ -177,6 +215,7 @@ export class DashboardHome extends React.Component {
                       refreshSections={this.state.refreshSections}
                       notifs={this.calculateNotifsForProject(project)}
                       allNotifications={this.props.notifications}
+                      popover={this.hiddenProjectPopover()}
                     />
                   </Col>
                 ))}
@@ -187,8 +226,23 @@ export class DashboardHome extends React.Component {
             </div>
           ) : (
             <div>
-              <p>Welcome Good Sir/Lady, you do not currently have any projects!</p>
-              <p>Why don't you click the 'Create Projects' button in the Navigation Bar and start doing something with your life!</p>
+              <Row className="show-grid">
+                <Col className="projectListContainer" md={4}>
+                  <ProjectList
+                    onProjectClick={this.onProjectClick}
+                    deleteProject={this.deleteProject}
+                    getProjectsFromDatabase={this.getProjectsFromDatabase}
+                    project={this.state.projects}
+                    beginEdit={this.beginEdit}
+                    toggleEdit={this.toggleEdit}
+                    displayEdit={this.state.displayEdit}
+                    refreshSections={this.state.refreshSections}
+                    notifs={this.calculateNotifsForProject(this.state.projects)}
+                    allNotifications={this.props.notifications}
+                    popover={this.projectPopover()}
+                  />
+                </Col>
+              </Row>
             </div>
           )
         ) : (

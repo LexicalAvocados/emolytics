@@ -68,6 +68,10 @@ class DisplaySections extends React.Component {
   }
 
   deleteSection() {
+    if (this.state.idOfClickedOnSection === 0) {
+      alert('You cannot delete this demo sections! It will disappear when you create a project');
+      return;
+    }
     if (confirm('Are you sure you want to delete this section?')) {
       this.props.currentProject.sections = this.props.currentProject.sections.filter((section, i) => {
         if (section.id !== this.state.idOfClickedOnSection) {

@@ -74,6 +74,10 @@ class AddOption extends React.Component {
 
   submitOptionClick(e) {
     e.preventDefault();
+    if (this.props.currentProject.id === 0) {
+      alert('You cannot create new options within the demo. If you\'d like to leave the demo please create a project.');
+      return;
+    } 
     this.retrieveYouTubeData((youTubeData) => {
       // console.log(youTubeData);
       axios.post('/api/addOption', {
@@ -145,9 +149,6 @@ class AddOption extends React.Component {
               option={option}
               key={i}
               index={i}
-              // onOptionClick={() => {this.props.history.push(`/option${option.id}`)}
-              // }
-              // console={(()=>{console.log("THIS IS OPTION", option)})()}
             />
           ))}
         </div>
