@@ -9,7 +9,8 @@ const OptionAndAnnotations = db.OptionAndAnnotation;
 exports.getRelatedOptions = (req, res) => {
   Options.findAll({
     where: {
-      sectionId: req.query.sectionId
+      sectionId: req.query.sectionId,
+      deleted: false
     }
   })
     .then((optionsArray) => {
@@ -130,7 +131,9 @@ exports.deleteOption = (req, res) => {
         });
         clearDataAssociatedWithOption(tables, option.id);
       });
-
+      if (res !== null) {
+        res.send('Success');
+      }
     })
     .catch((err) => {
       console.log('Option not found', err)

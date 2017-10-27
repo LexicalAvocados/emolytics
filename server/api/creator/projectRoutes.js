@@ -16,7 +16,8 @@ exports.getProjectsForUser = function(req, res) {
     .then((user) => {
       Projects.findAll({
         where: {
-          userId: user.id
+          userId: user.id,
+          deleted: false
         }
       })
         .then((projects) => {
@@ -86,14 +87,14 @@ exports.updateProject = (req, res) => {
 }
 
 exports.deleteProject = (req, res) => {
-  console.log('trrrrrryyyyyinnnnggg')
-  Projects.findById(req.query.projectId)
+  Projects.findById(req.query.id)
     .then((entry) => {
       entry.update({
         deleted: true
       })
         .then((updatedEntry) => {
           sectionRoutes.deleteSection({ query: { toDelete: 'projectId', id: req.query.projectId}}, null);
+          res.send('Success');
         })
         .catch((err) => {
           console.log(err);
