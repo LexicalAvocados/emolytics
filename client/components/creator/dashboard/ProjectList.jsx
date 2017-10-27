@@ -23,11 +23,13 @@ class ProjectList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.refreshSections) {
+      console.log('Seciont to be refreshed')
       this.getRelatedSections();
     }
   }
 
   getRelatedSections() {
+    console.log('WHALDSAKJSHDFKJHAD', this.props.project)
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
