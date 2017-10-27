@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, withRouter } from 'react-router-dom';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import EditPage from '../create/EditPage.jsx';
 import BellIcon from 'react-bell-icon';
@@ -14,10 +14,10 @@ class ProjectList extends React.Component {
     };
     this.onClickCallback = this.onClickCallback.bind(this);
     this.getRelatedSections = this.getRelatedSections.bind(this);
+    // this.projectPopover = this.projectPopover.bind(this);
   }
 
   componentDidMount() {
-    // window.scrollTo(0, 0);
     this.getRelatedSections();
   }
 
@@ -29,11 +29,9 @@ class ProjectList extends React.Component {
   }
 
   getRelatedSections() {
-    console.log('WHALDSAKJSHDFKJHAD', this.props.project)
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
-        console.log('data from sectiondafoiasdfasdf', sections.data)
         if (sections.data.id === 0) { // Filter for demo section
           this.setState({
             sections: sections.data
@@ -76,6 +74,8 @@ class ProjectList extends React.Component {
     this.props.onProjectClick(this.props.project, this.state.sections);
     this.props.history.push('/project' + this.props.project.id);
   }
+
+
 
   render() {
     var time = {
@@ -128,39 +128,42 @@ class ProjectList extends React.Component {
       textAlign: 'right'
     };
 
+
+
+
     return (
       <div>
-        <div className='projectsContainer'>
+        <OverlayTrigger placement="right" overlay={this.props.popover}>
+          <div className='projectsContainer'>
+            <div style={gridBoxForProject}>
 
-          <div style={gridBoxForProject}>
+              <div style={rightSideDisplay} className='timeAndNotifs'>
 
-            <div style={rightSideDisplay} className='timeAndNotifs'>
-
-              <div style={notifDisplayStyle}>
-                { this.props.notifs > 0 ? (
-                  <div>
-                    <BellIcon width='20' height='20' active={false} animate={false}/>
-                    <a>  {this.props.notifs}</a>
-                  </div>
-                ) : '' }
+                <div style={notifDisplayStyle}>
+                  { this.props.notifs > 0 ? (
+                    <div>
+                      <BellIcon width='20' height='20' active={false} animate={false}/>
+                      <a>  {this.props.notifs}</a>
+                    </div>
+                  ) : '' }
+                </div>
+                <div style={timeDisplayStyle}>
+                  <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
+                </div>
               </div>
-
-              <div style={timeDisplayStyle}>
-                <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
+              <div onClick={this.onClickCallback}>
+                <div style={titleDisplayStyle}>
+                  <h4>{this.props.project.name}</h4>
+                  <p>{this.props.project.description}</p>
+                </div>
               </div>
             </div>
-            <div onClick={this.onClickCallback}>
-              <div style={titleDisplayStyle}>
-                <h4>{this.props.project.name}</h4>
-                <p>{this.props.project.description}</p>
-              </div>
+            <div style={del}>
+              <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
+              <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
             </div>
           </div>
-          <div style={del}>
-            <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
-            <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
-          </div>
-        </div>
+        </OverlayTrigger>
         <Modal bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Your Project</Modal.Title>
@@ -182,4 +185,4 @@ class ProjectList extends React.Component {
   }
 }
 
-export default withRouter(ProjectList);
+export default withRouter(ProjectList);  
