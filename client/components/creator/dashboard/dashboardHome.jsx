@@ -119,6 +119,9 @@ export class DashboardHome extends React.Component {
     if (confirm('Are you sure you want to delete this project?')) {
       axios.delete('/api/deleteProject', { params: {toDelete: 'id', id: this.state.idOfClickedOn}})
         .then((response) => {
+          this.setState({
+            projects: []
+          })
           this.getProjectsFromDatabase(true);
           this.toggleEdit();
         })
