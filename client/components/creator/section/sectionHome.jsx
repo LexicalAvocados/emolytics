@@ -15,6 +15,9 @@ import SectionCarousel from './SectionCarousel.jsx';
 import EditPage from '../create/EditPage.jsx';
 import OptionHome from '../option/OptionHome.jsx';
 import DisplaySections from './DisplaySections.jsx';
+import SnackBar from 'react-material-snackbar';
+import { NotificationStack } from 'react-notification';
+
 
 class SectionHome extends React.Component {
   constructor(props) {
@@ -34,7 +37,10 @@ class SectionHome extends React.Component {
       showData: false,
       compareOptions: [],
       fromSectionHome: true,
-      showEdit: false
+      showEdit: false,
+      showNotifications: false,
+      currentNotification: {},
+      allNotifications: []
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -50,6 +56,9 @@ class SectionHome extends React.Component {
     this.toggleEdit = this.toggleEdit.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
     this.getNotificationsForOption = this.getNotificationsForOption.bind(this);
+    this.showNotifsCb = this.showNotifsCb.bind(this);
+    this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
+    this.dismissNotification = this.dismissNotification.bind(this);
   }
 
   componentWillMount() {
@@ -65,6 +74,31 @@ class SectionHome extends React.Component {
       });
 
     this.getOptionsData();
+    this.decorateNotificationObjects();
+  }
+
+  decorateNotificationObjects() {
+
+    if (this.props.notifications.allUserNotifs) {
+
+      var consolidatedNotifs = this.props.notifications.allUserNotifs.reduce((acc, curr) => {
+        acc[curr.optionName] ? acc[curr.optionName] += 1 : acc[curr.optionName] = 1;
+        return acc;
+      }, {});
+
+      var allNotifs = [];
+      for (var key in consolidatedNotifs) {
+        let temp = {};
+        temp['optionName'] = key;
+        temp['count'] = consolidatedNotifs[key]
+        temp['message'] = `${consolidatedNotifs[key]} testers watched your option ${key}`;
+        allNotifs.push(temp);
+      }
+
+      this.setState({
+        allNotifications: allNotifs
+      }, () => console.log('ALL notifs', this.state.allNotifications))
+    } //close if block
   }
 
   clearOnNewSection() {
@@ -236,13 +270,49 @@ class SectionHome extends React.Component {
   }
 
   getNotificationsForOption(option) {
-    var idForOption = option.id;
-    if (this.props.notifications.allUserNotifs) {
-      var notifsForOption = this.props.notifications.allUserNotifs.filter((item) => {
-        return item.optionId === idForOption;
+    var nameOfOption = option.name;
+    if (this.state.allNotifications) {
+      var notifsForOption = this.state.allNotifications.filter((item) => {
+        return item.optionName === nameOfOption;
       });
     }
     return notifsForOption || [];
+  }
+
+  showNotifsCb(option) {
+    // Filter notifications in state by selected option id
+
+    var filteredNotifs = this.state.allNotifications.filter((item) => {
+      return item.optionName === option.name
+    })
+
+    this.setState({
+      showNotifications: true,
+      currentNotification: filteredNotifs[0]
+    }, () => console.log('CURRENT NOTIF', this.state.currentNotification))
+  };
+
+  dismissNotification() {
+    //splice current notification from allNotifications array in state
+    var optionNameToDelete = this.state.currentNotification.optionName;
+    console.log('ALL NOTIFICATIONS', this.state.allNotifications)
+    var editedNotifications = this.state.allNotifications.filter((item) => {
+      return item.optionName !== this.state.currentNotification.optionName
+    })
+    console.log('edited notifications', editedNotifications)
+    //remove current notification from state
+    this.setState({
+      allNotifications: editedNotifications,
+      currentNotification: {},
+      showNotifications: false
+    })
+    //axios call to db with optionName
+    axios.post('/api/markNotificationAsSeen', {
+      optionName: optionNameToDelete
+    })
+    .then((res) => {
+      console.log('res from marking notif as seen', res.data)
+    })
   }
 
   render() {
@@ -339,22 +409,18 @@ class SectionHome extends React.Component {
               beginEdit={this.beginEdit}
               toggleEdit={this.toggleEdit}
               showEdit={this.state.showEdit}
+              showNotifsCb={this.showNotifsCb}
             />
           ))}
         </Col>
 
-
-
-
-
-
-         { this.state.showData ? (
+        { this.state.showData ? (
           <Col md={10}>
             <OptionHome />
           </Col>
-         ):(
-           null
-         )}
+        ):(
+          null
+        )}
 
          { this.state.compareOptions.length === 2 ? (
            <Compare
@@ -365,9 +431,21 @@ class SectionHome extends React.Component {
            null
          )}
 
+          { this.state.showNotifications && this.state.allNotifications.length > 0 ? (
+              <div onClick={this.dismissNotification} style={notifContainerStyle}>
+                <SnackBar show={true} >
+                  <p> {this.state.currentNotification.message}</p>
+                </SnackBar>
+              </div>
+          ) : ''}
+
       </div>
     );
   }
+}
+
+const notifContainerStyle = {
+  opacity: '0.5'
 }
 
 const mapStateToProps = (state) => ({

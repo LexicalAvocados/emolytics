@@ -86,4 +86,6 @@ router.post('/organizeFramesByEmotion', optionHomeUtilityRoutes.organizeFramesBy
 
 router.post('/calculateCompletionPercentage', optionHomeUtilityRoutes.calculateCompletionPercentage);
 
+router.post('/markNotificationAsSeen', indexRoutes.markNotificationAsSeen)
+
 module.exports = router;
