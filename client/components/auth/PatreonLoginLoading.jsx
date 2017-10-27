@@ -11,6 +11,7 @@ import * as ChangeActions from '../../actions';
 export class PatreonLoginLoading extends React.Component {
   constructor(props) {
     super(props);
+    console.log('props:', props);
   }
 
   componentDidMount() {
@@ -30,13 +31,23 @@ export class PatreonLoginLoading extends React.Component {
   }
 
   render() {
-    let query = window.location.href.slice(window.location.href.indexOf('=') + 1);
-    let isLogin = query === 'login' ? true : false;
-    if (!isLogin) var loginType = query === 'creator' ? 'creator' : 'tester';
+    let url = window.location.href;
+    let mode = url.slice(url.indexOf('=') + 1, url.indexOf('&'));
+    let hasExisting = Boolean(url.slice(url.lastIndexOf('=') + 1));
+    let isLogin = (mode === 'login' ? true : false);
+    if (!isLogin) var loginType = (mode === 'creator' ? 'creator' : 'tester');
+
     return (
       <div className='patreonLoginLoading'>
-        <h2>You have successfully {isLogin ? 'logged in' : 'signed up'} with Patreon.</h2>
-        {isLogin ? null : <h3>Your account type: {loginType === 'creator' ? 'Creator' : 'Tester'}</h3>}
+        <h2>Thank you for {isLogin ? 'logged in' : 'signed up'} with Patreon.</h2>
+
+        {hasExisting ?
+          <h2>We merged your Patreon details with your existing account.</h2>
+        :
+          <h2>We created a new account for you based on your Patreon details.</h2>}
+
+        <h3>Your account type: {loginType === 'creator' ? 'Creator' : 'Tester'}</h3>
+
         <h3>Redirecting...</h3>
       </div>
     )

@@ -11,11 +11,16 @@ const clientSecret = keys.patreon.clientSecret;
 const oauthClient = patreon.oauth(clientId, clientSecret);
 
 exports.handleOAuth = (req, res, mode) => {
-  const oauthGrantCode = url.parse(req.url, true).query.code;
+  let hasExistingAccount;
+  let hasCampaign;
+  let initialPatreonLogin;
+
   let redirectUri;
   if (mode === 'login') redirectUri = 'http://localhost:3000/oauth/patreon/login';
   if (mode === 'creator') redirectUri = 'http://localhost:3000/oauth/patreon/signup/creator';
   if (mode === 'tester') redirectUri = 'http://localhost:3000/oauth/patreon/signup/tester';
+
+  const oauthGrantCode = url.parse(req.url, true).query.code;
 
   oauthClient.getTokens(oauthGrantCode, redirectUri)
     .then(tokensResponse => {
@@ -26,6 +31,7 @@ exports.handleOAuth = (req, res, mode) => {
       console.log('data store received from patreon');
       let patreonAccount = store.graph.user[Object.keys(store.graph.user)[0]];
       let patreonCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
+      hasCampaign = (patreonCampaign ? true : false);
       
       return User.findOne({
         where: {
@@ -34,8 +40,13 @@ exports.handleOAuth = (req, res, mode) => {
       })
         .then(existingAccount => {
           if (existingAccount) {
+            hasExistingAccount = true;
+            if (existingAccount.dataValues.patreonId) {
+              initialPatreonLogin = false;
+            }
             return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount, mode, patreonCampaign);
           } else {
+            hasExistingAccount = false;
             return createNewAccountWithPatreonInfo(patreonAccount, mode, patreonCampaign);
           }
         })
@@ -45,9 +56,14 @@ exports.handleOAuth = (req, res, mode) => {
     })
     .then(user => {
       req.session.username = user.username;
-      let queryString = (mode === 'login' ? 'login' : (mode === 'creator' ? 'creator' : 'tester'));
-      console.log('queryString right before redirect:', queryString);
-      res.redirect(`/loading/patreon?type=${queryString}`);
+      let queryMode = (mode === 'login' ? 'login' : (mode === 'creator' ? 'creator' : 'tester'));
+      console.log('queryMode right before redirect:', queryMode);
+      res.redirect(
+        `/loading/patreon?type=${queryMode}
+                         &existing=${hasExistingAccount}
+                         &campaign=${hasCampaign}
+                         &initial=${initialPatreonLogin}`
+      );
     })
     .catch(err => {
       console.error('Patreon OAuth error:', err);
