@@ -261,11 +261,35 @@ exports.getAllNotificationsForUser = (req, res) => {
       // console.log('user for notifications', user.dataValues.id);
       Notifications.findAll({
         where: {
-          userId: user.dataValues.id
+          userId: user.dataValues.id,
+          seen: false
         }
       })
         .then( (allNotifs) => {
           res.send(JSON.stringify(allNotifs));
         });
     });
+};
+
+exports.markNotificationAsSeen = (req, res) => {
+  var optionName = req.body.optionName;
+  Notifications.findAll({
+    where: {
+      optionName: optionName
+    }
+  })
+  .then((notifsToMark) => {
+    // console.log('notifToMark', notifsToMark)
+    notifsToMark.forEach((notif) => {
+      notif.update({
+        seen: true
+      })
+      .then((updated) => {
+        console.log('updated', updated)
+      })
+    })
+  })
+  .then(() => {
+    res.send('Marked as Seen!')
+  })
 };

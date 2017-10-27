@@ -10,6 +10,7 @@ import AddCredits from './AddCredits.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
+import BellIcon from 'react-bell-icon';
 
 class OptionListEntry extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class OptionListEntry extends React.Component {
     this.updateTotal = this.updateTotal.bind(this);
     this.updatePerView = this.updatePerView.bind(this);
     this.submitCredits = this.submitCredits.bind(this);
+    this.showNotifications = this.showNotifications.bind(this);
   }
 
   componentDidMount() {
@@ -93,16 +95,53 @@ class OptionListEntry extends React.Component {
     })
   }
 
+  showNotifications(option) {
+    // console.log('Notifications to display', notifsArray)
+    this.props.showNotifsCb(option)
+  }
+
   render() {
+    const containerStyle = {
+      display: 'grid',
+      gridTemplateColumns: '13vh 4vh',
+      gridTemplateRows: '100%'
+    };
+
+    const details =  {
+      gridColumn: '1',
+      gridRow: '1'
+    }
+
+    const notifs =  {
+      gridColumn: '2',
+      gridRow: '1',
+      float: 'right'
+    }
+
+    //optionListEntry is grid with 2 columns (80/20)
+      // 1st div in column 1 (img, details)
+      // 2nd div in column 2 (jut BellIcon)
+
     return (
       <div>
         { this.props.option !== 'End'  ? (
           <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
-            <div className="optionListEntry">
-              <img className="optionListThumbnail" src={this.props.option.thumbnail} alt=""/>
-              <p className="closerText">{this.props.option.name}</p>
-              <p className="closerText">{this.props.option.description}</p>
-              <p>#notifications: {this.props.notifications.length}</p>
+            <div className="optionListEntry" style={containerStyle}>
+
+              <div style={notifs}>
+              { this.props.notifications.length > 0 ? (
+                <div onClick={() => {this.showNotifications(this.props.option)}}>
+                  <BellIcon height='20' width='20' />
+                  <a>{this.props.notifications[0].count || 0}</a>
+                </div>
+              ) : ''}
+              </div>
+
+              <div style={details}>
+                <img className="optionListThumbnail" src={this.props.option.thumbnail} alt=""/>
+                <p className="closerText">{this.props.option.name}</p>
+                <p className="closerText">{this.props.option.description}</p>
+              </div>
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
