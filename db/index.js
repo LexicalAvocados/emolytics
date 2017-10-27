@@ -231,6 +231,7 @@ const Notification = sequelize.define('notifications', {
 
 Notification.belongsTo(User);
 Notification.belongsTo(Option);
+Notification.belongsTo(Section);
 Notification.belongsTo(Project);
 
 Notification.sync({force: false});

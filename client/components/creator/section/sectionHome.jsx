@@ -49,6 +49,7 @@ class SectionHome extends React.Component {
     this.clearOnNewSection = this.clearOnNewSection.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
+    this.getNotificationsForOption = this.getNotificationsForOption.bind(this);
   }
 
   componentWillMount() {
@@ -234,6 +235,14 @@ class SectionHome extends React.Component {
     }
   }
 
+  getNotificationsForOption(option) {
+    var idForOption = option.id;
+    var notifsForOption = this.props.notifications.allUserNotifs.filter((item) => {
+      return item.optionId === idForOption
+    })
+    return notifsForOption;
+  }
+
   render() {
     return (
       <div className="sectionHomeContainer">
@@ -281,6 +290,7 @@ class SectionHome extends React.Component {
           { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
             <OptionListEntry
               option={option}
+              notifications={this.getNotificationsForOption(option)}
               key={i}
               index={i}
               onOptionClick={this.onOptionClick}
@@ -350,7 +360,8 @@ const mapStateToProps = (state) => ({
   currentFocusGroup: state.currentFocusGroup,
   router: state.router,
   currentProject: state.currentProject,
-  currentSection: state.currentSection
+  currentSection: state.currentSection,
+  notifications: state.notifications
 });
 
 const mapDispatchToProps = (dispatch) => ({
