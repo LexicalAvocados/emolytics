@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
 import BellIcon from 'react-bell-icon';
