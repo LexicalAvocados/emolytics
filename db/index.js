@@ -128,7 +128,7 @@ const OptionAndAnnotation = sequelize.define('optionAndAnnotation', {
   emotion: Sequelize.TEXT,
   desc: Sequelize.TEXT,
   deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
-})
+});
 
 OptionAndAnnotation.belongsTo(Option);
 
@@ -144,7 +144,7 @@ const TesterAndOption = sequelize.define('testerAndOption', {
   finished: Sequelize.BOOLEAN,
   comment: Sequelize.TEXT,
   deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
-})
+});
 
 Option.belongsToMany(User, {through: 'testerAndOption'});
 User.belongsToMany(Option, {through: 'testerAndOption'});
@@ -225,7 +225,7 @@ const Notification = sequelize.define('notifications', {
   seen: {type: Sequelize.BOOLEAN, defaultValue: false},
   sourceUsername: Sequelize.TEXT,
   optionName: Sequelize.STRING
-})
+});
 
 //'sourceUsername' is person who caused the notification (eg. tester (target) watched creators video)
 
@@ -243,7 +243,7 @@ Notification.sync({force: false});
 const Transaction = sequelize.define('transactions', {
   paid: {type: Sequelize.BOOLEAN, defaultValue: false},
   amount: Sequelize.INTEGER
-})
+});
 
 Transaction.belongsTo(User, {as: 'creator'});
 Transaction.belongsTo(User, {as: 'tester'});

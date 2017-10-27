@@ -32,7 +32,7 @@ class FocusGroupsList extends React.Component {
           </ToggleButtonGroup>
         </ButtonToolbar>
       </div>
-    )
+    );
   }
 }
 

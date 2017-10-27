@@ -12,7 +12,7 @@ const updateUserRoleRoutes = require('./auth/updateAfterFbSignup');
 const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRoutes.js');
 const creditRoutes = require('./api/tester/creditRoutes.js');
 const eyeTrackingRoutes = require('./api/creator/eyeTrackingRoutes.js');
-const optionHomeUtilityRoutes = require('./api/creator/optionHomeUtilityRoutes.js')
+const optionHomeUtilityRoutes = require('./api/creator/optionHomeUtilityRoutes.js');
 
 router.use('/tester', testerRoutes);
 
@@ -60,7 +60,7 @@ router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
 
 router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange);
 
-router.get('/creator/getEyeTrackingForOption', eyeTrackingRoutes.getEyeTrackingForOption)
+router.get('/creator/getEyeTrackingForOption', eyeTrackingRoutes.getEyeTrackingForOption);
 
 router.get('/getFeedback', optionRoutes.getFeedback);
 

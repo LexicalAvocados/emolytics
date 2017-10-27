@@ -30,7 +30,7 @@ const axios = require('axios');
 // })
 
 router.post('/addEyeTracking', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   let prediction = req.body.prediction;
 
   User.findAll({
@@ -49,7 +49,7 @@ router.post('/addEyeTracking', (req, res) => {
               })
                 .then(entry => {
                   res.send(entry);
-                })
+                });
             } else {
               EyeTracking.create({
                 time: req.body.time,
@@ -60,20 +60,20 @@ router.post('/addEyeTracking', (req, res) => {
               })
                 .then(entry => {
                   res.send(entry);
-                })
+                });
             }
-          })
+          });
       }
-    })
-})
+    });
+});
 
 router.post('/getOptionsForTester', (req, res) => {
-  console.log('getOptionsForTester req.body:', req.body);
+  // console.log('getOptionsForTester req.body:', req.body);
   let id = req.body.id;
 
   // for a tester's Queue, we want table rows where "finished" is NULL (they have not opened a given Option page)
   // for a tester's History, we want table rows where "finished" is NOT NULL (they opened a given Option page)
-  let mode = req.body.mode === 'queue' ? 'NULL' : 'NOT NULL'
+  let mode = req.body.mode === 'queue' ? 'NULL' : 'NOT NULL';
 
   sequelize.query(`SELECT "testerAndOptions"."createdAt" AS "assignedAt", "testerAndOptions"."userId",
                   "options"."id", "options"."name", "options"."description", "options"."youtubeUrl", "options"."thumbnail",
@@ -91,8 +91,7 @@ router.post('/getOptionsForTester', (req, res) => {
 });
 
 router.post('/getOptionResultsForTester', (req, res) => {
-  console.log('getOptionResultsForTester req.body:', req.body);
-
+  // console.log('getOptionResultsForTester req.body:', req.body);
   let frames = Frame.findAll({
     where: {
       userId: req.body.userId,
@@ -119,34 +118,32 @@ router.post('/getOptionResultsForTester', (req, res) => {
 });
 
 router.post('/getVideo', (req, res) => {
-	// console.log('req session', req.session);
+  // console.log('req session', req.session);
   // console.log(req.body);
-  var id = parseInt(req.body.id)
-	Option.findAll({
-		where: {
-			id: id
-		}
-	})
-		.then(data => {
+  var id = parseInt(req.body.id);
+  Option.findAll({
+    where: {
+      id: id
+    }
+  })
+    .then(data => {
       res.send(data);
-    })
-})
+    });
+});
 
 router.post('/sendFrame', (req, res) => {
-  console.log('REQ.SESSION.USERNAME:', req.session.username);
+  // console.log('REQ.SESSION.USERNAME:', req.session.username);
   var emotions = req.body.emotions;
   // console.log('REQ SESSION', req.session)
-  console.log('FRAMES', req.body);
-	User.findAll({
-		where: {
-			username: req.session.username
-		}
-	})
+  // console.log('FRAMES', req.body);
+  User.findAll({
+    where: {
+      username: req.session.username
+    }
+  })
 	  .then(user => {
-
       let userArr = user;
       if (emotions) {
-
         Frame.findOne({where: {optionId: req.body.option.id, userId: userArr[0].dataValues.id, time: req.body.time}})
           .then(frame => {
             if (frame) {
@@ -163,7 +160,7 @@ router.post('/sendFrame', (req, res) => {
               })
                 .then(entry => {
                   res.send(entry);
-                })
+                });
             } else {
               Frame.create({
                 attention : 1,
@@ -181,9 +178,9 @@ router.post('/sendFrame', (req, res) => {
               })
                 .then(entry => {
                   res.send(entry);
-                })
-              }
-            })
+                });
+            }
+          });
       } else {
         Frame.findOne({where: {optionId: req.body.option.id, userId: userArr[0].dataValues.id, time: req.body.time}})
           .then(frame => {
@@ -201,7 +198,7 @@ router.post('/sendFrame', (req, res) => {
               })
                 .then(entry => {
                   res.send(entry);
-                })
+                });
             } else {
               Frame.create({
                 attention : 0,
@@ -219,12 +216,12 @@ router.post('/sendFrame', (req, res) => {
               })
                 .then(entry => {
                   res.send(entry);
-              })
+                });
             }
-                    })
-   }
-})
-        })
+          });
+      }
+    });
+});
 
 router.post('/likeVideo', (req, res) => {
   var creatorId; //for closure access
@@ -243,12 +240,12 @@ router.post('/likeVideo', (req, res) => {
             like: req.body.like,
             comment: req.body.comment
           })
-          .then((data) => {
-            aggregateComments(req.body.option)
-            // console.log(created);
-            res.send('finished');
-          })
-        })
+            .then((data) => {
+              aggregateComments(req.body.option);
+              // console.log(created);
+              res.send('finished');
+            });
+        });
     })
     .then( () => {
       //Notification
@@ -256,7 +253,7 @@ router.post('/likeVideo', (req, res) => {
         projectId: 0,
         projectName: '',
         sectionId: 0
-      }
+      };
 
       Option.findOne({
         attributes: ['sectionId'],
@@ -264,107 +261,106 @@ router.post('/likeVideo', (req, res) => {
           id: req.body.option.id
         }
       })
-      .then( (section) => {
-        closureObj.sectionId = section.dataValues.sectionId;
-        return Section.findOne({
-          attributes: ['projectId'],
-          where: {
-            id: section.dataValues.sectionId
-          }
-        })
-        .then( (project) => {
-          // console.log('PROJECTOOOO', project.dataValues.projectId)
-          closureObj.projectId = project.dataValues.projectId;
-
-          return Project.findOne({
-            attributes: ['userId', 'name'],
+        .then( (section) => {
+          closureObj.sectionId = section.dataValues.sectionId;
+          return Section.findOne({
+            attributes: ['projectId'],
             where: {
-              id: project.dataValues.projectId
+              id: section.dataValues.sectionId
             }
           })
-        })
-        .then( (user) => {
-          // console.log('USEROOOOO SOURCE', user.dataValues.userId);
-          closureObj.projectName = user.dataValues.name;
-          creatorId = user.dataValues.userId;
-          Notifications.create({
-            sourceUsername: req.session.username,
-            optionId: req.body.option.id,
-            optionName: req.body.option.name,
-            userId: user.dataValues.userId,
-            projectId: closureObj.projectId,
-            sectionId: closureObj.sectionId
-          })
-          Transaction.create({
-            optionId: req.body.option.id,
-            creatorId: user.dataValues.userId
-          })
-          .then(() => {
-            var optionPerViewCredit;
-            var testerIdClosure;
+            .then( (project) => {
+              // console.log('PROJECTOOOO', project.dataValues.projectId)
+              closureObj.projectId = project.dataValues.projectId;
 
-            Option.findOne({
-              where: {
-                id: req.body.option.id
-              }
-            })
-            .then((option) => {
-              optionPerViewCredit = option.creditsperview || 0;
-              let remainingCredits = option.totalcredits - option.creditsperview
-              option.update({
-                totalcredits: remainingCredits
-              })
-            })
-
-            .then(()=> {
-              User.findOne({
+              return Project.findOne({
+                attributes: ['userId', 'name'],
                 where: {
-                  username: req.session.username
+                  id: project.dataValues.projectId
                 }
-              })
-              .then((user) => {
-                let newCredits = user.credits + optionPerViewCredit;
-                testerIdClosure = user.id;
-                user.update({
-                  credits:newCredits
-                })
-              })
-              .then(() => {
-                Transaction.findOne({
-                  where: {
-                    optionId: req.body.option.id,
-                    creatorId: creatorId
-                  }
-                })
-                .then((trans) => {
-                  console.log('TRANSACTION FOUND', trans)
-                  trans.update({
-                    testerId: testerIdClosure,
-                    amount: optionPerViewCredit
-                  })
-                  .then(() => {
-                    console.log('CReATORID', creatorId)
-                    User.findOne({
-                      where: {
-                        id: creatorId
-                      }
-                    })
-                    .then((user) => {
-                      console.log('USER FOUND', user)
-                      let remainingCredits = user.dataValues.credits - optionPerViewCredit;
-                      user.update({
-                        credits: remainingCredits
-                      })
-                    })
-                  })
-                })
-              })
+              });
             })
-          })
-        })
-      })
-    })
-})
+            .then( (user) => {
+              // console.log('USEROOOOO SOURCE', user.dataValues.userId);
+              closureObj.projectName = user.dataValues.name;
+              creatorId = user.dataValues.userId;
+              Notifications.create({
+                sourceUsername: req.session.username,
+                optionId: req.body.option.id,
+                optionName: req.body.option.name,
+                userId: user.dataValues.userId,
+                projectId: closureObj.projectId,
+                sectionId: closureObj.sectionId
+              });
+              Transaction.create({
+                optionId: req.body.option.id,
+                creatorId: user.dataValues.userId
+              })
+                .then(() => {
+                  var optionPerViewCredit;
+                  var testerIdClosure;
+
+                  Option.findOne({
+                    where: {
+                      id: req.body.option.id
+                    }
+                  })
+                    .then((option) => {
+                      optionPerViewCredit = option.creditsperview || 0;
+                      let remainingCredits = option.totalcredits - option.creditsperview
+                      option.update({
+                        totalcredits: remainingCredits
+                      });
+                    })
+                    .then(()=> {
+                      User.findOne({
+                        where: {
+                          username: req.session.username
+                        }
+                      })
+                        .then((user) => {
+                          let newCredits = user.credits + optionPerViewCredit;
+                          testerIdClosure = user.id;
+                          user.update({
+                            credits:newCredits
+                          });
+                        })
+                        .then(() => {
+                          Transaction.findOne({
+                            where: {
+                              optionId: req.body.option.id,
+                              creatorId: creatorId
+                            }
+                          })
+                            .then((trans) => {
+                              // console.log('TRANSACTION FOUND', trans);
+                              trans.update({
+                                testerId: testerIdClosure,
+                                amount: optionPerViewCredit
+                              })
+                                .then(() => {
+                                  // console.log('CReATORID', creatorId);
+                                  User.findOne({
+                                    where: {
+                                      id: creatorId
+                                    }
+                                  })
+                                    .then((user) => {
+                                      // console.log('USER FOUND', user);
+                                      let remainingCredits = user.dataValues.credits - optionPerViewCredit;
+                                      user.update({
+                                        credits: remainingCredits
+                                      });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
 
 router.post('/startVideo', (req, res) => {
   // console.log('startVideo', req.body)
@@ -384,35 +380,34 @@ router.post('/startVideo', (req, res) => {
               optionId: req.body.option.id,
               userId: user.dataValues.id,
               finished: false
-            })
+            });
           }
           else {
             data.update({
               finished: false
-            })
+            });
           }
-        })
-        // .then(arr => {
-        //   console.log('arr', arr);
-          // if (created) {
-          //   entry[0].update({
-          //     finished: false,
-          //     like: null
-          //   })
-          // }
-
-        // })
-    })
-})
+        });
+      // .then(arr => {
+      //   console.log('arr', arr);
+      // if (created) {
+      //   entry[0].update({
+      //     finished: false,
+      //     like: null
+      //   })
+      // }
+      // })
+    });
+});
 
 router.get('/getKey', (req, res) => {
   // console.log("GETTTTTTING KEYYYYY")
   sequelize.query("SELECT key FROM keys ORDER BY RANDOM() LIMIT 1", { type: sequelize.QueryTypes.SELECT})
     .then(key => {
     // We don't need spread here, since only the results will be returned for select queries
-    res.send(key);
-  })
-})
+      res.send(key);
+    });
+});
 
 // const Frame = sequelize.define('frame', {
 //   time: Sequelize.INTEGER,
@@ -492,43 +487,43 @@ const aggregateComments = (option, res) => {
         }
       }, '');
       if (string.length < 1350) {
-        return string += string
+        return string += string;
       } else if (string.length > 1350) {
         return string;
       }
     })
     .then((toApiString) => {
       axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
-      .then((summary) => {
-        // console.log('API summary request success', summary);
-        return summary.data
-      })
-      .then((summary) => {
-        SectionComments.findOne({
-          where: {
-            optionId: option.id
-          }
+        .then((summary) => {
+          // console.log('API summary request success', summary);
+          return summary.data;
         })
-          .then((existent) => {
-            if (existent) {
-              existent.update({
-                aggregateComments: toApiString,
-                summary: summary.sm_api_content // Will default to null in failure.
-              })
-            } else {
-              SectionComments.create({
-                optionId: option.id,
-                aggregateComments: toApiString,
-                summary: summary.sm_api_content // Will default to null in failure.
-              })
+        .then((summary) => {
+          SectionComments.findOne({
+            where: {
+              optionId: option.id
             }
           })
+            .then((existent) => {
+              if (existent) {
+                existent.update({
+                  aggregateComments: toApiString,
+                  summary: summary.sm_api_content // Will default to null in failure.
+                });
+              } else {
+                SectionComments.create({
+                  optionId: option.id,
+                  aggregateComments: toApiString,
+                  summary: summary.sm_api_content // Will default to null in failure.
+                });
+              }
+            });
         })
         .catch((err) => {
           // console.log('Error with summary api request', err);
-        })
-      })
-  };
+        });
+    });
+};
 
 
 module.exports = router;

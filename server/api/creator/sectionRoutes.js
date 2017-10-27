@@ -64,15 +64,11 @@ exports.deleteSection = (req, res) => {
         });
         optionRoutes.deleteOption({ query: { toDelete: 'sectionId', id: section.id }}, null);
         if (res !== null) {
-          res.send('Success')
+          res.send('Success');
         }
       });
     })
     .catch((err) => {
       console.log(err);
-    })
-
-
-
-
-}
+    });
+};

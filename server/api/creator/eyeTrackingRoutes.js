@@ -7,7 +7,7 @@ exports.getEyeTrackingForOption = (req, res) => {
       optionId: req.query.optionId
     }
   })
-  .then((data) => {
-    res.send(JSON.stringify(data))
-  })
-}
+    .then((data) => {
+      res.send(JSON.stringify(data));
+    });
+};

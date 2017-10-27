@@ -17,7 +17,7 @@ export class Signup extends React.Component {
       typedPassword: '',
       typedEmail: '',
       isCreator: false
-    }
+    };
     this.updateTypedUsername = this.updateTypedUsername.bind(this);
     this.updateTypedPassword = this.updateTypedPassword.bind(this);
     this.updateTypedEmail = this.updateTypedEmail.bind(this);
@@ -65,13 +65,13 @@ export class Signup extends React.Component {
       this.setState({
         isCreator: true
       }, () => {
-        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator})
+        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator});
       });
     } else {
       this.setState({
         isCreator: false
       }, () => {
-        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator})
+        this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator});
       });
     }
   }
@@ -117,29 +117,29 @@ export class Signup extends React.Component {
           </FormGroup>
         </Form>
         <hr/>
-          <a href='/auth/facebook'>
-            <img className='fblogin' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
-          </a>
-          <p style={center}> Don't forget to select Tester/Creator!</p>
+        <a href='/auth/facebook'>
+          <img className='fblogin' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
+        </a>
+        <p style={center}> Don't forget to select Tester/Creator!</p>
       </div>
-    )
+    );
   }
 }
 
 const center = {
-  textAlign: "center"
-}
+  textAlign: 'center'
+};
 
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
-  console.log('state in signup', state)
+  // console.log('state in signup', state)
   return ({
     example: state.example,
     setLoggedIn: state.setLoggedIn,
     router: state.router
-  })
+  });
 };
 
 const mapDispatchToProps = (dispatch) => ({

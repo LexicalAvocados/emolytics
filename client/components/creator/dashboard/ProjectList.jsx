@@ -41,10 +41,8 @@ class ProjectList extends React.Component {
           return acc;
         }, {});
 
-        console.log('sectionNotifsObj', sectionNotifsObj)
-
+        // console.log('sectionNotifsObj', sectionNotifsObj)
         let sectionArr = sortedSections;
-
         for (var key in sectionNotifsObj) {
           for (let i = 0; i < sectionArr.length; i++) {
             if (+key === sectionArr[i].id) {
@@ -56,8 +54,8 @@ class ProjectList extends React.Component {
         this.setState({
           sections: sectionArr
         }, () => {
-          console.log('sections in state after notifs', this.state.sections)
-          console.log('associated project', this.props.project)
+          console.log('sections in state after notifs', this.state.sections);
+          console.log('associated project', this.props.project);
         });
       })
       .catch((err) => {
@@ -72,34 +70,34 @@ class ProjectList extends React.Component {
 
   render() {
     var time = {
-      float: "right"
-    }
+      float: 'right'
+    };
 
     var data = {
-      float: "left"
-    }
+      float: 'left'
+    };
 
     var del = {
-      float: "right",
-      clear: "right",
+      float: 'right',
+      clear: 'right',
       width: '100%'
-    }
+    };
 
     var edit = {
       width: '100%',
       backgroundColor: 'whitesmoke'
-    }
+    };
 
     const gridBoxForProject = {
-      display: "grid",
-      gridTemplateColumns: "50% 50%",
-      gridTemplateRows: "50% 50%",
-    }
+      display: 'grid',
+      gridTemplateColumns: '50% 50%',
+      gridTemplateRows: '50% 50%',
+    };
 
     const titleDisplayStyle = {
       gridColumn: '1',
       gridRow: '1'
-    }
+    };
 
     const rightSideDisplay = {
       gridColumn: '2',
@@ -107,19 +105,19 @@ class ProjectList extends React.Component {
       display: 'grid',
       gridTemplateColumns: '100%',
       gridTemplateRows: 'repeat(2, 3vh)'
-    }
+    };
 
     const notifDisplayStyle = {
       gridColumn: '1',
       gridRow: '1',
-      textAlign: "right"
-    }
+      textAlign: 'right'
+    };
 
     const timeDisplayStyle = {
       gridColumn: '1',
       gridRow: '2',
-      textAlign: "right"
-    }
+      textAlign: 'right'
+    };
 
     return (
       <div>
@@ -136,27 +134,19 @@ class ProjectList extends React.Component {
                     <a>  {this.props.notifs}</a>
                   </div>
                 ) : '' }
-                </div>
+              </div>
 
-                <div style={timeDisplayStyle}>
-                  <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
-                </div>
-
+              <div style={timeDisplayStyle}>
+                <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
+              </div>
             </div>
-
-
             <div onClick={this.onClickCallback}>
-
               <div style={titleDisplayStyle}>
                 <h4>{this.props.project.name}</h4>
                 <p>{this.props.project.description}</p>
               </div>
-
             </div>
-
           </div>
-
-
           <div style={del}>
             <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
             <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
