@@ -8,6 +8,7 @@ const db = require('./db');
 const auth = require('./server/auth');
 const patreon = require('./server/auth/patreon');
 const cron = require('./server/crontab.js')
+const secret = require('./key.js').sessions.secret;
 
 const passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy;
@@ -84,7 +85,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cookieParser());
 
 app.use(session({
-  secret: 'machine learning',
+  secret,
   cookie: {
     maxAge: 60 * 60 * 24 * 1000,
     saveUninitialized: true,
@@ -114,11 +115,11 @@ app.get('/auth/facebook/callback',
 
 app.get('/userdata', (req, res) => {
   res.send(JSON.stringify(req.session));
-})
+});
 
 app.get('*', (req, res) => {
 	res.sendFile(__dirname + '/client/index.html');
-})
+});
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

@@ -18,21 +18,71 @@ exports.handleOAuthRedirect = (req, res) => {
       return patreonAPIClient('/current_user/campaigns');
     })
     .then(({store}) => {
-      let patreonUser = store.graph.user[Object.keys(store.graph.user)[0]];
-      let patreonUserCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
-      console.log('patreonUser:', patreonUser);
-      console.log('patreonUserCampaign:', patreonUserCampaign);
+      let patreonAccount = store.graph.user[Object.keys(store.graph.user)[0]];
+      let patreonAccountCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
       
-      // User.findOne({
-      //   where: {
-      //     email: patreonAccount.user.email
-      //   }
-      // })
+      return User.findOne({
+        where: {
+          email: patreonAccount.email
+        }
+      })
+        .then(existingAccount => {
+          if (existingAccount) {
+            return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount);
+          } else {
+            return createNewAccountWithPatreonInfo(patreonAccount);
+          }
+        })
+        .catch(err => {
+          console.log('Error querying User table with Patreon email:', err);
+        });
+    })
+    .then(user => {
+      req.session.username = user.username;
+      res.redirect('/login/patreon');
+      res.send({
+        loggedIn: true,
+        userData: user
+      })
     })
     .catch(err => {
       console.error('Patreon OAuth error:', err);
       res.send(err);
     });
+};
+
+const mergePatreonInfoWithExistingUser = (existingAccount, patreonAccount) => {
+  return existingAccount.update(
+    {
+      patreonId: patreonAccount.id,
+      patreonAbout: patreonAccount.about,
+      patreonCreatedAt: patreonAccount.created_at,
+      patreonEmail: patreonAccount.email,
+      patreonImageUrl: patreonAccount.image_url,
+      patreonUrl: patreonAccount.url,
+      patreonVanity: patreonAccount.vanity
+    },
+    {
+      returning: true
+    }
+  );
+};
+
+const createNewAccountWithPatreonInfo = (patreonAccount) => {
+  return User.create({
+    username: patreonAccount.vanity,
+    email: patreonAccount.email,
+    name: patreonAccount.full_name,
+    isCreator: true,
+    lastLoggedIn: new Date(),
+    patreonId: patreonAccount.id,
+    patreonAbout: patreonAccount.about,
+    patreonCreatedAt: patreonAccount.created_at,
+    patreonEmail: patreonAccount.email,
+    patreonImageUrl: patreonAccount.image_url,
+    patreonUrl: patreonAccount.url,
+    patreonVanity: patreonAccount.vanity
+  });
 };
 
 // PATREON API '/current_user/campaigns/'' RESPONSE DATA EXAMPLE
