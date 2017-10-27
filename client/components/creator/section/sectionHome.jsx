@@ -26,13 +26,15 @@ class SectionHome extends React.Component {
       haveInvited: false,
       invitedUserIds: [],
       testersForOptions:[],
+      idOfClickedOnOption: null,
       testers: [],
       testersCopy: [],
       optionData: [],
       compare: false,
       showData: false,
       compareOptions: [],
-      fromSectionHome: true
+      fromSectionHome: true,
+      showEdit: false
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -45,6 +47,8 @@ class SectionHome extends React.Component {
     this.getOptionsData = this.getOptionsData.bind(this);
     this.compare = this.compare.bind(this);
     this.clearOnNewSection = this.clearOnNewSection.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.beginEdit = this.beginEdit.bind(this);
   }
 
   componentWillMount() {
@@ -143,22 +147,39 @@ class SectionHome extends React.Component {
     });
   }
 
-  deleteOption(id) {
+  deleteOption() {
     if (confirm('Are you sure you want to delete this option?')) {
-      this.props.currentSection.options = this.props.currentSection.options.filter((option) => {
-        if (option.id !== id) {
+      this.props.currentSection.options = this.props.currentSection.options.filter((option, i) => {
+        if (option.id !== this.state.idOfClickedOnOption) {
           return option;
+        } else {
+          this.props.actions.changeCurrentOption([]); // Set to nothing
+          this.clearOnNewSection();
         }
       });
       this.props.actions.removeOptionFromOptions(this.props.currentSection.options);
-      axios.delete('/api/deleteOption', { params: {optionId: id, toDelete: 'id'} })
+      axios.delete('/api/deleteOption', { params: {toDelete: 'id', id: this.state.idOfClickedOnOption} })
         .then((response) => {
-          console.log(response);
+          this.toggleEdit();
         })
         .catch((error) => {
           console.log('Error deleting option', error);
         });
     }
+  }
+
+  beginEdit(option) {
+    this.props.actions.changeOption(option);
+    this.setState({
+      showEdit: !this.state.showEdit,
+      idOfClickedOnOption: option.id
+    });
+  }
+
+  toggleEdit() {
+    this.setState({
+      showEdit: !this.state.showEdit
+    });
   }
 
   renderPanel() {
@@ -265,6 +286,9 @@ class SectionHome extends React.Component {
               onOptionClick={this.onOptionClick}
               concatTesters={this.concatTesters}
               deleteOption={this.deleteOption}
+              beginEdit={this.beginEdit}
+              toggleEdit={this.toggleEdit}
+              showEdit={this.state.showEdit}
             />
           ))}
         </Col>

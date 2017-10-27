@@ -86,16 +86,23 @@ exports.updateProject = (req, res) => {
 }
 
 exports.deleteProject = (req, res) => {
-  Projects.destroy({
-    where: {
-      id: req.query.projectId
-    }
-  })
-    .then((data) => {
-      sectionRoutes.deleteSection({ query: { sectionId: null, toDelete: 'projectId'}}, null);
-      return 'Success';
+  console.log('trrrrrryyyyyinnnnggg')
+  Projects.findById(req.query.projectId)
+    .then((entry) => {
+      entry.update({
+        deleted: true
+      })
+        .then((updatedEntry) => {
+          sectionRoutes.deleteSection({ query: { toDelete: 'projectId', id: req.query.projectId}}, null);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     })
-    .then((deleted) => { 
-      res.send(deleted);
-    });
+    .catch((err) => {
+      console.log('Project not found', err)
+      res.send(err);
+    })
+      
+
 };

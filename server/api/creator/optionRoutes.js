@@ -116,48 +116,49 @@ exports.getFeedback = (req, res) => {
 
 
 exports.deleteOption = (req, res) => {
-    // Delete from options table
-    if (req.query.optionId !== null) {
-      var optionId = req.query.optionId // For when options are being deleted individually
-    } else {
-      var optionId = null; // For when section is being deleted
+  // Delete from options table
+  Options.findAll({
+    where: {
+      [req.query.toDelete]: req.query.id
     }
-    Options.destroy({
+  })
+    .then((options) => { 
+      var tables = ['TesterAndOption', 'Frame', 'SectionComments', 'OptionAndAnnotation'];
+      options.forEach((option) => {
+        option.update({
+          deleted: true
+        });
+        clearDataAssociatedWithOption(tables, option.id);
+      });
+
+    })
+    .catch((err) => {
+      console.log('Option not found', err)
+      res.send(err);
+    });
+
+
+
+};
+
+const clearDataAssociatedWithOption = (tableArray, optionId) => { 
+  tableArray.forEach((table) => {
+    table = db[table];
+    table.findAll({
       where: {
-        [req.query.toDelete]: optionId
+        optionId: optionId
       }
     })
-    .then((data) => { 
-      Likes.destroy({ 
-        where: {
-          optionId: optionId
-        }
+      .then((allEntries) => {
+        allEntries.forEach((entry) => {
+          entry.update({
+            deleted: true
+          });
+        });
       })
-    })
-      .then((data) => { 
-        Frames.destroy({ 
-          where: {
-            optionId: optionId
-          }
-        })
-      })
-        .then((data) => { 
-          SectionComments.destroy({ 
-            where: {
-              optionId: optionId
-            }
-          })
-        })
-        .then((data) => { 
-          OptionAndAnnotations.destroy({ 
-            where: {
-              optionId: optionId
-            }
-          })
-        })
-        .then((finished) => {
-          if (res !== null) {
-            res.send('Finished');
-          }
-        })
-}
+      .catch((err) => {
+        console.log('Likes not found', err);
+      });
+  });
+
+};

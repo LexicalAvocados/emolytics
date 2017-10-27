@@ -50,24 +50,28 @@ exports.addSection = function(req, res) {
 };
 
 exports.deleteSection = (req, res) => { 
-  
-  if (req.query.sectionId !== null) {
-    var sectionId = req.query.sectionId;
-  } else {
-    var sectionId = null
-  }
-  Sections.destroy({
+  Sections.findAll({
     where: {
-      [req.query.toDelete]: sectionId
+      [req.query.toDelete]: req.query.id
     }
-  }) // Will set the sectionId to null in options
-  .then((data) => { // Have to check to see if there are any first
-      // console.log('ALL Options', allOptions);
-      optionRoutes.deleteOption({ query: { optionId: null, toDelete: 'sectionId'}}, null);
+  }) 
+    .then((sectionEntries) => {
+      // may have to check if there are any
+      sectionEntries.forEach((section) => {
+        section.update({
+          deleted: true
+        });
+        optionRoutes.deleteOption({ query: { toDelete: 'sectionId', id: section.id }}, null);
+      });
     })
-    .then((finished) => {
+    .catch((err) => {
+      console.log(err);
       if (res !== null) {
-        res.send('Finished deleting')
+        res.send(err);
       }
     })
+
+
+
+
 }
