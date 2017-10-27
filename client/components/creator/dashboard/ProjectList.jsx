@@ -4,7 +4,6 @@ import { Button, Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import EditPage from '../create/EditPage.jsx';
 import BellIcon from 'react-bell-icon';
-import ProjectPopover from './ProjectPopover.jsx';
 
 class ProjectList extends React.Component {
   constructor(props) {
@@ -19,13 +18,11 @@ class ProjectList extends React.Component {
   }
 
   componentDidMount() {
-    // window.scrollTo(0, 0);
     this.getRelatedSections();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.refreshSections) {
-      console.log('Seciont to be refreshed')
       this.getRelatedSections();
     }
   }
@@ -34,7 +31,6 @@ class ProjectList extends React.Component {
     axios.get('/api/getRelatedSections', { params: {projectId: this.props.project.id}})
       .then((sections) => {
         // console.log('Request to get relevant sections sent to server', res);
-        console.log('data from sectiondafoiasdfasdf', sections.data)
         if (sections.data.id === 0) { // Filter for demo section
           this.setState({
             sections: sections.data
@@ -136,8 +132,6 @@ class ProjectList extends React.Component {
 
     return (
       <div>
-        
-        {/* HERE */}
         <OverlayTrigger placement="right" overlay={this.props.popover}>
           <div className='projectsContainer'>
             <div style={gridBoxForProject}>
@@ -152,7 +146,6 @@ class ProjectList extends React.Component {
                     </div>
                   ) : '' }
                 </div>
-
                 <div style={timeDisplayStyle}>
                   <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
                 </div>
@@ -170,7 +163,6 @@ class ProjectList extends React.Component {
             </div>
           </div>
         </OverlayTrigger>
-        {/* HERE */}
         <Modal bsSize="large" show={this.props.displayEdit} onHide={this.props.toggleEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Your Project</Modal.Title>

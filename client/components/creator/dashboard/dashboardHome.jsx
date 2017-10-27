@@ -60,7 +60,6 @@ export class DashboardHome extends React.Component {
             projects: response.data[0],
             retrieved: true
           });
-          console.log('THIS SHOULD BE THE PROJECT', this.state.projects);
         }
       })
       .catch((err) => {
@@ -174,14 +173,14 @@ export class DashboardHome extends React.Component {
       <div className="dashboardHomeContainer">
         <div className="dashboardHeader">
           <h2 style={inherit}>Projects</h2>
-        {this.state.retrieved ? (
-           this.state.projects.id === 0 ? (
-            <p style={secondLine}> -- Welcome to ReactionSync. Below you will find a dummy project, hover over it to learn more.</p> 
-          ): (
-            null)
-        ): (
-          null
-        )}
+          {this.state.retrieved ? (
+            this.state.projects.id === 0 ? (
+              <p style={secondLine}> -- Welcome to ReactionSync. Below you will find a dummy project, hover over it to learn more.</p> 
+            ) : (
+              null)
+          ) : (
+            null
+          )}
           <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
           <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
             <Modal.Header closeButton>
@@ -229,23 +228,23 @@ export class DashboardHome extends React.Component {
             </div>
           ) : (
             <div>
-                <Row className="show-grid">
-                    <Col className="projectListContainer" md={4}>
-                      <ProjectList
-                        onProjectClick={this.onProjectClick}
-                        deleteProject={this.deleteProject}
-                        getProjectsFromDatabase={this.getProjectsFromDatabase}
-                        project={this.state.projects}
-                        beginEdit={this.beginEdit}
-                        toggleEdit={this.toggleEdit}
-                        displayEdit={this.state.displayEdit}
-                        refreshSections={this.state.refreshSections}
-                        notifs={this.calculateNotifsForProject(this.state.projects)}
-                        allNotifications={this.props.notifications}
-                        popover={this.projectPopover()}
-                      />
-                    </Col>
-                </Row>
+              <Row className="show-grid">
+                <Col className="projectListContainer" md={4}>
+                  <ProjectList
+                    onProjectClick={this.onProjectClick}
+                    deleteProject={this.deleteProject}
+                    getProjectsFromDatabase={this.getProjectsFromDatabase}
+                    project={this.state.projects}
+                    beginEdit={this.beginEdit}
+                    toggleEdit={this.toggleEdit}
+                    displayEdit={this.state.displayEdit}
+                    refreshSections={this.state.refreshSections}
+                    notifs={this.calculateNotifsForProject(this.state.projects)}
+                    allNotifications={this.props.notifications}
+                    popover={this.projectPopover()}
+                  />
+                </Col>
+              </Row>
             </div>
           )
         ) : (
