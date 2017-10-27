@@ -102,6 +102,7 @@ class OptionListEntry extends React.Component {
               <img className="optionListThumbnail" src={this.props.option.thumbnail} alt=""/>
               <p className="closerText">{this.props.option.name}</p>
               <p className="closerText">{this.props.option.description}</p>
+              <p>#notifications: {this.props.notifications.length}</p>
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
@@ -137,7 +138,7 @@ class OptionListEntry extends React.Component {
               close={this.props.toggleEdit}
               toEdit={'Option'}
             />
-            <AddCredits 
+            <AddCredits
               notEnoughCredits={this.state.notEnoughCredits}
               submitCredits={this.submitCredits}
               updateTotal={this.updateTotal}

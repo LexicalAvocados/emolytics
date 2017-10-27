@@ -28,6 +28,7 @@ export const CHANGE_LINE_GRAPH_DATA = 'CHANGE_LINE_GRAPH_DATA';
 export const ADD_FEEDBACK_TO_OPTION = 'ADD_FEEDBACK_TO_OPTION';
 export const REMOVE_OPTION_FROM_OPTIONS = 'REMOVE_OPTION_FROM_OPTIONS';
 export const REMOVE_SECTION_FROM_SECTIONS = 'REMOVE_SECTION_FROM_SECTIONS';
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
 
 export const changeExample = (text) => ({
 	type: CHANGE_EXAMPLE,
@@ -188,4 +189,9 @@ export const changeLineGraphData = (obj) => ({
 export const addFeedbackToOption = (feedbackString) => ({
   type: ADD_FEEDBACK_TO_OPTION,
   feedbackString
+})
+
+export const setNotifications = (notifs) => ({
+	type: SET_NOTIFICATIONS,
+	notifs
 })

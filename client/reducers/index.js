@@ -13,6 +13,7 @@ import currentOptionAnnotations from './currentOptionAnnotations';
 import currentOption from './currentOption';
 import annotations from './annotations';
 import lineGraphData from './lineGraphData';
+import notifications from './setNotifications';
 
 const rootReducer = combineReducers({
   loggedInUser,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   currentOption,
   annotations,
   lineGraphData,
+  notifications,
   router: routerReducer
 });
 
