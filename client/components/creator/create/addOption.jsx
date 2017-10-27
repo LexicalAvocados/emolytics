@@ -75,7 +75,7 @@ class AddOption extends React.Component {
   submitOptionClick(e) {
     e.preventDefault();
     this.retrieveYouTubeData((youTubeData) => {
-      console.log(youTubeData);
+      // console.log(youTubeData);
       axios.post('/api/addOption', {
         name: this.state.name,
         description: this.state.description,

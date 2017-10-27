@@ -29,7 +29,7 @@ exports.sendEmails = function(req, res) {
       userId: invitedArr[i].id
     });
     let mailOptions = {
-      from: "ReactionSync",
+      from: 'ReactionSync',
       to: invitedArr[i].email,
       subject: "You've been invited!",
       text: "Guten Tag! You've been invited to something (if you've received this email)",
@@ -62,11 +62,11 @@ exports.createNewFocusGroup = (req, res) => {
       });
     })
     .then(newFocusGroup => {
-      console.log('New Focus Group created:', newFocusGroup);
+      // console.log('New Focus Group created:', newFocusGroup);
       res.send(newFocusGroup.dataValues);
     })
     .catch(err => {
-      console.log('Error creating new Focus Group');
+      // console.log('Error creating new Focus Group');
       res.send(err);
     });
 };
@@ -86,7 +86,7 @@ exports.deleteFocusGroup = (req, res) => {
       });
     })
     .then(numOfDeletedRows => {
-      console.log('numOfDeletedRows:', numOfDeletedRows);
+      // console.log('numOfDeletedRows:', numOfDeletedRows);
       if (numOfDeletedRows === 1) res.send(true);
       else res.send(false);
     })
@@ -130,7 +130,7 @@ exports.addTesterToFocusGroup = (req, res) => {
 
 
 exports.removeTesterFromFocusGroup = (req, res) => {
-  console.log('removeTesterFromFocusGroup req.body:', req.body);
+  // console.log('removeTesterFromFocusGroup req.body:', req.body);
 
   let tester = User.findOne({
     where: {
@@ -204,8 +204,8 @@ exports.getCreatorFocusGroups = (req, res) => {
     })
     .then(groupsAndTesters => {
       // console.log('3rd then block');
-      console.log('groupsAndTesters:', groupsAndTesters.map(x => x.map(y => y.dataValues)));
-      console.log('creatorFocusGroups:', creatorFocusGroups);
+      // console.log('groupsAndTesters:', groupsAndTesters.map(x => x.map(y => y.dataValues)));
+      // console.log('creatorFocusGroups:', creatorFocusGroups);
 
       groupsAndTesters.forEach(group => {
         group.forEach(dbEntry => {
@@ -229,8 +229,8 @@ exports.getCreatorFocusGroups = (req, res) => {
     })
     .then(userDBEntries => {
       // console.log('4th then block');
-      console.log('creatorFocusGroups:', creatorFocusGroups);
-      console.log('userDBEntries:', userDBEntries.map(x => x.map(y => y.dataValues)));
+      // console.log('creatorFocusGroups:', creatorFocusGroups);
+      // console.log('userDBEntries:', userDBEntries.map(x => x.map(y => y.dataValues)));
       userDBEntries.forEach(group => {
         group.forEach(dbEntry => {
           for (var i = 0; i < creatorFocusGroups.length; i++) {

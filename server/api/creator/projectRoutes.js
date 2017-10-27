@@ -55,11 +55,11 @@ exports.createProject = function(req, res) {
         .catch((err) => {
           console.error('Error creating new project', err);
         });
-        })
-        .catch((err) => {
-          console.error('Error finding existing project with identical name in db', err);
-        });
-    };
+    })
+    .catch((err) => {
+      console.error('Error finding existing project with identical name in db', err);
+    });
+};
 
 //{ id: '135', name: 'cooooll', description: 'ooooo' }
 exports.updateProject = (req, res) => {
@@ -84,7 +84,7 @@ exports.updateProject = (req, res) => {
       console.log(err);
       res.send(err);
     });
-}
+};
 
 exports.deleteProject = (req, res) => {
   Projects.findById(req.query.id)
@@ -101,9 +101,9 @@ exports.deleteProject = (req, res) => {
         })
     })
     .catch((err) => {
-      console.log('Project not found', err)
+      console.log('Project not found', err);
       res.send(err);
-    })
+    });
       
 
 };

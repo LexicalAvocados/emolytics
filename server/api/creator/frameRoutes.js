@@ -12,5 +12,5 @@ exports.getRelevantFrames = (req, res) => {
     })
     .catch((err) => {
       res.send('Error retrieving options!');
-    })
+    });
 };

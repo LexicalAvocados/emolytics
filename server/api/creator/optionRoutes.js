@@ -22,44 +22,44 @@ exports.getRelatedOptions = (req, res) => {
 };
 
 exports.getLikesOnOption = (req, res) => {
-    Likes.findAll({
-      where: {
-        optionId: req.body.optionId
-      }
-    })
+  Likes.findAll({
+    where: {
+      optionId: req.body.optionId
+    }
+  })
     .then((likes) => {
       // console.log('All likes', likes)
-      res.send(likes)
+      res.send(likes);
     })
     .catch((err) => {
-      res.send('Error retrieving Like on this option/user combo!')
-    })
+      res.send('Error retrieving Like on this option/user combo!');
+    });
 };
 
 exports.getUsersIdsWhoWatced = (req, res) => {
-   Likes.findAll({
+  Likes.findAll({
     attributes: ['userId'],
     where: {
       optionId: req.body.optionId
     }
   })
-  .then( (usersIdsArr) => {
+    .then( (usersIdsArr) => {
       res.send(JSON.stringify(usersIdsArr));
     })
-  .catch((err) => console.error('err in getting userids', err))
+    .catch((err) => console.error('err in getting userids', err));
 };
 
 exports.getUsersNamesWhoWatced = (req, res) => {
-   Users.findAll({
+  Users.findAll({
     where: {
       id: req.body.userId
     }
   })
-  .then( (userObj) => {
-    res.send(JSON.stringify(userObj));
-  })
-  .catch((err) => console.error('err in getting usernames', err))
-}
+    .then( (userObj) => {
+      res.send(JSON.stringify(userObj));
+    })
+    .catch((err) => console.error('err in getting usernames', err));
+};
 
 // I've sent all the options associated with that section
 
@@ -72,7 +72,7 @@ exports.getTestersForOption = (req, res) => {
     .then((options) => {
       let userIds = options.map((option) => {
         return option.userId;
-      })
+      });
       res.send(userIds);
     })
     .catch((err) => {
@@ -106,14 +106,14 @@ exports.getFeedback = (req, res) => {
       optionId: req.query.optionId
     }
   })
-  .then((entry) => {
-    if (entry) {
-      res.send(entry.summary);
-    } else {
-      res.send('Sorry')
-    }
-  })
-}
+    .then((entry) => {
+      if (entry) {
+        res.send(entry.summary);
+      } else {
+        res.send('Sorry');
+      }
+    });
+};
 
 
 exports.deleteOption = (req, res) => {
@@ -136,7 +136,7 @@ exports.deleteOption = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log('Option not found', err)
+      console.log('Option not found', err);
       res.send(err);
     });
 

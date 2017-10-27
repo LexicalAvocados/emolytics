@@ -4,9 +4,9 @@ const TryerFrame = db.TryerFrame;
 
 exports.createTryer = (req, res) => {
   Tryer.create({})
-  .then( (tryer) => {
-    res.send(JSON.stringify(tryer));
-  })
+    .then( (tryer) => {
+      res.send(JSON.stringify(tryer));
+    });
 };
 
 // exports.sendTryerFrame = (req, res) => {

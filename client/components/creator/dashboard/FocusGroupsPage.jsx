@@ -16,7 +16,7 @@ class FocusGroupsPage extends React.Component {
     this.state = {
       typedFocusGroupName: '',
       typedTesterUsername: ''
-    }
+    };
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
     this.createNewFocusGroup = this.createNewFocusGroup.bind(this);
@@ -30,7 +30,7 @@ class FocusGroupsPage extends React.Component {
   }
 
   updateTypedFocusGroupName(e) {
-    this.setState({typedFocusGroupName: e.target.value})
+    this.setState({typedFocusGroupName: e.target.value});
   }
 
   createNewFocusGroup(e) {
@@ -42,7 +42,7 @@ class FocusGroupsPage extends React.Component {
       .then(res => {
         this.props.actions.addFocusGroup(res.data.name);
         this.setState({typedFocusGroupName: ''});
-      })
+      });
   }
 
   deleteFocusGroup() {
@@ -111,7 +111,7 @@ class FocusGroupsPage extends React.Component {
 
         {focusGroups.length > 0 ?
           <FocusGroupsList />
-        :
+          :
           null}
 
         {currentFocusGroup ?
@@ -147,15 +147,15 @@ class FocusGroupsPage extends React.Component {
                   > {tester} </li>
                 ))}
               </ul>
-            :
+              :
               'none'}
 
           </div>
-        :
-            null}
+          :
+          null}
 
       </div>
-    )
+    );
   }
 }
 

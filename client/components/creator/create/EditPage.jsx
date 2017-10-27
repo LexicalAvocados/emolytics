@@ -11,7 +11,7 @@ class EditPage extends React.Component {
     this.state ={
       name: '',
       description: ''
-    }
+    };
     this.handleChange = this.handleChange.bind(this);
     this.submitEdit = this.submitEdit.bind(this);
   }
@@ -49,7 +49,7 @@ class EditPage extends React.Component {
               return option;
             }
             return response.data;
-          })
+          });
           this.props.actions.addOptionsToCurrentSection(newOptions);
         }
         this.props.close();
@@ -63,7 +63,7 @@ class EditPage extends React.Component {
   render() {
     var width = {
       width: '30%'
-    }
+    };
     return (
       <div className="EditProject">
         <form onSubmit={this.submitEdit}>

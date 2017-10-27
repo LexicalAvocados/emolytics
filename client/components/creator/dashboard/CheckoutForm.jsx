@@ -16,7 +16,7 @@ class CheckoutForm extends React.Component {
     this.state = {
       submitButtonDisabled: true,
       submitButtonClass: 'ccSubmitDeactivated'
-    }
+    };
     this.createStripeToken = this.createStripeToken.bind(this);
     this.toggleSubmitButton = this.toggleSubmitButton.bind(this);
   }
@@ -57,7 +57,7 @@ class CheckoutForm extends React.Component {
                     fontSize: '20px',
 
                     '::placeholder': {
-                        color: '#CFD7E0'
+                      color: '#CFD7E0'
                     }
                   }
                 }}
@@ -71,9 +71,9 @@ class CheckoutForm extends React.Component {
           </Form>
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   loggedInUser: state.loggedInUser,
