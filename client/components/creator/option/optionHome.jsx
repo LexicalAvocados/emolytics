@@ -6,9 +6,10 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 import pad from 'array-pad';
-import {ButtonToolbar, ToggleButtonGroup, ToggleButton}  from 'react-bootstrap';
+import {ButtonToolbar, ToggleButtonGroup, ToggleButton, Col}  from 'react-bootstrap';
 import $ from 'jquery';
 import Slider, { Range } from 'rc-slider';
+import Select from 'react-select';
 
 import SideBar from './SideBar.jsx';
 import Overview from './Subcomponents/Overview.jsx';
@@ -20,6 +21,7 @@ import UserSelect from './Subcomponents/UserSelect.jsx';
 import Annotations from './Subcomponents/Annotation.jsx';
 import DetailedDemographics from './Subcomponents/DetailedDemographics.jsx';
 import HeatMap from './Subcomponents/HeatMap.jsx';
+
 
 class OptionHome extends React.Component {
   constructor(props) {
@@ -44,7 +46,7 @@ class OptionHome extends React.Component {
       player: null,
       heatmapSetting: 1,
       videoTime: 0,
-      playVideoForHM: false
+      playVideoForHM: false,
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
@@ -60,6 +62,7 @@ class OptionHome extends React.Component {
     this.sliderCallback = this.sliderCallback.bind(this);
     this.playVideoButtonCallback = this.playVideoButtonCallback.bind(this);
     this.playVideoButtonIcon = this.playVideoButtonIcon.bind(this);
+    this.selectChange = this.selectChange.bind(this)
     // console.log(this);
   }
 
@@ -233,6 +236,11 @@ class OptionHome extends React.Component {
             })
           },
           columns: lineGraphData,
+        },
+        axis: {
+          y: {
+            show: false
+          }
         }
       });
 
@@ -425,32 +433,74 @@ class OptionHome extends React.Component {
     }, this.playVideoButtonIcon )
   }
 
+  selectChange(e) {
+    e.preventDefault();
+    this.setState({
+      sideNavSelection: e.target.value
+    })
+  }
+
   render() {
+    var selectionStyle = {
+      float: 'right',
+      backgroundColor: 'white'
+    }
+
+    var selectionDiv = {
+      padding: '10px',
+      overflow: 'auto'
+    }
+
+    var hrStyle = {
+      marginTop: '0'
+    }
+
+
     return (
+
       <div className='optionAnalyticsContainer'>
-        <SideBar changeCb={this.changeSideNavSelection} currSelected={this.state.sideNavSelection}/>
+        <div style={selectionDiv}>
+          <select onChange={this.selectChange} style={selectionStyle} >
+            <option value="overview">Overview</option>
+            <option value="attention">Attention</option>
+            <option value="feedback">Feedback</option>
+            <option value="emotions">Emotion</option>
+            <option value="settings">Settings</option>
+            <option value="annotations">Annotations</option>
+            <option value="detailedDemographics">Detailed Demographics</option>
+            <option value="heatmap">Eye Tracking</option>
+          </select>
+        </div>
 
-        { this.state.sideNavSelection !== 'heatmap' ? (
+          { this.state.sideNavSelection !== 'heatmap' ? (
 
-          <div className='nonHeatmapContainer'>
+            <div className='nonHeatmapContainer'>
+            {(this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'attention' || this.state.sideNavSelection === 'annotations')  ? 
+              (
+                <div className='optionHomeTop'>
+                  <Col xs={12}>
+                    <div className="optionHomeContainer">
+                      <div className="optionPlayer">
+                        <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
+                          ref="player"
+                          progressFrequency={1000} onProgress={this.updateProgress}
+                          controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+                          config={{
+                            youtube: {
+                              playerVars: { showinfo: 1}
+                            }
+                          }}/>
+                      </div>
+                      <div className="optionChart">
+                      </div>
+                    </div>
+                  </Col>
+                </div>
+              ): ''
+          }
 
-          <div className='leftSide'>
-          <div className="optionPlayer">
-            <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-              ref="player"
-              progressFrequency={1000} onProgress={this.updateProgress}
-              controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
-              config={{
-                youtube: {
-                  playerVars: { showinfo: 1}
-                }
-              }}/>
-              </div>
-            <div className="optionChart">
-            </div>
-          </div>
 
-          <div className="rightSide">
+          <div className="optionHomeBottom">
             {this.state.sideNavSelection === 'overview' ?
               (<Overview
                 allUsers={this.state.allUsers}

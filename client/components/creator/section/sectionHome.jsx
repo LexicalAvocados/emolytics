@@ -214,6 +214,11 @@ class SectionHome extends React.Component {
   }
 
   render() {
+
+    var middleStyle = {
+      clear: 'both'
+    }
+
     return (
       <div className="sectionHomeContainer">
         <div>
@@ -228,35 +233,68 @@ class SectionHome extends React.Component {
           />
         </div>
 
-        { !this.state.compare ? (
-          <Button onClick={this.compare}> Compare </Button>
-        ): (
-          <p>Choose two options</p>
-        )}
+        <div style={middleStyle}>
+
+          { !this.state.compare ? (
+            <Button onClick={this.compare}> Compare </Button>
+          ): (
+            <p>Choose two options</p>
+          )}
 
 
-        { this.state.haveInvited ? (
-          <p className="closerText">You have previously invited testers to view this option</p>
-        ) : ( null )}
+          { this.state.haveInvited ? (
+            <p className="closerText">You have previously invited testers to view this option</p>
+          ) : ( null )}
 
-        { !this.state.invited ? (
-          !this.state.displayPanel ? (
-            <Button onClick={this.renderPanel}>Invite testers</Button>
+          { !this.state.invited ? (
+            !this.state.displayPanel ? (
+              <Button onClick={this.renderPanel}>Invite testers</Button>
+            ) : (
+              <InvitationPanel
+                options={this.props.currentSection.options}
+                renderInvited={this.renderInvited}
+                invitedUserIds={this.state.invitedUserIds}
+                testers={this.state.testers}
+                testersCopy={this.state.testersCopy}
+                changeTestersCopy={this.changeTestersCopy}
+                renderPanel={this.renderPanel}
+              />
+            )
           ) : (
-            <InvitationPanel
-              options={this.props.currentSection.options}
-              renderInvited={this.renderInvited}
-              invitedUserIds={this.state.invitedUserIds}
-              testers={this.state.testers}
-              testersCopy={this.state.testersCopy}
-              changeTestersCopy={this.changeTestersCopy}
-              renderPanel={this.renderPanel}
-            />
-          )
-        ) : (
-          <p>Testers Invited!</p>
-        )}
-        <Col className="currentSectionOptionsList" md={3}>
+            <p>Testers Invited!</p>
+          )}
+
+          {this.props.focusGroups.length > 0 ?
+            <div>
+              <FocusGroupsList />
+              {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
+                <div>
+                  <h3>{this.props.currentFocusGroup.name} Members</h3>
+                  <div>
+                    <ul>
+                      {this.props.currentFocusGroup.testers.map((tester, i) => (
+                        <li key={i}>{tester}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Button
+                    bsStyle='primary'
+                    onClick={this.assignFocusGroup}
+                  >Assign Group to Section</Button>
+                  {this.state.assigned ?
+                    'Group Assigned!'
+                  :
+                    null}
+                </div>
+              :
+                null}
+            </div>
+          :
+            null}
+
+        </div>
+
+        <Col className="currentSectionOptionsList" md={2}>
           { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
             <OptionListEntry
               option={option}
@@ -269,39 +307,15 @@ class SectionHome extends React.Component {
           ))}
         </Col>
 
-        {this.props.focusGroups.length > 0 ?
-          <div>
-            <FocusGroupsList />
-            {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
-              <div>
-                <h3>{this.props.currentFocusGroup.name} Members</h3>
-                <div>
-                  <ul>
-                    {this.props.currentFocusGroup.testers.map((tester, i) => (
-                      <li key={i}>{tester}</li>
-                    ))}
-                  </ul>
-                </div>
-                <Button
-                  bsStyle='primary'
-                  onClick={this.assignFocusGroup}
-                >Assign Group to Section</Button>
-                {this.state.assigned ?
-                  'Group Assigned!'
-                :
-                  null}
-              </div>
-            :
-              null}
-          </div>
-        :
-          null}
+
 
 
 
 
          { this.state.showData ? (
+          <Col md={10}>
             <OptionHome />
+          </Col>
          ):(
            null
          )}
