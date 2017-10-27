@@ -6,7 +6,9 @@ const Bluebird = require('bluebird');
 const router = require('./server/router');
 const db = require('./db');
 const auth = require('./server/auth');
+const patreon = require('./server/auth/patreon');
 const cron = require('./server/crontab.js')
+const secret = require('./key.js').sessions.secret;
 
 const passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy;
@@ -83,7 +85,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cookieParser());
 
 app.use(session({
-  secret: 'machine learning',
+  secret,
   cookie: {
     maxAge: 60 * 60 * 24 * 1000,
     saveUninitialized: true,
@@ -99,6 +101,8 @@ app.post('/signup', (req, res) => auth.createAccount(req, res));
 app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', (req, res) => auth.logout(req, res));
 app.put('/profile', (req, res) => auth.editProfile(req, res));
+app.get('/oauth/patreon', (req, res) => patreon.handleOAuthRedirect(req, res));
+app.get('/redirect/patreon', (req, res) => patreon.getUserInfoAfterOAuth(req, res));
 
 // app.use(auth.checkUser);
 app.use(passport.initialize());
@@ -111,12 +115,12 @@ app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {successRedirect: '/loading', failureRedirect: '/login' }));
 
 app.get('/userdata', (req, res) => {
-  res.send(JSON.stringify(req.session))
-})
+  res.send(JSON.stringify(req.session));
+});
 
 app.get('*', (req, res) => {
 	res.sendFile(__dirname + '/client/index.html');
-})
+});
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

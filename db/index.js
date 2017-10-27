@@ -42,7 +42,14 @@ const User = sequelize.define('user', {
   games: Sequelize.ARRAY(Sequelize.TEXT),
   location: Sequelize.STRING,
   lastloggedin: Sequelize.DATE,
-  credits: {type: Sequelize.INTEGER, defaultValue: 0}
+  credits: {type: Sequelize.INTEGER, defaultValue: 0},
+  patreonId: Sequelize.INTEGER,
+  patreonAbout: Sequelize.STRING,
+  patreonCreatedAt: Sequelize.DATE,
+  patreonEmail: Sequelize.STRING,
+  patreonImageUrl: Sequelize.STRING,
+  patreonUrl: Sequelize.STRING,
+  patreonVanity: Sequelize.STRING
 });
 
 User.sync({force: false});
@@ -118,9 +125,9 @@ Option.belongsTo(Section);
 
 Option.sync({force: false});
 
-// ~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // Annotation / Option Schema //
-// ~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 const OptionAndAnnotation = sequelize.define('optionAndAnnotation', {
   time: Sequelize.INTEGER,
@@ -203,9 +210,9 @@ EyeTracking.belongsTo(User);
 
 EyeTracking.sync({force: false});
 
-// ~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~ //
 // Section Comments Schema //
-// ~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~ //
 
 const SectionComments = sequelize.define('sectionComments', {
   summary: Sequelize.TEXT,
@@ -217,9 +224,9 @@ SectionComments.belongsTo(Option);
 
 SectionComments.sync({force: false});
 
-// ~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~ //
 // Notifications Schema //
-// ~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~ //
 
 const Notification = sequelize.define('notifications', {
   seen: {type: Sequelize.BOOLEAN, defaultValue: false},
@@ -236,9 +243,9 @@ Notification.belongsTo(Project);
 
 Notification.sync({force: false});
 
-// ~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~ //
 // Transaction Schema //
-// ~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~ //
 
 const Transaction = sequelize.define('transactions', {
   paid: {type: Sequelize.BOOLEAN, defaultValue: false},
@@ -251,7 +258,7 @@ Transaction.belongsTo(Option);
 
 Transaction.sync({force: false});
 
-// Key.create({key: 'cb1e44a3d50c4a5291591ca117880155'})
+
 
 module.exports = {
   sequelize,
