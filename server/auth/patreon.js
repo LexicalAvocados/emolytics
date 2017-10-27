@@ -51,6 +51,23 @@ exports.handleOAuthRedirect = (req, res) => {
     });
 };
 
+exports.getUserInfoAfterOAuth = (req, res) => {
+  User.findOne({
+    where: {
+      username: req.session.username
+    }
+  })
+    .then(user => {
+      res.send({
+        loggedIn: true,
+        userData: user.dataValues
+      });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+};
+
 const mergePatreonInfoWithExistingUser = (existingAccount, patreonAccount) => {
   return existingAccount.update(
     {
