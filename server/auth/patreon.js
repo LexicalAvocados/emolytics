@@ -39,11 +39,7 @@ exports.handleOAuthRedirect = (req, res) => {
     })
     .then(user => {
       req.session.username = user.username;
-      res.redirect('/login/patreon');
-      res.send({
-        loggedIn: true,
-        userData: user
-      })
+      res.redirect('/loading/patreon');
     })
     .catch(err => {
       console.error('Patreon OAuth error:', err);
@@ -71,6 +67,7 @@ exports.getUserInfoAfterOAuth = (req, res) => {
 const mergePatreonInfoWithExistingUser = (existingAccount, patreonAccount) => {
   return existingAccount.update(
     {
+      lastLoggedIn: new Date(),
       patreonId: patreonAccount.id,
       patreonAbout: patreonAccount.about,
       patreonCreatedAt: patreonAccount.created_at,

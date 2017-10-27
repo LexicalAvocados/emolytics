@@ -81,7 +81,7 @@ export class App extends React.Component {
             <Switch>
               {/* routes for NOT LOGGED IN */}
               <Route exact path="/" component={LandingPage}/>
-              <Route path="/login/patreon" component={PatreonLoginLoading}/>
+              <Route exact path="/loading/patreon" component={PatreonLoginLoading}/>
               <Route path="/loading" component={Loading}/>
               <Route path="/signup" component={Signup}/>
               <Route path="*" component={Login}/>

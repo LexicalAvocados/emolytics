@@ -9,7 +9,34 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 
 export class PatreonLoginLoading extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
+  componentDidMount() {
+    setTimeout(this.fetchUserAndRedirect.bind(this), 1500);
+  }
+  
+  fetchUserAndRedirect() {
+    axios.get('/redirect/patreon')
+      .then(res => {
+        let {id, username, name, age, sex, race, isCreator, credits} = res.data.userData;
+        this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
+        this.props.history.push('/');
+      })
+      .catch(err => {
+        console.log('Error fetching user info:', err);
+      });
+  }
+
+  render() {
+    return (
+      <div className='patreonLoginLoading'>
+        <h2>You have successfully logged in with Patreon.</h2>
+        <h3>Redirecting...</h3>
+      </div>
+    )
+  }
 }
 
 // React-Redux connect() boilerplate

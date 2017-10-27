@@ -102,7 +102,7 @@ app.post('/login', (req, res) => auth.attemptLogin(req, res));
 app.get('/logout', (req, res) => auth.logout(req, res));
 app.put('/profile', (req, res) => auth.editProfile(req, res));
 app.get('/oauth/patreon', (req, res) => patreon.handleOAuthRedirect(req, res));
-app.get('/login/patreon', (req, res) => patreon.getUserInfoAfterOAuth(req, res));
+app.get('/redirect/patreon', (req, res) => patreon.getUserInfoAfterOAuth(req, res));
 
 // app.use(auth.checkUser);
 app.use(passport.initialize());
