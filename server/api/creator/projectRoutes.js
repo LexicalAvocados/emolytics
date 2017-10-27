@@ -21,7 +21,14 @@ exports.getProjectsForUser = function(req, res) {
         }
       })
         .then((projects) => {
-          res.send(projects);
+          if (projects.length) {
+            res.send(projects);
+          } else {
+            Projects.findById(0)
+              .then((demoProject) => {
+                res.send([demoProject]);
+              });
+          }
         })
         .catch((err) => {
           console.log('Error finding projects associated with the user', err);

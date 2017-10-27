@@ -12,6 +12,11 @@ class AddCredits extends React.Component {
 
 
   render() {
+    const errorStyle = {
+      textAlign: "center",
+      color: "red",
+      fontWeight: "bold"
+    }
     return (
       <div>
         <h3>Add Credits To Option</h3>

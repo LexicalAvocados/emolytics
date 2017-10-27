@@ -62,8 +62,11 @@ class OptionListEntry extends React.Component {
   };
 
   submitCredits(e) {
-    console.log('submitttting');
     e.preventDefault();
+    if (this.props.currentSection.id === 0) {
+      alert('You cannot use the credits system in the demo. If you\'d like to leave the demo please create a project.');
+      return;
+    } 
     let body = {
       optionId: this.props.option.id,
       total: this.state.total,
@@ -154,12 +157,6 @@ class OptionListEntry extends React.Component {
       </div>
     );
   }
-}
-
-const errorStyle = {
-  textAlign: "center",
-  color: "red",
-  fontWeight: "bold"
 }
 
 const mapStateToProps = (state) => ({
