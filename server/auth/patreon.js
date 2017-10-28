@@ -1,5 +1,6 @@
 const url = require('url');
 const axios = require('axios');
+const sequelize = require('../../db').sequelize;
 const User = require('../../db').User;
 const PatreonCampaign = require('../../db').PatreonCampaign;
 const keys = require('../../key.js');
@@ -60,9 +61,9 @@ exports.handleOAuth = (req, res, mode) => {
       console.log('queryMode right before redirect:', queryMode);
       res.redirect(
         `/loading/patreon?type=${queryMode}
-                         &existing=${hasExistingAccount}
-                         &campaign=${hasCampaign}
-                         &initial=${initialPatreonLogin}`
+                         &existing=${hasExistingAccount}`
+                         // &campaign=${hasCampaign}
+                         // &initial=${initialPatreonLogin}
       );
     })
     .catch(err => {
@@ -72,23 +73,26 @@ exports.handleOAuth = (req, res, mode) => {
 };
 
 exports.getUserInfoAfterOAuth = (req, res) => {
-  User.findOne({
-    where: {
-      username: req.session.username
-    }
-  })
+  sequelize.query(`SELECT *
+                  FROM "users" LEFT OUTER JOIN "patreonCampaigns"
+                  ON "users"."id" = "patreonCampaigns"."userId"
+                  WHERE "users"."username" = '${req.session.username}'`)
     .then(user => {
+      // user should look like this: [[{userObj}], {metadata}]
+      console.log('user:', user[0][0]);
       res.send({
         loggedIn: true,
-        userData: user.dataValues
+        userData: user[0][0]
       });
     })
     .catch(err => {
+      console.log('Sequelize error:', err);
       res.send(err);
     });
 };
 
 const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => {
+  console.log('campaign:', campaign);
   return existing.update(
     {
       lastloggedin: new Date(),
@@ -105,9 +109,11 @@ const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => 
     }
   )
     .then(user => {
-      if (mode === 'creator') {
+      console.log('ABOUT TO CREATE CAMPAIGN ENTRY...')
+      if (user.isCreator) {
         PatreonCampaign.create({
           creationCount: campaign.creation_count,
+          creationName: campaign.creation_name,
           displayPatronGoals: campaign.display_patron_goals,
           earningsVisibility: campaign.earnings_visibility,
           isChargedImmediately: campaign.is_charged_immediately,
@@ -122,7 +128,8 @@ const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => 
           publishedAt: campaign.published_at,
           summary: campaign.summary,
           thanksMsg: campaign.thanks_msg,
-          thanksVideoUrl: campaign.thanks_video_url
+          thanksVideoUrl: campaign.thanks_video_url,
+          userId: user.id
         });
       }
       return user;
@@ -148,9 +155,11 @@ const createNewAccountWithPatreonInfo = (patreon, mode, campaign) => {
     patreonVanity: patreon.vanity
   })
     .then(newUser => {
-      if (mode === 'creator') {
+      console.log('ABOUT TO CREATE CAMPAIGN ENTRY...');
+      if (newUser.isCreator) {
         PatreonCampaign.create({
           creationCount: campaign.creation_count,
+          creationName: campaign.creation_name,
           displayPatronGoals: campaign.display_patron_goals,
           earningsVisibility: campaign.earnings_visibility,
           isChargedImmediately: campaign.is_charged_immediately,

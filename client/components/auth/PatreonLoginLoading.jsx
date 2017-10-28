@@ -21,8 +21,24 @@ export class PatreonLoginLoading extends React.Component {
   fetchUserAndRedirect() {
     axios.get('/redirect/patreon')
       .then(res => {
-        let {id, username, name, age, sex, race, isCreator, credits} = res.data.userData;
+        let userData = res.data.userData;
+        let {id, username, name, age, sex, race, isCreator, credits} = userData;
         this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
+        if (userData.publishedAt) {
+          let {patreonId, patreonAbout, patreonVanity, isPlural, mainVideoUrl, patronCount, pledgeUrl, summary} = userData;
+          let campaign = {
+            patreonId,
+            about: patreonAbout,
+            vanity: patreonVanity,
+            isPlural,
+            mainVideoUrl,
+            patronCount,
+            pledgeUrl,
+            summary
+          };
+          console.log('campaign:', campaign);
+          this.props.actions.setPatreonCampaignInfo(campaign);
+        }
         this.props.history.push('/');
       })
       .catch(err => {
@@ -59,6 +75,7 @@ export class PatreonLoginLoading extends React.Component {
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => ({
   setLoggedIn: state.setLoggedIn,
+  patreonCampaign: state.patreonCampaign,
   router: state.router
 });
 

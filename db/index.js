@@ -86,10 +86,11 @@ PatreonCampaign.sync({force: false});
 // ~~~~~~~~~~~~~~~~~~ //
 
 const FocusGroup = sequelize.define('focusGroup', {
-  name: Sequelize.STRING
+  name: Sequelize.STRING,
 });
 
 FocusGroup.belongsTo(User);
+FocusGroup.belongsTo(PatreonCampaign);
 
 FocusGroup.sync({force: false});
 
