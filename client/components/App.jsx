@@ -33,6 +33,7 @@ import LandingPage from './LandingPage.jsx';
 import CreatorAccount from './creator/dashboard/CreatorAccount.jsx';
 import Browse from './tester/Browse/Browse.jsx';
 import ForgotPassword from './auth/ForgotPassword.jsx';
+import ResetPassword from './auth/ResetPassword.jsx';
 
 
 export class App extends React.Component {
@@ -86,6 +87,7 @@ export class App extends React.Component {
               <Route path="/loading" component={Loading}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/forgotPassword" component={ForgotPassword}/>
+              <Route path="/reset/:id" component={ResetPassword}/>
               <Route path="*" component={Login}/>
               
             </Switch>

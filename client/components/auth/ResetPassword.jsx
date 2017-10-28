@@ -9,20 +9,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 
-export class ForgotPassword extends React.Component {
+export class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      good: false,
-      err: false,
-      send: true
+      password: '',
+      password2: '',
+      notSame: false,
+      success: false,
+      fail: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
 
 
 
+  }
+
+  componentDidMount() {
+    console.log(this.props.match.params.id);
   }
 
   handleChange(e) {
@@ -36,40 +41,55 @@ export class ForgotPassword extends React.Component {
 
   submit(e) {
     e.preventDefault();
-    if (this.state.send) {
-      axios.post('/api/auth/forgotPassword', {username: this.state.username})
+    if (this.state.password !== this.state.password2) {
+      this.setState({
+        notSame: true
+      })
+    } else {
+      this.setState({
+        notSame: false
+      })
+      axios.post('/api/auth/resetPassword', {link: this.props.match.params.id, password: this.state.password})
         .then(res => {
           if (res.data === 'good') {
             this.setState({
-              good: true,
-              err: false,
-              send: false
+              success: true,
+              fail: false
             })
           } else {
             this.setState({
-              err: true,
-              good: false
+              sucess: false,
+              fail: true
             })
           }
         })
     }
-
   }
 
 
   render() {
     return (
       <div className="forgotPassword">
-        <h3> Forgot Password </h3>
+        <h3> Reset Password </h3>
         <br/>
           <Form horizontal className='forgotForm' onSubmit={this.submit} >
             <FormGroup>
               <Col className='forgotInput'>
                 <FormControl
                   type='text'
-                  name='username'
-                  placeholder='Username'
-                  value={this.state.username}
+                  name='password'
+                  placeholder='Password'
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
+              </Col>
+              <br/>
+              <Col className='forgotInput'>
+                <FormControl
+                  type='text'
+                  name='password2'
+                  placeholder='Comfirm Password'
+                  value={this.state.password2}
                   onChange={this.handleChange}
                 />
               </Col>
@@ -78,10 +98,14 @@ export class ForgotPassword extends React.Component {
               <br/>
             </FormGroup>
           </Form>
-          {this.state.good ? (
-            <p> Sent </p>
-            ) : this.state.err ? (
-            <p> Error </p> 
+          {this.state.notSame ? (
+            <p> Password Not Matching </p>
+            ) : ""}
+          {this.state.success ? (
+            <p> Password Changed </p>
+            ) : ""}
+          {this.state.fail ? (
+            <p> Password Change Failed </p>
             ) : ""}
        
       </div>
@@ -105,4 +129,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ForgotPassword));
+)(ResetPassword));
