@@ -58,6 +58,7 @@ router.post('/getDemographics', (req, res) => {
       let liked = 0;
       let finished = 0;
       let age = 0;
+      let ages = [];
       let male = 0;
       data.forEach(elem => {
         if (elem.like === true) {
@@ -70,12 +71,14 @@ router.post('/getDemographics', (req, res) => {
           male++;
         }
         age += elem.age;
+        ages.push(elem.age)
       });
       response.total = total;
       response.liked =liked;
       response.finished = finished;
       response.age = age / total;
       response.male = male;
+      response.ages = ages;
       // console.log(response);
       res.send(response);
     });
