@@ -27,7 +27,6 @@ class SectionHome extends React.Component {
       invited: false,
       assigned: false,
       haveInvited: false,
-      invitedUserIds: [],
       testersForOptions:[],
       idOfClickedOnOption: null,
       testers: [],
@@ -40,12 +39,11 @@ class SectionHome extends React.Component {
       showEdit: false,
       showNotifications: false,
       currentNotification: {},
-      allNotifications: []
+      allNotifications: [],
+      testerToPassToOptionListEntry: []
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
-    // this.renderHaveInvited = this.renderHaveInvited.bind(this);
-    this.changeTestersCopy = this.changeTestersCopy.bind(this);
     this.concatTesters = this.concatTesters.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.assignFocusGroup = this.assignFocusGroup.bind(this);
@@ -65,7 +63,8 @@ class SectionHome extends React.Component {
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
-          testers: response.data
+          testers: response.data,
+          testerToPassToOptionListEntry: response.data
         });
         // console.log('TESTERS BEFORE FILTER', this.state.testers)
       })
@@ -138,8 +137,6 @@ class SectionHome extends React.Component {
     }
   }
 
-
-
   onOptionClick(index) { // Functional
     if (this.state.compare) { // We are setting up to compare
       if (this.state.compareOptions.length < 2) { // Need two options
@@ -177,11 +174,6 @@ class SectionHome extends React.Component {
     });
   }
 
-  changeTestersCopy(filtered) {
-    this.setState({
-      testersCopy: filtered
-    });
-  }
 
   deleteOption() {
     if (this.state.idOfClickedOnOption === 0 || this.state.idOfClickedOnOption === 1) {
@@ -208,7 +200,9 @@ class SectionHome extends React.Component {
     }
   }
 
-  beginEdit(option) {
+  beginEdit(option, testers, testersCopy) {
+    this.props.currentOption.testers = testers;
+    this.props.currentOption.testersCopy = testersCopy;
     this.props.actions.changeOption(option);
     this.setState({
       showEdit: !this.state.showEdit,
@@ -320,21 +314,6 @@ class SectionHome extends React.Component {
     })
   }
 
-  // invitationPopover() {
-  //   if (this.props.currentSection.id === 0 && this.props.currentSection.displayOptionListPopover) { // meaning they've been hidden
-  //     return  (
-  //       <Popover id="popover-trigger-hover" title="Invites!" style={this.props.currentSection.displayOptionListPopover}>This is where you invite people.</Popover>
-  //     );
-  //   } else {
-  //     let hidden = {
-  //       display: 'none'
-  //     };
-  //     return (
-  //       <Popover id="popover-trigger-hover" style={hidden}></Popover>
-  //     );
-  //   }
-  // }
-
   render() {
 
     var middleStyle = {
@@ -375,17 +354,13 @@ class SectionHome extends React.Component {
 
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              // <OverlayTrigger placement="bottom" overlay={this.invitationPopover()}>
-                <Button onClick={this.renderPanel}>Invite testers</Button>
-              // </OverlayTrigger>
+              <Button onClick={this.renderPanel}>Invite testers</Button>
             ) : (
               <InvitationPanel
                 options={this.props.currentSection.options}
                 renderInvited={this.renderInvited}
-                invitedUserIds={this.state.invitedUserIds}
                 testers={this.state.testers}
                 testersCopy={this.state.testersCopy}
-                changeTestersCopy={this.changeTestersCopy}
                 renderPanel={this.renderPanel}
               />
             )
@@ -437,6 +412,7 @@ class SectionHome extends React.Component {
                 toggleEdit={this.toggleEdit}
                 showEdit={this.state.showEdit}
                 showNotifsCb={this.showNotifsCb}
+                allTesters={this.state.testerToPassToOptionListEntry}
               />
             ))}
           </Col>
@@ -481,7 +457,8 @@ const mapStateToProps = (state) => ({
   router: state.router,
   currentProject: state.currentProject,
   currentSection: state.currentSection,
-  notifications: state.notifications
+  notifications: state.notifications,
+  currentOption: state.currentOption
 });
 
 const mapDispatchToProps = (dispatch) => ({
