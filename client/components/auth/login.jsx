@@ -23,6 +23,7 @@ export class Login extends React.Component {
     this.submitLogin = this.submitLogin.bind(this);
     this.submitPatreonLogin = this.submitPatreonLogin.bind(this);
     this.resetInputForms = this.resetInputForms.bind(this);
+    this.forgotPassword = this.forgotPassword.bind(this);
   }
 
   updateTypedUsername(e) {
@@ -90,7 +91,15 @@ export class Login extends React.Component {
     this.setState({typedUsername: '', typedPassword: ''});
   }
 
+  forgotPassword(e) {
+    e.preventDefault();
+    this.props.history.push('/forgotPassword');
+  }
+
   render() {
+    var forgotPassword = {
+      textAlign: 'center'
+    }
     const patreonOAuthLink = `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon`;
     return (
       <div className='auth'>
@@ -112,6 +121,10 @@ export class Login extends React.Component {
                 onChange={this.updateTypedPassword}
               /></Col>
             <Button className='authSubmit' type='submit'>Submit</Button><br/>
+            <br/>
+            <div style={forgotPassword}>
+              <p onClick={this.forgotPassword}> <small> Forgot Password </small> </p>
+            </div>
             {<div>this.state.loginError</div> && this.state.loginError}
           </FormGroup>
         </Form>
