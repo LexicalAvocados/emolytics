@@ -11,9 +11,12 @@ class InvitationPanel extends React.Component {
       ageSelected: false,
       sexSelected: false,
       raceSelected: false,
-      invited: []
+      invited: [],
+      testers: [],
+      testersCopy: [],
+      options: [],
+      length: 0
     };
-    // this.renderPanel = this.renderPanel.bind(this);
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
     this.selectRace = this.selectRace.bind(this);
@@ -21,19 +24,31 @@ class InvitationPanel extends React.Component {
     this.handleInvites = this.handleInvites.bind(this);
     this.sendInvites = this.sendInvites.bind(this);
     this.inviteAll = this.inviteAll.bind(this);
+    this.changeTestersCopy = this.changeTestersCopy.bind(this);
   }
 
+  componentWillMount() {
+    console.log('SWITCHING')
+    if (this.props.options) { // Inviting by section
+      this.state.options = this.props.options;
+      this.state.testers = this.props.testers;
+      this.state.testersCopy = this.props.testersCopy;
+      this.state.length = this.state.testersCopy.length
 
-  // renderPanel() {
-  //   this.setState({
-  //     displayPanel: !this.state.displayPanel
-  //   });
-  // }
+    }
+    console.log('testetsts', this.state.testersCopy.length)
+  }
+
+  changeTestersCopy(filtered) {
+    this.setState({
+      testersCopy: filtered
+    });
+  }
 
   handleInvites(event, index) {
     if (event.target.checked) {
       this.setState({
-        invited: [...this.state.invited, this.props.testersCopy[index]]
+        invited: [...this.state.invited, this.state.testersCopy[index]]
       });
     } else { // Uninvited
       var removed = this.state.invited.slice(index, 1);
@@ -47,7 +62,7 @@ class InvitationPanel extends React.Component {
     if (e) {
       e.preventDefault();
     }
-    axios.post('/api/sendEmails', { invitedArr: invited, options: this.props.options }) 
+    axios.post('/api/sendEmails', { invitedArr: invited, options: this.state.options || this.props.currentOption }) 
       .then((success) => {
         console.log(success);
         this.props.renderInvited();
@@ -58,10 +73,10 @@ class InvitationPanel extends React.Component {
   }
 
   inviteAll() {
-    console.log(this.props.testersCopy);
+    console.log('Invites being sent to:', this.state.testersCopy);
     this.setState({ 
-      invited: this.props.testersCopy
-    }, this.sendInvites(null, this.props.testersCopy));
+      invited: this.state.testersCopy
+    }, this.sendInvites(null, this.state.testersCopy));
   }
 
 
@@ -70,7 +85,7 @@ class InvitationPanel extends React.Component {
     this.setState({
       ageSelected: event
     });
-    this.props.changeTestersCopy(filtered);
+    this.changeTestersCopy(filtered);
   }
 
   selectSex(event) {
@@ -78,7 +93,7 @@ class InvitationPanel extends React.Component {
     this.setState({
       sexSelected: event
     });
-    this.props.changeTestersCopy(filtered);
+    this.changeTestersCopy(filtered);
   }
 
   selectRace(event) { // Can't test at the moment
@@ -86,7 +101,7 @@ class InvitationPanel extends React.Component {
     this.setState({
       raceSelected: event
     });
-    this.props.changeTestersCopy(filtered);
+    this.changeTestersCopy(filtered);
   }
 
   filterTesters(criteria, toFilterBy) {
@@ -94,19 +109,19 @@ class InvitationPanel extends React.Component {
     // SEX
     if (criteria === 'sex' || this.state.sexSelected) {
       if (criteria === 'sex' && toFilterBy === 'None') {
-        filtered = this.props.testers.map((tester) => {
+        filtered = this.state.testers.map((tester) => {
           return tester;
         });
       } else if (criteria === 'sex') { // Catch for filtering by sex directly
-        filtered = this.props.testers.filter((tester) => {
+        filtered = this.state.testers.filter((tester) => {
           if (tester.sex === toFilterBy) return tester;
         });
       } else if (this.state.sexSelected !== 'None') { // Catch for filtering by sex indirectly
-        filtered = this.props.testers.filter((tester) => {
+        filtered = this.state.testers.filter((tester) => {
           if (tester.sex === this.state.sexSelected) return tester;
         });
       } else if (this.state.sexSelected === 'None') { // Catch for filtering by sex indirectly
-        filtered = this.props.testers.map((tester) => {
+        filtered = this.state.testers.map((tester) => {
           return tester;
         });
       }
@@ -122,11 +137,11 @@ class InvitationPanel extends React.Component {
           if (tester.race === toFilterBy) return tester;
         });
       } else if (criteria === 'race' && toFilterBy !== 'None') { // Catch for filtering by race directly and alone.
-        filtered = this.props.testers.filter((tester) => {
+        filtered = this.state.testers.filter((tester) => {
           if (tester.race === toFilterBy) return tester;
         });
       } else if (criteria === 'race' && toFilterBy === 'None') { // Catch for filtering by race directly and alone.
-        filtered = this.props.testers.map((tester) => {
+        filtered = this.state.testers.map((tester) => {
           return tester;
         });
       } else if (this.state.raceSelected && this.state.raceSelected !== 'None') { // Catch for filtering by race indirectly without sex set. 
@@ -156,11 +171,11 @@ class InvitationPanel extends React.Component {
         let index = toFilterBy.indexOf('-');
         let first = toFilterBy.slice(0, index);
         let second = toFilterBy.slice(index + 1);
-        filtered = this.props.testers.filter((tester) => {
+        filtered = this.state.testers.filter((tester) => {
           if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
         });
       } else if (criteria === 'age' && toFilterBy === 'None') {
-        filtered = this.props.testers.map((tester) => {
+        filtered = this.state.testers.map((tester) => {
           return tester;
         });
       } else if (this.state.ageSelected && this.state.ageSelected !== 'None') { // filter by age indirectly
@@ -222,14 +237,9 @@ class InvitationPanel extends React.Component {
           </DropdownButton>
         </div>
         <div className="testersList">
-          <form onSubmit={() => this.sendInvites(this.state.invited)}>
-              <InviteTesters 
-                totalTesters={this.props.testersCopy.length}
-              />
-            {/* <Button type="submit">Send Invites</Button> */}
-            <Button onClick={this.inviteAll}>Invite Testers</Button>
-            <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
-          </form>
+          <p>Available testers: {this.state.testersCopy.length}</p>
+          <Button onClick={this.inviteAll}>Invite Testers</Button>
+          <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
         </div>
       </div>
     );

@@ -22,12 +22,15 @@ exports.sendEmails = function(req, res) {
 
   let options = req.body.options;
   let invitedArr = req.body.invitedArr;
-
+  console.log('OPTION BEIGNGS SENT TO THE BACKEND', req.body.options); // Logged end
   for (var i = 0; i < invitedArr.length; i++) {
     TesterAndOptions.create({
       optionId: options[i % options.length].id,
       userId: invitedArr[i].id
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
     let mailOptions = {
       from: 'ReactionSync',
       to: invitedArr[i].email,

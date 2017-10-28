@@ -37,7 +37,7 @@ class OptionListEntry extends React.Component {
     this.changeTestersCopy = this.changeTestersCopy.bind(this);
     this.revealAddOption = this.revealAddOption.bind(this);
     this.optionListPopover = this.optionListPopover.bind(this);
-    this.filterTesters = this.filterTesters.bind(this);
+    this.filterTestersForOptions = this.filterTestersForOptions.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
   }
 
@@ -47,7 +47,7 @@ class OptionListEntry extends React.Component {
         this.props.concatTesters(testerIds.data, this.props.index);
         this.setState({
           specificTesters: testerIds
-        }, this.filterTesters());
+        }, this.filterTestersForOptions());
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
@@ -78,7 +78,8 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  filterTesters() {
+  filterTestersForOptions() {
+    console.log(this.state.specificTesters)
     let priorInvites = true
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
       if (this.state.specificTesters.indexOf(tester.id) === -1) {
@@ -213,7 +214,7 @@ class OptionListEntry extends React.Component {
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
-            <Button onClick={() => this.props.beginEdit(this.props.option)}>Option Settings</Button>
+            <Button onClick={() => this.props.beginEdit(this.props.option, this.state.testers, this.state.testersCopy)}>Option Settings</Button>
           </div>
           </OverlayTrigger>
         ) : (
@@ -261,10 +262,7 @@ class OptionListEntry extends React.Component {
                 <Button onClick={this.renderPanel}>Invite testers</Button>
               ) : (
                 <InvitationPanel 
-                  options={this.props.option}
                   renderInvited={this.renderInvited}
-                  testers={this.state.testers}
-                  testersCopy={this.state.testersCopy}
                   changeTestersCopy={this.changeTestersCopy}
                   renderPanel={this.renderPanel} 
                 />
