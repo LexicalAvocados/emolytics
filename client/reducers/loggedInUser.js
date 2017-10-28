@@ -8,7 +8,8 @@ const loggedInUser = (state = {
   sex: undefined,
   race: undefined,
   isCreator: undefined,
-  credits: undefined
+  credits: undefined,
+  patreonId: undefined
 }, action) => {
   switch (action.type) {
     case 'SET_LOGGED_IN':
@@ -23,11 +24,12 @@ const loggedInUser = (state = {
           sex: action.sex,
           race: action.race,
           isCreator: action.isCreator,
-          credits: action.credits
+          credits: action.credits,
+          patreonId: action.patreonId
         }
       );
     case 'SET_LOGGED_OUT':
-      return {id: undefined, username: undefined, name: undefined, age: undefined, sex: undefined, race: undefined, isCreator: undefined, credits: undefined};
+      return {id: undefined, username: undefined, name: undefined, age: undefined, sex: undefined, race: undefined, isCreator: undefined, credits: undefined, patreonId: undefined};
     case 'SET_NAME':
       return Object.assign({}, state, {name: action.name});
     case 'SET_AGE':

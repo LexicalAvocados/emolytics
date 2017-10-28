@@ -11,17 +11,35 @@ import * as ChangeActions from '../../actions';
 export class PatreonLoginLoading extends React.Component {
   constructor(props) {
     super(props);
+    console.log('props:', props);
   }
 
   componentDidMount() {
-    setTimeout(this.fetchUserAndRedirect.bind(this), 1500);
+    setTimeout(this.fetchUserAndRedirect.bind(this), 3000);
   }
   
   fetchUserAndRedirect() {
     axios.get('/redirect/patreon')
       .then(res => {
-        let {id, username, name, age, sex, race, isCreator, credits} = res.data.userData;
-        this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
+        let userData = res.data.userData;
+        let {id, username, name, age, sex, race, isCreator, credits, patreonId} = userData;
+        this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits, patreonId);
+        if (userData.publishedAt) {
+          let {patreonAbout, patreonVanity, campaignId, creationName, isPlural, mainVideoUrl, patronCount, pledgeUrl, summary} = userData;
+          let campaign = {
+            id: campaignId,
+            about: patreonAbout,
+            vanity: patreonVanity,
+            creationName,
+            isPlural,
+            mainVideoUrl,
+            patronCount,
+            pledgeUrl,
+            summary
+          };
+          console.log('campaign:', campaign);
+          this.props.actions.setPatreonCampaignInfo(campaign);
+        }
         this.props.history.push('/');
       })
       .catch(err => {
@@ -30,9 +48,23 @@ export class PatreonLoginLoading extends React.Component {
   }
 
   render() {
+    let url = window.location.href;
+    let mode = url.slice(url.indexOf('=') + 1, url.indexOf('&'));
+    let hasExisting = Boolean(url.slice(url.lastIndexOf('=') + 1));
+    let isLogin = (mode === 'login' ? true : false);
+    if (!isLogin) var loginType = (mode === 'creator' ? 'creator' : 'tester');
+
     return (
       <div className='patreonLoginLoading'>
-        <h2>You have successfully logged in with Patreon.</h2>
+        <h2>Thank you for {isLogin ? 'logged in' : 'signed up'} with Patreon.</h2>
+
+        {hasExisting ?
+          <h2>We merged your Patreon details with your existing account.</h2>
+        :
+          <h2>We created a new account for you based on your Patreon details.</h2>}
+
+        <h3>Your account type: {loginType === 'creator' ? 'Creator' : 'Tester'}</h3>
+
         <h3>Redirecting...</h3>
       </div>
     )
@@ -44,6 +76,7 @@ export class PatreonLoginLoading extends React.Component {
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => ({
   setLoggedIn: state.setLoggedIn,
+  patreonCampaign: state.patreonCampaign,
   router: state.router
 });
 

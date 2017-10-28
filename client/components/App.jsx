@@ -86,8 +86,8 @@ export class App extends React.Component {
             <Switch>
               {/* routes for NOT LOGGED IN */}
               <Route exact path="/" component={LandingPage}/>
-              <Route exact path="/loading/patreon" component={PatreonLoginLoading}/>
-              <Route path="/loading" component={Loading}/>
+              <Route exact path="/loading" component={Loading}/>
+              <Route path="/loading/patreon" component={PatreonLoginLoading}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/forgotPassword" component={ForgotPassword}/>
               <Route path="/reset/:id" component={ResetPassword}/>
@@ -105,14 +105,11 @@ export class App extends React.Component {
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  console.log('state in App', state);
-  return ({
-    router: state.router,
-    loggedInUser: state.loggedInUser,
-    role: state.signupwithfb
-  });
-};
+const mapStateToProps = (state) => ({
+  router: state.router,
+  loggedInUser: state.loggedInUser,
+  role: state.signupwithfb
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
