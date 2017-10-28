@@ -2,30 +2,39 @@ import React from 'react';
 
 const Feedback = (props) => {
 
-  const convertStringLikeRatio = (lr) => {
-    let indOfSlash = lr.indexOf('/');
-    let numerator = +lr.slice(0, indOfSlash);
-    let denominator = +lr.slice(indOfSlash+1);
-    let ratio = numerator/denominator;
-    return ratio;
+  console.log('FEEDBACK', props);
+
+  const completion = () => {
+    let total = props.demographic.total * props.optionEmotionObj.count.length;
+    let watched = props.optionEmotionObj.count.reduce((sum, curr) => {
+      return sum + parseInt(curr);
+    }, 0)
+    // console.log('WATCHED', watched, total);
+    return (watched/total);
   }
 
   return (
     <div className="testerFeedback">
-
-      <div className="rawValues">
-        <p> Watched {props.completionStatus}% of video</p>
-        <p>Like: {props.likeRatio}</p>
-        <p> Summarized comments: {props.feedback}</p>
+      <div className="testerFeedbackHeading">
+        <h3> Feedback </h3>
       </div>
+      <div className="testerFeedbackData">
+        <div className="rawValues">
+          <p> Watched {completion() * 100}% of video</p>
+          <p>Like: {props.demographic.liked}/{props.demographic.total}</p>
+        </div>
 
-      <div className="progressBars">
-        <progress max={100} value={props.completionStatus}></progress>
-        <br/><br/>
-        <progress max={1} value={convertStringLikeRatio(props.likeRatio)}></progress>
+        <div className="progressBars">
+          <progress max={1} value={completion()}></progress>
+          <br/><br/>
+          <progress max={1} value={props.demographic.liked/props.demographic.total}></progress>
+        </div>
       </div>
     </div>
   )
 };
 
 export default Feedback;
+
+
+//          <p> Summarized comments: {props.feedback}</p>

@@ -47,7 +47,7 @@ class OptionHome extends React.Component {
       heatmapSetting: 1,
       videoTime: 0,
       playVideoForHM: false,
-      optionEmotionObj: { emotionPerc: {}, attention: ['Attention'] },
+      optionEmotionObj: { emotionPerc: {}, attention: ['Attention'], count:[0] },
       demographicStats: {},
     }
     this.timestampCallback = this.timestampCallback.bind(this);
@@ -454,15 +454,15 @@ class OptionHome extends React.Component {
 
             {this.state.sideNavSelection === 'feedback' ? (
               <div className='feedbackRightPanelContainer'>
-                <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-                <Feedback feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
+                <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                <Feedback optionEmotionObj={this.state.optionEmotionObj} demographic={this.state.demographicStats} feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
               </div>
             ) : ''}
 
             {this.state.sideNavSelection === 'emotions' ? (
               <div className='emotionsRightPanelContainer'>
-                <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-                <Emotion emotionsObj={this.state.emotionObj} />
+                <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                <Emotion optionEmotionObj={this.state.optionEmotionObj} emotionsObj={this.state.emotionObj} />
               </div>
             ) : ''}
 

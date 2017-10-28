@@ -21,7 +21,7 @@ const Attention = (props) => {
     })
     for (var i = 0; i < 5; i++) {
       var min = Math.min.apply(null, arr)
-      console.log('MIN', min)
+      // console.log('MIN', min)
       var indexAndSecond = arr.indexOf(min);
       var boredObj = {
         time: indexAndSecond + 4,
@@ -38,6 +38,9 @@ const Attention = (props) => {
   return (
 
     <div className="testerAttention">
+      <h3> Attention </h3>
+
+      <div className="testerAttentionData">
       
         <p> Average Attention: {calcAvgAtten(props.optionEmotionObj.attention.slice(1))}%</p>
         <p> Viewers lost focus: </p>
@@ -55,6 +58,7 @@ const Attention = (props) => {
           ))}
         </ul>
       </div>
+    </div>
 
   )
 };
