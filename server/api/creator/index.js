@@ -62,13 +62,32 @@ exports.createNewFocusGroup = (req, res) => {
       });
     })
     .then(newFocusGroup => {
-      // console.log('New Focus Group created:', newFocusGroup);
-      res.send(newFocusGroup.dataValues);
+      newFocusGroup = newFocusGroup.dataValues;
+      if (req.body.patrons) {
+        addPatronsToFocusGroup(newFocusGroup.id, req.body.patrons)
+          .then(data => {
+            res.send({group: newFocusGroup, patrons: req.body.patrons});
+          })
+          .catch(err => {
+            console.log('Error associating Patrons with new Group:', err);
+          });
+      } else {
+        res.send(newFocusGroup);
+      }
     })
     .catch(err => {
-      // console.log('Error creating new Focus Group');
       res.send(err);
     });
+};
+
+
+const addPatronsToFocusGroup = (groupId, patrons) => {
+  return Promise.all(patrons.map(patron => {
+    return FocusGroupAndTester.create({
+      userId: patron.id,
+      focusGroupId: groupId
+    });
+  }));
 };
 
 

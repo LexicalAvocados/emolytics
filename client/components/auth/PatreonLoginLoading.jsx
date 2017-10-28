@@ -22,15 +22,14 @@ export class PatreonLoginLoading extends React.Component {
     axios.get('/redirect/patreon')
       .then(res => {
         let userData = res.data.userData;
-        let {id, username, name, age, sex, race, isCreator, credits} = userData;
-        this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
+        let {id, username, name, age, sex, race, isCreator, credits, patreonId} = userData;
+        this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits, patreonId);
         if (userData.publishedAt) {
-          let {patreonId, patreonAbout, patreonVanity, campaignId, creationName, isPlural, mainVideoUrl, patronCount, pledgeUrl, summary} = userData;
+          let {patreonAbout, patreonVanity, campaignId, creationName, isPlural, mainVideoUrl, patronCount, pledgeUrl, summary} = userData;
           let campaign = {
-            id: patreonId,
+            id: campaignId,
             about: patreonAbout,
             vanity: patreonVanity,
-            campaignId,
             creationName,
             isPlural,
             mainVideoUrl,

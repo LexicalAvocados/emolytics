@@ -59,6 +59,7 @@ User.sync({force: false});
 // ~~~~~~~~~~~~~~~~~~~~~~~ //
 
 const PatreonCampaign = sequelize.define('patreonCampaign', {
+  campaignId: Sequelize.INTEGER,
   creationCount: Sequelize.INTEGER,
   creationName: Sequelize.STRING,
   displayPatronGoals: Sequelize.BOOLEAN,

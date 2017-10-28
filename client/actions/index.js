@@ -8,6 +8,7 @@ export const SET_RACE = 'SET_RACE';
 export const SET_CREDITS = 'SET_CREDITS';
 export const SET_PATREON_CAMPAIGN_INFO = 'SET_PATREON_CAMPAIGN_INFO';
 export const ADD_FOCUS_GROUP = 'ADD_FOCUS_GROUP';
+export const ADD_PATREON_FOCUS_GROUP = 'ADD_PATREON_FOCUS_GROUP';
 export const DELETE_FOCUS_GROUP = 'DELETE_FOCUS_GROUP';
 export const ADD_TESTER_TO_FOCUS_GROUP = 'ADD_TESTER_TO_FOCUS_GROUP';
 export const REMOVE_TESTER_FROM_FOCUS_GROUP = 'REMOVE_TESTER_FROM_FOCUS_GROUP';
@@ -36,7 +37,7 @@ export const changeExample = (text) => ({
   text
 });
 
-export const setLoggedIn = (id, username, name, age, sex, race, isCreator, credits) => ({
+export const setLoggedIn = (id, username, name, age, sex, race, isCreator, credits, patreonId) => ({
   type: SET_LOGGED_IN,
   id,
   username,
@@ -45,7 +46,8 @@ export const setLoggedIn = (id, username, name, age, sex, race, isCreator, credi
   sex,
   race,
   isCreator,
-  credits
+  credits,
+  patreonId
 });
 
 export const setLoggedOut = () => ({
@@ -85,6 +87,12 @@ export const setPatreonCampaignInfo = (campaign) => ({
 export const addFocusGroup = (focusGroupName) => ({
   type: ADD_FOCUS_GROUP,
   focusGroupName
+});
+
+export const addPatreonFocusGroup = (focusGroupName, patrons) => ({
+  type: ADD_PATREON_FOCUS_GROUP,
+  focusGroupName,
+  patrons
 });
 
 export const deleteFocusGroup = (focusGroupName) => ({

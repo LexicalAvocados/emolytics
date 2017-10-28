@@ -60,10 +60,15 @@ exports.handleOAuth = (req, res, mode) => {
 };
 
 exports.getUserInfoAfterOAuth = (req, res) => {
-  sequelize.query(`SELECT *
+  sequelize.query(`SELECT "users"."id", "users"."username", "users"."name", "users"."age", 
+                  "users"."sex", "users"."race", "users"."isCreator", "users"."credits", 
+                  "users"."patreonId", "patreonCampaigns"."campaignId", 
+                  "users"."patreonAbout", "users"."patreonVanity", "patreonCampaigns"."creationName", 
+                  "patreonCampaigns"."isPlural", "patreonCampaigns"."mainVideoUrl", "patreonCampaigns"."patronCount", 
+                  "patreonCampaigns"."pledgeUrl", "patreonCampaigns"."publishedAt", "patreonCampaigns"."summary" 
                   FROM "users" LEFT OUTER JOIN "patreonCampaigns"
                   ON "users"."id" = "patreonCampaigns"."userId"
-                  WHERE "users"."username" = '${req.session.username}'`)
+                  WHERE "users"."username" = '${req.session.username}';`)
     .then(user => {
       // user should look like this: [[{userObj}], {metadata}]
       res.send({
@@ -80,10 +85,39 @@ exports.getUserInfoAfterOAuth = (req, res) => {
 exports.getPatrons = (req, res) => {
   patreonAPIClient(`/campaigns/${req.body.campaignId}/pledges`)
     .then(({store}) => {
-      console.log('Data store received from Patreon:', store.graph);
+      // store.graph should look like this:
+      // { user: { 'creatorId': { userObj }, 'patronId': { userObj }, 'patronId': { userObj } }
+      console.log('Users data received from Patreon:', store.graph.user);
+      let users = store.graph.user;
+      let patrons = [];
+      for (var id in users) {
+        if (Number(id) !== req.body.patreonId) {
+          User.findOne({
+            where: {
+              email: users[id].email
+            }
+          })
+            .then(patronAcct => {
+              if (patronAcct) {
+                patrons.push(patronAcct);
+              } else {
+                patrons.push({
+                  patreonId: id,
+                  email: users[id].email,
+                  fullName: users[id].full_name
+                });
+              }
+            })
+            .catch(err => {
+              console.log('Error querying DB for Patron:', err);
+            });
+        }
+      }
+      setTimeout(() => res.send(patrons), 100);
     })
     .catch(err => {
       console.log('Error fetching Patron data from Patreon:', err);
+      res.send(err);
     });
 }
 
