@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
-import key from './key.js';
+// import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
