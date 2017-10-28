@@ -106,9 +106,18 @@ class OptionListEntry extends React.Component {
   }
 
   optionListPopover() {
-    return (
-      <Popover id="popover-trigger-hover" title="Guten Tag!" style={this.props.currentSection.displayOptionListPopover}>It's a list of options. Click on one!</Popover>
-    );
+    if (this.props.currentSection.id === 0) {
+      return (
+        <Popover id="popover-trigger-hover" title="Guten Tag!" style={this.props.currentSection.displayOptionListPopover}>It's a list of options. Click on one!</Popover>
+      );
+    } else {
+      let hidden = {
+        display: 'none'
+      };
+      return (
+        <Popover id="popover-trigger-hover" style={hidden}></Popover>
+      );
+    }
   }
 
   // displayPopover() {

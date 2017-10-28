@@ -381,6 +381,11 @@ class OptionHome extends React.Component {
     return (
 
       <div className='optionAnalyticsContainer'>
+        { this.props.currentSection.id === 0 ? (
+          <p>This is an option! Yay. Now try to compare stuff</p>
+        ) : (
+          null
+        )}
         <div style={selectionDiv}>
           <select onChange={this.selectChange} style={selectionStyle} >
             <option value="overview">Overview</option>

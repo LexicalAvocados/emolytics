@@ -320,6 +320,21 @@ class SectionHome extends React.Component {
     })
   }
 
+  // invitationPopover() {
+  //   if (this.props.currentSection.id === 0 && this.props.currentSection.displayOptionListPopover) { // meaning they've been hidden
+  //     return  (
+  //       <Popover id="popover-trigger-hover" title="Invites!" style={this.props.currentSection.displayOptionListPopover}>This is where you invite people.</Popover>
+  //     );
+  //   } else {
+  //     let hidden = {
+  //       display: 'none'
+  //     };
+  //     return (
+  //       <Popover id="popover-trigger-hover" style={hidden}></Popover>
+  //     );
+  //   }
+  // }
+
   render() {
 
     var middleStyle = {
@@ -331,7 +346,7 @@ class SectionHome extends React.Component {
         <div>
           <div>
             { this.props.currentSection.id === 0 ? (
-              <p>Welcome to the section home! From here you can see all the options associated with a section. EXPLAIN COMPARE AND INVITE TESTERS</p>
+              <p>Welcome to the section home! From here you can see all the options associated with a section. Explain inviting testers to section</p>
             ):(
               null
             )}
@@ -360,7 +375,9 @@ class SectionHome extends React.Component {
 
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              <Button onClick={this.renderPanel}>Invite testers</Button>
+              // <OverlayTrigger placement="bottom" overlay={this.invitationPopover()}>
+                <Button onClick={this.renderPanel}>Invite testers</Button>
+              // </OverlayTrigger>
             ) : (
               <InvitationPanel
                 options={this.props.currentSection.options}
@@ -423,7 +440,6 @@ class SectionHome extends React.Component {
               />
             ))}
           </Col>
-
         { this.state.showData ? (
           <Col md={10}>
             <OptionHome />
