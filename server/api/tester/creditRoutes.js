@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 const sequelize = db.sequelize;
 const User = db.User;
 const Option = db.Option;
+const Section = db.Section;
+const Project = db.Project
 
 exports.addCredits = (req, res) => {
   User.findOne({
@@ -54,10 +56,49 @@ exports.addCreditsToOption = (req, res) => {
 exports.allSponsoredOptions = (req, res) => {
   Option.findAll({})
     .then((options) => {
-      // console.log('OPTINOS', options)
-      return options.filter(item => item.totalcredits !== null && item.totalcredits > 0 && item.creditsperview < item.totalcredits);
+      return filteredOptions = options.filter(item => item.totalcredits !== null && item.totalcredits > 0 && item.creditsperview < item.totalcredits);
     })
     .then((filteredOptions) => {
-      res.send(JSON.stringify(filteredOptions));
-    });
+      return Promise.all(filteredOptions.map(option => getCreatorDataForOption(option)))
+        .then((data) => {
+          // console.log('DATA FOR PROMISE ALL', data)
+          let responseArr = data.filter((option) => option !== undefined)
+          res.send(JSON.stringify(responseArr))
+        })
+    })
 };
+
+const getCreatorDataForOption = (option) => {
+  // console.log('OPTION IN MAP FUNCTION', option)
+  return Section.findOne({
+    where: {
+      id: option.dataValues.sectionId
+    }
+  })
+  .then((sec) => {
+    // console.log('SECTION IN MAP FUNCTION', sec)
+    if (sec) {
+      return Project.findOne({
+        where: {
+          id: sec.dataValues.projectId
+        }
+      })
+      .then((proj) => {
+        // console.log('PROJECT IN MAP FUNCTION', proj)
+        if (proj) {
+          return User.findOne({
+            where: {
+              id: proj.dataValues.userId
+            }
+          })
+          .then((user) => {
+            // console.log('OPTION IN LAST PROMISE IN MAP', option)
+            option.dataValues['CrId'] = user.dataValues.id;
+            option.dataValues['CrName'] = user.dataValues.username;
+            return option;
+          })
+        }
+      })
+    }
+  })
+}

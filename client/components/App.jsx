@@ -30,9 +30,9 @@ import AddOption from './creator/create/addOption.jsx';
 import PatreonLoginLoading from './auth/PatreonLoginLoading.jsx';
 import Loading from './auth/loading.jsx';
 import LandingPage from './LandingPage.jsx';
-import CreatorAccount from './creator/dashboard/CreatorAccount.jsx';
+import CreatorAccount from './creator/account/CreatorAccount.jsx';
 import Browse from './tester/Browse/Browse.jsx';
-
+import CreatorPublicProfile from './creator/account/CreatorPublicProfile.jsx';
 
 export class App extends React.Component {
   constructor(props) {
@@ -61,6 +61,8 @@ export class App extends React.Component {
                 <Route path="/addSection" component={AddSection}/>
                 <Route path="/addOption" component={AddOption}/>
                 <Route path="/account" component={CreatorAccount}/>
+                <Route path="/profiletest" component={CreatorPublicProfile}/>
+                <Route path="/cprofile:id" component={CreatorPublicProfile}/>
               </Switch>
               </div>
             ) : (
@@ -74,6 +76,7 @@ export class App extends React.Component {
                 <Route path="/profile" component={TesterProfile}/>
                 <Route path="/video/:id" component={TesterVideo}/>
                 <Route path="/browse" component={Browse}/>
+                <Route path="/cprofile:id" component={CreatorPublicProfile}/>
               </Switch>
               </div>
             )
@@ -92,7 +95,7 @@ export class App extends React.Component {
       </div>
     );
   }
-}
+};
 
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
