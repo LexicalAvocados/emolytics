@@ -71,7 +71,7 @@ class ProjectList extends React.Component {
   }
 
   onClickCallback() {
-    this.props.onProjectClick(this.props.project, this.state.sections);
+    this.props.onProjectClick(this.props.project, this.state.sections, this.props.project.id);
     this.props.history.push('/project' + this.props.project.id);
   }
 
