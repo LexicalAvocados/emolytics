@@ -46,8 +46,8 @@ class OptionListEntry extends React.Component {
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);
         this.setState({
-          specificTesters: testerIds
-        }, this.filterTestersForOptions());
+          specificTesters: testerIds.data
+        }, () => this.filterTestersForOptions());
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
@@ -79,7 +79,6 @@ class OptionListEntry extends React.Component {
   }
 
   filterTestersForOptions() {
-    console.log(this.state.specificTesters)
     let priorInvites = true
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
       if (this.state.specificTesters.indexOf(tester.id) === -1) {
