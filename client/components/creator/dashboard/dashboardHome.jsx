@@ -192,6 +192,7 @@ export class DashboardHome extends React.Component {
                 close={this.revealCreate}
                 getProjectsFromDatabase={this.getProjectsFromDatabase}
                 fromDashboard={this.state.fromDashboard}
+                inDemo={this.state.projects.id}
               />
             </Modal.Body>
             <Modal.Footer>

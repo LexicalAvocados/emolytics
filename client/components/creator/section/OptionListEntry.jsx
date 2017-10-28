@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { Button, Modal, Form, FormGroup, FormControl, Row, Col, ControlLabel } from 'react-bootstrap';
+import { Button, Modal, Form, FormGroup, FormControl, Row, Col, ControlLabel, OverlayTrigger, Popover } from 'react-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import axios from 'axios';
 import OptionData from './OptionData.jsx';
@@ -19,13 +19,15 @@ class OptionListEntry extends React.Component {
       date: '',
       total: 0,
       perView: 0,
-      notEnoughCredits: false
+      notEnoughCredits: false,
+      optionListPopoverDisplay: {}
     };
     this.revealAddOption = this.revealAddOption.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
     this.updatePerView = this.updatePerView.bind(this);
     this.submitCredits = this.submitCredits.bind(this);
     this.showNotifications = this.showNotifications.bind(this);
+    // this.optionListPopover = this.optionListPopover.bind(this);
   }
 
   componentDidMount() {
@@ -103,6 +105,20 @@ class OptionListEntry extends React.Component {
     this.props.showNotifsCb(option)
   }
 
+  optionListPopover() {
+    return (
+      <Popover id="popover-trigger-hover" title="Guten Tag!" style={this.props.currentSection.displayOptionListPopover}>It's a list of options. Click on one!</Popover>
+    );
+  }
+
+  // displayPopover() {
+  //   if (this.props.clickedOnOption) {
+  //     this.setState({
+  //       optionListPopoverDisplay: { display: 'none'} 
+  //     });
+  //   }
+  // }
+
   render() {
     const containerStyle = {
       display: 'grid',
@@ -128,6 +144,7 @@ class OptionListEntry extends React.Component {
     return (
       <div>
         { this.props.option !== 'End'  ? (
+          <OverlayTrigger placement="right" overlay={this.optionListPopover()}>
           <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
             <div className="optionListEntry" style={containerStyle}>
 
@@ -150,6 +167,7 @@ class OptionListEntry extends React.Component {
             {/* <OptionData data={this.props.optionData}/> */}
             <Button onClick={() => this.props.beginEdit(this.props.option)}>Option Settings</Button>
           </div>
+          </OverlayTrigger>
         ) : (
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">
             <div className="optionListEntry">

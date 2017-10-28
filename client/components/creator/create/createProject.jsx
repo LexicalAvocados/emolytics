@@ -52,6 +52,8 @@ class CreateProject extends React.Component {
     let header = null;
     if (!fromDashboard) {
       header = <h3>Create A Project</h3>;
+    } else if (fromDashboard && this.props.inDemo === 0) {
+      header = <p>Creating a project will end the demo. Make sure you have checked out sections and options before creating a project</p>
     }
 
     return (
