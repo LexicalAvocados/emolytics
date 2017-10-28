@@ -28,7 +28,7 @@ class AddSection extends React.Component {
   submitSectionClick(e) {
     e.preventDefault();
     if (this.props.currentProject.id === 0) {
-      alert('You cannot create new sections within the demo. If you\'d like to leave the demo please create a project.');
+      alert('Got ya! You cannot actually create new sections within the demo. When you want to leave the demo, please create a new project.');
       return;
     } 
     axios.post('/api/addSection', {

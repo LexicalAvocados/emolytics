@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Popover, OverlayTrigger } from 'react-bootstrap';
 import BellIcon from 'react-bell-icon';
+import { connect } from 'react-redux';
 
 const SectionCarousel = (props) => (
   <Carousel>
@@ -56,9 +57,11 @@ const SectionCarousel = (props) => (
                 );
               } else {
                 return (
-                  <Col md={3} className="sectionsScroll" key={i} onClick={props.revealAddSection}>
-                    <h2>+</h2>
-                  </Col>
+                  <OverlayTrigger placement="top" defaultOverlayShown={true} overlay={<Popover style={props.currentSection.hidden || {}} id="popover-trigger-hover" title="Bonjour!">You can click here to create a section! Or click on the dummy section to the left.</Popover>} key={i}>
+                    <Col md={3} className="sectionsScroll" onClick={props.revealAddSection}>
+                      <h2>+</h2>
+                    </Col>
+                  </OverlayTrigger>
                 );
               }
             })}
@@ -74,5 +77,11 @@ const notifDisplayStyle = {
   float: "right"
 }
 
+const mapStateToProps = (state) => ({
+  router: state.router,
+  currentSection: state.currentSection
+});
 
-export default SectionCarousel;
+export default connect(
+  mapStateToProps
+)(SectionCarousel);

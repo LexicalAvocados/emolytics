@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row, Carousel, Modal } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import AddSection from '../create/addSection.jsx';
 import SectionCarousel from './SectionCarousel.jsx';
@@ -31,10 +31,16 @@ class DisplaySections extends React.Component {
 
   componentDidMount() {
     this.splitSections();
+    if (this.props.currentProject.id !== 0) { // Clear for all but demo
+      this.props.currentSection.hidden = {display: 'none'};
+    }
+    if (this.props.currentProject.id === 0 && this.props.currentSection.backFromHome) {
+      this.props.currentSection.hidden = {};
+    }
   }
 
 
-  onSectionClick(obj, fromProjectHome) { // Make this functional
+  onSectionClick(obj, fromProjectHome) { 
     axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
       .then((options) => {
         let sortedOptions = options.data.sort((one, two) => {
@@ -44,12 +50,15 @@ class DisplaySections extends React.Component {
         sortedOptions.push('End')
         obj['options'] = sortedOptions;
         this.props.actions.changeCurrentSection(obj, options);
+        if (!this.props.currentSection.hidden || !this.props.currentSection.hasOwnProperty('display')) {
+          this.props.currentSection.hidden = {display: 'none'};
+          this.props.currentSection.backFromHome = false;
+        } 
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');
       });
     if (fromProjectHome) {
-      // this.props.history.push('/section' + obj.id);
       this.props.collapse();
     }
   }
@@ -118,6 +127,9 @@ class DisplaySections extends React.Component {
   }
 
   render() {
+    var hidden = {
+        display: 'none'
+      };
     return (
       <div>
         <SectionCarousel
