@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import BellIcon from 'react-bell-icon';
+import InvitationPanel from './InvitationPanel.jsx';
 
 class OptionListEntry extends React.Component {
   constructor(props) {
@@ -20,24 +21,55 @@ class OptionListEntry extends React.Component {
       total: 0,
       perView: 0,
       notEnoughCredits: false,
-      optionListPopoverDisplay: {}
+      invited: false,
+      testers: [],
+      testersCopy: [],
+      haveInvited: false,
+      displayPanel: false,
+      specificTesters: []
     };
     this.revealAddOption = this.revealAddOption.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
     this.updatePerView = this.updatePerView.bind(this);
     this.submitCredits = this.submitCredits.bind(this);
     this.showNotifications = this.showNotifications.bind(this);
-    // this.optionListPopover = this.optionListPopover.bind(this);
+    this.renderPanel = this.renderPanel.bind(this);
+    this.changeTestersCopy = this.changeTestersCopy.bind(this);
+    this.revealAddOption = this.revealAddOption.bind(this);
+    this.optionListPopover = this.optionListPopover.bind(this);
+    this.filterTestersForOptions = this.filterTestersForOptions.bind(this);
+    this.renderInvited = this.renderInvited.bind(this);
   }
 
   componentDidMount() {
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);
+        this.setState({
+          specificTesters: testerIds.data
+        }, () => this.filterTestersForOptions());
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
       });
+  }
+
+  renderPanel() {
+    this.setState({
+      displayPanel: !this.state.displayPanel,
+    });
+  }
+
+  changeTestersCopy(filtered) {
+    this.setState({
+      testersCopy: filtered
+    });
+  }
+
+  renderInvited() {
+    this.setState({
+      invited: !this.state.invited
+    });
   }
 
   revealAddOption() {
@@ -45,6 +77,21 @@ class OptionListEntry extends React.Component {
       showAddOption: !this.state.showAddOption
     });
   }
+
+  filterTestersForOptions() {
+    let priorInvites = true
+    let uninvitedTesters = this.props.allTesters.filter((tester) => {
+      if (this.state.specificTesters.indexOf(tester.id) === -1) {
+        return tester;
+      } 
+    });
+    this.setState({
+      testers: uninvitedTesters,
+      testersCopy: uninvitedTesters,
+      haveInvited: priorInvites
+    });
+  }
+
 
   updateTotal(e) {
     if(e.target.value > this.props.loggedInUser.credits) {
@@ -120,14 +167,6 @@ class OptionListEntry extends React.Component {
     }
   }
 
-  // displayPopover() {
-  //   if (this.props.clickedOnOption) {
-  //     this.setState({
-  //       optionListPopoverDisplay: { display: 'none'} 
-  //     });
-  //   }
-  // }
-
   render() {
     const containerStyle = {
       display: 'grid',
@@ -174,7 +213,7 @@ class OptionListEntry extends React.Component {
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
-            <Button onClick={() => this.props.beginEdit(this.props.option)}>Option Settings</Button>
+            <Button onClick={() => this.props.beginEdit(this.props.option, this.state.testers, this.state.testersCopy)}>Option Settings</Button>
           </div>
           </OverlayTrigger>
         ) : (
@@ -214,6 +253,23 @@ class OptionListEntry extends React.Component {
               updatePerView={this.updatePerView}
               credits={this.props.loggedInUser.credits}
             />
+            { this.state.haveInvited ? (
+            <p className="closerText">You have previously invited testers to view this option</p>
+          ) : ( null )}
+            { !this.state.invited ? (
+              !this.state.displayPanel ? (
+                <Button onClick={this.renderPanel}>Invite testers</Button>
+              ) : (
+                <InvitationPanel 
+                  renderInvited={this.renderInvited}
+                  changeTestersCopy={this.changeTestersCopy}
+                  renderPanel={this.renderPanel} 
+                />
+              )
+            ) : (
+              <p>Testers Invited!</p>
+            )}
+
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.props.toggleEdit}>Close</Button>
