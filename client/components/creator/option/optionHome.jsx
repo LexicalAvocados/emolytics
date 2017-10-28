@@ -47,13 +47,14 @@ class OptionHome extends React.Component {
       heatmapSetting: 1,
       videoTime: 0,
       playVideoForHM: false,
+      optionEmotionObj: { emotionPerc: {}, attention: ['Attention'] },
+      demographicStats: {},
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
     this.generateCharts = this.generateCharts.bind(this);
     this.changeSideNavSelection = this.changeSideNavSelection.bind(this);
     this.lineGraphDataSwitch = this.lineGraphDataSwitch.bind(this);
-    this.setStateAfterDuration = this.setStateAfterDuration.bind(this);
     this.handleUserSelectCb = this.handleUserSelectCb.bind(this);
     this.recalculateChartsBasedOnUserSelect = this.recalculateChartsBasedOnUserSelect.bind(this);
     this.calculateCompletionPerc = this.calculateCompletionPerc.bind(this);
@@ -63,47 +64,38 @@ class OptionHome extends React.Component {
     this.playVideoButtonCallback = this.playVideoButtonCallback.bind(this);
     this.playVideoButtonIcon = this.playVideoButtonIcon.bind(this);
     this.selectChange = this.selectChange.bind(this)
-    // console.log(this);
+    console.log(this);
+  }
+
+  componentWillMount() {
+    // Change the Option to display
+    this.props.actions.changeOption(this.props.currentSection.option);
   }
 
   componentDidMount() {
     //orientation modal
-    this.props.actions.changeOption(this.props.currentSection.option);
     var player = this.refs.player;
     // console.log(player);
     this.setState({
       player: player
     })
-    axios.post('api/option/getAllAnnotations', {
-      option: this.props.currentOption
-    })
-      .then(data => {
-        // console.log("annotations", data.data);
-        var temp = {
-          annotations: data.data
-        }
-        this.props.actions.changeAnnotations(temp);
-      })
-    axios.post('/api/getUsersIdsWhoWatced', {
+    axios.post('/api/getFrames', {
       optionId: this.props.currentSection.option.id
     })
-    .then( (res) => {
-      res.data.forEach(userId => {
-        // console.log('user id for axios', userId.userId)
-        axios.post('/api/getUsersNamesWhoWatced', {
-          userId: userId.userId
-        })
-        .then((username) => {
-          // console.log('user obj response', username)
-          let oldUsers = this.state.allUsers.slice()
-          let newUsers = oldUsers.concat(username.data);
-          this.setState({
-            allUsers: newUsers,
-            selectedUsers: newUsers
-          })
+      .then((res) => {
+        console.log('GET FRAMES', res.data);
+
+        this.setState({
+          optionEmotionObj: res.data
+        }, () => {
+          this.calculateCompletionPerc()
+          this.generateCharts();
         })
       })
-    })
+
+
+
+
     this.setState({
       user: this.props.loggedInUser
     }, () => {
@@ -122,59 +114,59 @@ class OptionHome extends React.Component {
         })
       })
     })
-  }
 
-  calculateCompletionPerc(array) {
-    axios.post('/api/calculateCompletionPercentage', {
-      array: array,
-      duration: this.state.duration
-    })
-    .then( (res) => {
-      this.setState({
-        completion: res.data
-      })
-    })
-  }
 
-  setStateAfterDuration() {
-
-    axios.post('/api/getFrames', {
+    axios.post('/api/getUsersIdsWhoWatced', {
       optionId: this.props.currentSection.option.id
     })
-    .then((res) => {
-
-      this.calculateCompletionPerc(res.data)
-      // console.log('refresher on what is res.data', res.data)
-      axios.post('/api/organizeFramesByEmotion', {
-        frames: res.data,
-        duration: this.state.duration
+      .then( (res) => {
+        res.data.forEach(userId => {
+          // console.log('user id for axios', userId.userId)
+          axios.post('/api/getUsersNamesWhoWatced', {
+            userId: userId.userId
+          })
+          .then((username) => {
+            // console.log('user obj response', username)
+            let oldUsers = this.state.allUsers.slice()
+            let newUsers = oldUsers.concat(username.data);
+            this.setState({
+              allUsers: newUsers,
+              selectedUsers: newUsers
+            })
+          })
+        })
       })
-      .then((res) => {
-        var emoObj = res.data;
-        // console.log('EMO OBJ BACK IN FRONT', emoObj)
-        let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
-          emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
-          this.setState({
-            emotionObj: emoObj,
-            emotionsArrForRender: emoArray
-          })
-        })
-        .then( () => {
-          this.generateCharts(this.state.emotionsArrForRender);
-        })
-        .then( () => {
-          let diff = this.state.duration - this.state.attention[0].length - 1;
-          let padArr = pad([], diff, null);
-          let paddedAttentionArr = [this.state.attention[0].concat(padArr)];
-          this.setState({
-            attention: paddedAttentionArr
-          })
-        })
+
+
+
+    // Get all of the annotations associated with the selected option
+    axios.post('api/option/getAllAnnotations', {
+      option: this.props.currentOption
+    })
+      .then(data => {
+        var temp = {
+          annotations: data.data
+        }
+        this.props.actions.changeAnnotations(temp);
+      })
+  }
+
+  calculateCompletionPerc() {
+    axios.post('/api/option/getDemographics', {
+      id: this.props.currentSection.option.id
+    })
+    .then( (res) => {
+      var cr = res.data.finished / res.data.total
+      console.log('RES DATA', res.data)
+      this.setState({
+        completion: cr,
+        demographicStats: res.data
+      })
     })
   }
 
+
   generateCharts(lineGraphData) {
-      // console.log('generating charts now', lineGraphData);
       var lineData = {
         data: lineGraphData
       }
@@ -192,11 +184,11 @@ class OptionHome extends React.Component {
               timestamp: clickedTimestamp
             }, () => {
               var player = this.refs.player;
-              // console.log(player);
+              console.log(player);
               player.seekTo(this.state.timestamp)
             })
           },
-          columns: lineGraphData,
+          columns: this.state.optionEmotionObj.emotionAvg,
         },
         axis: {
           y: {
@@ -205,18 +197,34 @@ class OptionHome extends React.Component {
         }
       });
 
+      // var pieChart = c3.generate({
+      //   bindto: '.emotionChart',
+      //   data: {
+      //     columns: [
+      //       ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
+      //       ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
+      //     ],
+      //     type : 'pie'
+      //   }
+      // });
       var pieChart = c3.generate({
         bindto: '.emotionChart',
         data: {
           columns: [
-            ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-            ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
+            ['Anger', this.state.optionEmotionObj.emotionPerc.Anger],
+            ['Contempt', this.state.optionEmotionObj.emotionPerc.Contempt],
+            ['Disgust', this.state.optionEmotionObj.emotionPerc.Disgust],
+            ['Fear', this.state.optionEmotionObj.emotionPerc.Fear],
+            ['Happiness', this.state.optionEmotionObj.emotionPerc.Happiness],
+            ['Neutral', this.state.optionEmotionObj.emotionPerc.Neutral],
+            ['Sadness', this.state.optionEmotionObj.emotionPerc.Sadness],
+            ['Surprise', this.state.optionEmotionObj.emotionPerc.Surprise]
           ],
           type : 'pie'
         }
@@ -230,8 +238,6 @@ class OptionHome extends React.Component {
   setDuration(dur) {
     this.setState({
       duration: dur
-    }, () => {
-      this.setStateAfterDuration();
     })
   };
 
@@ -258,10 +264,9 @@ class OptionHome extends React.Component {
     if (this.state.sideNavSelection === 'attention') {
       this.generateCharts(this.state.attention);
     }
-    if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
+    else if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
       this.generateCharts(this.state.emotionsArrForRender)
     }
-    else {}
   };
 
   recalculateChartsBasedOnUserSelect(userIdsArray){
@@ -420,6 +425,8 @@ class OptionHome extends React.Component {
           <div className="optionHomeBottom">
             {this.state.sideNavSelection === 'overview' ?
               (<Overview
+                optionEmotionObj={this.state.optionEmotionObj}
+                demographic={this.state.demographicStats}
                 allUsers={this.state.allUsers}
                 selectedUsers={this.state.selectedUsers}
                 viewer={this.state.user}
@@ -437,10 +444,10 @@ class OptionHome extends React.Component {
             {this.state.sideNavSelection === 'attention' ? (
               <div className='attentionRightPanelContainer'>
                 <div className="optionContainer">
-                  <Demographics selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                  <Demographics demographic={this.state.demographicStats} />
                 </div>
                 <div className="optionContainer">
-                  <Attention attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+                  <Attention optionEmotionObj={this.state.optionEmotionObj} attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
                 </div>
               </div>
             ) : ''}

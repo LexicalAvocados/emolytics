@@ -13,21 +13,19 @@ const Overview = (props) => {
       <div>
         <Col xs={5}>
           <div className="optionContainer">
-            <Demographics user={props.user} selectedUsers={props.selectedUsers} allUsers={props.allUsers}/>
+            <Demographics demographic={props.demographic} user={props.user} selectedUsers={props.selectedUsers} allUsers={props.allUsers}/>
           </div>
           <div className="optionContainer">
             <div className="optionBottom">
               <Feedback likeRatio={props.likeRatio} completionStatus={props.completionStatus} />
-              <Attention attention={props.attention} timestampCallback={props.timestampCallback}/>
+              <Attention optionEmotionObj={props.optionEmotionObj} attention={props.attention} timestampCallback={props.timestampCallback}/>
             </div>
           </div>
         </Col>
 
-
-
         <Col xs={7}>
           <div className="optionContainer">
-            <Emotion emotionsObj={props.emotionsObj} />
+            <Emotion optionEmotionObj={props.optionEmotionObj} emotionsObj={props.emotionsObj} />
           </div>
         </Col>
         <br/>

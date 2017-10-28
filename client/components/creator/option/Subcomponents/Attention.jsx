@@ -3,7 +3,8 @@ import React from 'react';
 const Attention = (props) => {
 
   const calcAvgAtten = (arr) => {
-    return (Math.floor(100*arr.reduce((sum, val) => sum += +val, 0)/arr.length)*100)/100;
+    console.log(props);
+    return (Math.floor(100*arr.reduce((sum, val) => sum += +val, 0)/(arr.length-1))*100)/100;
   }
 
   const timeClickCb = (e) => {
@@ -13,17 +14,21 @@ const Attention = (props) => {
   }
 
   const calcLostFocus = (arr) => {
-    arr = arr.slice(0, 82)
+    // arr = arr.slice(0, 82)
     let moments = [];
+    arr.forEach( (elem, i) => {
+      arr[i] = parseFloat(elem);
+    })
     for (var i = 0; i < 5; i++) {
       var min = Math.min.apply(null, arr)
+      console.log('MIN', min)
       var indexAndSecond = arr.indexOf(min);
       var boredObj = {
-        time: indexAndSecond,
+        time: indexAndSecond + 4,
         value: min
       }
       moments.push(boredObj);
-      arr.splice(indexAndSecond, 1);
+      arr[indexAndSecond] = 3;
     }
     moments = moments.sort((a, b) => a.time - b.time)
     return moments;
@@ -34,17 +39,17 @@ const Attention = (props) => {
 
     <div className="testerAttention">
       
-        <p> Average Attention: {calcAvgAtten(props.attention.slice(1))}%</p>
+        <p> Average Attention: {calcAvgAtten(props.optionEmotionObj.attention.slice(1))}%</p>
         <p> Viewers lost focus: </p>
         <ul>
-          {calcLostFocus(props.attention.slice(4)).map((moment, i) => (
+          {calcLostFocus(props.optionEmotionObj.attention.slice(4)).map((moment, i) => (
             <li key={i}>
               <a onClick={timeClickCb} className='lapseInFocus'>
                 {moment.time}s
               </a>
               <a> - </a>
               <a>
-                ({moment.value*100}%)
+                ({moment.value*100}% avg focus)
               </a>
             </li>
           ))}
