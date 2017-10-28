@@ -14,6 +14,7 @@ const creditRoutes = require('./api/tester/creditRoutes.js');
 const eyeTrackingRoutes = require('./api/creator/eyeTrackingRoutes.js');
 const optionHomeUtilityRoutes = require('./api/creator/optionHomeUtilityRoutes.js');
 const authRoutes = require('./auth/auth.js')
+const AccountInfoRoutes = require('./api/creator/updateAccountInfoRoutes.js');
 
 router.use('/tester', testerRoutes);
 
@@ -61,6 +62,10 @@ router.put('/creator/removeFromFocusGroup', indexRoutes.removeTesterFromFocusGro
 
 router.get('/creator/getCreatorFocusGroups', indexRoutes.getCreatorFocusGroups);
 
+router.post('/creator/updateCreatorBio', AccountInfoRoutes.updateCreatorBio);
+
+router.post('/creator/updateCreatorSocial', AccountInfoRoutes.updateCreatorSocial);
+
 router.get('/creator/getUserAgeRange', detailedDemographicsRoutes.getUserAgeRange);
 
 router.get('/creator/getEyeTrackingForOption', eyeTrackingRoutes.getEyeTrackingForOption);
@@ -89,6 +94,8 @@ router.post('/organizeFramesByEmotion', optionHomeUtilityRoutes.organizeFramesBy
 
 router.post('/calculateCompletionPercentage', optionHomeUtilityRoutes.calculateCompletionPercentage);
 
-router.post('/markNotificationAsSeen', indexRoutes.markNotificationAsSeen)
+router.post('/markNotificationAsSeen', indexRoutes.markNotificationAsSeen);
+
+router.get('/tester/getCreatorData', AccountInfoRoutes.getCreatorDataForPublicProfile)
 
 module.exports = router;

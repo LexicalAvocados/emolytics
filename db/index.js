@@ -49,7 +49,12 @@ const User = sequelize.define('user', {
   patreonEmail: Sequelize.STRING,
   patreonImageUrl: Sequelize.STRING,
   patreonUrl: Sequelize.STRING,
-  patreonVanity: Sequelize.STRING
+  patreonVanity: Sequelize.STRING,
+  profilepicture: Sequelize.STRING,
+  aboutme: Sequelize.STRING,
+  showcasevideo: Sequelize.STRING,
+  youtubeprofile: Sequelize.STRING,
+  twitterhandle: Sequelize.STRING
 });
 
 User.sync({force: false});

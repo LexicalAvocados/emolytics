@@ -9,6 +9,9 @@ const BrowseListEntry = (props) => {
       <p> Title: {props.item.name} </p>
       <p> Credits: {props.item.creditsperview} </p>
       <p> Description: {props.item.description} </p>
+      <Link to={'/cprofile:'+props.item.CrId}>
+        <p>By: {props.item.CrName}</p>
+      </Link>
       <hr/>
       <img src={props.item.thumbnail}></img>
       <br/><br/>

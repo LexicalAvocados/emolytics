@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 
-class CreatorAccount extends React.Component {
+class AddCredits extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,4 +122,4 @@ const mapDispatchToProps = dispatch => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreatorAccount));
+)(AddCredits));

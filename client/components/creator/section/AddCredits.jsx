@@ -10,7 +10,6 @@ class AddCredits extends React.Component {
     };
   }
 
-
   render() {
     const errorStyle = {
       textAlign: "center",

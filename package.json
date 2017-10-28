@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "array-pad": "0.0.1",
+    "async": "^2.5.0",
     "atob": "^2.0.3",
     "aws-sdk": "^2.133.0",
     "axios": "^0.16.2",
