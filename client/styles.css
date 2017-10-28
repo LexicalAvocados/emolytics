@@ -216,14 +216,31 @@ body {
 }
 
 .testerAttention {
-  grid-column: 1;
-  padding: 5%;
+  padding: 0% 4% 2% 4%;
+  padding-top: -6px;
+  text-align: center;
+}
+
+.testerAttentionData {
+  text-align: left;
+  padding: 4%;
 }
 
 .testerFeedback {
+  padding: 2% 4%;
+  text-align: center;
+}
+
+.testerFeedbackHeading {
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+.testerFeedbackData {
   grid-column: 2;
   display: grid;
   grid-template-columns: 50% 50%;
+  text-align: left;
 }
 
 .personalFeedback {

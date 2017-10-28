@@ -13,14 +13,14 @@ const Emotion = (props) => {
     // }
     // let Emoshin = max[0][0].toUpperCase() + max[0].slice(1);
     // let stringForRender = `${Emoshin} (${Math.floor((max[1]/total)*1000)/10}%)`
-    console.log(props);
+    // console.log(props);
     if (props.optionEmotionObj.emotionPerc.anger) {
       return 'NAN'
     } else {
       let emotions = props.optionEmotionObj.emotionPerc
       let highest = { emotion: null, avg: 0 }
       for (var feeling in emotions) {
-        console.log('feeling', emotions[feeling])
+        // console.log('feeling', emotions[feeling])
         if (emotions[feeling] > highest.avg && feeling != 'time') {
           highest.emotion = feeling;
           highest.avg = emotions[feeling];
