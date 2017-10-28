@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row, Carousel, Modal, Panel } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -158,8 +158,9 @@ class SectionHome extends React.Component {
     } else { // Clicked on option
       this.setState({
         showData: true,
-        compareOptions: []
+        compareOptions: [],
       });
+      this.props.currentSection.displayOptionListPopover = { display: 'none'};
       this.props.actions.changeCurrentOption(this.props.currentSection.options[index]);
     }
   }
@@ -319,6 +320,21 @@ class SectionHome extends React.Component {
     })
   }
 
+  // invitationPopover() {
+  //   if (this.props.currentSection.id === 0 && this.props.currentSection.displayOptionListPopover) { // meaning they've been hidden
+  //     return  (
+  //       <Popover id="popover-trigger-hover" title="Invites!" style={this.props.currentSection.displayOptionListPopover}>This is where you invite people.</Popover>
+  //     );
+  //   } else {
+  //     let hidden = {
+  //       display: 'none'
+  //     };
+  //     return (
+  //       <Popover id="popover-trigger-hover" style={hidden}></Popover>
+  //     );
+  //   }
+  // }
+
   render() {
 
     var middleStyle = {
@@ -329,6 +345,11 @@ class SectionHome extends React.Component {
       <div className="sectionHomeContainer">
         <div>
           <div>
+            { this.props.currentSection.id === 0 ? (
+              <p>Welcome to the section home! From here you can see all the options associated with a section. Explain inviting testers to section</p>
+            ):(
+              null
+            )}
             <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`}>
               Description: {this.props.currentProject.description}
             </Panel>
@@ -354,7 +375,9 @@ class SectionHome extends React.Component {
 
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              <Button onClick={this.renderPanel}>Invite testers</Button>
+              // <OverlayTrigger placement="bottom" overlay={this.invitationPopover()}>
+                <Button onClick={this.renderPanel}>Invite testers</Button>
+              // </OverlayTrigger>
             ) : (
               <InvitationPanel
                 options={this.props.currentSection.options}
@@ -399,25 +422,24 @@ class SectionHome extends React.Component {
             null}
 
         </div>
-
-        <Col className="currentSectionOptionsList" md={2}>
-          { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
-            <OptionListEntry
-              option={option}
-              notifications={this.getNotificationsForOption(option)}
-              key={i}
-              index={i}
-              onOptionClick={this.onOptionClick}
-              concatTesters={this.concatTesters}
-              deleteOption={this.deleteOption}
-              beginEdit={this.beginEdit}
-              toggleEdit={this.toggleEdit}
-              showEdit={this.state.showEdit}
-              showNotifsCb={this.showNotifsCb}
-            />
-          ))}
-        </Col>
-
+      
+          <Col className="currentSectionOptionsList" md={2}>
+            { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
+              <OptionListEntry
+                option={option}
+                notifications={this.getNotificationsForOption(option)}
+                key={i}
+                index={i}
+                onOptionClick={this.onOptionClick}
+                concatTesters={this.concatTesters}
+                deleteOption={this.deleteOption}
+                beginEdit={this.beginEdit}
+                toggleEdit={this.toggleEdit}
+                showEdit={this.state.showEdit}
+                showNotifsCb={this.showNotifsCb}
+              />
+            ))}
+          </Col>
         { this.state.showData ? (
           <Col md={10}>
             <OptionHome />
