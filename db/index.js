@@ -60,6 +60,7 @@ User.sync({force: false});
 
 const PatreonCampaign = sequelize.define('patreonCampaign', {
   creationCount: Sequelize.INTEGER,
+  creationName: Sequelize.STRING,
   displayPatronGoals: Sequelize.BOOLEAN,
   earningsVisibility: Sequelize.STRING,
   isChargedImmediately: Sequelize.BOOLEAN,

@@ -104,6 +104,7 @@ app.put('/profile', (req, res) => auth.editProfile(req, res));
 app.get('/oauth/patreon/signup/creator', (req, res) => patreon.handleOAuth(req, res, 'creator'));
 app.get('/oauth/patreon/signup/tester', (req, res) => patreon.handleOAuth(req, res, 'tester'));
 app.get('/oauth/patreon/login', (req, res) => patreon.handleOAuth(req, res, 'login'));
+app.post('/patreon/patrons', (req, res) => patreon.getPatrons(req, res));
 app.get('/redirect/patreon', (req, res) => patreon.getUserInfoAfterOAuth(req, res));
 
 // app.use(auth.checkUser);

@@ -79,7 +79,9 @@ export class Signup extends React.Component {
 
   render() {
     const patreonOAuthLink = 
-      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
+      `https://patreon.com/oauth2/authorize?response_type=code
+                                           &client_id=${patreon.clientId}
+                                           &redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
     return (
       <div className='auth'>
         <h2 className='signupHeader'>New Account</h2>

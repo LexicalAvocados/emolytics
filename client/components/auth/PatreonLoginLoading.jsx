@@ -25,11 +25,13 @@ export class PatreonLoginLoading extends React.Component {
         let {id, username, name, age, sex, race, isCreator, credits} = userData;
         this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
         if (userData.publishedAt) {
-          let {patreonId, patreonAbout, patreonVanity, isPlural, mainVideoUrl, patronCount, pledgeUrl, summary} = userData;
+          let {patreonId, patreonAbout, patreonVanity, campaignId, creationName, isPlural, mainVideoUrl, patronCount, pledgeUrl, summary} = userData;
           let campaign = {
-            patreonId,
+            id: patreonId,
             about: patreonAbout,
             vanity: patreonVanity,
+            campaignId,
+            creationName,
             isPlural,
             mainVideoUrl,
             patronCount,
