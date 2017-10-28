@@ -28,9 +28,6 @@ exports.sendEmails = function(req, res) {
       optionId: options[i % options.length].id,
       userId: invitedArr[i].id
     })
-    .catch((err) => {
-      console.log(err);
-    })
     let mailOptions = {
       from: 'ReactionSync',
       to: invitedArr[i].email,

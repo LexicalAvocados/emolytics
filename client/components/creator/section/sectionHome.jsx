@@ -201,9 +201,9 @@ class SectionHome extends React.Component {
   }
 
   beginEdit(option, testers, testersCopy) {
-    this.props.actions.changeOption(option);
     this.props.currentOption.testers = testers;
     this.props.currentOption.testersCopy = testersCopy;
+    this.props.actions.changeOption(option);
     this.setState({
       showEdit: !this.state.showEdit,
       idOfClickedOnOption: option.id

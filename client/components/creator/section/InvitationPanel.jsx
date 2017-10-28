@@ -2,6 +2,7 @@ import React from 'react';
 import InviteTesters from './InviteTesters.jsx';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 class InvitationPanel extends React.Component {
@@ -14,8 +15,7 @@ class InvitationPanel extends React.Component {
       invited: [],
       testers: [],
       testersCopy: [],
-      options: [],
-      length: 0
+      options: []
     };
     this.selectAge = this.selectAge.bind(this);
     this.selectSex = this.selectSex.bind(this);
@@ -28,15 +28,15 @@ class InvitationPanel extends React.Component {
   }
 
   componentWillMount() {
-    console.log('SWITCHING')
     if (this.props.options) { // Inviting by section
       this.state.options = this.props.options;
       this.state.testers = this.props.testers;
       this.state.testersCopy = this.props.testersCopy;
-      this.state.length = this.state.testersCopy.length
-
+    } else {
+      this.state.options = [ {id: this.props.currentOption.id}];
+      this.state.testers = this.props.currentOption.testers;
+      this.state.testersCopy = this.props.currentOption.testersCopy;
     }
-    console.log('testetsts', this.state.testersCopy.length)
   }
 
   changeTestersCopy(filtered) {
@@ -62,7 +62,7 @@ class InvitationPanel extends React.Component {
     if (e) {
       e.preventDefault();
     }
-    axios.post('/api/sendEmails', { invitedArr: invited, options: this.state.options || this.props.currentOption }) 
+    axios.post('/api/sendEmails', { invitedArr: invited, options: this.state.options}) 
       .then((success) => {
         console.log(success);
         this.props.renderInvited();
@@ -247,4 +247,13 @@ class InvitationPanel extends React.Component {
   
 };
 
-export default InvitationPanel;
+const mapStateToProps = (state) => {
+  return ({
+    router: state.router,
+    currentOption: state.currentOption
+  });
+};
+
+export default connect(
+  mapStateToProps
+) (InvitationPanel);
