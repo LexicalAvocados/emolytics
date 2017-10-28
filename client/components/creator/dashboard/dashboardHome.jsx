@@ -83,7 +83,10 @@ export class DashboardHome extends React.Component {
       });
   }
 
-  onProjectClick(obj, sections) {
+  onProjectClick(obj, sections, id) {
+    if (id === 0 && this.props.currentSection.hidden) {
+      this.props.currentSection.backFromHome = true;
+    }
     obj['sections'] = sections;
     this.props.actions.changeCurrentProject(obj);
   }
@@ -173,7 +176,7 @@ export class DashboardHome extends React.Component {
           <h2 style={inherit}>Projects</h2>
           {this.state.retrieved ? (
             this.state.projects.id === 0 ? (
-              <p style={secondLine}> -- Welcome to ReactionSync. Below you will find a dummy project, hover over it to learn more.</p> 
+              <p style={secondLine}> -- Welcome to ReactionSync. This page lists all your projects. Below you will find a dummy project, hover over it to learn more about how to interact with projects.</p> 
             ) : (
               null)
           ) : (
@@ -267,7 +270,8 @@ const mapStateToProps = (state) => {
     router: state.router,
     currentProject: state.currentProject,
     loggedInUser: state.loggedInUser,
-    notifications: state.notifications
+    notifications: state.notifications,
+    currentSection: state.currentSection
   });
 };
 

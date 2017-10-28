@@ -13,7 +13,7 @@ class ProjectHome extends React.Component {
     this.state = {
       rerenderOptions: false,
       open: true,
-      fromHome: true
+      fromHome: true    
     };
     this.onSectionClick = this.onSectionClick.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
@@ -48,6 +48,11 @@ class ProjectHome extends React.Component {
     };
     return (
       <div className="projectHomeContainer">
+        { this.props.currentProject.id === 0 ? (
+          <p>Welcome to the project home! From here you can view all of the sections associated with a project. Sections are associated with options! Yay!</p>
+        ) : (
+          null
+        )}
         <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`} expanded={this.state.open} onExited={this.redirectToSection}>
             <p style={height}>Description: {this.props.currentProject.description}</p>
         </Panel>
