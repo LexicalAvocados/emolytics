@@ -258,6 +258,14 @@ Transaction.belongsTo(Option);
 
 Transaction.sync({force: false});
 
+const ForgotPassword = sequelize.define('forgotPassword', {
+  link: Sequelize.TEXT,
+});
+
+ForgotPassword.belongsTo(User);
+
+ForgotPassword.sync({force: false})
+
 
 
 module.exports = {
@@ -275,5 +283,6 @@ module.exports = {
   SectionComments,
   Notification,
   Transaction,
-  EyeTracking
+  EyeTracking,
+  ForgotPassword
 };
