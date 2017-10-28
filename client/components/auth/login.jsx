@@ -42,8 +42,8 @@ export class Login extends React.Component {
     })
       .then(res => {
         if (res.data.loggedIn) {
-          let {id, username, name, age, sex, race, isCreator, credits} = res.data.userData;
-          this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits);
+          let {id, username, name, age, sex, race, isCreator, credits, patreonId} = res.data.userData;
+          this.props.actions.setLoggedIn(id, username, name, age, sex, race, isCreator, credits, patreonId);
           if (isCreator) {
             axios.get('/api/creator/getCreatorFocusGroups', {
               params: {
@@ -100,7 +100,10 @@ export class Login extends React.Component {
     var forgotPassword = {
       textAlign: 'center'
     }
-    const patreonOAuthLink = `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon`;
+    const patreonOAuthLink =
+      `https://patreon.com/oauth2/authorize?response_type=code
+                                           &client_id=${patreon.clientId}
+                                           &redirect_uri=http://localhost:3000/oauth/patreon/login`;
     return (
       <div className='auth'>
         <h2 className='loginHeader'>Log In</h2>

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import FocusGroupsList from './FocusGroupsList.jsx';
+import FocusGroupsPatreonModule from './FocusGroupsPatreonModule.jsx';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -98,6 +99,7 @@ class FocusGroupsPage extends React.Component {
     let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
+        {this.props.patreonCampaign.id ? <FocusGroupsPatreonModule /> : null}
         <h2>New Group</h2>
         <form onSubmit={this.createNewFocusGroup}>
           <FormControl
@@ -166,6 +168,7 @@ const mapStateToProps = (state) => ({
   loggedInUser: state.loggedInUser,
   focusGroups: state.focusGroups,
   currentFocusGroup: state.currentFocusGroup,
+  patreonCampaign: state.patreonCampaign,
   router: state.router
 });
 

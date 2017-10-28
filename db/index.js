@@ -59,15 +59,45 @@ const User = sequelize.define('user', {
 
 User.sync({force: false});
 
+// ~~~~~~~~~~~~~~~~~~~~~~~ //
+// Patreon Campaign Schema //
+// ~~~~~~~~~~~~~~~~~~~~~~~ //
+
+const PatreonCampaign = sequelize.define('patreonCampaign', {
+  campaignId: Sequelize.INTEGER,
+  creationCount: Sequelize.INTEGER,
+  creationName: Sequelize.STRING,
+  displayPatronGoals: Sequelize.BOOLEAN,
+  earningsVisibility: Sequelize.STRING,
+  isChargedImmediately: Sequelize.BOOLEAN,
+  isMonthly: Sequelize.BOOLEAN,
+  isNsfw: Sequelize.BOOLEAN,
+  isPlural: Sequelize.BOOLEAN,
+  mainVideoUrl: Sequelize.STRING,
+  patronCount: Sequelize.INTEGER,
+  payPerName: Sequelize.STRING,
+  pledgeSum: Sequelize.INTEGER,
+  pledgeUrl: Sequelize.STRING,
+  publishedAt: Sequelize.DATE,
+  summary: Sequelize.STRING,
+  thanksMsg: Sequelize.STRING,
+  thanksVideoUrl: Sequelize.STRING
+});
+
+PatreonCampaign.belongsTo(User);
+
+PatreonCampaign.sync({force: false});
+
 // ~~~~~~~~~~~~~~~~~~ //
 // Focus Group Schema //
 // ~~~~~~~~~~~~~~~~~~ //
 
 const FocusGroup = sequelize.define('focusGroup', {
-  name: Sequelize.STRING
+  name: Sequelize.STRING,
 });
 
 FocusGroup.belongsTo(User);
+FocusGroup.belongsTo(PatreonCampaign);
 
 FocusGroup.sync({force: false});
 
@@ -272,10 +302,10 @@ ForgotPassword.belongsTo(User);
 ForgotPassword.sync({force: false})
 
 
-
 module.exports = {
   sequelize,
   User,
+  PatreonCampaign,
   FocusGroup,
   FocusGroupAndTester,
   Project,

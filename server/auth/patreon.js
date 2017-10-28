@@ -1,25 +1,25 @@
 const url = require('url');
 const axios = require('axios');
+const sequelize = require('../../db').sequelize;
 const User = require('../../db').User;
-const keys = require('../../key.js');
+const PatreonCampaign = require('../../db').PatreonCampaign;
+
 const patreon = require('patreon');
 const patreonAPI = patreon.patreon;
+const accessToken = require('../../key.js').patreon.accessToken;
+const patreonAPIClient = patreonAPI(accessToken);
 
-const clientId = keys.patreon.clientId;
-const clientSecret = keys.patreon.clientSecret;
-const oauthClient = patreon.oauth(clientId, clientSecret);
+exports.handleOAuth = (req, res, mode) => {
+  let hasExistingAccount;
+  let hasCampaign;
+  let initialPatreonLogin;
 
-exports.handleOAuthRedirect = (req, res) => {
-  const oauthGrantCode = url.parse(req.url, true).query.code;
-
-  oauthClient.getTokens(oauthGrantCode, 'http://localhost:3000/oauth/patreon')
-    .then(tokensResponse => {
-      const patreonAPIClient = patreonAPI(tokensResponse.access_token);
-      return patreonAPIClient('/current_user/campaigns');
-    })
+  patreonAPIClient('/current_user/campaigns')
     .then(({store}) => {
+      console.log('data store received from patreon');
       let patreonAccount = store.graph.user[Object.keys(store.graph.user)[0]];
-      let patreonAccountCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
+      let patreonCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
+      hasCampaign = (patreonCampaign ? true : false);
       
       return User.findOne({
         where: {
@@ -28,9 +28,14 @@ exports.handleOAuthRedirect = (req, res) => {
       })
         .then(existingAccount => {
           if (existingAccount) {
-            return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount);
+            hasExistingAccount = true;
+            if (existingAccount.dataValues.patreonId) {
+              initialPatreonLogin = false;
+            }
+            return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount, mode, patreonCampaign);
           } else {
-            return createNewAccountWithPatreonInfo(patreonAccount);
+            hasExistingAccount = false;
+            return createNewAccountWithPatreonInfo(patreonAccount, mode, patreonCampaign);
           }
         })
         .catch(err => {
@@ -39,7 +44,14 @@ exports.handleOAuthRedirect = (req, res) => {
     })
     .then(user => {
       req.session.username = user.username;
-      res.redirect('/loading/patreon');
+      let queryMode = (mode === 'login' ? 'login' : (mode === 'creator' ? 'creator' : 'tester'));
+      console.log('queryMode right before redirect:', queryMode);
+      res.redirect(
+        `/loading/patreon?type=${queryMode}
+                         &existing=${hasExistingAccount}`
+                         // &campaign=${hasCampaign}
+                         // &initial=${initialPatreonLogin}
+      );
     })
     .catch(err => {
       console.error('Patreon OAuth error:', err);
@@ -48,55 +60,158 @@ exports.handleOAuthRedirect = (req, res) => {
 };
 
 exports.getUserInfoAfterOAuth = (req, res) => {
-  User.findOne({
-    where: {
-      username: req.session.username
-    }
-  })
+  sequelize.query(`SELECT "users"."id", "users"."username", "users"."name", "users"."age", 
+                  "users"."sex", "users"."race", "users"."isCreator", "users"."credits", 
+                  "users"."patreonId", "patreonCampaigns"."campaignId", 
+                  "users"."patreonAbout", "users"."patreonVanity", "patreonCampaigns"."creationName", 
+                  "patreonCampaigns"."isPlural", "patreonCampaigns"."mainVideoUrl", "patreonCampaigns"."patronCount", 
+                  "patreonCampaigns"."pledgeUrl", "patreonCampaigns"."publishedAt", "patreonCampaigns"."summary" 
+                  FROM "users" LEFT OUTER JOIN "patreonCampaigns"
+                  ON "users"."id" = "patreonCampaigns"."userId"
+                  WHERE "users"."username" = '${req.session.username}';`)
     .then(user => {
+      // user should look like this: [[{userObj}], {metadata}]
       res.send({
         loggedIn: true,
-        userData: user.dataValues
+        userData: user[0][0]
       });
     })
     .catch(err => {
+      console.log('Sequelize error:', err);
       res.send(err);
     });
 };
 
-const mergePatreonInfoWithExistingUser = (existingAccount, patreonAccount) => {
-  return existingAccount.update(
+exports.getPatrons = (req, res) => {
+  patreonAPIClient(`/campaigns/${req.body.campaignId}/pledges`)
+    .then(({store}) => {
+      // store.graph should look like this:
+      // { user: { 'creatorId': { userObj }, 'patronId': { userObj }, 'patronId': { userObj } }
+      console.log('Users data received from Patreon:', store.graph.user);
+      let users = store.graph.user;
+      let patrons = [];
+      for (var id in users) {
+        if (Number(id) !== req.body.patreonId) {
+          User.findOne({
+            where: {
+              email: users[id].email
+            }
+          })
+            .then(patronAcct => {
+              if (patronAcct) {
+                patrons.push(patronAcct);
+              } else {
+                patrons.push({
+                  patreonId: id,
+                  email: users[id].email,
+                  fullName: users[id].full_name
+                });
+              }
+            })
+            .catch(err => {
+              console.log('Error querying DB for Patron:', err);
+            });
+        }
+      }
+      setTimeout(() => res.send(patrons), 100);
+    })
+    .catch(err => {
+      console.log('Error fetching Patron data from Patreon:', err);
+      res.send(err);
+    });
+}
+
+const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => {
+  return existing.update(
     {
       lastloggedin: new Date(),
-      patreonId: patreonAccount.id,
-      patreonAbout: patreonAccount.about,
-      patreonCreatedAt: patreonAccount.created,
-      patreonEmail: patreonAccount.email,
-      patreonImageUrl: patreonAccount.image_url,
-      patreonUrl: patreonAccount.url,
-      patreonVanity: patreonAccount.vanity
+      patreonId: patreon.id,
+      patreonAbout: patreon.about,
+      patreonCreatedAt: patreon.created,
+      patreonEmail: patreon.email,
+      patreonImageUrl: patreon.image_url,
+      patreonUrl: patreon.url,
+      patreonVanity: patreon.vanity
     },
     {
       returning: true
     }
-  );
+  )
+    .then(user => {
+      if (user.isCreator) {
+        PatreonCampaign.create({
+          campaignId: campaign.id,
+          creationCount: campaign.creation_count,
+          creationName: campaign.creation_name,
+          displayPatronGoals: campaign.display_patron_goals,
+          earningsVisibility: campaign.earnings_visibility,
+          isChargedImmediately: campaign.is_charged_immediately,
+          isMonthly: campaign.is_monthly,
+          isNsfw: campaign.is_nsfw,
+          isPlural: campaign.is_plural,
+          mainVideoUrl: campaign.main_video_url,
+          patronCount: campaign.patron_count,
+          payPerName: campaign.pay_per_name,
+          pledgeSum: campaign.pledge_sum,
+          pledgeUrl: campaign.pledge_url,
+          publishedAt: campaign.published_at,
+          summary: campaign.summary,
+          thanksMsg: campaign.thanks_msg,
+          thanksVideoUrl: campaign.thanks_video_url,
+          userId: user.id
+        });
+      }
+      return user;
+    })
+    .catch(err => {
+      console.log('Error merging Patreon into DB:', err);
+    });
 };
 
-const createNewAccountWithPatreonInfo = (patreonAccount) => {
+const createNewAccountWithPatreonInfo = (patreon, mode, campaign) => {
   return User.create({
-    username: patreonAccount.vanity,
-    email: patreonAccount.email,
-    name: patreonAccount.full_name,
+    username: patreon.vanity,
+    email: patreon.email,
+    name: patreon.full_name,
     isCreator: true,
     lastloggedin: new Date(),
-    patreonId: patreonAccount.id,
-    patreonAbout: patreonAccount.about,
-    patreonCreatedAt: patreonAccount.created,
-    patreonEmail: patreonAccount.email,
-    patreonImageUrl: patreonAccount.image_url,
-    patreonUrl: patreonAccount.url,
-    patreonVanity: patreonAccount.vanity
-  });
+    patreonId: patreon.id,
+    patreonAbout: patreon.about,
+    patreonCreatedAt: patreon.created,
+    patreonEmail: patreon.email,
+    patreonImageUrl: patreon.image_url,
+    patreonUrl: patreon.url,
+    patreonVanity: patreon.vanity
+  })
+    .then(newUser => {
+      if (newUser.isCreator) {
+        PatreonCampaign.create({
+          campaignId: campaign.id,
+          creationCount: campaign.creation_count,
+          creationName: campaign.creation_name,
+          displayPatronGoals: campaign.display_patron_goals,
+          earningsVisibility: campaign.earnings_visibility,
+          isChargedImmediately: campaign.is_charged_immediately,
+          isMonthly: campaign.is_monthly,
+          isNsfw: campaign.is_nsfw,
+          isPlural: campaign.is_plural,
+          mainVideoUrl: campaign.main_video_url,
+          patronCount: campaign.patron_count,
+          payPerName: campaign.pay_per_name,
+          pledgeSum: campaign.pledge_sum,
+          pledgeUrl: campaign.pledge_url,
+          publishedAt: campaign.published_at,
+          summary: campaign.summary,
+          thanksMsg: campaign.thanks_msg,
+          thanksVideoUrl: campaign.thanks_video_url,
+          userId: newUser.id
+        });
+      }
+      return newUser;
+    })
+    .catch(err => {
+      console.log('Error creating new DB entries with Patreon data:', err);
+    });
 };
 
 // PATREON API '/current_user/campaigns/'' RESPONSE DATA EXAMPLE

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import loggedInUser from './loggedInUser';
+import patreonCampaign from './patreonCampaign';
 import testerQueue from './testerQueue';
 import testerHistory from './testerHistory';
 import focusGroups from './focusGroups';
@@ -17,6 +18,7 @@ import notifications from './setNotifications';
 
 const rootReducer = combineReducers({
   loggedInUser,
+  patreonCampaign,
   testerQueue,
   testerHistory,
   focusGroups,
