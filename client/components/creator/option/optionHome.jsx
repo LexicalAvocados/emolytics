@@ -96,6 +96,7 @@ class OptionHome extends React.Component {
         this.setState({
           optionEmotionObj: res.data
         }, () => {
+          console.log('run generate charts');
           this.calculateCompletionPerc()
           this.generateCharts();
         })
@@ -175,6 +176,7 @@ class OptionHome extends React.Component {
 
 
   generateCharts(lineGraphData) {
+    console.log('run generate charts');
       var lineData = {
         data: lineGraphData
       }
@@ -202,12 +204,12 @@ class OptionHome extends React.Component {
           y: {
             show: false
           }
-        }
+        },
       });
       this.setState({
         graph: lineGraph
       })
-      this.forceUpdate();
+      // this.forceUpdate();
   }
 
   setDuration(dur) {
@@ -334,7 +336,10 @@ class OptionHome extends React.Component {
     e.preventDefault();
     this.setState({
       sideNavSelection: e.target.value
+    }, () => {
+      this.generateCharts();
     })
+
   }
 
   render() {
@@ -386,7 +391,7 @@ class OptionHome extends React.Component {
                         <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
                           ref="player"
                           progressFrequency={1000} onProgress={this.updateProgress}
-                          controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+                          controls={true} height="90%" width='100%' className='optionPlayer' onDuration={this.setDuration}
                           config={{
                             youtube: {
                               playerVars: { showinfo: 1}
@@ -404,45 +409,48 @@ class OptionHome extends React.Component {
 
           <div className="optionHomeBottom">
             {this.state.sideNavSelection === 'overview' ?
+              
               (<Overview
                 optionEmotionObj={this.state.optionEmotionObj}
                 demographic={this.state.demographicStats}
-                allUsers={this.state.allUsers}
-                selectedUsers={this.state.selectedUsers}
-                viewer={this.state.user}
-                attention={this.state.attention[0]}
-                user={this.state.user}
                 timestampCallback={this.timestampCallback}
-                emotionsObj={this.state.emotionObj}
-                likeRatio={this.state.likeRatio}
-                completionStatus={this.state.completion}
-                sideNavSelection={this.state.sideNavSelection}
+                generateCharts = {this.generateCharts}
                 />
               ): ''
             }
 
             {this.state.sideNavSelection === 'attention' ? (
-              <div className='attentionRightPanelContainer'>
-                <div className="optionContainer">
-                  <Demographics demographic={this.state.demographicStats} />
+              <Col md={12}>
+                <div className='attentionRightPanelContainer'>
+                  <div className="optionContainer">
+                    <Demographics demographic={this.state.demographicStats} />
+                  </div>
+                  <div className="optionContainer">
+                    <Attention optionEmotionObj={this.state.optionEmotionObj} attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+                  </div>
                 </div>
-                <div className="optionContainer">
-                  <Attention optionEmotionObj={this.state.optionEmotionObj} attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
-                </div>
-              </div>
+              </Col>
             ) : ''}
 
             {this.state.sideNavSelection === 'feedback' ? (
               <div className='feedbackRightPanelContainer'>
-                <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-                <Feedback optionEmotionObj={this.state.optionEmotionObj} demographic={this.state.demographicStats} feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
+                <div className="optionContainer">
+                  <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                </div>
+                <div className="optionContainer">
+                  <Feedback optionEmotionObj={this.state.optionEmotionObj} demographic={this.state.demographicStats} feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
+                </div>
               </div>
             ) : ''}
 
             {this.state.sideNavSelection === 'emotions' ? (
               <div className='emotionsRightPanelContainer'>
-                <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-                <Emotion optionEmotionObj={this.state.optionEmotionObj} emotionsObj={this.state.emotionObj} />
+                <div className="optionContainer">
+                  <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                </div>
+                <div className="optionContainer">
+                  <Emotion optionEmotionObj={this.state.optionEmotionObj} emotionsObj={this.state.emotionObj} />
+                </div>
               </div>
             ) : ''}
 
@@ -580,3 +588,15 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 ) (OptionHome);
+
+
+// allUsers={this.state.allUsers}
+// selectedUsers={this.state.selectedUsers}
+// viewer={this.state.user}
+// attention={this.state.attention[0]}
+// user={this.state.user}
+// timestampCallback={this.timestampCallback}
+// emotionsObj={this.state.emotionObj}
+// likeRatio={this.state.likeRatio}
+// completionStatus={this.state.completion}
+// sideNavSelection={this.state.sideNavSelection}

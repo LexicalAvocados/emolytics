@@ -46,7 +46,7 @@ const Attention = (props) => {
       <div className="testerAttentionData">
       
         <p> Average Attention: {calcAvgAtten(props.optionEmotionObj.attention.slice(1))}%</p>
-        <p> Viewers lost focus: </p>
+        <p> Top momemnts viewers lost focus at: </p>
         <ul>
           {calcLostFocus(props.optionEmotionObj.attention.slice(4)).map((moment, i) => (
             <li key={i}>
@@ -55,7 +55,7 @@ const Attention = (props) => {
               </a>
               <a> - </a>
               <a>
-                ({moment.value*100}% avg focus)
+                Avg Viewer Focus ({moment.value*100}%)
               </a>
             </li>
           ))}

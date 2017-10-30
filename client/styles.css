@@ -105,7 +105,7 @@ body {
 .optionHomeContainer {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: white;
-  padding: 4% 2% 3% 2%;
+  padding: 3% 4% 3% 4%;
   border-radius: 4px;
   margin-bottom: 3%;
 
@@ -184,10 +184,8 @@ body {
 }
 
 .optionPlayer {
-  grid-column: 2;
-  grid-row: 1;
-  margin-left: 3%;
   height: 45vh;
+  padding-right: 1%;
 }
 
 .testerDetails {
@@ -224,18 +222,29 @@ body {
 }
 
 .testerAttention {
-  padding: 0% 4% 2% 4%;
+  /*padding: 0% 4% 2% 4%;*/
+
   padding-top: -6px;
   text-align: center;
 }
 
 .testerAttentionData {
-  text-align: left;
-  padding: 4%;
+  text-align: center;
+  /*padding: 4%;*/
+/*  padding-left: 4%;
+  padding-bottom: 3%;*/
+  padding: 0 5% 5% 5%;
+}
+
+.testerAttentionData ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .testerFeedback {
-  padding: 2% 4%;
+/*  padding: 2% 4%;*/
+  padding-top: 3%;
   text-align: center;
 }
 
@@ -248,7 +257,7 @@ body {
   grid-column: 2;
   display: grid;
   grid-template-columns: 50% 50%;
-  text-align: left;
+  text-align: center;
 }
 
 .personalFeedback {
