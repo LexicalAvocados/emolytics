@@ -480,7 +480,7 @@ class OptionHome extends React.Component {
             ) : ''}
 
             {this.state.sideNavSelection === 'annotations' ? (
-                <Annotations graph={this.state.graph} player={this.state.player}/>
+                <Annotations optionEmotionObj={this.state.optionEmotionObj} graph={this.state.graph} player={this.state.player}/>
             ) : ''}
 
             {this.state.sideNavSelection === 'detailedDemographics' ? (
