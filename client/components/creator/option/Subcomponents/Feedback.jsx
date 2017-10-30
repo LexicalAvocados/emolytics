@@ -16,7 +16,10 @@ const Feedback = (props) => {
   return (
     <div className="testerFeedback">
       <div className="testerFeedbackHeading">
-        <h3> Feedback </h3>
+        <div className="optionTitle">
+          <h4> <small> Feedback </small> </h4>
+        </div>
+        <hr/>
       </div>
       <div className="testerFeedbackData">
         <div className="rawValues">
