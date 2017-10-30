@@ -56,7 +56,7 @@ export class PatreonLoginLoading extends React.Component {
 
     return (
       <div className='patreonLoginLoading'>
-        <h2>Thank you for {isLogin ? 'logged in' : 'signed up'} with Patreon.</h2>
+        <h2>Thank you for {isLogin ? 'logging in' : 'signing up'} with Patreon.</h2>
 
         {hasExisting ?
           <h2>We merged your Patreon details with your existing account.</h2>

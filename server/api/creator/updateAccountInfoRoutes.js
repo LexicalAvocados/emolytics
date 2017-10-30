@@ -71,7 +71,7 @@ exports.getCreatorDataForPublicProfile = (req, res) => {
         creationName: user.creationName || '',
         isPlural: user.isPlural || '',
         pledgeUrl: user.pledgeUrl || '',
-        summary: user.summary || '',
+        summary: user.summary || ''
       }
       res.send(JSON.stringify(responseObj))
     })

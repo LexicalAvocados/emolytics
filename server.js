@@ -106,6 +106,7 @@ app.get('/oauth/patreon/signup/tester', (req, res) => patreon.handleOAuth(req, r
 app.get('/oauth/patreon/login', (req, res) => patreon.handleOAuth(req, res, 'login'));
 app.post('/patreon/patrons', (req, res) => patreon.getPatrons(req, res));
 app.get('/redirect/patreon', (req, res) => patreon.getUserInfoAfterOAuth(req, res));
+app.post('/patreon/webhook', (req, res) => patreon.handleWebhook(req, res));
 
 // app.use(auth.checkUser);
 app.use(passport.initialize());
