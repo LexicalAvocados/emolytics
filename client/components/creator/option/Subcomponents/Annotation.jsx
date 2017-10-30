@@ -9,11 +9,11 @@ class Annotations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: null,
-      end: null,
+      time: 0,
+      end: 0,
       emotion: 'Anger',
       desc: '',
-      select: null,
+      select: "",
       Anger: 0,
       Contempt: 1,
       Disgust: 2,
@@ -46,7 +46,7 @@ class Annotations extends React.Component {
     this.setState({
       [name]: val
     });
-    // console.log(this);
+    console.log(this.state);
   }
 
   addAnnotation(e) {
@@ -59,6 +59,7 @@ class Annotations extends React.Component {
       option: this.props.currentOption,
       desc: this.state.desc
     };
+    console.log('annotation', annotation)
     axios.post('/api/option/addAnnotation', annotation);
 
     this.props.annotations.annotations.push(annotation);
@@ -66,7 +67,7 @@ class Annotations extends React.Component {
     this.props.annotations.annotations.forEach(anno => {
       if (this.state.time === anno.time) {
         anno.emotion = this.state.emotion;
-        anno.desc = this.state.description;
+        anno.desc = this.state.desc;
       }
     });
     var temp = {
@@ -159,6 +160,7 @@ class Annotations extends React.Component {
 
   render() {
     let annotations = this.props.annotations.annotations.map((ann, i) => {
+      console.log(ann);
       return (
         
         <div onClick={() => {

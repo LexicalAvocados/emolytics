@@ -14,7 +14,7 @@ const router = express.Router();
 
 
 router.post('/addAnnotation', (req, res) => {
-// console.log(req.body);
+console.log(req.body);
   OptionAndAnnotation.findOne({where: {optionId: req.body.option.id, time: req.body.time}})
     .then(anno => {
       if (anno) {

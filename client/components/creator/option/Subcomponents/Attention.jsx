@@ -3,7 +3,7 @@ import React from 'react';
 const Attention = (props) => {
 
   const calcAvgAtten = (arr) => {
-    console.log(props);
+    // console.log(props);
     return (Math.floor(100*arr.reduce((sum, val) => sum += +val, 0)/(arr.length-1))*100)/100;
   }
 
