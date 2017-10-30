@@ -38,7 +38,10 @@ const Attention = (props) => {
   return (
 
     <div className="testerAttention">
-      <h3> Attention </h3>
+      <div className="optionTitle">
+        <h4> <small> Attention </small> </h4>
+      </div>
+      <hr/>
 
       <div className="testerAttentionData">
       
