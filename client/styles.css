@@ -111,6 +111,14 @@ body {
 
 }
 
+.optionTitle {
+  text-align: center;
+  padding: 0;
+  margin-left: 12px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
 .sidemenucontainer {
 /*  grid-column: 1;
   grid-row: 1;

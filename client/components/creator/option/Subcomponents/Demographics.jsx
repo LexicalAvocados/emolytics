@@ -19,7 +19,10 @@ const Demographics = (props) => {
 
   return (
     <div className="testerDetails">
-      <h3> Demographics </h3>
+      <div className="optionTitle">
+        <h4> <small> Demographics </small> </h4>
+      </div>
+      <hr/>
         <div className='allUsers'>
           <p> Selected: All Viewers ({props.demographic.total})</p>
           <div className='averages'>
