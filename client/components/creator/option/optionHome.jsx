@@ -47,7 +47,13 @@ class OptionHome extends React.Component {
       heatmapSetting: 1,
       videoTime: 0,
       playVideoForHM: false,
-      optionEmotionObj: { emotionPerc: {}, attention: ['Attention'], count:[0] },
+      optionEmotionObj: { 
+        emotionPerc: {
+          Contempt: 0,
+        }, 
+        attention: ['Attention'], 
+        count:[0] 
+      },
       demographicStats: {},
     }
     this.timestampCallback = this.timestampCallback.bind(this);
@@ -71,6 +77,8 @@ class OptionHome extends React.Component {
     // Change the Option to display
     this.props.actions.changeOption(this.props.currentSection.option);
   }
+
+
 
   componentDidMount() {
     //orientation modal
@@ -194,39 +202,6 @@ class OptionHome extends React.Component {
           y: {
             show: false
           }
-        }
-      });
-
-      // var pieChart = c3.generate({
-      //   bindto: '.emotionChart',
-      //   data: {
-      //     columns: [
-      //       ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
-      //     ],
-      //     type : 'pie'
-      //   }
-      // });
-      var pieChart = c3.generate({
-        bindto: '.emotionChart',
-        data: {
-          columns: [
-            ['Anger', this.state.optionEmotionObj.emotionPerc.Anger],
-            ['Contempt', this.state.optionEmotionObj.emotionPerc.Contempt],
-            ['Disgust', this.state.optionEmotionObj.emotionPerc.Disgust],
-            ['Fear', this.state.optionEmotionObj.emotionPerc.Fear],
-            ['Happiness', this.state.optionEmotionObj.emotionPerc.Happiness],
-            ['Neutral', this.state.optionEmotionObj.emotionPerc.Neutral],
-            ['Sadness', this.state.optionEmotionObj.emotionPerc.Sadness],
-            ['Surprise', this.state.optionEmotionObj.emotionPerc.Surprise]
-          ],
-          type : 'pie'
         }
       });
       this.setState({

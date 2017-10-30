@@ -40,31 +40,3 @@ const hrStyle = {
 }
 
 export default Demographics;
-
-
-      // <h3> Demographics </h3>
-      // {props.selectedUsers.length < props.allUsers.length ? (
-      //   <div className='specificUsers'>
-      //     <p> Selected viewers: </p>
-      //     <div className='userDetails'>
-      //       {props.selectedUsers.map((userObj, i) => (
-      //         <p key={i}> {userObj.name || userObj.username } (Gender: {userObj.sex || 'N/A'}, Age: {userObj.age || 'N/A'})</p>
-      //       ))}
-      //     </div>
-
-      //     <div className='averages'>
-      //       <p> Avg Age: {calcAvgAge(props.selectedUsers)}</p>
-      //       <p> Gender Distribution: {calcGenderDistribution(props.selectedUsers)}</p>
-      //     </div>
-
-      //   </div>
-      // ): (
-      //   <div className='allUsers'>
-      //     <p> Selected: All Viewers ({props.selectedUsers.length})</p>
-      //     <div className='averages'>
-      //       <p> Avg Age: {calcAvgAge(props.selectedUsers)}</p>
-      //       <p> Gender Distribution: {calcGenderDistribution(props.selectedUsers)}</p>
-      //     </div>
-      //   </div>
-      // )}
-      // <hr style={hrStyle}/>

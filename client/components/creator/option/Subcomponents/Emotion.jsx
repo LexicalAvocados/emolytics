@@ -1,23 +1,54 @@
 import React from 'react';
+import c3 from 'c3';
 
-const Emotion = (props) => {
+class Emotion extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const calcMaxEmotion = () => {
-    // console.log('calcMaxEmotion obj:', obj);
-    // var total = 0;
-    // var max = ["emotion", 0]
-    // for (var key in obj) {
-    //   let currVal = obj[key].slice(1).reduce((sum, val) => sum+= +val, 0);
-    //   total += currVal;
-    //   if(currVal > max[1]) max = [ obj[key][0], currVal ]
-    // }
-    // let Emoshin = max[0][0].toUpperCase() + max[0].slice(1);
-    // let stringForRender = `${Emoshin} (${Math.floor((max[1]/total)*1000)/10}%)`
-    // console.log(props);
-    if (props.optionEmotionObj.emotionPerc.anger) {
+    this.state = {
+
+    }
+    this.generateCharts = this.generateCharts.bind(this);
+    this.calcMaxEmotion = this.calcMaxEmotion.bind(this);
+
+  }
+
+  componentDidMount() {
+    this.generateCharts();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.optionEmotionObj.emotionPerc.Anger) {
+      this.generateCharts();
+    }
+  }
+
+  generateCharts() {
+    if (this.props.optionEmotionObj.emotionPerc.Anger) {
+      c3.generate({
+        bindto: '.emotionChart',
+        data: {
+          columns: [
+            ['Anger', this.props.optionEmotionObj.emotionPerc.Anger],
+            ['Contempt', this.props.optionEmotionObj.emotionPerc.Contempt],
+            ['Disgust', this.props.optionEmotionObj.emotionPerc.Disgust],
+            ['Fear', this.props.optionEmotionObj.emotionPerc.Fear],
+            ['Happiness', this.props.optionEmotionObj.emotionPerc.Happiness],
+            ['Neutral', this.props.optionEmotionObj.emotionPerc.Neutral],
+            ['Sadness', this.props.optionEmotionObj.emotionPerc.Sadness],
+            ['Surprise', this.props.optionEmotionObj.emotionPerc.Surprise]
+          ],
+          type : 'pie'
+        }
+      });
+    }
+  }
+
+  calcMaxEmotion() {
+    if (this.props.optionEmotionObj.emotionPerc.anger) {
       return 'NAN'
     } else {
-      let emotions = props.optionEmotionObj.emotionPerc
+      let emotions = this.props.optionEmotionObj.emotionPerc
       let highest = { emotion: null, avg: 0 }
       for (var feeling in emotions) {
         // console.log('feeling', emotions[feeling])
@@ -31,17 +62,28 @@ const Emotion = (props) => {
     }
   }
 
-  return (
-    <div className="testerEmotion">
-      <h3 style={center}> Most Prevalent Emotion: {calcMaxEmotion()}</h3>
-      <p className='chartHeader'> Overall Emotion Breakdown: </p>
-      <div className='emotionChart'></div>
-    </div>
-  )
+  render() {
+    const center = {
+      textAlign: "center"
+    }
+
+    return (
+      <div className="testerEmotion">
+        <div className="optionTitle">
+          <h4> <small> Emotions </small> </h4>
+        </div>
+        <hr/>
+        <p style={center}> Most Prevalent Emotion: {this.calcMaxEmotion()}</p>
+        <p className='chartHeader'> Overall Emotion Breakdown: </p>
+        <div className='emotionChart'></div>
+      </div>
+    )
+
+  }
+
+
 };
 
-const center = {
-  textAlign: "center"
-}
+
 
 export default Emotion;
