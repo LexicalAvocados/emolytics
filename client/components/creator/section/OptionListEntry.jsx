@@ -121,10 +121,6 @@ class OptionListEntry extends React.Component {
       float: 'right'
     }
 
-    //optionListEntry is grid with 2 columns (80/20)
-      // 1st div in column 1 (img, details)
-      // 2nd div in column 2 (jut BellIcon)
-
     return (
       <div>
         { this.props.option !== 'End'  ? (
