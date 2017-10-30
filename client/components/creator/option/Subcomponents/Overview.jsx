@@ -6,55 +6,63 @@ import Emotion from './Emotion.jsx';
 import Feedback from './Feedback.jsx';
 import { Col } from 'react-bootstrap';
 
-const Overview = (props) => {
+class Overview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
 
-  return (
-    <div className='testerAnalyticsContainer'>
-      <div>
+    }
+
+  }
+
+  componentDidMount() {
+    // this.props.generateCharts();
+  }
+
+
+
+
+  render() {
+    return (
+      <div className='testerAnalyticsContainer'>
         <div>
-          <Col xs={5}>
-            <div className="optionContainer">
-              <Demographics demographic={props.demographic} user={props.user} selectedUsers={props.selectedUsers} allUsers={props.allUsers}/>
-            </div>
-            <div className="optionContainer">
-              <Attention optionEmotionObj={props.optionEmotionObj} attention={props.attention} timestampCallback={props.timestampCallback}/>
-            </div>
-            <br/>
-            <div className="optionContainer">
-              <Feedback demographic={props.demographic} optionEmotionObj={props.optionEmotionObj} likeRatio={props.likeRatio} completionStatus={props.completionStatus}/> 
-            </div>
-
-
-          </Col>
-
-          <Col xs={7}>
-            <div className="optionContainer">
-              <Emotion optionEmotionObj={props.optionEmotionObj} emotionsObj={props.emotionsObj} />
-            </div>
-            <br/>
-
-          </Col>
+          <div>
+            <Col xs={5}>
+              <div className="optionContainer">
+                <Demographics demographic={this.props.demographic} user={this.props.user} selectedUsers={this.props.selectedUsers} allUsers={this.props.allUsers}/>
+              </div>
+              <div className="optionContainer">
+                <Attention optionEmotionObj={this.props.optionEmotionObj} attention={this.props.attention} timestampCallback={this.props.timestampCallback}/>
+              </div>
+              <br/>
+              <div className="optionContainer">
+                <Feedback demographic={this.props.demographic} optionEmotionObj={this.props.optionEmotionObj} /> 
+              </div>
+            </Col>
+            <Col xs={7}>
+              <div className="optionContainer">
+                <Emotion optionEmotionObj={this.props.optionEmotionObj} emotionsObj={this.props.emotionsObj} />
+              </div>
+              <br/>
+            </Col>
+          </div>
+          <div>
+            <Col xs={6}>
+            </Col>
+            <Col xs={6}>
+            </Col>
+          </div>
+          <br/>
         </div>
-        <div>
-          <Col xs={6}>
-
-          </Col>
-
-
-          <Col xs={6}>
-
-
-          </Col>
-        </div>
-        <br/>
-
-
       </div>
+    )
+  }
 
 
 
-    </div>
-  )
 }
+
+
+
 
 export default Overview;

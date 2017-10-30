@@ -3,7 +3,7 @@ import React from 'react';
 const Attention = (props) => {
 
   const calcAvgAtten = (arr) => {
-    console.log(props);
+    // console.log(props);
     return (Math.floor(100*arr.reduce((sum, val) => sum += +val, 0)/(arr.length-1))*100)/100;
   }
 
@@ -46,7 +46,7 @@ const Attention = (props) => {
       <div className="testerAttentionData">
       
         <p> Average Attention: {calcAvgAtten(props.optionEmotionObj.attention.slice(1))}%</p>
-        <p> Viewers lost focus: </p>
+        <p> Top momemnts viewers lost focus at: </p>
         <ul>
           {calcLostFocus(props.optionEmotionObj.attention.slice(4)).map((moment, i) => (
             <li key={i}>
@@ -55,7 +55,7 @@ const Attention = (props) => {
               </a>
               <a> - </a>
               <a>
-                ({moment.value*100}% avg focus)
+                Avg Viewer Focus ({moment.value*100}%)
               </a>
             </li>
           ))}

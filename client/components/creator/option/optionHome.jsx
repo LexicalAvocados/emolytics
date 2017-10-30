@@ -47,7 +47,13 @@ class OptionHome extends React.Component {
       heatmapSetting: 1,
       videoTime: 0,
       playVideoForHM: false,
-      optionEmotionObj: { emotionPerc: {}, attention: ['Attention'], count:[0] },
+      optionEmotionObj: { 
+        emotionPerc: {
+          Contempt: 0,
+        }, 
+        attention: ['Attention'], 
+        count:[0] 
+      },
       demographicStats: {},
     }
     this.timestampCallback = this.timestampCallback.bind(this);
@@ -72,6 +78,8 @@ class OptionHome extends React.Component {
     this.props.actions.changeOption(this.props.currentSection.option);
   }
 
+
+
   componentDidMount() {
     //orientation modal
     var player = this.refs.player;
@@ -88,6 +96,7 @@ class OptionHome extends React.Component {
         this.setState({
           optionEmotionObj: res.data
         }, () => {
+          console.log('run generate charts');
           this.calculateCompletionPerc()
           this.generateCharts();
         })
@@ -167,6 +176,7 @@ class OptionHome extends React.Component {
 
 
   generateCharts(lineGraphData) {
+    console.log('run generate charts');
       var lineData = {
         data: lineGraphData
       }
@@ -194,45 +204,12 @@ class OptionHome extends React.Component {
           y: {
             show: false
           }
-        }
-      });
-
-      // var pieChart = c3.generate({
-      //   bindto: '.emotionChart',
-      //   data: {
-      //     columns: [
-      //       ['Anger', this.state.emotionObj.anger.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Contempt', this.state.emotionObj.contempt.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Disgust', this.state.emotionObj.disgust.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Fear', this.state.emotionObj.fear.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Happiness', this.state.emotionObj.happiness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Neutral', this.state.emotionObj.neutral.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Sadness', this.state.emotionObj.sadness.slice(1).reduce((sum, val) => sum+= +val, 0)],
-      //       ['Surprise', this.state.emotionObj.surprise.slice(1).reduce((sum, val) => sum+= +val, 0)]
-      //     ],
-      //     type : 'pie'
-      //   }
-      // });
-      var pieChart = c3.generate({
-        bindto: '.emotionChart',
-        data: {
-          columns: [
-            ['Anger', this.state.optionEmotionObj.emotionPerc.Anger],
-            ['Contempt', this.state.optionEmotionObj.emotionPerc.Contempt],
-            ['Disgust', this.state.optionEmotionObj.emotionPerc.Disgust],
-            ['Fear', this.state.optionEmotionObj.emotionPerc.Fear],
-            ['Happiness', this.state.optionEmotionObj.emotionPerc.Happiness],
-            ['Neutral', this.state.optionEmotionObj.emotionPerc.Neutral],
-            ['Sadness', this.state.optionEmotionObj.emotionPerc.Sadness],
-            ['Surprise', this.state.optionEmotionObj.emotionPerc.Surprise]
-          ],
-          type : 'pie'
-        }
+        },
       });
       this.setState({
         graph: lineGraph
       })
-      this.forceUpdate();
+      // this.forceUpdate();
   }
 
   setDuration(dur) {
@@ -359,7 +336,10 @@ class OptionHome extends React.Component {
     e.preventDefault();
     this.setState({
       sideNavSelection: e.target.value
+    }, () => {
+      this.generateCharts();
     })
+
   }
 
   render() {
@@ -411,7 +391,7 @@ class OptionHome extends React.Component {
                         <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
                           ref="player"
                           progressFrequency={1000} onProgress={this.updateProgress}
-                          controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+                          controls={true} height="90%" width='100%' className='optionPlayer' onDuration={this.setDuration}
                           config={{
                             youtube: {
                               playerVars: { showinfo: 1}
@@ -429,45 +409,48 @@ class OptionHome extends React.Component {
 
           <div className="optionHomeBottom">
             {this.state.sideNavSelection === 'overview' ?
+              
               (<Overview
                 optionEmotionObj={this.state.optionEmotionObj}
                 demographic={this.state.demographicStats}
-                allUsers={this.state.allUsers}
-                selectedUsers={this.state.selectedUsers}
-                viewer={this.state.user}
-                attention={this.state.attention[0]}
-                user={this.state.user}
                 timestampCallback={this.timestampCallback}
-                emotionsObj={this.state.emotionObj}
-                likeRatio={this.state.likeRatio}
-                completionStatus={this.state.completion}
-                sideNavSelection={this.state.sideNavSelection}
+                generateCharts = {this.generateCharts}
                 />
               ): ''
             }
 
             {this.state.sideNavSelection === 'attention' ? (
-              <div className='attentionRightPanelContainer'>
-                <div className="optionContainer">
-                  <Demographics demographic={this.state.demographicStats} />
+              <Col md={12}>
+                <div className='attentionRightPanelContainer'>
+                  <div className="optionContainer">
+                    <Demographics demographic={this.state.demographicStats} />
+                  </div>
+                  <div className="optionContainer">
+                    <Attention optionEmotionObj={this.state.optionEmotionObj} attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
+                  </div>
                 </div>
-                <div className="optionContainer">
-                  <Attention optionEmotionObj={this.state.optionEmotionObj} attention={this.state.attention[0]} timestampCallback={this.timestampCallback}/>
-                </div>
-              </div>
+              </Col>
             ) : ''}
 
             {this.state.sideNavSelection === 'feedback' ? (
               <div className='feedbackRightPanelContainer'>
-                <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-                <Feedback optionEmotionObj={this.state.optionEmotionObj} demographic={this.state.demographicStats} feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
+                <div className="optionContainer">
+                  <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                </div>
+                <div className="optionContainer">
+                  <Feedback optionEmotionObj={this.state.optionEmotionObj} demographic={this.state.demographicStats} feedback={this.props.currentSection.option.feedback} likeRatio={this.state.likeRatio} completionStatus={this.state.completion} />
+                </div>
               </div>
             ) : ''}
 
             {this.state.sideNavSelection === 'emotions' ? (
               <div className='emotionsRightPanelContainer'>
-                <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
-                <Emotion optionEmotionObj={this.state.optionEmotionObj} emotionsObj={this.state.emotionObj} />
+                <div className="optionContainer">
+                  <Demographics demographic={this.state.demographicStats} selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                </div>
+                <div className="optionContainer">
+                  <Emotion optionEmotionObj={this.state.optionEmotionObj} emotionsObj={this.state.emotionObj} />
+                </div>
               </div>
             ) : ''}
 
@@ -480,7 +463,7 @@ class OptionHome extends React.Component {
             ) : ''}
 
             {this.state.sideNavSelection === 'annotations' ? (
-                <Annotations graph={this.state.graph} player={this.state.player}/>
+                <Annotations optionEmotionObj={this.state.optionEmotionObj} graph={this.state.graph} player={this.state.player}/>
             ) : ''}
 
             {this.state.sideNavSelection === 'detailedDemographics' ? (
@@ -605,3 +588,15 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 ) (OptionHome);
+
+
+// allUsers={this.state.allUsers}
+// selectedUsers={this.state.selectedUsers}
+// viewer={this.state.user}
+// attention={this.state.attention[0]}
+// user={this.state.user}
+// timestampCallback={this.timestampCallback}
+// emotionsObj={this.state.emotionObj}
+// likeRatio={this.state.likeRatio}
+// completionStatus={this.state.completion}
+// sideNavSelection={this.state.sideNavSelection}

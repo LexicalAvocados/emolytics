@@ -9,11 +9,11 @@ class Annotations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: null,
-      end: null,
+      time: 0,
+      end: 0,
       emotion: 'Anger',
       desc: '',
-      select: null,
+      select: "",
       Anger: 0,
       Contempt: 1,
       Disgust: 2,
@@ -31,7 +31,7 @@ class Annotations extends React.Component {
     this.deSelect = this.deSelect.bind(this);
     this.findLargest = this.findLargest.bind(this);
     this.preview = this.preview.bind(this);
-    // console.log(this);
+    console.log(this);
 
   }
 
@@ -46,7 +46,7 @@ class Annotations extends React.Component {
     this.setState({
       [name]: val
     });
-    // console.log(this);
+    console.log(this.state);
   }
 
   addAnnotation(e) {
@@ -59,6 +59,7 @@ class Annotations extends React.Component {
       option: this.props.currentOption,
       desc: this.state.desc
     };
+    console.log('annotation', annotation)
     axios.post('/api/option/addAnnotation', annotation);
 
     this.props.annotations.annotations.push(annotation);
@@ -66,7 +67,7 @@ class Annotations extends React.Component {
     this.props.annotations.annotations.forEach(anno => {
       if (this.state.time === anno.time) {
         anno.emotion = this.state.emotion;
-        anno.desc = this.state.description;
+        anno.desc = this.state.desc;
       }
     });
     var temp = {
@@ -98,11 +99,11 @@ class Annotations extends React.Component {
     if (ann.end) {
       var test = 0;
       for (var i = ann.time; i < ann.end; i++) {
-        test += this.props.lineGraphData.data[this.state[ann.emotion]][i]
+        test += this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][i]
       }
       test = test / (ann.end - ann.time);
       // console.log('test', test);
-      this.props.lineGraphData.data.forEach(elem => {
+      this.props.optionEmotionObj.emotionAvg.forEach(elem => {
         // console.log('WORKINGGGG');
         var temp = 0;
         for(var i = ann.time; i < ann.end; i++) {
@@ -128,8 +129,8 @@ class Annotations extends React.Component {
       }
 
     } else {
-      var test = this.props.lineGraphData.data[this.state[ann.emotion]][ann.time];
-      this.props.lineGraphData.data.forEach(elem => {
+      var test = this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time];
+      this.props.optionEmotionObj.emotionAvg.forEach(elem => {
         if (elem[0] !== ann.emotion) {
           if (elem[ann.time] > test) {
             test = elem[ann.time];
@@ -159,6 +160,7 @@ class Annotations extends React.Component {
 
   render() {
     let annotations = this.props.annotations.annotations.map((ann, i) => {
+      console.log(ann);
       return (
         
         <div onClick={() => {
@@ -173,7 +175,7 @@ class Annotations extends React.Component {
           </Col>
           <Col md={6}>
 
-            <p> {`Expected Emotion Score: ${(this.props.lineGraphData.data[this.state[ann.emotion]][ann.time] + this.props.lineGraphData.data[this.state[ann.emotion]][ann.time])/2}`} </p>
+            <p> {`Expected Emotion Score: ${(this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time] + this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time])/2}`} </p>
 
             <p> {`Highest Emotion:`} </p>
             {this.findLargest(ann)}
