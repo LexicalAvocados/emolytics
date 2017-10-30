@@ -12,7 +12,18 @@ class CreatorPublicProfile extends React.Component {
       name: 'Blobberto',
       video: '',
       youtube: '',
-      twitter: '@twitterhandle'
+      twitter: '@twitterhandle',
+      username: null,
+      patreonId: null,
+      patreonAbout: null,
+      patreonImageUrl: null,
+      patreonUrl: null,
+      patreonVanity: null,
+      campaignId: null,
+      creationName: null,
+      isPlural: null,
+      pledgeUrl: null,
+      summary: null
     }
   }
 
@@ -23,14 +34,26 @@ class CreatorPublicProfile extends React.Component {
       }
     })
     .then((res) => {
-      console.log('res from getCreatorData', res)
+      console.log('res from getCreatorData', res);
+      let userData = res.data;
       this.setState({
-        profilePicture: res.data.profilepicture,
-        bio: res.data.aboutme,
-        name: res.data.name || res.data.username,
-        video: res.data.showcasevideo,
-        youtube: res.data.youtubeprofile,
-        twitter: res.data.twitterhandle
+        profilePicture: userData.profilepicture,
+        bio: userData.aboutme,
+        name: userData.name,
+        video: userData.showcasevideo,
+        youtube: userData.youtubeprofile,
+        twitter: userData.twitterhandle,
+        username: userData.username,
+        patreonId: userData.patreonId,
+        patreonAbout: userData.patreonAbout,
+        patreonImageUrl: userData.patreonImageUrl,
+        patreonUrl: userData.patreonUrl,
+        patreonVanity: userData.patreonVanity,
+        campaignId: userData.campaignId,
+        creationName: userData.creationName,
+        isPlural: userData.isPlural,
+        pledgeUrl: userData.pledgeUrl,
+        summary: userData.summary
       })
     })
   }
@@ -75,7 +98,9 @@ class CreatorPublicProfile extends React.Component {
               <Row>
                 <br/>
                 <Row>
-                  <img src='../../../become_patron.png' height={50} width={200}/>
+                  <a href={`https://www.patreon.com/${this.state.pledgeUrl}`}>
+                    <img src='../../../become_patron.png' height={50} width={200}/>
+                  </a>
                   <hr style={hrStyle}/>
                   <br/>
                 </Row>
