@@ -75,8 +75,7 @@ class CreatorPublicProfile extends React.Component {
               <Row>
                 <br/>
                 <Row>
-                  <h4>Become a patron</h4>
-                  <img src='../../../patreon.jpg' height={50} width={200}/>
+                  <img src='../../../become_patron.png' height={50} width={200}/>
                   <hr style={hrStyle}/>
                   <br/>
                 </Row>

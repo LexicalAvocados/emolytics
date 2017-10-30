@@ -15,7 +15,7 @@ FacebookStrategy = require('passport-facebook').Strategy;
 const User = db.User;
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 passport.use(new FacebookStrategy({
     clientID: '1808121682812707',
