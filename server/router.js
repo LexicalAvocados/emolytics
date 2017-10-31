@@ -15,6 +15,7 @@ const eyeTrackingRoutes = require('./api/creator/eyeTrackingRoutes.js');
 const optionHomeUtilityRoutes = require('./api/creator/optionHomeUtilityRoutes.js');
 const authRoutes = require('./auth/auth.js')
 const AccountInfoRoutes = require('./api/creator/updateAccountInfoRoutes.js');
+const FocusGroups = require('./api/creator/focusGroup.js');
 
 router.use('/tester', testerRoutes);
 
@@ -23,6 +24,8 @@ router.use('/option', creatorOptionRoutes);
 router.use('/section', creatorSectionRoutes);
 
 router.use('/auth', authRoutes);
+
+router.use('/group', FocusGroups);
 
 router.get('/getProjectsForUser', projectRoutes.getProjectsForUser);
 

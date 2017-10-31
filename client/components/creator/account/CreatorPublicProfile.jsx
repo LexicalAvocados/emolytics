@@ -14,6 +14,7 @@ class CreatorPublicProfile extends React.Component {
       youtube: '',
       twitter: '@twitterhandle'
     }
+    this.apply = this.apply.bind(this);
   }
 
   componentWillMount() {
@@ -25,6 +26,7 @@ class CreatorPublicProfile extends React.Component {
     .then((res) => {
       console.log('res from getCreatorData', res)
       this.setState({
+        username: res.data.username,
         profilePicture: res.data.profilepicture,
         bio: res.data.aboutme,
         name: res.data.name || res.data.username,
@@ -33,6 +35,18 @@ class CreatorPublicProfile extends React.Component {
         twitter: res.data.twitterhandle
       })
     })
+  }
+
+
+  apply(e) {
+    e.preventDefault();
+    let data = {
+      username: this.state.username
+    }
+    axios.post('/api/tester/applyFocusGroup', data)
+      .then(res => {
+        console.log(res);
+      })
   }
 
   render() {
@@ -77,6 +91,12 @@ class CreatorPublicProfile extends React.Component {
                 <Row>
                   <h4>Become a patron</h4>
                   <img src='../../../patreon.jpg' height={50} width={200}/>
+                  <hr style={hrStyle}/>
+                  <br/>
+                </Row>
+                <Row>
+                  <h4>Join Focus Group</h4>
+                  <p onClick={this.apply}> Apply </p>
                   <hr style={hrStyle}/>
                   <br/>
                 </Row>
