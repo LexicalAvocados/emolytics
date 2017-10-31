@@ -11,7 +11,7 @@ const focusGroups = (state = [], action) => {
     case 'ADD_FOCUS_GROUP':
       return [...state, {name: action.focusGroupName, testers: []}];
     case 'ADD_PATREON_FOCUS_GROUP':
-      return [...state, {name: action.focusGroupName, testers: action.patrons}]
+      return [...state, {name: action.focusGroupName, testers: action.patrons, patreonCampaignId: action.patreonCampaignId}]
     case 'DELETE_FOCUS_GROUP':
       return [...state.slice(0, focusGroupIdx), ...state.slice(focusGroupIdx + 1)];
     case 'ADD_TESTER_TO_FOCUS_GROUP':
