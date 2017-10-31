@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import PayoutForm from './PayoutForm.jsx';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -13,7 +14,7 @@ class TesterCreditsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      prevBalance: 0,
+      balance: 0,
       payoutEligible: false,
       displayPayoutForm: false
     }
@@ -24,7 +25,7 @@ class TesterCreditsPage extends React.Component {
     axios.get('/api/getCreditBalance')
       .then(res => {
         this.setState({
-          prevBalance: res.data,
+          balance: res.data,
           payoutEligible: res.data >= 500 ? true : false
         });
       })
@@ -43,8 +44,8 @@ class TesterCreditsPage extends React.Component {
         <h3>Credits Payouts</h3>
         <p>Each time you watch and provide feedback on a credited video, you will earn some
         credits. 100 credits may be redeemed for $1. Once you have accumulated 500 or more
-        credits, you may take a credits payout.</p>
-        <div>Current Balance: {this.state.prevBalance || 0} credits</div>
+        credits, you may take a credits payout. You will need to enter a bank account to do so.</p>
+        <div>Current Balance: {this.state.balance} credits</div>
         <br/>
         <Button
           bsStyle='success'
@@ -52,7 +53,7 @@ class TesterCreditsPage extends React.Component {
           onClick={this.togglePayoutForm}
         > Take Payout </Button>
         <br/><br/><br/>
-        {this.state.displayPayoutForm ? <PayoutForm /> : null}
+        {this.state.displayPayoutForm ? <PayoutForm balance={this.state.balance} /> : null}
       </div>
     )
   }
