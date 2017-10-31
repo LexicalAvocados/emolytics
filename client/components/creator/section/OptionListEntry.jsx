@@ -44,13 +44,13 @@ class OptionListEntry extends React.Component {
   }
 
   componentDidMount() {
-    this.mount();
+    this.mount(this.props.option);
   }
 
 
-  mount() {
-    if (this.props.option !== 'End') {
-      axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
+  mount(option) {
+    if (option !== 'End') {
+      axios.get('/api/getTestersForOption', { params: { optionId: option.id }})
         .then((testerIds) => {
           this.props.concatTesters(testerIds.data, this.props.index);
           this.setState({
@@ -67,9 +67,8 @@ class OptionListEntry extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('NEXT BEFORE FIRST', nextProps.option, this.props.sectionId)
     if (nextProps.sectionId !== this.props.sectionId) {
-      this.mount();
+      this.mount(nextProps.option);
       return true;
     }
     if (nextProps.showEdit === false) {
@@ -106,13 +105,9 @@ class OptionListEntry extends React.Component {
 
   filterTestersForOptions() {
     let priorInvites = false;
-    let count = 0;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
-      console.log(tester);
-      console.log(this.state.specificTesters);
-      if (this.state.specificTesters.indexOf(tester.id) >= 0) { // Haven't been invited
+      if (this.state.specificTesters.indexOf(tester.id) >= 0) { 
         priorInvites = true;
-        count++;
       } else {
         return tester;
       }
@@ -121,9 +116,9 @@ class OptionListEntry extends React.Component {
       testers: uninvitedTesters,
       testersCopy: uninvitedTesters,
       haveInvited: priorInvites,
-      totalNumberOfInvitedTesters: count
+      totalNumberOfInvitedTesters: this.state.specificTesters.length
     });
-    this.props.incrementTotalInvitedTesters(count);
+    this.props.incrementTotalInvitedTesters(this.state.specificTesters.length);
   }
 
 

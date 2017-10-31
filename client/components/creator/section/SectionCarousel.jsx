@@ -18,9 +18,16 @@ const SectionCarousel = (props) => (
                       <div>
                         <BellIcon width='20' height='20' active={false} animate={false}/>
                         <a>  {section.notifications}</a>
-                        <a> {props.currentSection.totalInvitedTesters} </a>
                       </div>
                     ) : '' }
+                    { props.fromSectionHome && props.currentSection.id === section.id ? (
+                      <div style={testers}>
+                        <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
+                        <a>{props.totalInvitedTesters}</a>
+                      </div>
+                    ) : (
+                      null
+                    )}
                   </div>
                   <p>{section.name}</p>
                   <p>{section.description}</p>
@@ -45,9 +52,16 @@ const SectionCarousel = (props) => (
                           <div>
                             <BellIcon width='20' height='20' active={false} animate={false}/>
                             <a>  {section.notifications}</a>
-                            <a> {props.currentSection.totalInvitedTesters} </a>
                           </div>
                         ) : '' }
+                        { props.fromSectionHome && props.currentSection.id === section.id ? (
+                          <div style={testers}>
+                            <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
+                            <a>{props.totalInvitedTesters}</a>
+                          </div>
+                        ) : (
+                          null
+                        )}
                       </div>
 
                       <p>{section.name}</p>
@@ -78,6 +92,17 @@ const SectionCarousel = (props) => (
 const notifDisplayStyle = {
   float: "right"
 }
+
+const testers = {
+  gridColumn: '1',
+  gridRow: '1',
+  float: 'right'
+};
+
+const testersIcon = {
+  height: '20px',
+  width: '20px'
+};
 
 const mapStateToProps = (state) => ({
   router: state.router,

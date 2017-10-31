@@ -82,11 +82,14 @@ class SectionHome extends React.Component {
   }
 
   incrementTotalInvitedTesters(count) {
+    // console.log(count);
+    
     this.setState({
       totalInvitedTesters: this.state.totalInvitedTesters += count
-    }, () => this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters);
+    });
     // this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters += count;
-    // console.log(this.props.currentSection)
+    
+    // this.props.currentSection.totalInvited = count;
   }
 
   resetToNull() {
@@ -130,7 +133,8 @@ class SectionHome extends React.Component {
       compareOptions: [],
       showData: false,
       compare: false,
-      totalInvitedTesters: 0
+      totalInvitedTesters: 0,
+      displayPanel: false
     });
   }
 
@@ -160,6 +164,7 @@ class SectionHome extends React.Component {
         testersCopy: testersThatHaveNotBeenInvited,
         haveInvited: priorInvites
       });
+
     }
   }
 
