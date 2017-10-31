@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Col, Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import FocusGroupsList from './FocusGroupsList.jsx';
 import FocusGroupsPatreonModule from './FocusGroupsPatreonModule.jsx';
 
@@ -16,7 +16,9 @@ class FocusGroupsPage extends React.Component {
     super(props);
     this.state = {
       typedFocusGroupName: '',
-      typedTesterUsername: ''
+      typedTesterUsername: '',
+      applyUsers: [],
+      addTo: 'none'
     };
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
@@ -24,6 +26,21 @@ class FocusGroupsPage extends React.Component {
     this.deleteFocusGroup = this.deleteFocusGroup.bind(this);
     this.addTesterToFocusGroup = this.addTesterToFocusGroup.bind(this);
     this.removeTesterFromFocusGroup = this.removeTesterFromFocusGroup.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.applyFocusGroup = this.applyFocusGroup.bind(this);
+    console.log(this);
+  }
+
+  componentDidMount() {
+    axios.get('/api/group/getApply')
+      .then(applyUsers => {
+        console.log(applyUsers);
+        this.setState({
+          applyUsers: applyUsers.data
+        }, () => {
+          console.log(this);
+        })
+      })
   }
 
   updateTypedTesterUsername(e) {
@@ -94,9 +111,52 @@ class FocusGroupsPage extends React.Component {
       });
   }
 
+  handleChange(e) {
+    let val = e.target.value;
+    this.setState({addTo: val}, () => {
+      console.log(this);
+    });
+  }
+
+  applyFocusGroup(username) {
+    let data = {
+      username: username,
+      focusGroup: this.state.addTo
+    }
+    axios.post('/api/group/applyTester', data)
+      .then(res => {
+        console.log(res);
+      })
+  }
+
   render() {
     let focusGroups = this.props.focusGroups;
     let currentFocusGroup = this.props.currentFocusGroup;
+    let appliedUsers = this.state.applyUsers.map((user, i) => {
+      return (
+        <div>
+          <Col md={3}>
+            <p> {user.username} </p>
+          </Col>
+          <Col md={3}>
+            <select onChange={this.handleChange}>
+                  <option name="addTo" value="none" > None </option>
+              {this.props.focusGroups.map((group, i) => {
+                return (
+                  <option name="addTo" value={group.name}>{group.name} </option>
+                  )
+              })}
+            </select>
+          </Col>
+          <Col md={3}>
+            <button onClick={() => {
+              this.applyFocusGroup(user)
+            }}> Add </button>
+          </Col>
+        </div>
+        )
+    })
+
     return (
       <div>
         {this.props.patreonCampaign.id ? <FocusGroupsPatreonModule /> : null}
@@ -110,6 +170,11 @@ class FocusGroupsPage extends React.Component {
           />
           <Button bsStyle='primary' type='submit'>Create Group</Button>
         </form>
+        <div>
+          <h2> Applied People </h2>
+          {appliedUsers}
+        </div>
+        <br/>
 
         {focusGroups.length > 0 ?
           <FocusGroupsList />

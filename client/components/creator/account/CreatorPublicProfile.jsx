@@ -25,6 +25,7 @@ class CreatorPublicProfile extends React.Component {
       pledgeUrl: null,
       summary: null
     }
+    this.apply = this.apply.bind(this);
   }
 
   componentWillMount() {
@@ -37,6 +38,7 @@ class CreatorPublicProfile extends React.Component {
       console.log('res from getCreatorData', res);
       let userData = res.data;
       this.setState({
+<<<<<<< HEAD
         profilePicture: userData.profilepicture,
         bio: userData.aboutme,
         name: userData.name,
@@ -54,8 +56,29 @@ class CreatorPublicProfile extends React.Component {
         isPlural: userData.isPlural,
         pledgeUrl: userData.pledgeUrl,
         summary: userData.summary
+=======
+        username: res.data.username,
+        profilePicture: res.data.profilepicture,
+        bio: res.data.aboutme,
+        name: res.data.name || res.data.username,
+        video: res.data.showcasevideo,
+        youtube: res.data.youtubeprofile,
+        twitter: res.data.twitterhandle
+>>>>>>> applyFocusGroup
       })
     })
+  }
+
+
+  apply(e) {
+    e.preventDefault();
+    let data = {
+      username: this.state.username
+    }
+    axios.post('/api/tester/applyFocusGroup', data)
+      .then(res => {
+        console.log(res);
+      })
   }
 
   render() {
@@ -101,6 +124,12 @@ class CreatorPublicProfile extends React.Component {
                   <a href={`https://www.patreon.com/${this.state.pledgeUrl}`}>
                     <img src='../../../become_patron.png' height={50} width={200}/>
                   </a>
+                  <hr style={hrStyle}/>
+                  <br/>
+                </Row>
+                <Row>
+                  <h4>Join Focus Group</h4>
+                  <p onClick={this.apply}> Apply </p>
                   <hr style={hrStyle}/>
                   <br/>
                 </Row>
