@@ -16,7 +16,7 @@ import Navbar from './Navbar.jsx';
 import Signup from './auth/signup.jsx';
 import Login from './auth/login.jsx';
 import TesterHome from './tester/TesterHome.jsx';
-import TesterProfile from './tester/TesterProfile.jsx';
+import TesterAccount from './tester/TesterAccount.jsx';
 import TesterVideo from './tester/TesterVideo.jsx';
 import TesterQueuePage from './tester/TesterQueuePage.jsx';
 import TesterHistoryPage from './tester/TesterHistoryPage.jsx';
@@ -75,7 +75,7 @@ export class App extends React.Component {
                 <Route exact path="/history" component={TesterHistoryPage}/>
                 <Route path="/history/:id" component={TesterOptionResults}/>
                 <Route path="/queue" component={TesterQueuePage}/>
-                <Route path="/profile" component={TesterProfile}/>
+                <Route path="/account" component={TesterAccount}/>
                 <Route path="/video/:id" component={TesterVideo}/>
                 <Route path="/browse" component={Browse}/>
                 <Route path="/cprofile:id" component={CreatorPublicProfile}/>

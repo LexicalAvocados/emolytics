@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 
-class TesterProfile extends React.Component {
+class TesterEditingProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -200,22 +200,13 @@ class TesterProfile extends React.Component {
   }
 }
 
-const testerProfileContainerStyle = {
-  display: "flex",
-  marginTop: "3%"
-}
-
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  console.log('state', state);
-  return ({
-    example: state.example,
-    loggedInUser: state.loggedInUser,
-    router: state.router
-  })
-};
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  router: state.router
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
@@ -224,4 +215,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TesterProfile));
+)(TesterEditingProfile));
