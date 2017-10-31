@@ -27,7 +27,10 @@ class FocusGroupsList extends React.Component {
             onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
           >
             {focusGroups.map((group, i) => (
-              <ToggleButton key={i} value={i}>{group.name}</ToggleButton>
+              <ToggleButton key={i} value={i}>
+                <span>{group.name + ' '}</span>
+                {group.patreonCampaignId ? <img src='patreon_badge.png' height={16} width={16}></img> : null}
+              </ToggleButton>
             ))}
           </ToggleButtonGroup>
         </ButtonToolbar>

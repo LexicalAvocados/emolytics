@@ -90,10 +90,11 @@ export const addFocusGroup = (focusGroupName) => ({
   focusGroupName
 });
 
-export const addPatreonFocusGroup = (focusGroupName, patrons) => ({
+export const addPatreonFocusGroup = (focusGroupName, patrons, patreonCampaignId) => ({
   type: ADD_PATREON_FOCUS_GROUP,
   focusGroupName,
-  patrons
+  patrons,
+  patreonCampaignId
 });
 
 export const deleteFocusGroup = (focusGroupName) => ({

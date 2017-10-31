@@ -52,7 +52,7 @@ export class Login extends React.Component {
             })
               .then(res => {
                 let focusGroups = res.data;
-                // console.log('focusGroups:', focusGroups);
+                console.log('focusGroups:', focusGroups);
                 if (focusGroups.length > 0) this.props.actions.populateCreatorFocusGroups(focusGroups);
               })
               .catch(err => {

@@ -58,7 +58,8 @@ exports.createNewFocusGroup = (req, res) => {
     .then(creator => {
       return FocusGroup.create({
         name: req.body.focusGroupName,
-        userId: creator.id
+        userId: creator.id,
+        patreonCampaignId: req.body.campaignId || null
       });
     })
     .then(newFocusGroup => {
@@ -66,7 +67,7 @@ exports.createNewFocusGroup = (req, res) => {
       if (req.body.patrons) {
         addPatronsToFocusGroup(newFocusGroup.id, req.body.patrons)
           .then(data => {
-            res.send({group: newFocusGroup, patrons: req.body.patrons});
+            res.send({group: newFocusGroup, patrons: req.body.patrons, patreonCampaignId: req.body.campaignId});
           })
           .catch(err => {
             console.log('Error associating Patrons with new Group:', err);
@@ -93,24 +94,18 @@ const addPatronsToFocusGroup = (groupId, patrons) => {
 
 exports.deleteFocusGroup = (req, res) => {
   // console.log('deleteFocusGroup req.body:', req.body);
-  User.findOne({
+  FocusGroup.destroy({
     where: {
-      username: req.body.creatorUsername
+      id: req.body.focusGroup.id
     }
   })
-    .then(creator => {
-      return FocusGroup.destroy({
-        name: req.body.focusGroupName,
-        userId: creator.id
-      });
-    })
     .then(numOfDeletedRows => {
       // console.log('numOfDeletedRows:', numOfDeletedRows);
       if (numOfDeletedRows === 1) res.send(true);
       else res.send(false);
     })
     .catch(err => {
-      console.log('Error deleting Focus Group');
+      console.log('Error deleting Focus Group:', err);
       res.send(err);
     });
 };
@@ -291,7 +286,7 @@ exports.getCreatorFocusGroups = (req, res) => {
           }
         });
       });
-      // console.log('final product:', creatorFocusGroups);
+      console.log('final product:', creatorFocusGroups);
       res.send(creatorFocusGroups);
     })
     .catch(err => {

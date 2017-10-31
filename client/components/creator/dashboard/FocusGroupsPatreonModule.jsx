@@ -36,10 +36,12 @@ class FocusGroupsPatreonModule extends React.Component {
     axios.post('/api/creator/newFocusGroup', {
       focusGroupName: this.props.patreonCampaign.vanity,
       creatorUsername: this.props.loggedInUser.username,
+      campaignId: this.props.patreonCampaign.id,
       patrons: this.state.patrons.filter(patron => patron.hasOwnProperty('id'))
     })
       .then(res => {
-        this.props.actions.addPatreonFocusGroup(res.data.group.name, res.data.patrons.map(patron => patron.username));
+        let data = res.data;
+        this.props.actions.addPatreonFocusGroup(data.group.name, data.patrons.map(patron => patron.username), data.patreonCampaignId);
       })
       .catch(err => {
         console.log('Error creating Focus Group from Patreon Campaign:', err);
