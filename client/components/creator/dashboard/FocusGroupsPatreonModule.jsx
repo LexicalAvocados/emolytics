@@ -41,6 +41,7 @@ class FocusGroupsPatreonModule extends React.Component {
     })
       .then(res => {
         let data = res.data;
+        console.log('data:', data);
         this.props.actions.addPatreonFocusGroup(data.group.name, data.patrons.map(patron => patron.username), data.patreonCampaignId);
       })
       .catch(err => {
