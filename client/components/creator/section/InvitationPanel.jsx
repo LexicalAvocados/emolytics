@@ -197,7 +197,7 @@ class InvitationPanel extends React.Component {
   render() {
     return (
       <div className="invitationPanel">
-        { this.props.fromSectionHome ? (
+        { this.props.fromSectionHomeToInvitationPanel ? (
           this.props.noCreditsAlert.length ? (
             <p>The following options either have no credits or are low on credits: {this.props.noCreditsAlert}</p>
           ) : (

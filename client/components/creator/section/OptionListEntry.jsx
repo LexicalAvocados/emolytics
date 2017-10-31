@@ -21,7 +21,7 @@ class OptionListEntry extends React.Component {
       total: 0,
       perView: 0,
       notEnoughCredits: false,
-      invited: false,
+      invitedByOption: false,
       testers: [],
       testersCopy: [],
       haveInvited: false,
@@ -39,20 +39,35 @@ class OptionListEntry extends React.Component {
     this.optionListPopover = this.optionListPopover.bind(this);
     this.filterTestersForOptions = this.filterTestersForOptions.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
+    this.mount = this.mount.bind(this);
   }
 
   componentDidMount() {
-    console.log('OPTION IN LIST ENTRY', this.props.option)
+    this.mount();
+  }
+
+
+  mount() {
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);
         this.setState({
-          specificTesters: testerIds.data
-        }, () => this.filterTestersForOptions(true));
+          specificTesters: testerIds.data,
+          invitedByOption: false
+        }, () => this.filterTestersForOptions());
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
       });
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.showEdit === false) {
+         this.props.resetToNull();
+        this.mount();
+      
+      return true;
+    }
+    return true;
   }
 
   renderPanel() {
@@ -69,7 +84,7 @@ class OptionListEntry extends React.Component {
 
   renderInvited() {
     this.setState({
-      invited: !this.state.invited
+      invitedByOption: !this.state.invitedByOption
     });
   }
 
@@ -79,7 +94,7 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  filterTestersForOptions(onMount) {
+  filterTestersForOptions() {
     let priorInvites = true;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
       if (this.state.specificTesters.indexOf(tester.id) === -1) {
@@ -93,9 +108,6 @@ class OptionListEntry extends React.Component {
       testersCopy: uninvitedTesters,
       haveInvited: priorInvites
     });
-    if (!onMount) {
-      this.props.rerenderAfterInvitingToOption();
-    }
   }
 
 
@@ -264,7 +276,7 @@ class OptionListEntry extends React.Component {
             { this.state.haveInvited ? (
             <p className="closerText">You have previously invited testers to view this option</p>
           ) : ( null )}
-            { !this.state.invited ? (
+            { !this.state.invitedByOption ? (
               !this.state.displayPanel ? (
                 <Button onClick={this.renderPanel}>Invite testers</Button>
               ) : (
@@ -275,7 +287,7 @@ class OptionListEntry extends React.Component {
                 />
               )
             ) : (
-              <p>Testers Invited!</p>
+              <p key="invitedForThisOption">Testers Invited!</p>
             )}
 
           </Modal.Body>
