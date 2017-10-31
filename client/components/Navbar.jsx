@@ -41,9 +41,6 @@ export class Navbar extends React.Component {
                 <Link to='/groups' style={noUnderline}>
                   <p className='navItem'>Groups</p>
                 </Link>
-                <Link to='/allNotifications' style={noUnderline}>
-                  <p className="navItem">Notifications</p>
-                </Link>
                 <Link to='/account' style={noUnderline}>
                   <p className='navItem'>Account</p>
                 </Link>

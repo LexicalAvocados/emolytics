@@ -2,7 +2,10 @@ import React from 'react';
 import InviteTesters from './InviteTesters.jsx';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 
 class InvitationPanel extends React.Component {
@@ -25,6 +28,7 @@ class InvitationPanel extends React.Component {
     this.sendInvites = this.sendInvites.bind(this);
     this.inviteAll = this.inviteAll.bind(this);
     this.changeTestersCopy = this.changeTestersCopy.bind(this);
+    this.handleLowCrediteOptionClick = this.handleLowCrediteOptionClick.bind(this);
   }
 
   componentWillMount() {
@@ -54,15 +58,15 @@ class InvitationPanel extends React.Component {
       var removed = this.state.invited.slice(index, 1);
       this.setState({
         invited: removed
-      });   
+      });
     }
   }
 
-  sendInvites(e, invited) { 
+  sendInvites(e, invited) {
     if (e) {
       e.preventDefault();
     }
-    axios.post('/api/sendEmails', { invitedArr: invited, options: this.state.options}) 
+    axios.post('/api/sendEmails', { invitedArr: invited, options: this.state.options})
       .then((success) => {
         console.log(success);
         this.props.renderInvited();
@@ -74,13 +78,13 @@ class InvitationPanel extends React.Component {
 
   inviteAll() {
     console.log('Invites being sent to:', this.state.testersCopy);
-    this.setState({ 
+    this.setState({
       invited: this.state.testersCopy
     }, this.sendInvites(null, this.state.testersCopy));
   }
 
 
-  selectAge(event) { 
+  selectAge(event) {
     var filtered = this.filterTesters('age', event);
     this.setState({
       ageSelected: event
@@ -132,7 +136,7 @@ class InvitationPanel extends React.Component {
         filtered = filtered.map((tester) => {
           return tester;
         });
-      } else if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex. 
+      } else if (criteria === 'race' && this.state.sexSelected) { // Catch for filtering by race directly, with previosly selected sex.
         filtered = filtered.filter((tester) => {
           if (tester.race === toFilterBy) return tester;
         });
@@ -144,11 +148,11 @@ class InvitationPanel extends React.Component {
         filtered = this.state.testers.map((tester) => {
           return tester;
         });
-      } else if (this.state.raceSelected && this.state.raceSelected !== 'None') { // Catch for filtering by race indirectly without sex set. 
+      } else if (this.state.raceSelected && this.state.raceSelected !== 'None') { // Catch for filtering by race indirectly without sex set.
         filtered = filtered.filter((tester) => {
           if (tester.race === this.state.raceSelected) return tester;
         });
-      } else if (this.state.raceSelected === 'None') { // Catch for filtering by race indirectly without sex set. 
+      } else if (this.state.raceSelected === 'None') { // Catch for filtering by race indirectly without sex set.
         filtered = filtered.map((tester) => {
           return tester;
         });
@@ -185,21 +189,35 @@ class InvitationPanel extends React.Component {
         filtered = filtered.filter((tester) => {
           if (tester.age >= JSON.parse(first) && tester.age <= JSON.parse(second)) return tester;
         });
-      } else if (this.state.ageSelected === 'None') { // Catch for filtering by race indirectly without sex set. 
+      } else if (this.state.ageSelected === 'None') { // Catch for filtering by race indirectly without sex set.
         filtered = filtered.map((tester) => {
           return tester;
         });
-      } 
+      }
     }
     return filtered;
+  }
+
+  handleLowCrediteOptionClick(option) {
+    this.props.actions.changeCurrentOption(option);
+    this.props.onOptionClickCallbackForLowCredit(option)
   }
 
   render() {
     return (
       <div className="invitationPanel">
-        { this.props.fromSectionHome ? (
+        { this.props.fromSectionHomeToInvitationPanel ? (
           this.props.noCreditsAlert.length ? (
-            <p>The following options either have no credits or are low on credits: {this.props.noCreditsAlert}</p>
+            <div>
+              <p>The following options either have no credits or are low on credits:</p>
+              <ul>
+                {this.props.noCreditsAlert.map((option, i) => (
+                  <li key={i} onClick={() => this.handleLowCrediteOptionClick(option)}>
+                    <u>{option.name}</u>: {option.totalcredits} remaining ({Math.floor(option.totalcredits/option.creditsperview) || 0} views)
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : (
             null
           )
@@ -242,7 +260,7 @@ class InvitationPanel extends React.Component {
             <MenuItem eventKey="Asian">Asian</MenuItem>
             <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
             <MenuItem eventKey="Native American">Native American</MenuItem>
-            <MenuItem eventKey="Other">Other</MenuItem> 
+            <MenuItem eventKey="Other">Other</MenuItem>
           </DropdownButton>
         </div>
         <div className="testersList">
@@ -253,8 +271,12 @@ class InvitationPanel extends React.Component {
       </div>
     );
   }
-  
+
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
 
 const mapStateToProps = (state) => {
   return ({
@@ -263,6 +285,7 @@ const mapStateToProps = (state) => {
   });
 };
 
-export default connect(
-  mapStateToProps
-) (InvitationPanel);
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InvitationPanel));

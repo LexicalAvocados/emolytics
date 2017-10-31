@@ -39,10 +39,12 @@ class OptionListEntry extends React.Component {
     this.optionListPopover = this.optionListPopover.bind(this);
     this.filterTestersForOptions = this.filterTestersForOptions.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
+    this.callBeginEdit = this.callBeginEdit.bind(this);
   }
 
   componentDidMount() {
     console.log('OPTION IN LIST ENTRY', this.props.option)
+    this.props.onRef(this)
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);
@@ -171,6 +173,10 @@ class OptionListEntry extends React.Component {
         <Popover id="popover-trigger-hover" style={hidden}></Popover>
       );
     }
+  }
+
+  callBeginEdit(option) {
+    this.props.beginEdit(option, this.state.testers, this.state.testersCopy)
   }
 
   render() {
