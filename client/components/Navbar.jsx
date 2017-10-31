@@ -59,8 +59,8 @@ export class Navbar extends React.Component {
                 <Link to='/history' style={noUnderline}>
                   <p className='navItem'>History</p>
                 </Link>
-                <Link to='/profile' style={noUnderline}>
-                  <p className='navItem'>Profile</p>
+                <Link to='/account' style={noUnderline}>
+                  <p className='navItem'>Account</p>
                 </Link>
                 <Link to='/browse' style={noUnderline}>
                   <p className='navItem'>Browse</p>
