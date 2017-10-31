@@ -392,10 +392,7 @@ class SectionHome extends React.Component {
                 renderPanel={this.renderPanel}
                 noCreditsAlert={this.state.noCreditsAlert}
                 fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
-<<<<<<< HEAD
-=======
                 onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
->>>>>>> sectionoptioncredits
               />
             )
           ) : (
