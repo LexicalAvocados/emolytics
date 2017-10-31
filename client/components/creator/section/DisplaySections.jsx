@@ -40,9 +40,7 @@ class DisplaySections extends React.Component {
   }
 
 
-  onSectionClick(obj, fromProjectHome) { 
-    // obj['totalInvited'] = 0;
-    // this.props.currentSection.totalInvited = 0;
+  onSectionClick(obj, fromProjectHome, fromSectionHome) { 
     axios.get('/api/getOptionsForSection', { params: {sectionId: obj.id}})
       .then((options) => {
         let sortedOptions = options.data.sort((one, two) => {
@@ -51,19 +49,21 @@ class DisplaySections extends React.Component {
         });
         sortedOptions.push('End')
         obj['options'] = sortedOptions;
-        // obj['totalInvited'] = 0;
         this.props.actions.changeCurrentSection(obj, options);
         if (!this.props.currentSection.hidden || !this.props.currentSection.hasOwnProperty('display')) {
           this.props.currentSection.hidden = {display: 'none'};
           this.props.currentSection.backFromHome = false;
         } 
-        this.props.clearOnNewSection();
+        
       })
       .catch((err) => {
-        console.log('Request to get options for section NOT sent to server');
+        console.log('Request to get options for section NOT sent to server', err);
       });
     if (fromProjectHome) {
       this.props.collapse();
+    }
+    if (fromSectionHome) {
+      this.props.clearOnNewSection();
     }
   }
 
