@@ -42,6 +42,7 @@ class OptionListEntry extends React.Component {
   }
 
   componentDidMount() {
+    console.log('OPTION IN LIST ENTRY', this.props.option)
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
       .then((testerIds) => {
         this.props.concatTesters(testerIds.data, this.props.index);
@@ -83,7 +84,7 @@ class OptionListEntry extends React.Component {
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
       if (this.state.specificTesters.indexOf(tester.id) === -1) {
         return tester;
-      } 
+      }
     });
     this.setState({
       testers: uninvitedTesters,
@@ -117,9 +118,9 @@ class OptionListEntry extends React.Component {
     if (this.props.currentSection.id === 0) {
       alert('You cannot use the credits system in the demo. If you\'d like to leave the demo please create a project.');
       return;
-    } 
+    }
     let body = {
-      optionId: this.props.option.id,
+      optionId: this.props.currentOption.id,
       total: this.state.total,
       perView: this.state.perView
     };
@@ -209,6 +210,7 @@ class OptionListEntry extends React.Component {
                 <img className="optionListThumbnail" src={this.props.option.thumbnail} alt=""/>
                 <p className="closerText">{this.props.option.name}</p>
                 <p className="closerText">{this.props.option.description}</p>
+                <p className="closerText">Balance: {this.props.option.totalcredits || 0}</p>
               </div>
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
@@ -252,6 +254,7 @@ class OptionListEntry extends React.Component {
               updateTotal={this.updateTotal}
               updatePerView={this.updatePerView}
               credits={this.props.loggedInUser.credits}
+              option={this.props.currentOption}
             />
             { this.state.haveInvited ? (
             <p className="closerText">You have previously invited testers to view this option</p>
@@ -260,10 +263,10 @@ class OptionListEntry extends React.Component {
               !this.state.displayPanel ? (
                 <Button onClick={this.renderPanel}>Invite testers</Button>
               ) : (
-                <InvitationPanel 
+                <InvitationPanel
                   renderInvited={this.renderInvited}
                   changeTestersCopy={this.changeTestersCopy}
-                  renderPanel={this.renderPanel} 
+                  renderPanel={this.renderPanel}
                 />
               )
             ) : (
@@ -284,7 +287,8 @@ class OptionListEntry extends React.Component {
 const mapStateToProps = (state) => ({
   router: state.router,
   currentSection: state.currentSection,
-  loggedInUser: state.loggedInUser
+  loggedInUser: state.loggedInUser,
+  currentOption: state.currentOption
 });
 
 const mapDispatchToProps = (dispatch) => ({
