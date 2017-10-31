@@ -53,7 +53,9 @@ class OptionListEntry extends React.Component {
         this.props.concatTesters(testerIds.data, this.props.index);
         this.setState({
           specificTesters: testerIds.data,
-          invitedByOption: false
+          invitedByOption: false,
+          displayPanel: false,
+          haveInvited: false
         }, () => this.filterTestersForOptions());
       })
       .catch((err) => {
@@ -95,14 +97,17 @@ class OptionListEntry extends React.Component {
   }
 
   filterTestersForOptions() {
-    let priorInvites = true;
+    let priorInvites = false;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
-      if (this.state.specificTesters.indexOf(tester.id) === -1) {
-        return tester;
+      // console.log(tester);
+      // console.log(this.state.specificTesters);
+      if (this.state.specificTesters.indexOf(tester.id) >= 0) { // Haven't been invited
+        priorInvites = true;
       } else {
-        priorInvites = false;
+        return tester;
       }
     });
+    console.log('this should be the value of prior invites', priorInvites);
     this.setState({
       testers: uninvitedTesters,
       testersCopy: uninvitedTesters,
@@ -287,7 +292,7 @@ class OptionListEntry extends React.Component {
                 />
               )
             ) : (
-              <p key="invitedForThisOption">Testers Invited!</p>
+              <p>Testers Invited!</p>
             )}
 
           </Modal.Body>

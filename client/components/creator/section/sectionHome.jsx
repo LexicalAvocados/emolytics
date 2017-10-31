@@ -63,8 +63,6 @@ class SectionHome extends React.Component {
   }
 
   componentWillMount() {
-    console.log('rerending section hommmmmmee')
-    console.log(this.props.currentSection)
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
