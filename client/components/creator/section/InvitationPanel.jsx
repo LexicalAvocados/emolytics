@@ -197,6 +197,15 @@ class InvitationPanel extends React.Component {
   render() {
     return (
       <div className="invitationPanel">
+        { this.props.fromSectionHome ? (
+          this.props.noCreditsAlert.length ? (
+            <p>The following options either have no credits or are low on credits: {this.props.noCreditsAlert}</p>
+          ) : (
+            null
+          )
+        ) : (
+          null
+        )}
         <div className="invitationPanelSelectors">
           <p>Age:</p>
           <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
