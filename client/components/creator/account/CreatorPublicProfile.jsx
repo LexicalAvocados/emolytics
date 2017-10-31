@@ -38,7 +38,6 @@ class CreatorPublicProfile extends React.Component {
       console.log('res from getCreatorData', res);
       let userData = res.data;
       this.setState({
-<<<<<<< HEAD
         profilePicture: userData.profilepicture,
         bio: userData.aboutme,
         name: userData.name,
@@ -56,15 +55,6 @@ class CreatorPublicProfile extends React.Component {
         isPlural: userData.isPlural,
         pledgeUrl: userData.pledgeUrl,
         summary: userData.summary
-=======
-        username: res.data.username,
-        profilePicture: res.data.profilepicture,
-        bio: res.data.aboutme,
-        name: res.data.name || res.data.username,
-        video: res.data.showcasevideo,
-        youtube: res.data.youtubeprofile,
-        twitter: res.data.twitterhandle
->>>>>>> applyFocusGroup
       })
     })
   }
