@@ -3,23 +3,44 @@ const axios = require('axios');
 const sequelize = require('../../db').sequelize;
 const User = require('../../db').User;
 const PatreonCampaign = require('../../db').PatreonCampaign;
-
 const patreon = require('patreon');
 const patreonAPI = patreon.patreon;
-const accessToken = require('../../key.js').patreon.accessToken;
-const patreonAPIClient = patreonAPI(accessToken);
+const patreonOAuth = patreon.oauth;
+const patreonKeys = require('../../key.js').patreon;
+
+const oauthClient = patreonOAuth(patreonKeys.clientId, patreonKeys.clientSecret);
 
 exports.handleOAuth = (req, res, mode) => {
+  console.log('req.url:', req.url);
   let hasExistingAccount;
-  let hasCampaign;
+  let hasCampaign = true;
   let initialPatreonLogin;
 
-  patreonAPIClient('/current_user/campaigns')
+  let redirectUri;
+  if (mode === 'login') redirectUri = 'http://localhost:3000/oauth/patreon/login';
+  if (mode === 'creator') redirectUri = 'http://localhost:3000/oauth/patreon/signup/creator';
+  if (mode === 'tester') redirectUri = 'http://localhost:3000/oauth/patreon/signup/tester';
+
+  const oauthGrantCode = url.parse(req.url, true).query.code;
+
+  let patreonAPIClient;
+
+  console.log('oauthGrantCode:', oauthGrantCode);
+
+  oauthClient.getTokens(oauthGrantCode, redirectUri)
+    .then(tokensResponse => {
+      patreonAPIClient = patreonAPI(tokensResponse.access_token);
+      return patreonAPIClient('/current_user/campaigns/');
+    })
+    .catch(noCampaignFound => {
+      console.log('inside intermediary catch');
+      hasCampaign = false;
+      return patreonAPIClient('/current_user/');
+    })
     .then(({store}) => {
-      console.log('data store received from patreon');
+      console.log('data store received from patreon:', store.graph);
       let patreonAccount = store.graph.user[Object.keys(store.graph.user)[0]];
-      let patreonCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
-      hasCampaign = (patreonCampaign ? true : false);
+      if (hasCampaign) var patreonCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
       
       return User.findOne({
         where: {
@@ -27,15 +48,21 @@ exports.handleOAuth = (req, res, mode) => {
         }
       })
         .then(existingAccount => {
+          let dbInsertArgs = [
+            (!!existingAccount ? existingAccount : null),
+            patreonAccount,
+            mode,
+            (hasCampaign ? patreonCampaign : null)
+          ];
           if (existingAccount) {
             hasExistingAccount = true;
             if (existingAccount.dataValues.patreonId) {
               initialPatreonLogin = false;
             }
-            return mergePatreonInfoWithExistingUser(existingAccount, patreonAccount, mode, patreonCampaign);
+            return mergePatreonInfoWithExistingUser(...dbInsertArgs);
           } else {
             hasExistingAccount = false;
-            return createNewAccountWithPatreonInfo(patreonAccount, mode, patreonCampaign);
+            return createNewAccountWithPatreonInfo(...dbInsertArgs);
           }
         })
         .catch(err => {
@@ -119,7 +146,11 @@ exports.getPatrons = (req, res) => {
       console.log('Error fetching Patron data from Patreon:', err);
       res.send(err);
     });
-}
+};
+
+exports.handleWebhook = (req, res) => {
+  console.log('req:', req);
+};
 
 const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => {
   return existing.update(
@@ -168,7 +199,7 @@ const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => 
     });
 };
 
-const createNewAccountWithPatreonInfo = (patreon, mode, campaign) => {
+const createNewAccountWithPatreonInfo = (existing = null, patreon, mode, campaign) => {
   return User.create({
     username: patreon.vanity,
     email: patreon.email,

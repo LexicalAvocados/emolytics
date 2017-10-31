@@ -101,9 +101,7 @@ export class Login extends React.Component {
       textAlign: 'center'
     }
     const patreonOAuthLink =
-      `https://patreon.com/oauth2/authorize?response_type=code
-                                           &client_id=${patreon.clientId}
-                                           &redirect_uri=http://localhost:3000/oauth/patreon/login`;
+      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/login`;
     return (
       <div className='auth'>
         <h2 className='loginHeader'>Log In</h2>
