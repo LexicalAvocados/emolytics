@@ -65,7 +65,7 @@ class FocusGroupsPage extends React.Component {
 
   deleteFocusGroup() {
     axios.put('/api/creator/deleteFocusGroup', {
-      focusGroupName: this.props.currentFocusGroup,
+      focusGroup: this.props.currentFocusGroup,
       creatorUsername: this.props.loggedInUser.username
     })
       .then(res => {

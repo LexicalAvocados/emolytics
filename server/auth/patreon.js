@@ -30,6 +30,7 @@ exports.handleOAuth = (req, res, mode) => {
   oauthClient.getTokens(oauthGrantCode, redirectUri)
     .then(tokensResponse => {
       patreonAPIClient = patreonAPI(tokensResponse.access_token);
+      req.session.patreonAccessToken = tokensResponse.access_token;
       return patreonAPIClient('/current_user/campaigns/');
     })
     .catch(noCampaignFound => {
@@ -110,6 +111,7 @@ exports.getUserInfoAfterOAuth = (req, res) => {
 };
 
 exports.getPatrons = (req, res) => {
+  let patreonAPIClient = patreonAPI(req.session.patreonAccessToken);
   patreonAPIClient(`/campaigns/${req.body.campaignId}/pledges`)
     .then(({store}) => {
       // store.graph should look like this:
@@ -117,39 +119,36 @@ exports.getPatrons = (req, res) => {
       console.log('Users data received from Patreon:', store.graph.user);
       let users = store.graph.user;
       let patrons = [];
-      for (var id in users) {
-        if (Number(id) !== req.body.patreonId) {
-          User.findOne({
-            where: {
-              email: users[id].email
+      // for (var id in users) {
+      return Promise.all(Object.keys(users).filter(id => Number(id) !== req.body.patreonId).map(id => {
+        return User.findOne({
+          where: {
+            email: users[id].email
+          }
+        })
+          .then(patronAcct => {
+            if (patronAcct) {
+              return patronAcct;
+            } else {
+              return ({
+                patreonId: id,
+                email: users[id].email,
+                fullName: users[id].full_name
+              });
             }
           })
-            .then(patronAcct => {
-              if (patronAcct) {
-                patrons.push(patronAcct);
-              } else {
-                patrons.push({
-                  patreonId: id,
-                  email: users[id].email,
-                  fullName: users[id].full_name
-                });
-              }
-            })
-            .catch(err => {
-              console.log('Error querying DB for Patron:', err);
-            });
-        }
-      }
-      setTimeout(() => res.send(patrons), 100);
+          .catch(err => {
+            console.log('Error querying DB for Patron:', err);
+          });
+      }));
+    })
+    .then(patrons => {
+      res.send(patrons);
     })
     .catch(err => {
       console.log('Error fetching Patron data from Patreon:', err);
       res.send(err);
     });
-};
-
-exports.handleWebhook = (req, res) => {
-  console.log('req:', req);
 };
 
 const mergePatreonInfoWithExistingUser = (existing, patreon, mode, campaign) => {
