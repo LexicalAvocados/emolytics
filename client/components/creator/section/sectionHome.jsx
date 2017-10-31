@@ -43,7 +43,7 @@ class SectionHome extends React.Component {
       testerToPassToOptionListEntry: [],
       rerenderAfterInvites: false,
       noCreditsAlert: '',
-      fromSectionHome: true
+      fromSectionHomeToInvitationPanel: true
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -391,7 +391,7 @@ class SectionHome extends React.Component {
                 testersCopy={this.state.testersCopy}
                 renderPanel={this.renderPanel}
                 noCreditsAlert={this.state.noCreditsAlert}
-                fromSectionHome={this.state.fromSectionHome}
+                fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
               />
             )
           ) : (
