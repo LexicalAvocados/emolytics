@@ -139,6 +139,7 @@ class DisplaySections extends React.Component {
           revealAddSection={this.revealAddSection}
           onSectionClick={this.onSectionClick}
           fromProjectHome={this.props.fromProjectHome}
+          totalInvitedTesters={this.props.totalInvitedTesters}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>

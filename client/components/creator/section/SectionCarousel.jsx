@@ -18,6 +18,7 @@ const SectionCarousel = (props) => (
                       <div>
                         <BellIcon width='20' height='20' active={false} animate={false}/>
                         <a>  {section.notifications}</a>
+                        <a> {props.currentSection.totalInvitedTesters} </a>
                       </div>
                     ) : '' }
                   </div>
@@ -44,6 +45,7 @@ const SectionCarousel = (props) => (
                           <div>
                             <BellIcon width='20' height='20' active={false} animate={false}/>
                             <a>  {section.notifications}</a>
+                            <a> {props.currentSection.totalInvitedTesters} </a>
                           </div>
                         ) : '' }
                       </div>

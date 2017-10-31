@@ -42,7 +42,8 @@ class SectionHome extends React.Component {
       allNotifications: [],
       testerToPassToOptionListEntry: [],
       noCreditsAlert: '',
-      fromSectionHomeToInvitationPanel: true
+      fromSectionHomeToInvitationPanel: true,
+      totalInvitedTesters: 0
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -60,6 +61,7 @@ class SectionHome extends React.Component {
     this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
     this.dismissNotification = this.dismissNotification.bind(this);
     this.resetToNull = this.resetToNull.bind(this);
+    this.incrementTotalInvitedTesters = this.incrementTotalInvitedTesters.bind(this);
   }
 
   componentWillMount() {
@@ -77,6 +79,14 @@ class SectionHome extends React.Component {
 
     this.getOptionsData();
     this.decorateNotificationObjects();
+  }
+
+  incrementTotalInvitedTesters(count) {
+    this.setState({
+      totalInvitedTesters: this.state.totalInvitedTesters += count
+    }, () => this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters);
+    // this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters += count;
+    // console.log(this.props.currentSection)
   }
 
   resetToNull() {
@@ -119,7 +129,8 @@ class SectionHome extends React.Component {
     this.setState({
       compareOptions: [],
       showData: false,
-      compare: false
+      compare: false,
+      totalInvitedTesters: 0
     });
   }
 
@@ -354,6 +365,7 @@ class SectionHome extends React.Component {
           <DisplaySections
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
+            totalInvitedTesters={this.state.totalInvitedTesters}
           />
         </div>
 
@@ -424,6 +436,7 @@ class SectionHome extends React.Component {
                 option={option}
                 notifications={this.getNotificationsForOption(option)}
                 key={i}
+                sectionId={this.props.currentSection.id}
                 index={i}
                 onOptionClick={this.onOptionClick}
                 concatTesters={this.concatTesters}
@@ -434,6 +447,7 @@ class SectionHome extends React.Component {
                 showNotifsCb={this.showNotifsCb}
                 allTesters={this.state.testerToPassToOptionListEntry}
                 resetToNull={this.resetToNull}
+                incrementTotalInvitedTesters={this.incrementTotalInvitedTesters}
               />
             ))}
           </Col>
