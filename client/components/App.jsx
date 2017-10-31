@@ -35,6 +35,7 @@ import Browse from './tester/Browse/Browse.jsx';
 import ForgotPassword from './auth/ForgotPassword.jsx';
 import ResetPassword from './auth/ResetPassword.jsx';
 import CreatorPublicProfile from './creator/account/CreatorPublicProfile.jsx';
+import TesterJoinFocusGroup from './tester/FocusGroupInvite.jsx';
 
 export class App extends React.Component {
   constructor(props) {
@@ -79,6 +80,7 @@ export class App extends React.Component {
                 <Route path="/video/:id" component={TesterVideo}/>
                 <Route path="/browse" component={Browse}/>
                 <Route path="/cprofile:id" component={CreatorPublicProfile}/>
+                <Route path="/joinGroup" component={TesterJoinFocusGroup}/>
               </Switch>
               </div>
             )

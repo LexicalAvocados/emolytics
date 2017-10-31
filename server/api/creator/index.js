@@ -118,6 +118,13 @@ exports.deleteFocusGroup = (req, res) => {
 
 exports.addTesterToFocusGroup = (req, res) => {
   // console.log('addTesterToFocusGroup req.body:', req.body);
+  let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'reactionsyncer@gmail.com',
+      pass: 'reactionsync1'
+    }
+  });
   let tester = User.findOne({
     where: {
       username: req.body.testerUsername
@@ -129,17 +136,38 @@ exports.addTesterToFocusGroup = (req, res) => {
       name: req.body.focusGroupName
     }
   });
-
+  let userEmail;
   Promise.all([tester, focusGroup])
     .then(values => {
+      userEmail = values[0].email;
       return FocusGroupAndTester.create({
         userId: values[0].id,
-        focusGroupId: values[1].id
+        focusGroupId: values[1].id,
+        creatorInvited: true,
       });
     })
     .then(newDbEntry => {
       console.log('Associated', newDbEntry.userId, 'with Focus Group', newDbEntry.focusGroupId);
-      res.send(true);
+      return newDbEntry
+    })
+    .then((newDbEntry) => {
+      console.log('USER EMAIL', userEmail)
+      let mailOptions = {
+        from: 'ReactionSync',
+        to: userEmail,
+        subject: "You've been invited to a Focus Group!",
+        text: "Guten Tag! You've been invited to something (if you've received this email)",
+        html: `<p>Herzlich Willkommen! You have been invited to a focus group. Follow this link to join: http://localhost:3001/joinGroup Enter ${newDbEntry.focusGroupId} to join.</p>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          // return console.log(error);
+          res.send(false);
+        } else {
+          // console.log('I think the email was sent.', info);
+          res.send(true);
+        }
+      });
     })
     .catch(err => {
       console.log('Error associating Tester with Focus Group:', err);
@@ -196,7 +224,7 @@ exports.getCreatorFocusGroups = (req, res) => {
       // console.log('1st then block');
       return FocusGroup.findAll({
         where: {
-          userId: creator.dataValues.id
+          userId: creator.dataValues.id,
         }
       });
     })
@@ -216,7 +244,9 @@ exports.getCreatorFocusGroups = (req, res) => {
       return Promise.all(groups.map(group => {
         return FocusGroupAndTester.findAll({
           where: {
-            focusGroupId: group.id
+            focusGroupId: group.id,
+            creatorInvited: true,
+            testerInvited: true
           }
         });
       }));

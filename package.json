@@ -52,6 +52,7 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
+    "antd": "^2.13.8",
     "array-pad": "0.0.1",
     "async": "^2.5.0",
     "atob": "^2.0.3",
@@ -85,7 +86,7 @@
     "react": "^15.6.1",
     "react-bell-icon": "^1.0.0",
     "react-bootstrap": "^0.31.3",
-    "react-dom": "^15.6.1",
+    "react-dom": "^15.6.2",
     "react-heatmap": "^1.0.6",
     "react-material-snackbar": "^3.0.0",
     "react-notification": "^6.8.2",

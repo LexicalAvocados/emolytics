@@ -83,6 +83,25 @@ router.post('/getDemographics', (req, res) => {
       res.send(response);
     });
 });
+// "age" = ANY ('${"{" + agesForQuery.join(', ') +"}"}'::int[]))
+//"age"=ANY('{40, 22, 29}'::int[])
+router.get('/test', (req, res) => {
+  console.log('RUN TEST FOR GET')
+  var agesForQuery = [22,23,29];
+  sequelize.query(
+  `SELECT "time", AVG("attention") AS "Attention", COUNT("id") AS "Count", AVG("anger") AS "Anger", AVG("contempt") AS "Contempt", AVG("disgust") AS "Disgust", AVG("fear") AS "Fear", AVG("happiness") AS "Happiness", AVG("neutral") AS "Neutral", AVG("sadness") AS "Sadness", AVG("surprise") AS "Surprise"
+    FROM "frames"
+    WHERE "optionId" = ${3} AND
+    "userId" in (SELECT id FROM users
+    WHERE 
+    "age"=ANY('{${agesForQuery.join(", ")}}'::int[])
+    )
+    GROUP BY "time" ORDER BY "time" ASC`
+    , { type: sequelize.QueryTypes.SELECT})
+      .then(data => {
+        console.log(data);
+      })
+})
 
 
 router.post('/getEmotion', (req, res) => {
