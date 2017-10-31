@@ -1,4 +1,5 @@
 const express = require('express');
+const Sequelize = require('sequelize');
 const db = require('../../db');
 const sequalize = db.sequalize;
 const User = db.User;
@@ -6,6 +7,7 @@ const ForgotPassword = db.ForgotPassword;
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
+
 
 
 router.post('/forgotPassword', (req, res) => {
@@ -92,6 +94,8 @@ router.post('/resetPassword', (req, res) => {
       res.send('bad');
     })
 })
+
+
 
 
 
