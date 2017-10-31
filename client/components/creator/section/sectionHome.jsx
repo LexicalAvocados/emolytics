@@ -41,7 +41,8 @@ class SectionHome extends React.Component {
       currentNotification: {},
       allNotifications: [],
       testerToPassToOptionListEntry: [],
-      noCreditsAlert: '',
+      rerenderAfterInvites: false,
+      noCreditsAlert: [],
       fromSectionHomeToInvitationPanel: true
     };
     this.onOptionClick = this.onOptionClick.bind(this);
@@ -60,6 +61,8 @@ class SectionHome extends React.Component {
     this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
     this.dismissNotification = this.dismissNotification.bind(this);
     this.resetToNull = this.resetToNull.bind(this);
+    this.rerenderAfterInvitingToOption = this.rerenderAfterInvitingToOption.bind(this);
+    this.onOptionClickCallbackForLowCredit = this.onOptionClickCallbackForLowCredit.bind(this);
   }
 
   componentWillMount() {
@@ -113,7 +116,7 @@ class SectionHome extends React.Component {
 
       this.setState({
         allNotifications: allNotifs
-      }, () => console.log('ALL notifs', this.state.allNotifications))
+      })
     } //close if block
   }
 
@@ -179,6 +182,15 @@ class SectionHome extends React.Component {
     }
   }
 
+  onOptionClickCallbackForLowCredit(option) {
+    // need to get testers in option home state
+
+    // create function in optionListEntry that returns the testers in state, call from here
+    this.oler.callBeginEdit(option)
+    // call begin edit with those arguments
+
+  }
+
   renderInvited() {
     this.setState({
       invited: !this.state.invited
@@ -191,6 +203,15 @@ class SectionHome extends React.Component {
     });
   }
 
+  beginEdit(option, testers, testersCopy) {
+    this.props.currentOption.testers = testers;
+    this.props.currentOption.testersCopy = testersCopy;
+    this.props.actions.changeOption(option);
+    this.setState({
+      showEdit: !this.state.showEdit,
+      idOfClickedOnOption: option.id
+    });
+  }
 
   deleteOption() {
     if (this.state.idOfClickedOnOption === 0 || this.state.idOfClickedOnOption === 1) {
@@ -217,24 +238,14 @@ class SectionHome extends React.Component {
     }
   }
 
-  beginEdit(option, testers, testersCopy) {
-    this.props.currentOption.testers = testers;
-    this.props.currentOption.testersCopy = testersCopy;
-    this.props.actions.changeOption(option);
-    this.setState({
-      showEdit: !this.state.showEdit,
-      idOfClickedOnOption: option.id
-    });
-  }
-
   renderPanel(opening = false) {
     if (opening) {
-      var noCredits = this.props.currentSection.options.reduce((string, option) => {
-        if ((option.totalcredits === 0 || option.totalcredits <= (option.totalcredits/option.creditsperview * 2)) && option !== 'End') {
-          return string += option.name + ', ';
-        } 
-        return string;
-      }, '');
+      var noCredits = this.props.currentSection.options.reduce((acc, option) => {
+        if ((option.totalcredits === 0 || option.totalcredits <= (option.creditsperview * 2)) && option !== 'End') {
+          acc.push(option);
+        }
+        return acc;
+      }, []);
     }
     this.setState({
       displayPanel: !this.state.displayPanel,
@@ -308,17 +319,15 @@ class SectionHome extends React.Component {
     this.setState({
       showNotifications: true,
       currentNotification: filteredNotifs[0]
-    }, () => console.log('CURRENT NOTIF', this.state.currentNotification))
+    })
   };
 
   dismissNotification() {
     //splice current notification from allNotifications array in state
     var optionNameToDelete = this.state.currentNotification.optionName;
-    console.log('ALL NOTIFICATIONS', this.state.allNotifications)
     var editedNotifications = this.state.allNotifications.filter((item) => {
       return item.optionName !== this.state.currentNotification.optionName
     })
-    console.log('edited notifications', editedNotifications)
     //remove current notification from state
     this.setState({
       allNotifications: editedNotifications,
@@ -330,7 +339,6 @@ class SectionHome extends React.Component {
       optionName: optionNameToDelete
     })
     .then((res) => {
-      console.log('res from marking notif as seen', res.data)
     })
   }
 
@@ -384,6 +392,7 @@ class SectionHome extends React.Component {
                 renderPanel={this.renderPanel}
                 noCreditsAlert={this.state.noCreditsAlert}
                 fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
+                onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
               />
             )
           ) : (
@@ -419,10 +428,11 @@ class SectionHome extends React.Component {
             null}
 
         </div>
-      
+
           <Col className="currentSectionOptionsList" md={2}>
             { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
               <OptionListEntry
+                onRef={oler => (this.oler = oler)}
                 option={option}
                 notifications={this.getNotificationsForOption(option)}
                 key={i}

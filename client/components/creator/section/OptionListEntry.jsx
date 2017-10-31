@@ -44,8 +44,8 @@ class OptionListEntry extends React.Component {
 
   componentDidMount() {
     this.mount();
+    this.props.onRef(this)
   }
-
 
   mount() {
     axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
@@ -60,11 +60,12 @@ class OptionListEntry extends React.Component {
         console.log('Error retrieving testers for option', err);
       });
   }
+  
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.showEdit === false) {
          this.props.resetToNull();
         this.mount();
-      
+
       return true;
     }
     return true;
@@ -183,6 +184,10 @@ class OptionListEntry extends React.Component {
         <Popover id="popover-trigger-hover" style={hidden}></Popover>
       );
     }
+  }
+
+  callBeginEdit(option) {
+    this.props.beginEdit(option, this.state.testers, this.state.testersCopy)
   }
 
   render() {
