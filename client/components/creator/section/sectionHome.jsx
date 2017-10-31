@@ -36,12 +36,11 @@ class SectionHome extends React.Component {
       showData: false,
       compareOptions: [],
       fromSectionHome: true,
-      showEdit: false,
+      showEdit: null,
       showNotifications: false,
       currentNotification: {},
       allNotifications: [],
       testerToPassToOptionListEntry: [],
-      rerenderAfterInvites: false,
       noCreditsAlert: '',
       fromSectionHomeToInvitationPanel: true
     };
@@ -60,10 +59,11 @@ class SectionHome extends React.Component {
     this.showNotifsCb = this.showNotifsCb.bind(this);
     this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
     this.dismissNotification = this.dismissNotification.bind(this);
-    this.rerenderAfterInvitingToOption = this.rerenderAfterInvitingToOption.bind(this);
+    this.resetToNull = this.resetToNull.bind(this);
   }
 
   componentWillMount() {
+    console.log('rerending section hommmmmmee')
     console.log(this.props.currentSection)
     axios.get('/api/getTesters')
       .then((response) => {
@@ -71,7 +71,7 @@ class SectionHome extends React.Component {
           testers: response.data,
           testerToPassToOptionListEntry: response.data
         });
-        // console.log('TESTERS BEFORE FILTER', this.state.testers)
+        // console.log('TESTERS BEFORE FILTER', this.state.teers)
       })
       .catch((err) => {
         console.log(err);
@@ -81,18 +81,15 @@ class SectionHome extends React.Component {
     this.decorateNotificationObjects();
   }
 
-  shouldComponentUpdate(nextProps, nextState) { // Ignore this for the time being......
-    // console.log('this is the next state right hererererer', nextState.rerenderAfterInvites);
-    if (nextState.rerenderAfterInvites) {
-      // console.log('should be rerendering the page right now')
-      return true;
-    }
-    return true;
+  resetToNull() {
+    this.setState({
+      showEdit: null
+    });
   }
 
-  rerenderAfterInvitingToOption() {
+  toggleEdit() {
     this.setState({
-      rerenderAfterInvites: !this.state.rerenderAfterInvites
+      showEdit: false
     });
   }
 
@@ -227,12 +224,6 @@ class SectionHome extends React.Component {
     this.setState({
       showEdit: !this.state.showEdit,
       idOfClickedOnOption: option.id
-    });
-  }
-
-  toggleEdit() {
-    this.setState({
-      showEdit: !this.state.showEdit
     });
   }
 
@@ -378,7 +369,8 @@ class SectionHome extends React.Component {
 
 
           { this.state.haveInvited ? (
-            <p className="closerText">You have previously invited testers to view this option</p>
+            <p className="closerText">You have previously invited testers to view options within this section</p>
+            // Then list the options?
           ) : ( null )}
           { !this.state.invited ? (
             !this.state.displayPanel ? (
@@ -443,7 +435,7 @@ class SectionHome extends React.Component {
                 showEdit={this.state.showEdit}
                 showNotifsCb={this.showNotifsCb}
                 allTesters={this.state.testerToPassToOptionListEntry}
-                rerenderAfterInvitingToOption={this.rerenderAfterInvitingToOption}
+                resetToNull={this.resetToNull}
               />
             ))}
           </Col>
