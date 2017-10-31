@@ -49,6 +49,7 @@ class OptionHome extends React.Component {
       playVideoForHM: false,
       optionEmotionObj: { emotionPerc: {}, attention: ['Attention'], count:[0] },
       demographicStats: {},
+      allDemographicsObj: {}
     }
     this.timestampCallback = this.timestampCallback.bind(this);
     this.setDuration = this.setDuration.bind(this);
@@ -63,7 +64,10 @@ class OptionHome extends React.Component {
     this.sliderCallback = this.sliderCallback.bind(this);
     this.playVideoButtonCallback = this.playVideoButtonCallback.bind(this);
     this.playVideoButtonIcon = this.playVideoButtonIcon.bind(this);
-    this.selectChange = this.selectChange.bind(this)
+    this.selectChange = this.selectChange.bind(this);
+    this.recalculateChartsBasedOnDemographicSelect = this.recalculateChartsBasedOnDemographicSelect.bind(this);
+    this.setDemographicsStuff = this.setDemographicsStuff.bind(this);
+    this.refreshDemographicStats = this.refreshDemographicStats.bind(this);
     console.log(this);
   }
 
@@ -92,8 +96,6 @@ class OptionHome extends React.Component {
           this.generateCharts();
         })
       })
-
-
 
 
     this.setState({
@@ -132,7 +134,7 @@ class OptionHome extends React.Component {
             this.setState({
               allUsers: newUsers,
               selectedUsers: newUsers
-            })
+            }, this.setDemographicsStuff )
           })
         })
       })
@@ -151,6 +153,54 @@ class OptionHome extends React.Component {
       })
   }
 
+  setDemographicsStuff() {
+    //demographics/user settings stuff
+    var initialDemographicsObj = {
+      'race': {},
+      'sex': {}
+    }
+
+    var allDemographicsObj = this.state.selectedUsers.reduce((acc, curr) => {
+      if (curr.race === null) {
+        acc.race[`Not Provided`] ? acc.race[`Not Provided`]+=1 : acc.race[`Not Provided`] = 1;
+      } else {
+        acc.race[`${curr.race}`] ? acc.race[`${curr.race}`]+=1 : acc.race[`${curr.race}`] = 1;
+      }
+
+      if (curr.sex === null) {
+        acc.sex[`Not Provided`] ? acc.sex[`Not Provided`]+=1 : acc.sex[`Not Provided`] = 1;
+      } else {
+        acc.sex[`${curr.sex}`] ? acc.sex[`${curr.sex}`]+=1 : acc.sex[`${curr.sex}`] = 1;
+      }
+
+      return acc;
+    }, initialDemographicsObj)
+
+    var userIdsArray = this.state.selectedUsers.reduce((acc, curr) => {
+      acc.push(curr.id); return acc;
+    }, [])
+
+    axios.post('/api/generateAgeRangeObjForUserIdsArray', {userIdsArray})
+    .then((res) => {
+      allDemographicsObj['ageRange'] = res.data
+      console.log('ALLDEMOGRAPHICSOBJ', allDemographicsObj)
+
+      let allRaces = Object.keys(allDemographicsObj.race)
+      let allGenders = Object.keys(allDemographicsObj.sex)
+      let allAgeRanges = Object.keys(allDemographicsObj.ageRange)
+
+      let selectedDemographicsObj = {
+        races: allRaces,
+        genders: allGenders,
+        ageRanges: allAgeRanges
+      }
+      this.props.actions.setOptionDemographicsSelection(selectedDemographicsObj);
+      this.setState({
+        allDemographicsObj : allDemographicsObj,
+      })
+    })
+  };
+
   calculateCompletionPerc() {
     axios.post('/api/option/getDemographics', {
       id: this.props.currentSection.option.id
@@ -162,6 +212,23 @@ class OptionHome extends React.Component {
         completion: cr,
         demographicStats: res.data
       })
+    })
+  }
+
+  refreshDemographicStats() {
+    // console.log('REFRESHING STATS NOW')
+    axios.post('/api/option/refreshDemographics', {
+      optionId: this.props.currentSection.option.id,
+      selectedRaces: this.props.setOptionDemographicsSelection.races,
+      selectedGenders: this.props.setOptionDemographicsSelection.genders
+    })
+    .then( (res) => {
+      var cr = res.data.finished / res.data.total
+      console.log('res from refresh demographics', res.data)
+      this.setState({
+        completion: cr,
+        demographicStats: res.data
+      }, () => console.log('refreshed demographic state', this.state.demographicStats))
     })
   }
 
@@ -270,43 +337,40 @@ class OptionHome extends React.Component {
   };
 
   recalculateChartsBasedOnUserSelect(userIdsArray){
-    axios.post('/api/getFrames', {
-      optionId: this.props.currentSection.option.id
-    })
-    .then((res) => {
-      let filteredFramesArr = res.data.filter(item => userIdsArray.includes(item.userId));
-      // console.log('filteredFramesArr', filteredFramesArr)
-      this.calculateCompletionPerc(filteredFramesArr);
+    // axios.post('/api/getFrames', {
+    //   optionId: this.props.currentSection.option.id
+    // })
+    // .then((res) => {
+    //   let filteredFramesArr = res.data.filter(item => userIdsArray.includes(item.userId));
+    //   // console.log('filteredFramesArr', filteredFramesArr)
+    //   this.calculateCompletionPerc(filteredFramesArr);
+    //
+    //     // axios.post('/api/getLikes', {
+    //     //   optionId: this.props.currentSection.option.id
+    //     // })
+    //     // .then( (res) => {
+    //     //   let likeCount = res.data.reduce((tot, curr) => {
+    //     //     if(curr.like === true && userIdsArray.includes(curr.userId)) tot++
+    //     //     return tot;
+    //     //   }, 0)
+    //     //   let likeRatio = `${likeCount}/${this.state.selectedUsers.length}`
+    //     //   this.setState({
+    //     //     likeRatio: likeRatio
+    //     //   })
+    //     // })
+    //     // .then( () => {
+    //     //   this.generateCharts(this.state.emotionsArrForRender);
+    //     // })
+    // })
+  }
 
-      axios.post('/api/organizeFramesByEmotion', {
-        frames: filteredFramesArr,
-        duration: this.state.duration
-      })
-      .then((res) => {
-        var emoObj = res.data;
-        let emoArray = [emoObj.anger, emoObj.contempt, emoObj.disgust, emoObj.fear,
-          emoObj.happiness, emoObj.neutral,emoObj.sadness,emoObj.surprise];
-          this.setState({
-            emotionObj: emoObj,
-            emotionsArrForRender: emoArray
-          })
-        })
-        axios.post('/api/getLikes', {
-          optionId: this.props.currentSection.option.id
-        })
-        .then( (res) => {
-          let likeCount = res.data.reduce((tot, curr) => {
-            if(curr.like === true && userIdsArray.includes(curr.userId)) tot++
-            return tot;
-          }, 0)
-          let likeRatio = `${likeCount}/${this.state.selectedUsers.length}`
-          this.setState({
-            likeRatio: likeRatio
-          })
-        })
-        .then( () => {
-          this.generateCharts(this.state.emotionsArrForRender);
-        })
+  recalculateChartsBasedOnDemographicSelect(responseObj) {
+    this.setState({
+      optionEmotionObj: responseObj
+    }, () => {
+      console.log('state after demograpic select', this.state)
+      this.generateCharts()
+      this.refreshDemographicStats()
     })
   }
 
@@ -387,7 +451,7 @@ class OptionHome extends React.Component {
           null
         )}
         <div style={selectionDiv}>
-          <select onChange={this.selectChange} style={selectionStyle} >
+          <select onChange={this.selectChange} style={selectionStyle} value={this.state.sideNavSelection}>
             <option value="overview">Overview</option>
             <option value="attention">Attention</option>
             <option value="feedback">Feedback</option>
@@ -402,7 +466,7 @@ class OptionHome extends React.Component {
           { this.state.sideNavSelection !== 'heatmap' ? (
 
             <div className='nonHeatmapContainer'>
-            {(this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'attention' || this.state.sideNavSelection === 'annotations')  ? 
+            {(this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'attention' || this.state.sideNavSelection === 'annotations')  ?
               (
                 <div className='optionHomeTop'>
                   <Col xs={12}>
@@ -475,7 +539,9 @@ class OptionHome extends React.Component {
               <div className='emotionsRightPanelContainer'>
                 <UserSelect user={this.state.user} optionId={this.props.currentSection.option.id}
                             userSelectCb={this.handleUserSelectCb} changeSideNavSelection={this.changeSideNavSelection}
-                            selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}/>
+                            selectedUsers={this.state.selectedUsers} allUsers={this.state.allUsers}
+                            demographicSelectCb={this.recalculateChartsBasedOnDemographicSelect}
+                            allDemographicsObj={this.state.allDemographicsObj} refreshDemographics={this.refreshDemographicStats}/>
               </div>
             ) : ''}
 
@@ -592,7 +658,8 @@ const mapStateToProps = (state) => {
     loggedInUser: state.loggedInUser,
     currentOptionAnnotations: state.currentOptionAnnotations,
     currentOption: state.currentOption,
-    lineGraphData: state.lineGraphData
+    lineGraphData: state.lineGraphData,
+    setOptionDemographicsSelection: state.setOptionDemographicsSelection
   });
 };
 

@@ -31,6 +31,7 @@ export const ADD_FEEDBACK_TO_OPTION = 'ADD_FEEDBACK_TO_OPTION';
 export const REMOVE_OPTION_FROM_OPTIONS = 'REMOVE_OPTION_FROM_OPTIONS';
 export const REMOVE_SECTION_FROM_SECTIONS = 'REMOVE_SECTION_FROM_SECTIONS';
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
+export const SET_OPTION_DEMOGRAPHICS_SELECTION = 'SET_OPTION_DEMOGRAPHICS_SELECTION';
 
 export const changeExample = (text) => ({
   type: CHANGE_EXAMPLE,
@@ -209,3 +210,8 @@ export const setNotifications = (notifs) => ({
   type: SET_NOTIFICATIONS,
   notifs
 });
+
+export const setOptionDemographicsSelection = (objectOfArrays) => ({
+  type: SET_OPTION_DEMOGRAPHICS_SELECTION,
+  objectOfArrays
+})
