@@ -19,6 +19,7 @@ class TesterCreditsPage extends React.Component {
       displayPayoutForm: false
     }
     this.togglePayoutForm = this.togglePayoutForm.bind(this);
+    this.makeBalanceZero = this.makeBalanceZero.bind(this);
   }
 
   componentDidMount() {
@@ -38,6 +39,10 @@ class TesterCreditsPage extends React.Component {
     this.setState({displayPayoutForm: !this.state.displayPayoutForm});
   }
 
+  makeBalanceZero() {
+    this.setState({balance: 0});
+  }
+
   render() {
     return (
       <div>
@@ -53,7 +58,14 @@ class TesterCreditsPage extends React.Component {
           onClick={this.togglePayoutForm}
         > Take Payout </Button>
         <br/><br/><br/>
-        {this.state.displayPayoutForm ? <PayoutForm balance={this.state.balance} /> : null}
+        {this.state.displayPayoutForm ?
+          <PayoutForm
+            balance={this.state.balance}
+            togglePayoutForm={this.togglePayoutForm}
+            makeBalanceZero={this.makeBalanceZero}
+          />
+        :
+          null}
       </div>
     )
   }

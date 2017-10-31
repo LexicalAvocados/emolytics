@@ -36,6 +36,26 @@ exports.getCreditBalance = (req, res) => {
     });
 };
 
+exports.depleteCreditBalance = (req, res) => {
+  User.update({credits: 0},
+    {
+      where: {
+        id: req.body.userId
+      }
+    }
+  )
+    .then(affectedRows => {
+      if (affectedRows[0] === 1) {
+        res.send(true);
+      } else {
+        res.send(false);
+      }
+    })
+    .catch(err => {
+      console.log('Error depleting user\'s credit balance:', err);
+    });
+};
+
 exports.addCreditsToOption = (req, res) => {
   Option.findOne({
     where: {

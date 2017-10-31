@@ -86,6 +86,8 @@ router.post('/addCredits', creditRoutes.addCredits);
 
 router.get('/getCreditBalance', creditRoutes.getCreditBalance);
 
+router.post('/depleteCreditBalance', creditRoutes.depleteCreditBalance);
+
 router.post('/addCreditsToOption', creditRoutes.addCreditsToOption);
 
 router.get('/allSponsoredOptions', creditRoutes.allSponsoredOptions);

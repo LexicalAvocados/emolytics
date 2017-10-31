@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormControl } from 'react-bootstrap';
+import { Button, Form, FormControl, Fade, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
 // React-Redux connect() boilerplate
@@ -16,35 +16,56 @@ class PayoutForm extends React.Component {
       typedAcctNum: '',
       typedRoutingNum: '',
       typedNameOnAcct: '',
-      populatedForms: 0
+      displayPayoutSuccess: false
     };
     this.updateTypedAcctNum = this.updateTypedAcctNum.bind(this);
     this.updateTypedRoutingNum = this.updateTypedRoutingNum.bind(this);
     this.updateTypedNameOnAcct = this.updateTypedNameOnAcct.bind(this);
+    this.takePayout = this.takePayout.bind(this);
   }
 
   updateTypedAcctNum(e) {
     this.setState({
-      typedAcctNum: e.target.value,
-      populatedForms: e.target.value === '' ? Math.min(--this.state.populatedForms, 0) : ++this.state.populatedForms
+      typedAcctNum: e.target.value
     });
   }
 
   updateTypedRoutingNum(e) {
     this.setState({
-      typedAcctNum: e.target.value,
-      populatedForms: e.target.value === '' ? Math.min(--this.state.populatedForms, 0) : ++this.state.populatedForms
+      typedRoutingNum: e.target.value
     });
   }
 
   updateTypedNameOnAcct(e) {
     this.setState({
-      typedAcctNum: e.target.value,
-      populatedForms: e.target.value === '' ? Math.min(--this.state.populatedForms, 0) : ++this.state.populatedForms
+      typedNameOnAcct: e.target.value
     });
-  }  
+  }
+
+  takePayout(e) {
+    e.preventDefault();
+    axios.post('/api/depleteCreditBalance', {
+      userId: this.props.loggedInUser.id
+    })
+      .then(res => {
+        if (res) {
+          this.setState({displayPayoutSuccess: true});
+          setTimeout(() => {
+            this.setState({displayPayoutSuccess: false});
+            setTimeout(() => {
+              this.props.togglePayoutForm();
+              this.props.makeBalanceZero();
+            }, 1000);
+          }, 3000);
+        } else {
+          console.log('Error with payout, try again later');
+        }
+      })
+  }
 
   render() {
+    const formsPopulated =
+      (this.state.typedAcctNum !== '') && (this.state.typedRoutingNum !== '') && (this.state.typedNameOnAcct !== '');
     return (
       <div>
         <form>
@@ -62,14 +83,22 @@ class PayoutForm extends React.Component {
           <FormControl
             value={this.state.typedNameOnAcct}
             placeholder='Enter name on account'
-            onChange={this.updatedTypedNameOnAcct}
+            onChange={this.updateTypedNameOnAcct}
           />
           <Button
             bsStyle='primary'
             type='submit'
-            disabled={this.state.populatedForms === 3}
+            disabled={!formsPopulated}
+            onClick={this.takePayout}
           > Receive ${this.props.balance / 100} </Button>
         </form>
+        <br/><br/>
+        <Fade in={this.state.displayPayoutSuccess}>
+          <Alert bsStyle='success'>
+            <div>Success! Check your bank statement in 2 business days.</div>
+            <div>{this.props.balance} credits have been deducted from your credits balance.</div>
+          </Alert>
+        </Fade>
       </div>
     )
   }
