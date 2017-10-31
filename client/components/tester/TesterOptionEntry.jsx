@@ -26,6 +26,9 @@ class TesterOtionEntry extends React.Component {
         <p>Option Name: {this.props.option.name}</p>
         <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
         <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
+        <Link to={'/cprofile:'+this.props.option.CrId}>
+          <p> Created by: {this.props.option.CrName}</p>
+        </Link>
       </div>
     )
   }

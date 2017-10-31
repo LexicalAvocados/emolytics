@@ -83,7 +83,12 @@ router.post('/getOptionsForTester', (req, res) => {
                   WHERE ${id} = "testerAndOptions"."userId" AND "testerAndOptions"."finished" IS ${mode}
                   ORDER BY "testerAndOptions"."createdAt";`)
     .then(optionsTuple => {
-      res.send(optionsTuple[0]);
+      return Promise.all(optionsTuple[0].map(option => getCreatorDataForOption(option)))
+    })
+    .then((decoratedOptions) => {
+      var responseArr = decoratedOptions.filter(option => option && option !== null );
+      // console.log('RESPONSE ARR', responseArr)
+      res.send(JSON.stringify(responseArr));
     })
     .catch(err => {
       res.send(err);
@@ -471,6 +476,40 @@ router.get('/getKey', (req, res) => {
 //   res.sendFile(path.resolve('photos/' + req.params.id + '.png'));
 // })
 
+const getCreatorDataForOption = (option) => {
+  // console.log('OPTION IN MAP FUNCTION', option)
+  return Section.findOne({
+    where: {
+      id: option.sectionId
+    }
+  })
+  .then((sec) => {
+    // console.log('SECTION IN MAP FUNCTION', sec)
+    if (sec) {
+      return Project.findOne({
+        where: {
+          id: sec.projectId
+        }
+      })
+      .then((proj) => {
+        // console.log('PROJECT IN MAP FUNCTION', proj)
+        if (proj) {
+          return User.findOne({
+            where: {
+              id: proj.userId
+            }
+          })
+          .then((user) => {
+            // console.log('OPTION IN LAST PROMISE IN MAP', option)
+            option['CrId'] = user.dataValues.id;
+            option['CrName'] = user.dataValues.username;
+            return option;
+          })
+        }
+      })
+    }
+  })
+}
 
 const aggregateComments = (option, res) => {
   TesterAndOption.findAll({
