@@ -27,19 +27,19 @@ class AddCredits extends React.Component {
           </Row>
           <FormGroup controlId="amount">
             <Row>
-              <Col sm={2}>
+              <Col sm={3}>
                 Total:
               </Col>
-              <Col sm={2}>
-                <FormControl type="number" placeholder="eg. 200" onChange={this.props.updateTotal}/>
+              <Col sm={3}>
+                <FormControl type="number" placeholder={"Balance: "+this.props.option.totalcredits} onChange={this.props.updateTotal}/>
               </Col>
             </Row>
             <Row>
-              <Col sm={2}>
+              <Col sm={3}>
                 Per View:
               </Col>
-              <Col sm={2}>
-                <FormControl type="number" placeholder="eg. 20" onChange={this.props.updatePerView}/>
+              <Col sm={3}>
+                <FormControl type="number" placeholder={"Currently: "+this.props.option.creditsperview} onChange={this.props.updatePerView}/>
               </Col>
             </Row>
             <Row>
