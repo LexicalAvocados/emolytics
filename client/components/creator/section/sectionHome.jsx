@@ -40,7 +40,10 @@ class SectionHome extends React.Component {
       showNotifications: false,
       currentNotification: {},
       allNotifications: [],
-      testerToPassToOptionListEntry: []
+      testerToPassToOptionListEntry: [],
+      rerenderAfterInvites: false,
+      noCreditsAlert: '',
+      fromSectionHome: true
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -57,9 +60,11 @@ class SectionHome extends React.Component {
     this.showNotifsCb = this.showNotifsCb.bind(this);
     this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
     this.dismissNotification = this.dismissNotification.bind(this);
+    this.rerenderAfterInvitingToOption = this.rerenderAfterInvitingToOption.bind(this);
   }
 
   componentWillMount() {
+    console.log(this.props.currentSection)
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -74,6 +79,21 @@ class SectionHome extends React.Component {
 
     this.getOptionsData();
     this.decorateNotificationObjects();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) { // Ignore this for the time being......
+    // console.log('this is the next state right hererererer', nextState.rerenderAfterInvites);
+    if (nextState.rerenderAfterInvites) {
+      // console.log('should be rerendering the page right now')
+      return true;
+    }
+    return true;
+  }
+
+  rerenderAfterInvitingToOption() {
+    this.setState({
+      rerenderAfterInvites: !this.state.rerenderAfterInvites
+    });
   }
 
   decorateNotificationObjects() {
@@ -104,7 +124,7 @@ class SectionHome extends React.Component {
     this.setState({
       compareOptions: [],
       showData: false,
-      compare: false,
+      compare: false
     });
   }
 
@@ -216,9 +236,18 @@ class SectionHome extends React.Component {
     });
   }
 
-  renderPanel() {
+  renderPanel(opening = false) {
+    if (opening) {
+      var noCredits = this.props.currentSection.options.reduce((string, option) => {
+        if ((option.totalcredits === 0 || option.totalcredits <= (option.totalcredits/option.creditsperview * 2)) && option !== 'End') {
+          return string += option.name + ', ';
+        } 
+        return string;
+      }, '');
+    }
     this.setState({
       displayPanel: !this.state.displayPanel,
+      noCreditsAlert: noCredits
     });
   }
 
@@ -351,10 +380,9 @@ class SectionHome extends React.Component {
           { this.state.haveInvited ? (
             <p className="closerText">You have previously invited testers to view this option</p>
           ) : ( null )}
-
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              <Button onClick={this.renderPanel}>Invite testers</Button>
+              <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
             ) : (
               <InvitationPanel
                 options={this.props.currentSection.options}
@@ -362,6 +390,8 @@ class SectionHome extends React.Component {
                 testers={this.state.testers}
                 testersCopy={this.state.testersCopy}
                 renderPanel={this.renderPanel}
+                noCreditsAlert={this.state.noCreditsAlert}
+                fromSectionHome={this.state.fromSectionHome}
               />
             )
           ) : (
@@ -413,6 +443,7 @@ class SectionHome extends React.Component {
                 showEdit={this.state.showEdit}
                 showNotifsCb={this.showNotifsCb}
                 allTesters={this.state.testerToPassToOptionListEntry}
+                rerenderAfterInvitingToOption={this.rerenderAfterInvitingToOption}
               />
             ))}
           </Col>

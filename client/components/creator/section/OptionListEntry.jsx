@@ -47,7 +47,7 @@ class OptionListEntry extends React.Component {
         this.props.concatTesters(testerIds.data, this.props.index);
         this.setState({
           specificTesters: testerIds.data
-        }, () => this.filterTestersForOptions());
+        }, () => this.filterTestersForOptions(true));
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
@@ -78,18 +78,23 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  filterTestersForOptions() {
-    let priorInvites = true
+  filterTestersForOptions(onMount) {
+    let priorInvites = true;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
       if (this.state.specificTesters.indexOf(tester.id) === -1) {
         return tester;
-      } 
+      } else {
+        priorInvites = false;
+      }
     });
     this.setState({
       testers: uninvitedTesters,
       testersCopy: uninvitedTesters,
       haveInvited: priorInvites
     });
+    if (!onMount) {
+      this.props.rerenderAfterInvitingToOption();
+    }
   }
 
 
@@ -119,7 +124,7 @@ class OptionListEntry extends React.Component {
       return;
     } 
     let body = {
-      optionId: this.props.option.id,
+      optionId: this.props.currentOption,
       total: this.state.total,
       perView: this.state.perView
     };
@@ -284,7 +289,8 @@ class OptionListEntry extends React.Component {
 const mapStateToProps = (state) => ({
   router: state.router,
   currentSection: state.currentSection,
-  loggedInUser: state.loggedInUser
+  loggedInUser: state.loggedInUser,
+  currentOption: state.currentOption
 });
 
 const mapDispatchToProps = (dispatch) => ({
