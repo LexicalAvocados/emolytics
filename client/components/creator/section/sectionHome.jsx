@@ -41,9 +41,9 @@ class SectionHome extends React.Component {
       currentNotification: {},
       allNotifications: [],
       testerToPassToOptionListEntry: [],
-      rerenderAfterInvites: false,
       noCreditsAlert: [],
-      fromSectionHomeToInvitationPanel: true
+      fromSectionHomeToInvitationPanel: true,
+      totalInvitedTesters: 0
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -61,13 +61,11 @@ class SectionHome extends React.Component {
     this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
     this.dismissNotification = this.dismissNotification.bind(this);
     this.resetToNull = this.resetToNull.bind(this);
-    this.rerenderAfterInvitingToOption = this.rerenderAfterInvitingToOption.bind(this);
     this.onOptionClickCallbackForLowCredit = this.onOptionClickCallbackForLowCredit.bind(this);
+    this.incrementTotalInvitedTesters = this.incrementTotalInvitedTesters.bind(this);
   }
 
   componentWillMount() {
-    console.log('rerending section hommmmmmee')
-    console.log(this.props.currentSection)
     axios.get('/api/getTesters')
       .then((response) => {
         this.setState({
@@ -82,6 +80,17 @@ class SectionHome extends React.Component {
 
     this.getOptionsData();
     this.decorateNotificationObjects();
+  }
+
+  incrementTotalInvitedTesters(count) {
+    // console.log(count);
+    
+    this.setState({
+      totalInvitedTesters: this.state.totalInvitedTesters += count
+    });
+    // this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters += count;
+    
+    // this.props.currentSection.totalInvited = count;
   }
 
   resetToNull() {
@@ -124,7 +133,9 @@ class SectionHome extends React.Component {
     this.setState({
       compareOptions: [],
       showData: false,
-      compare: false
+      compare: false,
+      totalInvitedTesters: 0,
+      displayPanel: false
     });
   }
 
@@ -154,6 +165,7 @@ class SectionHome extends React.Component {
         testersCopy: testersThatHaveNotBeenInvited,
         haveInvited: priorInvites
       });
+
     }
   }
 
@@ -364,6 +376,7 @@ class SectionHome extends React.Component {
           <DisplaySections
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
+            totalInvitedTesters={this.state.totalInvitedTesters}
           />
         </div>
 
@@ -436,6 +449,7 @@ class SectionHome extends React.Component {
                 option={option}
                 notifications={this.getNotificationsForOption(option)}
                 key={i}
+                sectionId={this.props.currentSection.id}
                 index={i}
                 onOptionClick={this.onOptionClick}
                 concatTesters={this.concatTesters}
@@ -446,6 +460,7 @@ class SectionHome extends React.Component {
                 showNotifsCb={this.showNotifsCb}
                 allTesters={this.state.testerToPassToOptionListEntry}
                 resetToNull={this.resetToNull}
+                incrementTotalInvitedTesters={this.incrementTotalInvitedTesters}
               />
             ))}
           </Col>
