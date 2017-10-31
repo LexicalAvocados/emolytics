@@ -95,5 +95,75 @@ router.post('/getEmotion', (req, res) => {
     });
 });
 
+router.post('/refreshDemographics', (req, res) => {
+  let response = {};
+  let selectedRaces = req.body.selectedRaces;
+  let selectedGenders = req.body.selectedGenders;
+  var selectedAgeRanges = req.body.selectedAgeRanges;
+  let optionId = req.body.optionId
+
+  var selectedRacesForQuery = '(';
+  selectedRaces.forEach((race, i) => {
+    if (i === selectedRaces.length - 1) {
+      selectedRacesForQuery += `'${race}'`
+    } else {
+      selectedRacesForQuery += `'${race}',`
+    }
+  })
+  selectedRacesForQuery += ')';
+  // console.log('selected racesfor Query', selectedRacesForQuery)
+
+  var selectedGendersForQuery = '(';
+  selectedGenders.forEach((gender, i) => {
+    if (i === selectedGenders.length - 1) {
+      selectedGendersForQuery += `'${gender}'`
+    } else {
+      selectedGendersForQuery += `'${gender}',`
+    }
+  })
+  selectedGendersForQuery += ')';
+
+  sequelize.query(`SELECT * FROM "testerAndOptions"
+  INNER JOIN "users" ON "testerAndOptions"."userId" = "users"."id"
+  WHERE "testerAndOptions"."optionId" = ${req.body.optionId}
+  AND "testerAndOptions"."finished" IS NOT NULL
+  AND "users"."id" in (SELECT id FROM "users"
+  WHERE race in ${selectedRacesForQuery}
+  AND sex in ${selectedGendersForQuery}
+  AND "age"=ANY('{${agesForQuery.join(", ")}}'::int[]) 
+  )`
+  , { type: sequelize.QueryTypes.SELECT})
+    .then(data => {
+      // console.log(data)
+      let total = data.length;
+      let liked = 0;
+      let finished = 0;
+      let age = 0;
+      let ages = [];
+      let male = 0;
+      data.forEach(elem => {
+        if (elem.like === true) {
+          liked++;
+        }
+        if (elem.finished === true) {
+          finished++;
+        }
+        if (elem.sex === 'Male') {
+          male++;
+        }
+        age += elem.age;
+        ages.push(elem.age)
+      });
+      response.total = total;
+      response.liked =liked;
+      response.finished = finished;
+      response.age = age / total;
+      response.male = male;
+      response.ages = ages;
+      // console.log(response);
+      res.send(response);
+    });
+})
+
 
 module.exports = router;

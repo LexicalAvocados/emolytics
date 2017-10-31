@@ -38,6 +38,8 @@ router.post('/createProject', projectRoutes.createProject);
 
 router.post('/getFrames', frameRoutes.getRelevantFrames);
 
+router.post('/getFramesBasedOnUserDemographics', frameRoutes.getFramesBasedOnUserDemographics)
+
 router.post('/sendEmails', indexRoutes.sendEmails);
 
 router.post('/getLikes', optionRoutes.getLikesOnOption);
@@ -96,6 +98,8 @@ router.post('/calculateCompletionPercentage', optionHomeUtilityRoutes.calculateC
 
 router.post('/markNotificationAsSeen', indexRoutes.markNotificationAsSeen);
 
-router.get('/tester/getCreatorData', AccountInfoRoutes.getCreatorDataForPublicProfile)
+router.get('/tester/getCreatorData', AccountInfoRoutes.getCreatorDataForPublicProfile);
+
+router.post('/generateAgeRangeObjForUserIdsArray', detailedDemographicsRoutes.generateAgeRangeObjForUserIdsArray)
 
 module.exports = router;
