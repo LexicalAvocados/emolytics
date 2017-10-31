@@ -106,6 +106,8 @@ FocusGroup.sync({force: false});
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 const FocusGroupAndTester = sequelize.define('focusGroupAndTester', {
+  creatorInvited: {type: Sequelize.BOOLEAN, defaultValue: false},
+  testerInvited: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
 FocusGroup.belongsToMany(User, {through: 'focusGroupAndTester'});

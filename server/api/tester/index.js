@@ -13,6 +13,8 @@ const Section = db.Section;
 const Project = db.Project;
 const EyeTracking = db.EyeTracking;
 const Transaction = db.Transaction;
+const FocusGroup = db.FocusGroup;
+const FocusGroupAndTester = db.FocusGroupAndTester;
 const router = express.Router();
 const base64Img = require('base64-img');
 const request = require('request-promise-native');
@@ -28,6 +30,30 @@ const axios = require('axios');
 // 	thumbnail: 'asdf',
 // 	length: 100
 // })
+
+router.post('/joinFocusGroup', (req, res) => {
+  console.log(req.body, res.session);
+  let user = User.findOne({where: {username: req.session.username}})
+  let focusGroup = FocusGroup.findOne({where: {id: req.body.focusGroupId}})
+
+  Promise.all([user, focusGroup])
+    .then(values => {
+      return FocusGroupAndTester.findOne({where: {focusGroupId: values[1].dataValues.id, userId: values[0].dataValues.id}})
+    })
+    .then(tester => {
+      console.log(tester);
+      return tester.update({
+        testerInvited: true
+      })
+    })
+    .then(updated => {
+      res.send(true)
+    })
+    .catch(() => {
+      res.send(false)
+    })
+
+})
 
 router.post('/addEyeTracking', (req, res) => {
   // console.log(req.body);
