@@ -61,7 +61,6 @@ class SectionHome extends React.Component {
     this.decorateNotificationObjects = this.decorateNotificationObjects.bind(this);
     this.dismissNotification = this.dismissNotification.bind(this);
     this.resetToNull = this.resetToNull.bind(this);
-    this.rerenderAfterInvitingToOption = this.rerenderAfterInvitingToOption.bind(this);
     this.onOptionClickCallbackForLowCredit = this.onOptionClickCallbackForLowCredit.bind(this);
     this.incrementTotalInvitedTesters = this.incrementTotalInvitedTesters.bind(this);
   }
