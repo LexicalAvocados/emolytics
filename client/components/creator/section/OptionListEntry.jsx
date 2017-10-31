@@ -26,7 +26,8 @@ class OptionListEntry extends React.Component {
       testersCopy: [],
       haveInvited: false,
       displayPanel: false,
-      specificTesters: []
+      specificTesters: [],
+      totalNumberOfInvitedTesters: 0
     };
     this.revealAddOption = this.revealAddOption.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
@@ -43,29 +44,36 @@ class OptionListEntry extends React.Component {
   }
 
   componentDidMount() {
-    this.mount();
+    this.mount(this.props.option);
     this.props.onRef(this)
   }
 
-  mount() {
-    axios.get('/api/getTestersForOption', { params: { optionId: this.props.option.id }})
-      .then((testerIds) => {
-        this.props.concatTesters(testerIds.data, this.props.index);
-        this.setState({
-          specificTesters: testerIds.data,
-          invitedByOption: false
-        }, () => this.filterTestersForOptions());
-      })
-      .catch((err) => {
-        console.log('Error retrieving testers for option', err);
-      });
+  mount(option) {
+    if (option !== 'End') {
+      axios.get('/api/getTestersForOption', { params: { optionId: option.id }})
+        .then((testerIds) => {
+          this.props.concatTesters(testerIds.data, this.props.index);
+          this.setState({
+            specificTesters: testerIds.data,
+            invitedByOption: false,
+            displayPanel: false,
+            haveInvited: false
+          }, () => this.filterTestersForOptions());
+        })
+        .catch((err) => {
+          console.log('Error retrieving testers for option', err);
+        });
+    }
   }
-  
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.showEdit === false) {
-         this.props.resetToNull();
-        this.mount();
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.sectionId !== this.props.sectionId) {
+      this.mount(nextProps.option);
+      return true;
+    }
+    if (nextProps.showEdit === false) {
+      this.props.resetToNull();
+      this.mount();
       return true;
     }
     return true;
@@ -96,19 +104,21 @@ class OptionListEntry extends React.Component {
   }
 
   filterTestersForOptions() {
-    let priorInvites = true;
+    let priorInvites = false;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
-      if (this.state.specificTesters.indexOf(tester.id) === -1) {
-        return tester;
+      if (this.state.specificTesters.indexOf(tester.id) >= 0) { 
+        priorInvites = true;
       } else {
-        priorInvites = false;
+        return tester;
       }
     });
     this.setState({
       testers: uninvitedTesters,
       testersCopy: uninvitedTesters,
-      haveInvited: priorInvites
+      haveInvited: priorInvites,
+      totalNumberOfInvitedTesters: this.state.specificTesters.length
     });
+    this.props.incrementTotalInvitedTesters(this.state.specificTesters.length);
   }
 
 
@@ -193,7 +203,7 @@ class OptionListEntry extends React.Component {
   render() {
     const containerStyle = {
       display: 'grid',
-      gridTemplateColumns: '13vh 4vh',
+      gridTemplateColumns: '16vh 4vh',
       gridTemplateRows: '100%'
     };
 
@@ -202,10 +212,29 @@ class OptionListEntry extends React.Component {
       gridRow: '1'
     }
 
-    const notifs =  {
+    const stats =  {
       gridColumn: '2',
       gridRow: '1',
+      display: 'grid',
+      gridTemplateColumns: '100%',
+      gridTemplateRows: '50% 50%'
+    }
+
+    const notifs = {
+      gridColumn: '1',
+      gridRow: '2',
       float: 'right'
+    }
+
+    const testers = {
+      gridColumn: '1',
+      gridRow: '1',
+      float: 'right'
+    }
+
+    const testersIcon = {
+      height: '20px',
+      width: '20px'
     }
 
     //optionListEntry is grid with 2 columns (80/20)
@@ -219,13 +248,19 @@ class OptionListEntry extends React.Component {
           <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
             <div className="optionListEntry" style={containerStyle}>
 
-              <div style={notifs}>
+              <div style={stats}>
               { this.props.notifications.length > 0 ? (
-                <div onClick={() => {this.showNotifications(this.props.option)}}>
+                <div onClick={() => {this.showNotifications(this.props.option)}} style={notifs}>
                   <BellIcon height='20' width='20' />
                   <a>{this.props.notifications[0].count || 0}</a>
                 </div>
               ) : ''}
+
+              <div style={testers}>
+                <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
+                <a>{this.state.totalNumberOfInvitedTesters}</a>
+              </div>
+
               </div>
 
               <div style={details}>
@@ -292,7 +327,7 @@ class OptionListEntry extends React.Component {
                 />
               )
             ) : (
-              <p key="invitedForThisOption">Testers Invited!</p>
+              <p>Testers Invited!</p>
             )}
 
           </Modal.Body>
