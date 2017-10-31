@@ -54,6 +54,7 @@ class DisplaySections extends React.Component {
           this.props.currentSection.hidden = {display: 'none'};
           this.props.currentSection.backFromHome = false;
         } 
+        this.props.clearOnNewSection();
       })
       .catch((err) => {
         console.log('Request to get options for section NOT sent to server');

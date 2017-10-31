@@ -48,7 +48,7 @@ class OptionListEntry extends React.Component {
         this.props.concatTesters(testerIds.data, this.props.index);
         this.setState({
           specificTesters: testerIds.data
-        }, () => this.filterTestersForOptions());
+        }, () => this.filterTestersForOptions(true));
       })
       .catch((err) => {
         console.log('Error retrieving testers for option', err);
@@ -79,11 +79,13 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  filterTestersForOptions() {
-    let priorInvites = true
+  filterTestersForOptions(onMount) {
+    let priorInvites = true;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
       if (this.state.specificTesters.indexOf(tester.id) === -1) {
         return tester;
+      } else {
+        priorInvites = false;
       }
     });
     this.setState({
@@ -91,6 +93,9 @@ class OptionListEntry extends React.Component {
       testersCopy: uninvitedTesters,
       haveInvited: priorInvites
     });
+    if (!onMount) {
+      this.props.rerenderAfterInvitingToOption();
+    }
   }
 
 
