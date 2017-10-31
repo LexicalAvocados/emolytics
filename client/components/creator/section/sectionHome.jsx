@@ -140,6 +140,8 @@ class SectionHome extends React.Component {
   }
 
   concatTesters(testers, index) {
+    console.log(index);
+    console.log(this.props.currentSection.options);
     var freeOfDuplicates = [];
     testers.forEach((tester) => {
       if (this.state.testersForOptions.indexOf(tester) === -1) {
@@ -149,7 +151,8 @@ class SectionHome extends React.Component {
     this.setState({
       testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
     });
-    if (index === this.props.currentSection.options.length - 1) {
+    if (index + 1 === this.props.currentSection.options.length - 1) { // This condition is bad
+      console.log('we should be within the stuff ehrerererere')
       this.state.testersForOptions.concat(testers);
       var priorInvites = true;
       var testersThatHaveNotBeenInvited = this.state.testers.filter((tester) => {
@@ -163,10 +166,14 @@ class SectionHome extends React.Component {
       this.setState({
         testers: testersThatHaveNotBeenInvited,
         testersCopy: testersThatHaveNotBeenInvited,
-        haveInvited: priorInvites
+        haveInvited: priorInvites,
+        // numberInPool: 
       });
-
     }
+    console.log('these should be the boys', this.state.testersForOptions)
+    console.log('these should be the boys', this.state.testerToPassToOptionListEntry)
+    console.log('these should be the boys', testersThatHaveNotBeenInvited)
+
   }
 
   onOptionClick(index) { // Functional

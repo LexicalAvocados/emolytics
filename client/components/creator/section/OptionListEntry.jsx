@@ -73,7 +73,7 @@ class OptionListEntry extends React.Component {
     }
     if (nextProps.showEdit === false) {
       this.props.resetToNull();
-      this.mount();
+      this.mount(nextProps.option);
       return true;
     }
     return true;
