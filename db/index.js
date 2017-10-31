@@ -115,6 +115,19 @@ User.belongsToMany(FocusGroup, {through: 'focusGroupAndTester'});
 
 FocusGroupAndTester.sync({force: false});
 
+
+// ~~~~~~~~~~~~~~~~ //
+// Focus Group Temp //
+// ~~~~~~~~~~~~~~~~ //
+
+const FocusGroupAndTesterTemp = sequelize.define('focusGroupAndTesterTemp', {
+  accepted: {type: Sequelize.BOOLEAN},
+  testerId:  Sequelize.INTEGER,
+  creatorId:  Sequelize.INTEGER,
+});
+
+FocusGroupAndTesterTemp.sync({force: false});
+
 // ~~~~~~~~~~~~~~ //
 // Project Schema //
 // ~~~~~~~~~~~~~~ //
@@ -321,5 +334,6 @@ module.exports = {
   Notification,
   Transaction,
   EyeTracking,
-  ForgotPassword
+  ForgotPassword,
+  FocusGroupAndTesterTemp
 };

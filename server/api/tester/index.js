@@ -15,12 +15,8 @@ const EyeTracking = db.EyeTracking;
 const Transaction = db.Transaction;
 const FocusGroup = db.FocusGroup;
 const FocusGroupAndTester = db.FocusGroupAndTester;
+const FocusGroupAndTesterTemp = db.FocusGroupAndTesterTemp;
 const router = express.Router();
-const base64Img = require('base64-img');
-const request = require('request-promise-native');
-const imageDataURI = require('image-data-uri');
-const path = require('path');
-const axios = require('axios');
 
 
 // Option.create({
@@ -30,6 +26,27 @@ const axios = require('axios');
 // 	thumbnail: 'asdf',
 // 	length: 100
 // })
+
+router.post('/applyFocusGroup', (req, res) => {
+  console.log(req.body);
+  let tester = User.findOne({where: {username: req.session.username}});
+  let creator = User.findOne({where: {username: req.body.username}});
+
+  Promise.all([tester, creator])
+    .then(values => {
+      console.log(values);
+      return FocusGroupAndTesterTemp.create({
+        testerId: values[0].dataValues.id,
+        creatorId: values[1].dataValues.id
+      })
+    })
+    .then(() => {
+      res.send(true);
+    })
+    .catch(() => {
+      res.send(false);
+    })
+})
 
 router.post('/joinFocusGroup', (req, res) => {
   console.log(req.body, res.session);
