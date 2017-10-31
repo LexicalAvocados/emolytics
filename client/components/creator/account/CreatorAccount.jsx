@@ -28,7 +28,7 @@ class CreatorAccount extends React.Component {
   handleSelect(num) {
     this.setState({
       activeTab: num
-    })
+    });
   }
 
   render() {
