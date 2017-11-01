@@ -7,7 +7,7 @@ const Frame = db.Frame;
 const Key = db.Key;
 const sequelize = db.sequelize;
 const TesterAndOption = db.TesterAndOption;
-const SectionComments = db.SectionComments;
+const OptionComments = db.OptionComments;
 const Notifications = db.Notification;
 const Section = db.Section;
 const Project = db.Project;
@@ -598,7 +598,7 @@ const aggregateComments = (option, res) => {
           return summary.data;
         })
         .then((summary) => {
-          SectionComments.findOne({
+          OptionComments.findOne({
             where: {
               optionId: option.id
             }
@@ -610,7 +610,7 @@ const aggregateComments = (option, res) => {
                   summary: summary.sm_api_content // Will default to null in failure.
                 });
               } else {
-                SectionComments.create({
+                OptionComments.create({
                   optionId: option.id,
                   aggregateComments: toApiString,
                   summary: summary.sm_api_content // Will default to null in failure.
