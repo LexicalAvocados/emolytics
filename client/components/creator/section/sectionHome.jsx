@@ -140,8 +140,6 @@ class SectionHome extends React.Component {
   }
 
   concatTesters(testers, index) {
-    console.log(index);
-    console.log(this.props.currentSection.options);
     var freeOfDuplicates = [];
     testers.forEach((tester) => {
       if (this.state.testersForOptions.indexOf(tester) === -1) {
@@ -170,10 +168,6 @@ class SectionHome extends React.Component {
         // numberInPool: 
       });
     }
-    console.log('these should be the boys', this.state.testersForOptions)
-    console.log('these should be the boys', this.state.testerToPassToOptionListEntry)
-    console.log('these should be the boys', testersThatHaveNotBeenInvited)
-
   }
 
   onOptionClick(index) { // Functional

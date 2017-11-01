@@ -4,7 +4,7 @@ import BellIcon from 'react-bell-icon';
 import { connect } from 'react-redux';
 
 const SectionCarousel = (props) => (
-  <Carousel interval={null}>
+  <Carousel interval={null} onSelect={experiment}>
     { props.splitSections.map((sectionGroup, overI) => {
       if (sectionGroup.indexOf('End') === -1) {
         return (
@@ -88,6 +88,10 @@ const SectionCarousel = (props) => (
   </Carousel>
 
 );
+
+const experiment = (event) => {
+  console.log('heyyyy', event)
+}
 
 const notifDisplayStyle = {
   float: "right"
