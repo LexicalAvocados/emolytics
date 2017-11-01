@@ -95,7 +95,17 @@ router.post('/resetPassword', (req, res) => {
     })
 })
 
-
+router.get('/vimeoUserDatabaseEntry', (req, res) => {
+	User.findOne({
+		where: {
+			username: req.query.username
+		}
+	})
+	.then((userObj) => {
+		console.log('VIMEO USER', userObj)
+		res.send(JSON.stringify(userObj))
+	})
+})
 
 
 

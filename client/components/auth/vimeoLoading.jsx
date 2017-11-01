@@ -38,12 +38,30 @@ class vimeoLoading extends React.Component {
 		// 		this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, user.isCreator);
 		// 	}
 		// }
+
+		console.log('IN VIMEO LOADING COMPONENT')
+
 		axios.get('/vimeouserdata')
 		.then((response) => {
 			console.log('RESPONSE FROM VIMEO', response)
+			axios.get('/api/auth/vimeoUserDatabaseEntry', {
+				params: {
+					username: response.data.username
+				}
+			})
+			.then((userObj) => {
+				console.log('USER FROM OUT SYSTEM', userObj)
+				var user = userObj.data;
+				this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, true);
+			})
+			.then(() => {
+				setTimeout(() => this.props.history.push('/'), 700);
+			})
 		})
 
-		// this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, user.isCreator);
+		
+
+		
 
 	}
 
