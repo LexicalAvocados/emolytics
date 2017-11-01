@@ -32,6 +32,17 @@ class AddOption extends React.Component {
     });
   }
 
+  // retrieveVimeoData(cb) {
+  //   var vimeoData = {};
+  //   var vidUrl = this.state.url;
+  //   axios.get('https://api.vimeo.com/oauth/authorize', {
+  //     params: {
+        
+  //     }
+  //   });
+  // }
+
+
   retrieveYouTubeData(cb) {
     var youTubeData = {};
     var vidUrl = this.state.url;
@@ -49,6 +60,8 @@ class AddOption extends React.Component {
         console.log('response from youtube', data);
         youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.default.url;
         youTubeData.tags = data.data.items[0].snippet.tags;
+        console.log('youtubeData>>>>>>', youTubeData);
+        console.log('youtubeData.tags>>>>>>', youTubeData.tags);
         var unitsOfTime = ['H', 'M', 'S'];
         var nums = [];
         for (var i = 0; i < unitsOfTime.length; i++) {
@@ -78,6 +91,10 @@ class AddOption extends React.Component {
       alert('You cannot create new options within the demo. If you\'d like to leave the demo please create a project.');
       return;
     } 
+
+    // conditional: if this.state.url === 'vimeo' => use retrieveVimeoData
+    // need to change: how link is generated, thumbnails, tags...
+
     this.retrieveYouTubeData((youTubeData) => {
       // console.log(youTubeData);
       axios.post('/api/addOption', {

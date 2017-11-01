@@ -67,12 +67,14 @@ export class Signup extends React.Component {
         isCreator: true
       }, () => {
         this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator});
+        console.log('new state in sign up', this.state.isCreator)
       });
     } else {
       this.setState({
         isCreator: false
       }, () => {
         this.props.actions.setRoleForNewFbUser({isCreator: this.state.isCreator});
+        console.log('new state in sign up', this.state.isCreator)
       });
     }
   }
@@ -127,6 +129,9 @@ export class Signup extends React.Component {
           <a href={patreonOAuthLink}>
             <img className='patreonLoginBtn' src='patreon.jpg'></img>
           </a>
+          <a href='/auth/vimeo'>
+            <img className='vimeoLoginBtn' src='https://prowly-uploads.s3.amazonaws.com/uploads/press_rooms/company_logos/563/preview_indeks.png'></img>
+          </a>
         </div>
         <p style={center}> Don't forget to select Tester/Creator!</p>
       </div>
@@ -142,11 +147,12 @@ const center = {
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
 const mapStateToProps = (state) => {
-  // console.log('state in signup', state)
+  console.log('state in signup', state)
   return ({
     example: state.example,
     setLoggedIn: state.setLoggedIn,
-    router: state.router
+    router: state.router,
+    role: state.signupwithfb
   });
 };
 
