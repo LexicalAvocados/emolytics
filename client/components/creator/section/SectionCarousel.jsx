@@ -4,7 +4,7 @@ import BellIcon from 'react-bell-icon';
 import { connect } from 'react-redux';
 
 const SectionCarousel = (props) => (
-  <Carousel>
+  <Carousel interval={null}>
     { props.splitSections.map((sectionGroup, overI) => {
       if (sectionGroup.indexOf('End') === -1) {
         return (

@@ -132,7 +132,7 @@ class ProjectList extends React.Component {
 
     return (
       <div>
-        <OverlayTrigger defaultOverlayShown={true} placement="right" overlay={this.props.popover}>
+        <OverlayTrigger placement="right" overlay={this.props.popover}>
         {/* Fade this in? */}
           <div className='projectsContainer'>
             <div style={gridBoxForProject}>

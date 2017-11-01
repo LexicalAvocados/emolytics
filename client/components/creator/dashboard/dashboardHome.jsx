@@ -184,7 +184,7 @@ export class DashboardHome extends React.Component {
         { this.state.retrieved ? (
       <div className="dashboardHomeContainer">
           { this.state.projects.id === 0 ? (
-            <h3 className="demoWelcomeHeader"> Welcome to Emolytics (new name forthcoming)! This page lists all your projects. Below you will find a demonstration project, and an accompanying tooltip that describes the project and how to interact with it.</h3> 
+            <h3 className="demoWelcomeHeader"> Welcome to Emolytics (new name forthcoming)! This page lists all your projects. Below you will find a demonstration project, hover over the project to learn more about it and how to interact with it.</h3> 
           ) : (
             null
           )}
