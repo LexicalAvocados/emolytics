@@ -3,7 +3,7 @@ const Options = db.Option;
 const Likes = db.TesterAndOption;
 const Users = db.User;
 const Frames = db.Frame;
-const SectionComments = db.SectionComments;
+const OptionComments = db.OptionComments;
 const OptionAndAnnotations = db.OptionAndAnnotation;
 
 exports.getRelatedOptions = (req, res) => {
@@ -101,7 +101,7 @@ exports.addOption = (req, res) => {
 };
 
 exports.getFeedback = (req, res) => {
-  SectionComments.findOne({
+  OptionComments.findOne({
     where: {
       optionId: req.query.optionId
     }
@@ -124,7 +124,7 @@ exports.deleteOption = (req, res) => {
     }
   })
     .then((options) => { 
-      var tables = ['TesterAndOption', 'Frame', 'SectionComments', 'OptionAndAnnotation'];
+      var tables = ['TesterAndOption', 'Frame', 'OptionComments', 'OptionAndAnnotation'];
       options.forEach((option) => {
         option.update({
           deleted: true
