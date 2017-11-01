@@ -158,68 +158,84 @@ class FocusGroupsPage extends React.Component {
     })
 
     return (
-      <div>
-        {this.props.patreonCampaign.id ? <FocusGroupsPatreonModule /> : null}
-        <h2>New Group</h2>
-        <form onSubmit={this.createNewFocusGroup}>
-          <FormControl
-            type='text'
-            value={this.state.typedFocusGroupName}
-            placeholder='Group Name'
-            onChange={this.updateTypedFocusGroupName}
-          />
-          <Button bsStyle='primary' type='submit'>Create Group</Button>
-        </form>
-        <div>
-          <h2> Applied People </h2>
-          {appliedUsers}
-        </div>
-        <br/>
+      <div className='focusGroupPage'>
 
-        {focusGroups.length > 0 ?
-          <FocusGroupsList />
-          :
-          null}
-
-        {currentFocusGroup ?
-          <div>
-
-            <Button
-              bsSize='xsmall'
-              bsStyle='danger'
-              onClick={this.deleteFocusGroup}
-            > Delete Group </Button>
-
-            <h2>Add Tester to {currentFocusGroup.name}</h2>
-
-            <form onSubmit={this.addTesterToFocusGroup}>
-              <FormControl
-                type='text'
-                value={this.state.typedTesterUsername}
-                placeholder='Tester Username'
-                onChange={this.updateTypedTesterUsername}
-              />
-              <Button bsStyle='primary' type='submit'>Add Tester</Button>
+        <Col md={3}>
+          <div className='focusGroupColumn'>
+            <h3>New Group</h3>
+            <form onSubmit={this.createNewFocusGroup}>
+              <Col>
+                <FormControl
+                  className='focusGroupNameEntry'
+                  type='text'
+                  value={this.state.typedFocusGroupName}
+                  placeholder='Group Name'
+                  onChange={this.updateTypedFocusGroupName}
+                />
+              </Col>
+              <Button bsStyle='primary' type='submit'>Create Group</Button>
             </form>
-
-            <h2>{currentFocusGroup.name} Members</h2>
-
-            {currentFocusGroup.testers.length > 0 ?
-              <ul className='focusGroupTesterList'>
-                {currentFocusGroup.testers.map((tester, i) => (
-                  <li
-                    className='focusGroupTesterListEntry'
-                    key={i}
-                    onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
-                  > {tester} </li>
-                ))}
-              </ul>
-              :
-              'none'}
-
+            {this.props.patreonCampaign.id ? <FocusGroupsPatreonModule /> : null}
           </div>
-          :
-          null}
+        </Col>
+
+        <Col md={6}>
+          <div className='focusGroupColumn'>
+            {focusGroups.length > 0 ?
+              <FocusGroupsList />
+              :
+              null}
+
+            {currentFocusGroup ?
+              <div>
+
+                <Button
+                  bsStyle='danger'
+                  onClick={this.deleteFocusGroup}
+                > Delete Group </Button>
+
+                <hr className='focusGroupHR'/>
+
+                <h3>Add Tester to {currentFocusGroup.name}</h3>
+
+                <form onSubmit={this.addTesterToFocusGroup}>
+                  <FormControl
+                    className='focusGroupTesterEntry'
+                    type='text'
+                    value={this.state.typedTesterUsername}
+                    placeholder='Tester Username'
+                    onChange={this.updateTypedTesterUsername}
+                  />
+                  <Button bsStyle='primary' type='submit'>Add Tester</Button>
+                </form>
+
+                <h3>{currentFocusGroup.name} Members</h3>
+
+                {currentFocusGroup.testers.length > 0 ?
+                  <ul className='focusGroupTesterList'>
+                    {currentFocusGroup.testers.map((tester, i) => (
+                      <li
+                        className='focusGroupTesterListEntry'
+                        key={i}
+                        onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
+                      > {tester} </li>
+                    ))}
+                  </ul>
+                  :
+                  'none'}
+
+              </div>
+              :
+              null}
+            </div>
+          </Col>
+
+        <Col md={3}>
+          <div className='focusGroupColumn'>
+            <h3> Tester Requests </h3>
+            {appliedUsers}
+          </div>
+        </Col>
 
       </div>
     );

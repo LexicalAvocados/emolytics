@@ -721,6 +721,32 @@ body {
   width: 100%
 }
 
+.focusGroupPage {
+
+}
+
+.focusGroupColumn {
+  text-align: center;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
+  border-style: solid;
+  border-size: 1px;
+  padding: 20px 40px 40px 40px;
+}
+
+.focusGroupNameEntry {
+  margin: 15px 0px 10px 0px;
+}
+
+.focusGroupTesterEntry {
+
+}
+
+.focusGroupHR {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .focusGroupTesterList {
   list-style: none;
   padding: 0px;
