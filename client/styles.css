@@ -652,7 +652,6 @@ body {
   padding-left: 20%;
 }
 
-/* Lucas' CSS */
 .dashboardHomeContainer {
   /*background-color: #f7f7f7;*/
   /*height: 200vh;*/
@@ -769,20 +768,12 @@ body {
   left: 0;
 }
 
-/* @keyframes reveal { DOESNT WORK
-  from {height: 0%;}
-  to {height: 100%;}
-} */
+
 
 .invitationPanel {
-  /* animation-name: reveal;
-  animation-duration: 2s;
-  overflow: auto;
-  height: auto; */
   border: 1px solid black;
   border-radius: 3px;
   padding: 2% 0% 2% 2%;
-  /* width: 110%; */
   background-color: white;
 }
 
@@ -941,4 +932,29 @@ body {
 
 .react-autosuggest__container {
   position: relative;
+}
+
+
+/* Lucas' New Css */
+
+@keyframes reveal {
+  from {opacity: 0.1;}
+  to {opacity: 1;}
+}
+  /* animation-name: reveal;
+  animation-duration: 2s;
+  overflow: auto;
+  height: auto; */
+  /* border: 1px solid black;
+  border-radius: 3px;
+  padding: 2% 0% 2% 2%;
+  /* width: 110%; */
+  /* background-color: white; */ 
+
+.demoWelcomeHeader {
+  display: inherit;
+  /* margin-left: 3%; */
+  animation-name: reveal;
+  animation-duration: 2s;
+  /* font-weight: bold; */
 }

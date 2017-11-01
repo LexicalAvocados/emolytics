@@ -426,7 +426,7 @@ class OptionHome extends React.Component {
 
       <div className='optionAnalyticsContainer'>
         { this.props.currentSection.id === 0 ? (
-          <p>This is an option! Yay. Now try to compare stuff</p>
+          <h4 className="demoWelcomeHeader">Below you can find all the data we've collected for the option you just clicked on. Using the dropdown to the right, you can filter the information being displayed. When your done looking at the analytics for this video, try clicking the compare button to the left (or wherever it ends up).</h4>
         ) : (
           null
         )}
