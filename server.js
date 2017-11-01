@@ -159,9 +159,11 @@ var config = {
         }
       })
       .then((actualUser) => {
+        req.session.username = actualUser.username;
+        req.session.save();
         // console.log('ACTUAL USER', actualUser)
         // console.log('RES', res)
-        res.redirect('/vimeoloading')
+        res.redirect('/vimeoloading');
       })
     })
     .catch((err) => {
@@ -174,7 +176,7 @@ app.get('/userdata', (req, res) => {
 });
 
 app.get('/vimeouserdata', (req, res) => {
-  console.log('REQUEST FROM VIMEO USER', req)
+  // console.log('REQUEST FROM VIMEO USER', req)
   res.send(JSON.stringify(req.session));
 });
 

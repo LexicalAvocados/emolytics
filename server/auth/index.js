@@ -91,7 +91,7 @@ exports.attemptLogin = (req, res) => {
     })
     .catch(err => {
       console.log('DB/encryption error', err);
-      res.send({loggedIn: false, reason: 'Internal Server Error'});
+      res.send({loggedIn: false, reason: 'Invalid username and/or password. Please try again, or sign up for a new account.'});
     });
 };
 
