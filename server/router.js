@@ -105,6 +105,6 @@ router.post('/markNotificationAsSeen', indexRoutes.markNotificationAsSeen);
 
 router.get('/tester/getCreatorData', AccountInfoRoutes.getCreatorDataForPublicProfile);
 
-router.post('/generateAgeRangeObjForUserIdsArray', detailedDemographicsRoutes.generateAgeRangeObjForUserIdsArray)
+router.post('/generateAgeRangeObjForUserIdsArray', detailedDemographicsRoutes.generateAgeRangeObjForUserIdsArray);
 
 module.exports = router;
