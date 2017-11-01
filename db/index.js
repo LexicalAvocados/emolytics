@@ -25,9 +25,9 @@ sequelize
 // ~~~~~~~~~~~ //
 
 const User = sequelize.define('user', {
-  username: Sequelize.STRING,
+  username: {type: Sequelize.STRING, unique: true},
   password: Sequelize.STRING,
-  email: Sequelize.STRING,
+  email: {type: Sequelize.STRING, unique: true},
   fbId: Sequelize.STRING,
   name: Sequelize.STRING,
   sex: Sequelize.STRING,
@@ -43,10 +43,10 @@ const User = sequelize.define('user', {
   location: Sequelize.STRING,
   lastloggedin: Sequelize.DATE,
   credits: {type: Sequelize.INTEGER, defaultValue: 0},
-  patreonId: Sequelize.INTEGER,
+  patreonId: {type: Sequelize.INTEGER, unique: true},
   patreonAbout: Sequelize.STRING,
   patreonCreatedAt: Sequelize.DATE,
-  patreonEmail: Sequelize.STRING,
+  patreonEmail: {type: Sequelize.STRING, unique: true},
   patreonImageUrl: Sequelize.STRING,
   patreonUrl: Sequelize.STRING,
   patreonVanity: Sequelize.STRING,
@@ -64,7 +64,7 @@ User.sync({force: false});
 // ~~~~~~~~~~~~~~~~~~~~~~~ //
 
 const PatreonCampaign = sequelize.define('patreonCampaign', {
-  campaignId: Sequelize.INTEGER,
+  campaignId: {type: Sequelize.INTEGER, unique: true},
   creationCount: Sequelize.INTEGER,
   creationName: Sequelize.STRING,
   displayPatronGoals: Sequelize.BOOLEAN,
@@ -121,7 +121,7 @@ FocusGroupAndTester.sync({force: false});
 // ~~~~~~~~~~~~~~~~ //
 
 const FocusGroupAndTesterTemp = sequelize.define('focusGroupAndTesterTemp', {
-  accepted: {type: Sequelize.BOOLEAN},
+  accepted: Sequelize.BOOLEAN,
   testerId:  Sequelize.INTEGER,
   creatorId:  Sequelize.INTEGER,
 });
@@ -166,6 +166,7 @@ const Option = sequelize.define('option', {
   youtubeUrl: Sequelize.TEXT,
   thumbnail: Sequelize.TEXT,
   length: Sequelize.INTEGER,
+  isPublic: {type: Sequelize.BOOLEAN, defaultValue: false},
   totalcredits: {type: Sequelize.INTEGER, defaultValue: 0},
   creditsperview: {type: Sequelize.INTEGER, defaultValue: 0},
   deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
@@ -264,21 +265,21 @@ EyeTracking.sync({force: false});
 // Section Comments Schema //
 // ~~~~~~~~~~~~~~~~~~~~~~~ //
 
-const SectionComments = sequelize.define('sectionComments', {
+const OptionComments = sequelize.define('optionComment', {
   summary: Sequelize.TEXT,
   aggregateComments: Sequelize.TEXT,
   deleted: {type: Sequelize.BOOLEAN, defaultValue: false}
 });
 
-SectionComments.belongsTo(Option);
+OptionComments.belongsTo(Option);
 
-SectionComments.sync({force: false});
+OptionComments.sync({force: false});
 
 // ~~~~~~~~~~~~~~~~~~~~ //
 // Notifications Schema //
 // ~~~~~~~~~~~~~~~~~~~~ //
 
-const Notification = sequelize.define('notifications', {
+const Notification = sequelize.define('notification', {
   seen: {type: Sequelize.BOOLEAN, defaultValue: false},
   sourceUsername: Sequelize.TEXT,
   optionName: Sequelize.STRING
@@ -297,7 +298,7 @@ Notification.sync({force: false});
 // Transaction Schema //
 // ~~~~~~~~~~~~~~~~~~ //
 
-const Transaction = sequelize.define('transactions', {
+const Transaction = sequelize.define('transaction', {
   paid: {type: Sequelize.BOOLEAN, defaultValue: false},
   amount: Sequelize.INTEGER
 });
@@ -307,6 +308,10 @@ Transaction.belongsTo(User, {as: 'tester'});
 Transaction.belongsTo(Option);
 
 Transaction.sync({force: false});
+
+// ~~~~~~~~~~~~~~~~~~~~~~ //
+// Forgot Password Schema //
+// ~~~~~~~~~~~~~~~~~~~~~~ //
 
 const ForgotPassword = sequelize.define('forgotPassword', {
   link: Sequelize.TEXT,
@@ -330,7 +335,7 @@ module.exports = {
   TesterAndOption,
   OptionAndAnnotation,
   Key,
-  SectionComments,
+  OptionComments,
   Notification,
   Transaction,
   EyeTracking,
