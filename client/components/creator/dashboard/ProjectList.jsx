@@ -14,7 +14,6 @@ class ProjectList extends React.Component {
     };
     this.onClickCallback = this.onClickCallback.bind(this);
     this.getRelatedSections = this.getRelatedSections.bind(this);
-    // this.projectPopover = this.projectPopover.bind(this);
   }
 
   componentDidMount() {
@@ -133,7 +132,8 @@ class ProjectList extends React.Component {
 
     return (
       <div>
-        <OverlayTrigger placement="right" overlay={this.props.popover}>
+        <OverlayTrigger defaultOverlayShown={true} placement="right" overlay={this.props.popover}>
+        {/* Fade this in? */}
           <div className='projectsContainer'>
             <div style={gridBoxForProject}>
 

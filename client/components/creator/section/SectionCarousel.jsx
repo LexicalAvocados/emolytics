@@ -73,7 +73,7 @@ const SectionCarousel = (props) => (
                 );
               } else {
                 return (
-                  <OverlayTrigger placement="top" defaultOverlayShown={true} overlay={<Popover style={props.currentSection.hidden || {}} id="popover-trigger-hover" title="Bonjour!">You can click here to create a section! Or click on the dummy section to the left.</Popover>} key={i}>
+                  <OverlayTrigger placement="top" defaultOverlayShown={true} overlay={<Popover style={props.currentSection.hidden || {}} id="popover-trigger-hover" title="Bonjour!">You can click here to create a section! Or click on the dummy section to the left to see its options.</Popover>} key={i}>
                     <Col md={3} className="sectionsScroll" onClick={props.revealAddSection}>
                       <h2>+</h2>
                     </Col>

@@ -3,6 +3,7 @@ import ProjectList from './ProjectList.jsx';
 import CreateProject from '../create/createProject.jsx';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import { Row, Col, Button, Modal, Popover } from 'react-bootstrap';
@@ -41,6 +42,14 @@ export class DashboardHome extends React.Component {
       });
   }
 
+  componentWillUnmount() {
+    console.log(this.props.history);
+    if (this.props.history.location.pathname === '/createProject' && this.state.projects.id === 0) {
+      alert('Nope!');
+      this.props.history.goBack(); // Would prefer to just block the redirect, but not sure how.
+    }
+  }
+
   getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
@@ -58,6 +67,7 @@ export class DashboardHome extends React.Component {
             projects: response.data[0],
             retrieved: true
           });
+          this.props.currentProject.id === 0;
         }
       })
       .catch((err) => {
@@ -148,7 +158,7 @@ export class DashboardHome extends React.Component {
 
   projectPopover() {
     return (
-      <Popover id="popover-trigger-hover" title="Hi!">Projects are organized into sections. You can see the number of sections within this project to the left. Click on the project to see its sections</Popover>
+      <Popover id="popover-trigger-hover" title="Hi!">Projects are organized into sections. You can see the number of sections within this project to the left. Click on the project to see its sections, or click the edit button to edit change the name or description of the project.</Popover>
     );
   }
 
@@ -165,94 +175,92 @@ export class DashboardHome extends React.Component {
     var inherit = {
       display: 'inherit'
     };
-    var secondLine = {
-      display: 'inherit',
-      marginLeft: '3%'
-    }
+    // var secondLine = {
+    //   display: 'inherit',
+    //   marginLeft: '3%'
+    // }
     
     return (
+      <div>
+        { this.state.retrieved ? (
       <div className="dashboardHomeContainer">
-        <div className="dashboardHeader">
-          <h2 style={inherit}>Projects</h2>
-          {this.state.retrieved ? (
-            this.state.projects.id === 0 ? (
-              <p style={secondLine}> -- Welcome to ReactionSync. This page lists all your projects. Below you will find a dummy project, hover over it to learn more about how to interact with projects.</p> 
-            ) : (
-              null)
+          { this.state.projects.id === 0 ? (
+            <h3 className="demoWelcomeHeader"> Welcome to Emolytics (new name forthcoming)! This page lists all your projects. Below you will find a demonstration project, and an accompanying tooltip that describes the project and how to interact with it.</h3> 
           ) : (
             null
           )}
-          <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
-          <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
-            <Modal.Header closeButton>
-              <Modal.Title>Create A Project</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <CreateProject
-                close={this.revealCreate}
-                getProjectsFromDatabase={this.getProjectsFromDatabase}
-                fromDashboard={this.state.fromDashboard}
-                inDemo={this.state.projects.id}
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={this.revealCreate}>Close</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-        <hr/>
-        <br/>
-        { this.state.retrieved ? (
-          this.state.projects.id !== 0 ? (
-            <div>
-              <Row className="show-grid">
-                { this.state.projects.map((project, i) => (
-                  <Col className="projectListContainer" md={4} key={i}>
+          <div className="dashboardHeader">
+            <h2 style={inherit}>Projects</h2>
+            <Button className="addEntityButton" style={inherit} onClick={this.revealCreate}>Add Project</Button>
+            <Modal bsSize="large" show={this.state.showCreate} onHide={this.revealCreate}>
+              <Modal.Header closeButton>
+                <Modal.Title>Create A Project</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <CreateProject
+                  close={this.revealCreate}
+                  getProjectsFromDatabase={this.getProjectsFromDatabase}
+                  fromDashboard={this.state.fromDashboard}
+                  inDemo={this.state.projects.id}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button onClick={this.revealCreate}>Close</Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+          <hr/>
+          <br/>
+          { this.state.projects.id !== 0 ? (
+              <div>
+                <Row className="show-grid">
+                  { this.state.projects.map((project, i) => (
+                    <Col className="projectListContainer" md={4} key={i}>
+                      <ProjectList
+                        onProjectClick={this.onProjectClick}
+                        deleteProject={this.deleteProject}
+                        getProjectsFromDatabase={this.getProjectsFromDatabase}
+                        project={project}
+                        beginEdit={this.beginEdit}
+                        toggleEdit={this.toggleEdit}
+                        displayEdit={this.state.displayEdit}
+                        refreshSections={this.state.refreshSections}
+                        notifs={this.calculateNotifsForProject(project)}
+                        allNotifications={this.props.notifications}
+                        popover={this.hiddenProjectPopover()}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+                <Link to='/account'>
+                  <Button className="addEntityButton" style={inherit}>Credits: {this.props.loggedInUser.credits || 0}</Button>
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <Row className="show-grid">
+                  <Col className="projectListContainer" md={4}>
                     <ProjectList
                       onProjectClick={this.onProjectClick}
                       deleteProject={this.deleteProject}
                       getProjectsFromDatabase={this.getProjectsFromDatabase}
-                      project={project}
+                      project={this.state.projects}
                       beginEdit={this.beginEdit}
                       toggleEdit={this.toggleEdit}
                       displayEdit={this.state.displayEdit}
                       refreshSections={this.state.refreshSections}
-                      notifs={this.calculateNotifsForProject(project)}
+                      notifs={this.calculateNotifsForProject(this.state.projects)}
                       allNotifications={this.props.notifications}
-                      popover={this.hiddenProjectPopover()}
+                      popover={this.projectPopover()}
                     />
                   </Col>
-                ))}
-              </Row>
-              <Link to='/account'>
-                <Button className="addEntityButton" style={inherit}>Credits: {this.props.loggedInUser.credits || 0}</Button>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <Row className="show-grid">
-                <Col className="projectListContainer" md={4}>
-                  <ProjectList
-                    onProjectClick={this.onProjectClick}
-                    deleteProject={this.deleteProject}
-                    getProjectsFromDatabase={this.getProjectsFromDatabase}
-                    project={this.state.projects}
-                    beginEdit={this.beginEdit}
-                    toggleEdit={this.toggleEdit}
-                    displayEdit={this.state.displayEdit}
-                    refreshSections={this.state.refreshSections}
-                    notifs={this.calculateNotifsForProject(this.state.projects)}
-                    allNotifications={this.props.notifications}
-                    popover={this.projectPopover()}
-                  />
-                </Col>
-              </Row>
-            </div>
-          )
+                </Row>
+              </div>
+            )}
+          </div>
         ) : (
           null
         )}
-
       </div>
     );
   }
@@ -280,7 +288,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (DashboardHome);
+) (DashboardHome));
