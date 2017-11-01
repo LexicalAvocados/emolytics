@@ -1,0 +1,917 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+/*@import 'antd/dist/antd.css';*/
+
+
+body {
+  /*font-family: 'Montserrat';*/
+  font-family: 'Open Sans', sans-serif;
+  margin: auto;
+}
+
+/*.app {
+  padding: 4%;
+}*/
+
+.appBody {
+  background-color: #f7f7f7;
+  padding: 3%;
+  overflow: auto;
+  width: 100vw;
+}
+
+.navBar {
+  margin-top: 32px;
+  width: 100vw;
+  height: 85px;
+  padding-left: 8%;
+  padding-right: 6%;
+}
+
+.sidebarIcon {
+  height: 25px;
+  width: 25px;
+}
+
+.websiteTitle {
+  float: left;
+}
+
+.websiteTitle a {
+  color: black;
+}
+
+.oauthButtons {
+  text-align: center;
+}
+
+.fbLoginBtn {
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.patreonLoginBtn {
+  width: 97%;
+  border-radius: 4px;
+}
+
+.patreonLoginLoading {
+  text-align: center;
+}
+
+.navItem {
+  color: black;
+  padding: 10px 12px;
+  font-family: 'Montserrat'
+}
+
+.navItem:hover {
+  text-decoration: underline;
+}
+
+.sideNavItem, .testerDetails {
+  text-align: center;
+}
+
+.projectContainer, .projectsContainer {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /*border: solid black 1px;*/
+  border-radius: 6px;
+  background-color: white;
+  /* box-shadow: 2px 2px black; */
+  padding: 15px;
+  width: 100%;
+  padding-bottom: 3.5%;
+  margin-bottom: 2%;
+  overflow: auto;
+  /* float: left; */
+  display: inline-grid;
+}
+
+.TryItOutAnalyticsContainer {
+  text-align: center;
+}
+
+/* Option Home */
+
+.optionAnalyticsContainer {
+  width: 100%;
+/*  display: grid;
+  grid-template-columns: 12% 88%;
+  grid-template-rows: 50% 50%;*/
+  padding: 10px;
+  /*grid-row-gap: 15px;*/
+  /*border: solid black 1px;*/
+}
+
+.optionHomeContainer {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  padding: 3% 4% 3% 4%;
+  border-radius: 4px;
+  margin-bottom: 3%;
+
+}
+
+.optionTitle {
+  text-align: center;
+  padding: 0;
+  margin-left: 12px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.sidemenucontainer {
+/*  grid-column: 1;
+  grid-row: 1;
+  text-align: center;
+  width: 6%;*/
+  /*display: flex;*/
+}
+
+.nonHeatmapContainer {
+  /*width: 100%;*/
+/*  grid-column: 2;
+  display: grid;
+  grid-template-columns: 1% 49% 50%;
+  grid-template-rows: 50% 50%;*/
+}
+
+.heatmapComponentContainer {
+  /*grid-column: 2;*/
+
+}
+
+.optionHomeTop {
+
+}
+
+.optionHomeBottom {
+  clear: both;
+}
+
+.leftSide {
+/*  grid-column: 2;
+  grid-row: 1;*/
+}
+
+
+
+.rightSide, .testerAnalyticsContainer {
+/*  grid-column: 3;
+  grid-row: 1;*/
+}
+
+.ageDistributionChart {
+  height: 10%;
+  width: 100%;
+}
+
+.genderAndRaceContainer {
+  grid-column: 3;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 60% 40%;
+}
+
+.genderDistribution {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.raceDistribution {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.optionPlayer {
+  height: 45vh;
+  padding-right: 1%;
+}
+
+.testerDetails {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.userSelect {
+  grid-column: 3;
+  grid-row: 1;
+  margin-left: 40%;
+}
+
+.emotionChart {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.optionChart {
+  grid-column: 2;
+  grid-row: 2;
+  width: 96%;
+}
+
+.lapseInFocus {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.bottomPanelContainer {
+  display: grid;
+  grid-template-columns: 35% 65%;
+}
+
+.testerAttention {
+  /*padding: 0% 4% 2% 4%;*/
+
+  padding-top: -6px;
+  text-align: center;
+}
+
+.testerAttentionData {
+  text-align: center;
+  /*padding: 4%;*/
+/*  padding-left: 4%;
+  padding-bottom: 3%;*/
+  padding: 0 5% 5% 5%;
+}
+
+.testerAttentionData ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.testerFeedback {
+/*  padding: 2% 4%;*/
+  padding-top: 3%;
+  text-align: center;
+}
+
+.testerFeedbackHeading {
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+.testerFeedbackData {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  text-align: center;
+}
+
+.personalFeedback {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.personalFeedbackLabel {
+  margin-top: 0px;
+}
+
+.rawValues {
+  grid-column: 1;
+}
+
+.progressBars {
+  grid-column: 2;
+}
+
+.testerNameHeader, .chartHeader {
+  text-align: center;
+}
+
+.overlay {
+  background: rgba(204, 204, 204, .8);
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0px;
+  left:0px;
+  z-index:1000;
+}
+
+.testerVideo {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: -1000;
+  opacity: 0;
+}
+
+.videoPlayer {
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 4%;
+  position: relative;
+  height: 40vh;
+  /*width: 100%;*/
+}
+
+.tryItOutLineGraph {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 4%;
+  position: relative;
+}
+
+.videoWrapper {
+  height: 80vh;
+}
+
+.player {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.finishVideo {
+  margin: 15% 20% 20% 20%;
+  text-align: center;
+}
+
+.optionNavButton, .optionNavButtonDisabled, .like, .unlike {
+  margin: 0% 3%;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.optionNavButton:hover, .like:hover, .unlike:hover {
+  text-decoration: underline;
+}
+
+.optionNavButton {
+  background-color: #6095ff;
+}
+
+.optionNavButtonDisabled {
+  background-color: #6095ff;
+  opacity: 0.4;
+}
+
+.optionNavButtonDisabled:hover {
+  text-decoration: none;
+}
+
+.like {
+  background-color: #4CAF50;
+}
+
+.unlike {
+  background-color: #f44336;
+}
+
+.unlike:hover {
+  text-decoration: underline;
+}
+
+.testerComments {
+  opacity: 1;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.CreateProject {
+  clear: right;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  padding: 10px 20px 20px 20px;
+}
+
+.CreateProject input[type=text] {
+  padding: 8px 16px;
+  margin: 6px 0;
+}
+
+.inputDescription {
+  width: 50%;
+}
+
+.navContainer {
+  font-family: 'Open Sans', sans-serif;
+  float: right;
+  display: flex;
+  padding: 0px 0% 3% 3%;
+  margin-left: 5%;
+  right: 0;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.TesterHomeContainer {
+  clear: right;
+  text-align: center;
+  background-color: #f7f7f7;
+  padding: 3% 3% 3% 2%;
+  border-radius: 12px;
+  overflow: auto;
+}
+
+.TesterHomeContainer a {
+  color: black;
+}
+
+.TesterQueueContainer {
+  text-align: center;
+  background-color: #f7f7f7;
+  padding: 3% 3% 3% 2%;
+  border-radius: 12px;
+  overflow: auto;
+}
+
+.TesterQueueContainer a {
+  color: black;
+}
+
+.testerOptionListEntry {
+  margin-left: 6.2%;
+  margin-bottom: 50px;
+  padding-top: 25px;
+  padding-bottom: 10px;
+  background-color: #d2dbdd;
+  border-color: #f2f2f2;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+}
+
+.testerOptionListEntry:hover {
+  border-color: #bec4c6;
+}
+
+.promoButton {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.testerProfile {
+  font-size: 16px;
+  padding-top: 100px;
+  padding-left: 200px;
+  padding-right: 240px;
+}
+
+.profileHeading {
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.profileLabel {
+  display: inline-flex;
+  font-weight: bold;
+}
+
+.profileInput {
+  display: inline-flex;
+}
+
+.auth {
+  display: flexbox;
+  font-size: 16px;
+  padding-top: 100px;
+  padding-left: 41%;
+  padding-right: 44%;
+  /*text-align: center;*/
+}
+
+.loginHeader {
+  padding-left: 30%;
+  padding-right: 28%;
+  padding-bottom: 3%;
+}
+
+.signupHeader {
+  padding-left: 5%;
+  padding-bottom: 3%;
+}
+
+.signupCreator {
+  padding-bottom: 4%;
+}
+
+.authInput {
+  margin-bottom: 2px;
+}
+
+.authSubmit {
+  margin-top: 2%;
+}
+
+.optionAnnotations {
+  background-color: #f7f7f7;
+  padding: 12px;
+}
+
+.optionAnnotationsTitle {
+  text-align: center;
+}
+
+.optionListThumbnail{
+  height: 92px;
+  width: 122px;
+}
+
+.annotations {
+  padding: 10px;
+  background-color: white;
+  margin: 10px;
+  border-radius: 3px;
+  clear: right;
+  clear: left;
+  display: flex;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.annotations p {
+  font-size: .8em;
+  margin: 0;
+}
+
+.error {
+  color: red;
+}
+
+.annotationForm {
+  background-color: white;
+  border-radius: 3px;
+  padding: 2%;
+}
+
+.annotationForm Button {
+  font-size: 12px;
+}
+
+
+.testerAnalyticsContainer {
+  /*background-color: #f7f7f7;*/
+  /*padding: 5%;*/
+  border-radius: 4px;
+}
+
+.optionContainer {
+  background-color: white;
+  padding-top: 6px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.optionBottom {
+  padding: 10%;
+}
+
+.landingContainer {
+}
+
+.landingSectionA {
+  height: 60vh;
+  text-align: center;
+  width: 100%;
+  color: white;
+  clear: both;
+  margin-bottom: 9%;
+}
+
+.landingSectionB {
+  text-align: center;
+  padding-top: 5%;
+  margin-bottom: 5%;
+  height: 66vh;
+}
+
+.landingSectionC {
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  overflow: auto;
+}
+
+.landingSectionSub {
+  padding: 2% 10%;
+}
+
+.aBackground {
+  height: 70vh;
+  width: 100%;
+  z-index: -5;
+  background-color: darkgrey;
+  opacity: .9;
+  position: absolute;
+}
+
+.aInfo {
+  z-index: 1;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  padding-top: 10%;
+}
+
+.landingFooter {
+  height: 140px;
+  background-color: lightgrey;
+  padding: 5px 5%;
+}
+
+.footerCol {
+  padding-left: 20%;
+}
+
+/* Lucas' CSS */
+.dashboardHomeContainer {
+  /*background-color: #f7f7f7;*/
+  /*height: 200vh;*/
+  clear: right;
+  /* margin-left: -2.1%; */
+  padding-left: 2%;
+  padding-right: 2%;
+  border-radius: 6px;
+}
+
+.projectHomeContainer {
+  /*background-color: #f7f7f7;*/
+  height: 200vh;
+  clear: right;
+  padding: 1% 2% 2% 2%;
+  border-radius: 6px;
+}
+
+.currentSectionOptionsList {
+  height: 685px;
+  /* overflow: auto; */
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 15%;
+  margin-top: 60px;
+}
+
+.sectionHomeContainer {
+  /*background-color: #f7f7f7;*/
+  height: 200vh;
+  clear: right;
+  padding: 1% 2% 2% 2%;
+}
+
+.currentSectionOptionListEntry {
+  float: left;
+  /* margin: 5%; */
+  width: 102%;
+  background-color: white;
+  padding: 3%;
+  border: 1px solid gray;
+  border-radius: 3px;
+  /* padding-left: 1%; */
+}
+
+.sectionsScrollContainer{
+  width: 685px;
+  overflow: auto;
+}
+
+.sectionsScroll {
+  /* float: left; */
+  /* margin: 5%; */
+  /* width: 100%; */
+  background-color: white;
+  /* padding: 3%; */
+  border: 1px solid gray;
+  border-radius: 3px;
+  display: inline-grid;
+  /* padding-left: 1%; */
+  height: 135px;
+}
+
+.dashboardHeader {
+  display: inline-block;
+  width: 100%
+}
+
+.focusGroupTesterList {
+  list-style: none;
+  padding: 0px;
+}
+
+.focusGroupTesterListEntry {
+
+}
+
+.focusGroupButtonToolbar{
+  height: 50px;
+}
+
+.addEntityButton {
+  float: right;
+}
+
+.sectionOptionData {
+  float: right;
+}
+
+.optionListEntry {
+  width: 50%;
+  float: left;
+}
+
+.sectionComparison {
+  padding: 5%;
+  margin: 2%;
+  background-color: white;
+  overflow:auto;
+}
+
+.sectionCompareCharts {
+  padding-right: 5%;
+  margin: 5%;
+}
+
+.optionDemographics {
+  text-align: center;
+  padding: 5%;
+}
+
+.optionDemographicsBody {
+  text-align: left;
+  left: 0;
+}
+
+/* @keyframes reveal { DOESNT WORK
+  from {height: 0%;}
+  to {height: 100%;}
+} */
+
+.invitationPanel {
+  /* animation-name: reveal;
+  animation-duration: 2s;
+  overflow: auto;
+  height: auto; */
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 2% 0% 2% 2%;
+  /* width: 110%; */
+  background-color: white;
+}
+
+.invitationPanelSelectors {
+  display: inline-flex
+}
+
+.testersList {
+  /* border: 1px solid black;
+  border-radius: 3px;
+  padding-left: 1%;*/
+}
+
+.projectHomeSectionListEntry {
+  /* margin-bottom: 2%; */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /*border: solid black 1px;*/
+  border-radius: 6px;
+  background-color: white;
+  /* box-shadow: 2px 2px black; */
+  padding: 15px;
+  width: 50%;
+  padding-bottom: 3.5%;
+  margin-bottom: 2%;
+}
+
+.projectHomeSectionListThumbnail {
+  margin-right: 1.5%;
+}
+
+.closerTextLarger {
+  margin-bottom: 0%;
+  font-weight: bold;
+}
+
+.closerText {
+  margin-bottom: 0%;
+}
+
+.addSectionButton {
+  float: right;
+}
+
+.ccForm {
+  color: #7a7a7a;
+  background-color: white;
+  margin-top: 100px;
+  border: 1px;
+  border-style: solid;
+  border-color: #CFD7E0;
+  border-radius: 4px;
+  padding: 0px 20px 20px 20px;
+  text-align: center;
+  width: 50%;
+}
+
+.ccSubmit, .ccSubmitDeactivated {
+  margin-top: 10px;
+  border-style: none;
+  border-radius: 6px;
+  padding: 10px 100px;
+}
+
+.ccSubmitDeactivated {
+  color: #9ea1a3;
+  background-color: #b2ef9b;
+}
+
+.ccSubmit {
+  font-weight: bold;
+  color: #4c4e4f;
+  background-color: #68ed36;
+}
+
+/* Forgot Password CSS */
+
+.forgotPassword {
+  padding: 10%;
+  text-align: center;
+}
+
+.forgotInput {
+  width: 100%;
+}
+
+.forgotForm {
+  align-content: center;
+  justify-content: center;
+  display: inline-block;
+  text-align: center;
+}
+
+.custom-image img {
+  display: block;
+}
+.custom-card {
+  padding: 10px 16px;
+}
+.custom-card p {
+  color: #999;
+}
+
+.react-autosuggest__input {
+  width: 240px;
+  height: 30px;
+  padding: 10px 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+  outline: none;
+}
+
+.react-autosuggest__input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+  display: block;
+  position: absolute;
+  top: 51px;
+  width: 280px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: #ddd;
+}
+
+.react-autosuggest__container {
+  position: relative;
+}
