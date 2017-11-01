@@ -27,6 +27,23 @@ const router = express.Router();
 // 	length: 100
 // })
 
+router.post('/getFocusGroups', (req, res) => {
+  User.findOne({where: {username: req.session.username}})
+    .then(user => {
+      return FocusGroupAndTester.findAll({where: {id: user.dataValues.id}})
+    })
+    .then(groups => {
+      let arr = [];
+      for (var i = 0; i < groups.length; i++) {
+        arr[i] = FocusGroup.findOne({where: {id: groups[i].dataValues.focusGroupId}})
+      }
+      return Promise.all(arr)
+    })
+    .then(focusGroups => {
+      res.send(focusGroups)
+    })
+})
+
 router.post('/applyFocusGroup', (req, res) => {
   console.log(req.body);
   let tester = User.findOne({where: {username: req.session.username}});
