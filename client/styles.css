@@ -703,7 +703,7 @@ body {
 }
 
 .sectionsScroll {
-  width: 30%;
+  width: 31.55%;
   background-color: white;
   border: 1px solid gray;
   border-radius: 3px;
@@ -957,22 +957,25 @@ body {
 
 
 .glyphicon-chevron-right {
-  color: #7c519e;
+  color: white;
 }
 
 .glyphicon-chevron-left {
-  color: #7c519e;
+  color: white;
 }
 
 .carousel-control.left {
   width: 5%;
   background-image: none; 
+  background-color: #7c519e;
+  border-radius: 8px 0px 0px 8px;
 }
 
 .carousel-control.right {
   width: 5%;
   background-image: none; 
-  /* Overwrite default */
+  background-color: #7c519e;
+  border-radius: 0px 8px 8px 0px;
 }
 
 .item.active {
@@ -984,5 +987,5 @@ body {
 }
 
 .carousel {
-  padding-left: 8%;
+  padding-left: 5%;
 }
