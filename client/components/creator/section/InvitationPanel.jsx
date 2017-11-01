@@ -1,5 +1,4 @@
 import React from 'react';
-import InviteTesters from './InviteTesters.jsx';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
