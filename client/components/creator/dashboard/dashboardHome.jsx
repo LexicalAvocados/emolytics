@@ -45,8 +45,7 @@ export class DashboardHome extends React.Component {
   componentWillUnmount() {
     console.log(this.props.history);
     if (this.props.history.location.pathname === '/createProject' && this.state.projects.id === 0) {
-      alert('Nope!');
-      this.props.history.goBack(); // Would prefer to just block the redirect, but not sure how.
+      this.props.actions.changeCurrentProject(this.state.projects);
     }
   }
 
