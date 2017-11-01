@@ -3,6 +3,7 @@ import ProjectList from './ProjectList.jsx';
 import CreateProject from '../create/createProject.jsx';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import { Row, Col, Button, Modal, Popover } from 'react-bootstrap';
@@ -41,6 +42,14 @@ export class DashboardHome extends React.Component {
       });
   }
 
+  componentWillUnmount() {
+    console.log(this.props.history);
+    if (this.props.history.location.pathname === '/createProject' && this.state.projects.id === 0) {
+      alert('Nope!');
+      this.props.history.goBack(); // Would prefer to just block the redirect, but not sure how.
+    }
+  }
+
   getProjectsFromDatabase(refresh) {
     axios.get('/api/getProjectsForUser', {params: { username: this.props.loggedInUser.username }})
       .then((response) => {
@@ -58,6 +67,7 @@ export class DashboardHome extends React.Component {
             projects: response.data[0],
             retrieved: true
           });
+          this.props.currentProject.id === 0;
         }
       })
       .catch((err) => {
@@ -278,7 +288,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (DashboardHome);
+) (DashboardHome));
