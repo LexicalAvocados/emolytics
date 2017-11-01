@@ -25,7 +25,7 @@ export class Navbar extends React.Component {
       <div className="navBar">
         <div className="websiteTitle">
           <Link to='/'>
-            <h1>Emolytics</h1>
+            <h4>Emolytics</h4>
           </Link>
         </div>
         {
