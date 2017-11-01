@@ -32,15 +32,15 @@ class AddOption extends React.Component {
     });
   }
 
-  retrieveVimeoData(cb) {
-    var vimeoData = {};
-    var vidUrl = this.state.url;
-    axios.get('https://api.vimeo.com/oauth/authorize', {
-      params: {
+  // retrieveVimeoData(cb) {
+  //   var vimeoData = {};
+  //   var vidUrl = this.state.url;
+  //   axios.get('https://api.vimeo.com/oauth/authorize', {
+  //     params: {
         
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
 
   retrieveYouTubeData(cb) {

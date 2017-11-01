@@ -35,6 +35,7 @@ import Browse from './tester/Browse/Browse.jsx';
 import ForgotPassword from './auth/ForgotPassword.jsx';
 import ResetPassword from './auth/ResetPassword.jsx';
 import CreatorPublicProfile from './creator/account/CreatorPublicProfile.jsx';
+import vimeoLoading from './auth/vimeoLoading.jsx';
 
 export class App extends React.Component {
   constructor(props) {
@@ -87,6 +88,7 @@ export class App extends React.Component {
               {/* routes for NOT LOGGED IN */}
               <Route exact path="/" component={LandingPage}/>
               <Route exact path="/loading" component={Loading}/>
+              <Route exact path="/vimeoloading" component={vimeoLoading}/>
               <Route path="/loading/patreon" component={PatreonLoginLoading}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/forgotPassword" component={ForgotPassword}/>

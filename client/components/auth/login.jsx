@@ -139,11 +139,15 @@ export class Login extends React.Component {
           <a href={patreonOAuthLink}>
             <img className='patreonLoginBtn' src='patreon.jpg'></img>
           </a>
+          <a href='/auth/vimeo'>
+            <img className='vimeoLoginBtn' src='https://prowly-uploads.s3.amazonaws.com/uploads/press_rooms/company_logos/563/preview_indeks.png'></img>
+          </a>
         </div>
       </div>
     );
   }
 }
+
 
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
