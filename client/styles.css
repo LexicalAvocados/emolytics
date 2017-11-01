@@ -731,20 +731,34 @@ body {
   border-color: #e5d8ff;
   border-style: solid;
   border-size: 1px;
-  padding: 20px 40px 40px 40px;
+  padding: 10px 40px 20px 40px;
+}
+
+.focusGroupModule {
+  padding: 10px 0px 20px 0px;
 }
 
 .focusGroupNameEntry {
-  margin: 15px 0px 10px 0px;
+  margin: 15px 0px 15px 0px;
 }
 
 .focusGroupTesterEntry {
-
+  margin: 15px 0px 15px 0px;
 }
 
 .focusGroupHR {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.focusGroupPatreonBtn {
+  max-height: 65%;
+  max-width: 65%;
+  border-radius: 4px;
+}
+
+.focusGroupSection {
+  margin-bottom: 30px;
 }
 
 .focusGroupTesterList {
@@ -757,7 +771,7 @@ body {
 }
 
 .focusGroupButtonToolbar{
-  height: 50px;
+  margin: 15px 0px 15px 0px;
 }
 
 .addEntityButton {
