@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
-import key from './key.js';
+import { youtube } from '../../../../key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class AddOption extends React.Component {
         id: vidId,
         part: 'snippet, contentDetails',
         type: 'video',
-        key: key
+        key: youtube.APIKey
       }
     })
       .then((data) => {
@@ -174,13 +174,11 @@ class AddOption extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return({
-    router: state.router,
-    currentProject: state.currentProject,
-    currentSection: state.currentSection
-  });
-};
+const mapStateToProps = (state) => ({
+  router: state.router,
+  currentProject: state.currentProject,
+  currentSection: state.currentSection
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
@@ -189,4 +187,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (AddOption));
+)(AddOption));
