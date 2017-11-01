@@ -372,7 +372,7 @@ class SectionHome extends React.Component {
         <div>
           <div>
             { this.props.currentSection.id === 0 ? (
-              <p>Welcome to the section home! From here you can see all the options associated with a section. Explain inviting testers to section</p>
+              <h3 className="demoWelcomeHeader">From this page you can see all the options associated with a specifc section! This is the best place to mnage your various sections and their options. You can invite testers to view the options within a section, and edit the options within a section.</h3>
             ):(
               null
             )}
@@ -393,6 +393,7 @@ class SectionHome extends React.Component {
             <Button onClick={this.compare}> Compare </Button>
           ): (
             <p>Choose two options</p>
+            // No ability to cancel. Need to heavily change this
           )}
 
 

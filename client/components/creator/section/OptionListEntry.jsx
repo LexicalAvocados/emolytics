@@ -184,7 +184,7 @@ class OptionListEntry extends React.Component {
   optionListPopover() {
     if (this.props.currentSection.id === 0) {
       return (
-        <Popover id="popover-trigger-hover" title="Guten Tag!" style={this.props.currentSection.displayOptionListPopover}>It's a list of options. Click on one!</Popover>
+        <Popover id="popover-trigger-hover" title="Guten Tag!" style={this.props.currentSection.displayOptionListPopover}>Clicking on an option will bring up information about that option.</Popover>
       );
     } else {
       let hidden = {
@@ -247,7 +247,6 @@ class OptionListEntry extends React.Component {
           <OverlayTrigger placement="right" overlay={this.optionListPopover()}>
           <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
             <div className="optionListEntry" style={containerStyle}>
-
               <div style={stats}>
               { this.props.notifications.length > 0 ? (
                 <div onClick={() => {this.showNotifications(this.props.option)}} style={notifs}>

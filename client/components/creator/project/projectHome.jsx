@@ -49,7 +49,7 @@ class ProjectHome extends React.Component {
     return (
       <div className="projectHomeContainer">
         { this.props.currentProject.id === 0 ? (
-          <p>Welcome to the project home! From here you can view all of the sections associated with a project. Sections are associated with options! Yay!</p>
+          <h3 className="demoWelcomeHeader">This is the Project Home! From here you can view all of the sections associated with a project. Sections themselves are associated with options! Yay!</h3>
         ) : (
           null
         )}
