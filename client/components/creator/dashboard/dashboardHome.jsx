@@ -105,7 +105,8 @@ export class DashboardHome extends React.Component {
     });
   }
 
-  beginEdit(project) {
+  beginEdit(e, project) {
+    e.stopPropagation()
     this.setState({
       displayEdit: !this.state.displayEdit,
       idOfClickedOn: project.id,
