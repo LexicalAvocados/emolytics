@@ -21,7 +21,7 @@ class OptionListEntry extends React.Component {
       total: 0,
       perView: 0,
       notEnoughCredits: false,
-      invitedByOption: false,
+      // invitedByOption: false,
       testers: [],
       testersCopy: [],
       haveInvited: false,
@@ -40,7 +40,7 @@ class OptionListEntry extends React.Component {
     this.revealAddOption = this.revealAddOption.bind(this);
     this.optionListPopover = this.optionListPopover.bind(this);
     this.filterTestersForOptions = this.filterTestersForOptions.bind(this);
-    this.renderInvited = this.renderInvited.bind(this);
+    // this.renderInvited = this.renderInvited.bind(this);
     this.mount = this.mount.bind(this);
     this.setPublic = this.setPublic.bind(this);
     this.convertBoolToNumberForPublic = this.convertBoolToNumberForPublic.bind(this);
@@ -96,11 +96,7 @@ class OptionListEntry extends React.Component {
     });
   }
 
-  renderInvited() {
-    this.setState({
-      invitedByOption: !this.state.invitedByOption
-    });
-  }
+
 
   revealAddOption() {
     this.setState({
@@ -222,8 +218,9 @@ class OptionListEntry extends React.Component {
     this.props.beginEdit(option, this.state.testers, this.state.testersCopy)
   }
 
+
   convertBoolToNumberForPublic(bool) {
-  return bool ? 2 : 1;
+    return bool ? 2 : 1;
   }
 
   render() {
@@ -338,12 +335,13 @@ class OptionListEntry extends React.Component {
               credits={this.props.loggedInUser.credits}
               option={this.props.currentOption}
             />
-            { this.state.haveInvited ? (
-            <p className="closerText">You have previously invited testers to view this option</p>
-          ) : ( null )}
-            { !this.state.invitedByOption ? (
-              !this.state.displayPanel ? (
-                <div>
+            {!this.state.displayPanel ? (
+              <div>
+                {this.props.invitedByOption ? (
+                  <p>Testers Invited!</p> 
+                ) : (
+                  null
+                )}
                 <Button onClick={this.renderPanel}>Invite testers</Button>
                 <ButtonToolbar>
                   <ToggleButtonGroup type="radio" name="public" defaultValue={this.convertBoolToNumberForPublic(this.state.makePublic)} onChange={this.setPublic}>
@@ -351,16 +349,13 @@ class OptionListEntry extends React.Component {
                     <ToggleButton value={2}>Public</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
-                </div>
-              ) : (
-                <InvitationPanel
-                  renderInvited={this.renderInvited}
-                  changeTestersCopy={this.changeTestersCopy}
-                  renderPanel={this.renderPanel}
-                />
-              )
+              </div>
             ) : (
-              <p>Testers Invited!</p>
+              <InvitationPanel
+                renderInvited={this.props.renderInvitedByOption}
+                changeTestersCopy={this.changeTestersCopy}
+                renderPanel={this.renderPanel}
+              />
             )}
 
           </Modal.Body>

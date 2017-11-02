@@ -105,7 +105,7 @@ class SectionCarousel extends React.Component {
                           <p>{section.name}</p>
                           <p>{section.description}</p>
                         </div>
-                        <Button onClick={() => this.props.beginEdit(section)}>Edit</Button>
+                        <Button onClick={(e) => this.props.beginEdit(e, section)}>Edit</Button>
                         <br/>
                       </Col>
                     );
