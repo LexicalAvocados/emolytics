@@ -19,7 +19,7 @@ class AddOption extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.submitOptionClick = this.submitOptionClick.bind(this);
-    this.completeSubmitionsClick = this.completeSubmitionsClick.bind(this);
+    this.completeSubmissionsClick = this.completeSubmissionsClick.bind(this);
     this.retrieveYouTubeData = this.retrieveYouTubeData.bind(this);
   }
 
@@ -57,11 +57,11 @@ class AddOption extends React.Component {
       }
     })
       .then((data) => {
-        console.log('response from youtube', data);
+        // console.log('response from youtube', data);
         youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.default.url;
         youTubeData.tags = data.data.items[0].snippet.tags;
-        console.log('youtubeData>>>>>>', youTubeData);
-        console.log('youtubeData.tags>>>>>>', youTubeData.tags);
+        // console.log('youtubeData>>>>>>', youTubeData);
+        // console.log('youtubeData.tags>>>>>>', youTubeData.tags);
         var unitsOfTime = ['H', 'M', 'S'];
         var nums = [];
         for (var i = 0; i < unitsOfTime.length; i++) {
@@ -123,7 +123,7 @@ class AddOption extends React.Component {
     });
   }
 
-  completeSubmitionsClick(e) {
+  completeSubmissionsClick(e) {
     e.preventDefault();
     // this.props.history.push('/project' + `${this.props.currentProject.id}`);
     this.props.close();
@@ -152,14 +152,20 @@ class AddOption extends React.Component {
           <h4>Section Description: {this.props.currentSection.description}</h4>
           <form id="optionForm" onSubmit={this.submitOptionClick}>
             New Option Name: <br />
-            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+            <div className="OptionNameInput">
+              <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+            </div>
             Option Description: <br />
-            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+            <div className="OptionDescriptionInput">
+              <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+            </div>
+            <div className="OptionUrlInput">
             Url: <br />
-            <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
-            <input type="submit" value="Submit New Option" /><br />
+              <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
+            </div>
+            <input type="submit" value="Upload" /><br />
           </form>
-          <Button onClick={this.completeSubmitionsClick}>Complete Submitions</Button><br />
+          <Button onClick={this.completeSubmissionsClick}>Complete Uploads</Button><br />
         </div>
         <div className="ThumbnailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (

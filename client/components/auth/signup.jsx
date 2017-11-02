@@ -130,7 +130,7 @@ export class Signup extends React.Component {
             <img className='patreonLoginBtn' src='patreon.jpg'></img>
           </a>
           <a href='/auth/vimeo'>
-            <img className='vimeoLoginBtn' src='https://prowly-uploads.s3.amazonaws.com/uploads/press_rooms/company_logos/563/preview_indeks.png'></img>
+            <img className='vimeoLoginBtn' src='vimeo-logo.jpg'></img>
           </a>
         </div>
         <p style={center}> Don't forget to select Tester/Creator!</p>
