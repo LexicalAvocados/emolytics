@@ -6,25 +6,23 @@ import { connect } from 'react-redux';
 class SectionCarousel extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
-      selected: {},
-      removed: {  backgroundColor: 'orange' },
-      prev: -1
+    this.state = {
+      carouselIndex: null
     };
-    this.highlightSelected = this.highlightSelected.bind(this);
+    this.carouselActiveIndex = this.carouselActiveIndex.bind(this);
   }
 
-  highlightSelected(e, sectionId) {
-    if (this.state.prev >= 0) {
-      var prevHighlight = document.getElementById(this.state.prev);
-      prevHighlight.style.backgroundColor = 'white';
-    } 
-    var a = document.getElementById(sectionId);
-    this.setState({
-      prev: sectionId
-    });
-    a.style.backgroundColor = 'orange';    
+  carouselActiveIndex(eventKey, fromProjectHome) {
+    if (fromProjectHome) {
+      this.props.currentProject.carousel = eventKey;
+    } else {
+      this.props.currentProject.carousel = null;
+      this.setState({
+        carouselIndex: eventKey
+      });
+    }
   }
+
 
   render() {
     const notifDisplayStyle = {
@@ -42,14 +40,14 @@ class SectionCarousel extends React.Component {
       width: '20px'
     };
     return (
-      <Carousel interval={null}>
+      <Carousel interval={null} onSelect={(eventKey) => this.carouselActiveIndex(eventKey, this.props.fromProjectHome)} activeIndex={this.props.currentProject.carousel || this.state.carouselIndex }>
         { this.props.splitSections.map((sectionGroup, overI) => {
           if (sectionGroup.indexOf('End') === -1) {
             return (
               <Carousel.Item key={overI}>
                 { sectionGroup.map((section, i) => (
-                  <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" key={i + section.name} id={section.id}>
-                    <div onClick={(e) => this.highlightSelected(e, section.id)}>
+                  <div onClick={() => this.props.highlightSelected(section.id, this.props.fromSectionHome)} key={i + section.name}>
+                    <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" id={section.id}>
                       <p></p>
                       <div style={notifDisplayStyle}>
                         { section.notifications > 0 ? (
@@ -69,10 +67,10 @@ class SectionCarousel extends React.Component {
                       </div>
                       <p>{section.name}</p>
                       <p>{section.description}</p>
-                    </div>
-                    <Button onClick={(e) => this.props.beginEdit(e, section)}>Edit</Button>
-                    <br/>
-                  </Col>
+                      <Button onClick={(e) => this.props.beginEdit(e, section)}>Edit</Button>
+                      <br/>
+                    </Col>
+                  </div>
                 ))}
               </Carousel.Item>
             );
@@ -130,7 +128,8 @@ class SectionCarousel extends React.Component {
 
 const mapStateToProps = (state) => ({
   router: state.router,
-  currentSection: state.currentSection
+  currentSection: state.currentSection,
+  currentProject: state.currentProject
 });
 
 export default connect(
