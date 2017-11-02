@@ -20,7 +20,8 @@ class DisplaySections extends React.Component {
       showAddSection: false,
       showEdit: false,
       idOfClickedOnSection: null,
-      previous: null    
+      previous: null,
+      prev: -1 
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
@@ -125,11 +126,13 @@ class DisplaySections extends React.Component {
     });
   }
 
-  beginEdit(e, section) {
+  beginEdit(e, section, fromProjectHome) {
     e.stopPropagation();
     this.props.actions.changeCurrentSection(section);
-    this.onSectionClick(section, this.props.fromProjectHome, this.props.fromSectionHome);
-    this.highlightSelected(section.id);
+    if (!fromProjectHome) {
+      this.onSectionClick(section, this.props.fromProjectHome, this.props.fromSectionHome);
+      this.highlightSelected(section.id, true);
+    }
     this.setState({
       showEdit: !this.state.showEdit,
       idOfClickedOnSection: section.id
