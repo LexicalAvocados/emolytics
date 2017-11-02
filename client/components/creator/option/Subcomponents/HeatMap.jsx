@@ -21,7 +21,7 @@ class HeatMap extends React.Component {
       }
     })
     .then( (res) => {
-      // console.log('response from heatmap frames', res)
+      console.log('response from heatmap frames', res)
       this.massageData(res.data)
     })
   };

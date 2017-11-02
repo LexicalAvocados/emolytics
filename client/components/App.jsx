@@ -65,8 +65,7 @@ export class App extends React.Component {
                 <Route path="/addSection" component={AddSection}/>
                 <Route path="/addOption" component={AddOption}/>
                 <Route path="/account" component={CreatorAccount}/>
-                <Route path="/profiletest" component={CreatorPublicProfile}/>
-                <Route path="/cprofile:id" component={CreatorPublicProfile}/>
+                <Route path="/profile:id" component={CreatorPublicProfile}/>
               </Switch>
               </div>
             ) : (
@@ -80,7 +79,7 @@ export class App extends React.Component {
                 <Route path="/account" component={TesterAccount}/>
                 <Route path="/video/:id" component={TesterVideo}/>
                 <Route path="/browse" component={Browse}/>
-                <Route path="/cprofile:id" component={CreatorPublicProfile}/>
+                <Route path="/profile:id" component={CreatorPublicProfile}/>
                 <Route path="/joinGroup" component={TesterJoinFocusGroup}/>
               </Switch>
               </div>

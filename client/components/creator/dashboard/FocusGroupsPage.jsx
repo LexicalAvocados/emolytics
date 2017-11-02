@@ -165,62 +165,58 @@ class FocusGroupsPage extends React.Component {
       <div className='focusGroupPage'>
 
         <Col md={3}>
-          <div className='focusGroupColumn'>
-            <div className='focusGroupModule'>
-              <h2>New Group</h2>
-              <form onSubmit={this.createNewFocusGroup}>
-                <Col>
-                  <FormControl
-                    className='focusGroupNameEntry'
-                    bsSize='large'
-                    type='text'
-                    value={this.state.typedFocusGroupName}
-                    placeholder='Group Name'
-                    onChange={this.updateTypedFocusGroupName}
-                  />
-                </Col>
-                <Button
-                  bsStyle='primary'
-                  bsSize='large'
-                  type='submit'
-                > Create Group </Button>
-              </form>
-            </div>
-            <hr className='focusGroupHR'/>
-            {this.props.patreonCampaign.id ?
-              <FocusGroupsPatreonModule />
-            :
-              <div className='focusGroupModule'>
-                <h2>Connect Patreon</h2>
-                <p>You may use your Patreon campaign and pledge information to
-                quickly create & curate a Group.</p>
-                <img src='patreon.jpg' className='focusGroupPatreonBtn'></img>
-              </div>}
+
+          <div className='lightPurpleModule'>
+            <h3>New Group</h3>
+            <form onSubmit={this.createNewFocusGroup}>
+              <Col>
+                <FormControl
+                  className='focusGroupNameEntry'
+                  type='text'
+                  value={this.state.typedFocusGroupName}
+                  placeholder='Group Name'
+                  onChange={this.updateTypedFocusGroupName}
+                />
+              </Col>
+              <Button
+                bsStyle='primary'
+                type='submit'
+              > Create Group </Button>
+            </form>
           </div>
+
+          {this.props.patreonCampaign.id ?
+            <FocusGroupsPatreonModule />
+          :
+            <div className='lightPurpleModule'>
+              <h3>Connect Patreon</h3>
+              <p>You may use your Patreon campaign and pledge information to
+              quickly create & curate a Group.</p>
+              <img src='patreon.jpg' className='focusGroupPatreonBtn'></img>
+            </div>}
         </Col>
 
         <Col md={6}>
-          <div className='focusGroupColumn'>
 
-            <div className='focusGroupModule'>
+            <div className='lightPurpleModule'>
               {focusGroups.length > 0 ?
                 <FocusGroupsList />
                 :
                 null}
             </div>
 
-            {currentFocusGroup ? <hr className='focusGroupHR'/> : null}
-
             {currentFocusGroup ? (
-              <div className='focusGroupModule'>
+              <div className='lightPurpleModule'>
                 <div className='focusGroupSubsectionTitle'>
                   <Button
                     className='focusGroupDeleteBtn'
                     bsStyle='danger'
                     onClick={this.deleteFocusGroup}
                   > Delete </Button>
-                  <h2 className='focusGroupName'>{currentFocusGroup.name}</h2>
+                  <h3 className='focusGroupName'>{currentFocusGroup.name}</h3>
                 </div>
+
+                <hr className='standardHR'/>
 
                 <div className='focusGroupSubsection'>
                   <h3>Members</h3>
@@ -255,12 +251,13 @@ class FocusGroupsPage extends React.Component {
                     <p>No members yet :&#40; Why don't you invite some below?</p>}
                 </div>
 
+                <hr className='standardHR'/>
+
                 <div className='focusGroupSubsection'>
                   <h3>Invite Testers</h3>
                   <form onSubmit={this.addTesterToFocusGroup}>
                     <FormControl
                       className='focusGroupTesterEntry'
-                      bsSize='large'
                       type='text'
                       value={this.state.typedTesterUsername}
                       placeholder='Tester Username'
@@ -268,7 +265,6 @@ class FocusGroupsPage extends React.Component {
                     />
                     <Button
                       bsStyle='primary'
-                      bsSize='large'
                       type='submit'
                     > Invite Tester </Button>
                   </form>
@@ -277,12 +273,11 @@ class FocusGroupsPage extends React.Component {
               </div>
             ) : null}
 
-          </div>
         </Col>
 
         <Col md={3}>
-          <div className='focusGroupColumn'>
-            <h2> Tester Requests </h2>
+          <div className='lightPurpleModule'>
+            <h3> Tester Requests </h3>
             {this.state.applyUsers.length > 0 ?
               {appliedUsers}
             :

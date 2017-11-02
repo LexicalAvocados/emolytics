@@ -59,12 +59,13 @@ export class Login extends React.Component {
                 console.log('Error fetching Creator\'s Focus Groups:', err);
               });
           } else {
-            axios.post('/api/tester/getTesterQueue', {
-              id
+            axios.post('/api/tester/getOptionsForTester', {
+              id,
+              mode: 'queue'
             })
               .then(res => {
                 let queue = res.data;
-                // console.log('queue:', queue);
+                console.log('queue:', queue);
                 if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
               })
               .catch(err => {
