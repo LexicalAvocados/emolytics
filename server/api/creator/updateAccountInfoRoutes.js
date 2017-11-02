@@ -1,5 +1,8 @@
 const db = require('../../../db/index.js');
 const User = db.User;
+const Project = db.Project;
+const Section = db.Section;
+const Option = db.Option;
 const sequelize = db.sequelize;
 
 exports.updateCreatorBio = (req, res) => {
@@ -9,11 +12,12 @@ exports.updateCreatorBio = (req, res) => {
     }
   })
   .then( (user) => {
-    console.log('user to update: ', user);
+    // console.log('user to update: ', user);
     user.update({
       profilepicture: req.body.picture,
       aboutme: req.body.aboutme,
-      showcasevideo: req.body.video
+      showcasevideo: req.body.video,
+      title: req.body.title
     })
   })
   .then( () => {
@@ -28,10 +32,11 @@ exports.updateCreatorSocial = (req, res) => {
     }
   })
   .then( (user) => {
-    console.log('user to update: ', user);
+    // console.log('user to update: ', user);
     user.update({
       youtubeprofile: req.body.youtubeprofile,
       twitterhandle: req.body.twitterhandle,
+      website: req.body.website
     })
   })
   .then( () => {
@@ -42,12 +47,12 @@ exports.updateCreatorSocial = (req, res) => {
 exports.getCreatorDataForPublicProfile = (req, res) => {
   var uid = req.query.uid;
   console.log('USER ID FOR PROFILE', uid)
-  sequelize.query(`SELECT "users"."id", "users"."username", "users"."name", "users"."aboutme", 
-                  "users"."profilepicture", "users"."showcasevideo", "users"."youtubeprofile", 
-                  "users"."twitterhandle", "users"."patreonId", "users"."patreonAbout", 
-                  "users"."patreonImageUrl", "users"."patreonUrl", "users"."patreonVanity", 
-                  "patreonCampaigns"."campaignId", "patreonCampaigns"."creationName", 
-                  "patreonCampaigns"."isPlural", "patreonCampaigns"."pledgeUrl", "patreonCampaigns"."summary" 
+  sequelize.query(`SELECT "users"."id", "users"."username", "users"."name", "users"."aboutme",
+                  "users"."profilepicture", "users"."showcasevideo", "users"."youtubeprofile", "users"."website",
+                  "users"."twitterhandle", "users"."patreonId", "users"."patreonAbout", "users"."email",
+                  "users"."patreonImageUrl", "users"."patreonUrl", "users"."patreonVanity", "users"."title",
+                  "patreonCampaigns"."campaignId", "patreonCampaigns"."creationName",
+                  "patreonCampaigns"."isPlural", "patreonCampaigns"."pledgeUrl", "patreonCampaigns"."summary"
                   FROM "users" LEFT OUTER JOIN "patreonCampaigns"
                   ON "users"."id" = "patreonCampaigns"."userId"
                   WHERE "users"."id" = ${uid};`)
@@ -71,11 +76,29 @@ exports.getCreatorDataForPublicProfile = (req, res) => {
         creationName: user.creationName || '',
         isPlural: user.isPlural || '',
         pledgeUrl: user.pledgeUrl || '',
-        summary: user.summary || ''
+        summary: user.summary || '',
+        title: user.title || '',
+        email: user.email || '',
+        website: user.website || ''
       }
       res.send(JSON.stringify(responseObj))
     })
     .catch(err => {
       res.send(err);
     });
+};
+
+exports.getCreatorVideosForPublicProfile = (req, res) => {
+  Option.findAll({
+    where: {
+      userId: req.query.uid
+    }
+  })
+  .then((options) => {
+    console.log('OPTIONS THAT BELONG TO CREATOR', options)
+    var publicOptionsArray = options.filter(option => {
+      return option.dataValues.isPublic;
+    })
+    res.send(JSON.stringify(publicOptionsArray))
+  })
 }

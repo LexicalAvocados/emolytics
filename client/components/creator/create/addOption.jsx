@@ -37,7 +37,7 @@ class AddOption extends React.Component {
   //   var vidUrl = this.state.url;
   //   axios.get('https://api.vimeo.com/oauth/authorize', {
   //     params: {
-        
+
   //     }
   //   });
   // }
@@ -90,7 +90,7 @@ class AddOption extends React.Component {
     if (this.props.currentProject.id === 0) {
       alert('You cannot create new options within the demo. If you\'d like to leave the demo please create a project.');
       return;
-    } 
+    }
 
     // conditional: if this.state.url === 'vimeo' => use retrieveVimeoData
     // need to change: how link is generated, thumbnails, tags...
@@ -104,7 +104,8 @@ class AddOption extends React.Component {
         sectionId: this.props.currentSection.id,
         thumbnail: youTubeData.thumbnail,
         length: youTubeData.length,
-        tags: youTubeData.tags
+        tags: youTubeData.tags,
+        userId: this.props.loggedInUser.id
       })
         .then((response) => {
           this.setState({
@@ -177,7 +178,8 @@ class AddOption extends React.Component {
 const mapStateToProps = (state) => ({
   router: state.router,
   currentProject: state.currentProject,
-  currentSection: state.currentSection
+  currentSection: state.currentSection,
+  loggedInUser: state.loggedInUser
 });
 
 const mapDispatchToProps = (dispatch) => ({
