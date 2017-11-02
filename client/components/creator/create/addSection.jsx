@@ -50,9 +50,9 @@ class AddSection extends React.Component {
 
   render() {
     return (
-      <div className="CreateProject">
-        <h2>Project Title: <h3>{this.props.currentProject.name}</h3></h2>
-        <h4>Project Description: {this.props.currentProject.description}</h4>
+      <div className="AddSection">
+        <h3 className="CurrentProjectName">{this.props.currentProject.name.toUpperCase()}</h3>
+        <h4 className="CurrentProjectDescription">{this.props.currentProject.description}</h4>
         <br/>
         <form onSubmit={this.submitSectionClick}>
           New Section Name: <br />

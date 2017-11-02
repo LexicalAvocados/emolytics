@@ -60,7 +60,7 @@ export class ForgotPassword extends React.Component {
   render() {
     return (
       <div className="forgotPassword">
-        <h3> Forgot Password </h3>
+        <h3> Forgot Password? </h3>
         <br/>
           <Form horizontal className='forgotForm' onSubmit={this.submit} >
             <FormGroup>

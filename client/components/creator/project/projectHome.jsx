@@ -57,8 +57,8 @@ class ProjectHome extends React.Component {
         ) : (
           null
         )}
-        <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`} expanded={this.state.open} onExited={this.redirectToSection}>
-            <p style={height}>Description: {this.props.currentProject.description}</p>
+        <Panel collapsible header={`${this.props.currentProject.name.toUpperCase()}`} expanded={this.state.open} onExited={this.redirectToSection}>
+            <p style={height}>{this.props.currentProject.description}</p>
         </Panel>
         <div>
           <DisplaySections

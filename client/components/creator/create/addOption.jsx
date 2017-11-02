@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Call } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
@@ -147,38 +147,46 @@ class AddOption extends React.Component {
     return (
       <div>
         <div className="AddOption">
-          <h2>Section Name: {this.props.currentSection.name}</h2>
-          <h4>Section Description: {this.props.currentSection.description}</h4>
+          <Row className="AddOptionHeader">
+            <h2><u>{this.props.currentSection.name}</u></h2>
+            <h5>{this.props.currentSection.description}</h5>
+            <br />
+          </Row>
           <form id="optionForm" onSubmit={this.submitOptionClick}>
+            <Row className="OptionNameInput">
             New Option Name: <br />
-            <div className="OptionNameInput">
               <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
-            </div>
+            </Row>
+            <Row className="OptionDescriptionInput">
             Option Description: <br />
-            <div className="OptionDescriptionInput">
               <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
-            </div>
-            <div className="OptionUrlInput">
+            </Row>
+            <Row className="OptionUrlInput">
             Url: <br />
               <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
-            </div>
-            <input type="submit" value="Upload" /><br />
+            </Row>
+            <Row>
+              <input type="submit" value="Upload" /><br />
+            </Row>
           </form>
-          <Button onClick={this.completeSubmissionsClick}>Complete Uploads</Button><br />
         </div>
         <div className="ThumbnailListInAddOption">
-          { this.props.currentSection.options.map((option, i) => (
-            <ThumbnailListInAddOption
-              option={option}
-              key={i}
-              index={i}
-            />
-          ))}
+          <Row>
+            { this.props.currentSection.options.map((option, i) => (
+              <ThumbnailListInAddOption
+                option={option}
+                key={i}
+                index={i}
+              />
+            ))}
+          </Row>
         </div>
+
       </div>
     );
   }
 }
+
 
 const mapStateToProps = (state) => ({
   router: state.router,
