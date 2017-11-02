@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../../../db');
 const Sequelize = require('sequelize');
+const axios = require('axios');
 const Option = db.Option;
 const User = db.User;
 const Frame = db.Frame;
@@ -592,7 +593,7 @@ const aggregateComments = (option, res) => {
       }
     })
     .then((toApiString) => {
-      axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
+      axios.post('http://api.smmry.com/&SM_API_KEY=' + process.env.SMMRY_API_KEY + '&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
         .then((summary) => {
           // console.log('API summary request success', summary);
           return summary.data;
