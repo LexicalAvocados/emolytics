@@ -162,9 +162,9 @@ class AddOption extends React.Component {
             Url: <br />
               <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
             </div>
-            <input type="submit" value="Submit New Option" /><br />
+            <input type="submit" value="Upload" /><br />
           </form>
-          <Button onClick={this.completeSubmissionsClick}>Complete Submissions</Button><br />
+          <Button onClick={this.completeSubmissionsClick}>Complete Uploads</Button><br />
         </div>
         <div className="ThumbnailListInAddOption">
           { this.props.currentSection.options.map((option, i) => (
