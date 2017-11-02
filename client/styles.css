@@ -416,13 +416,19 @@ h6 {
   padding: 12px;
 }
 
+.modal-body {
+  background-color: #f3edff ;
+  border-color: #e5d8ff ;
+}
+
 .CreateProject {
   clear: right;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   /* background-color: #f7f7f7; */
   background-color: #f3edff ;
   border-color: #e5d8ff ;
   padding: 10px 20px 20px 20px;
+  font-weight: bold;
 }
 
 .CreateProject input[type=text] {
@@ -430,14 +436,25 @@ h6 {
   margin: 6px 0;
 }
 
-.ProjectNameInput input {
+.ProjectNameInput textarea {
+  text-transform: uppercase;
   width: 50%;
+  height: 35px;
+  font-size: large;
 }
 
 .ProjectDescriptionInput textarea {
   width: 50%;
   height: 60px;
   box-sizing: border-box;
+}
+
+.AddSection {
+  padding: 0px 20px 20px 20px;    
+}
+
+.CurrentProjectName {
+  font-weight: bold;
 }
 
 .SectionNameInput input{
@@ -450,15 +467,23 @@ h6 {
 }
 
 .AddOption {
-  background-color: #f3edff ;
-  border-color: #e5d8ff ;
+  padding: 10px 20px 20px 20px;    
+  background-color: #f3edff;
+  border-color: #e5d8ff;
 }
 
 .inputDescription {
-  display: flex;
   width: 50%;
-  flex-shrink: 3;
 }
+
+.optionListEntry .closerTextLarger {
+  font-weight: 1000;
+}
+
+.optionListEntry {
+  padding: 10px 20px 20px 20px;
+}
+
 
 .navContainer {
   font-family: 'Open Sans', sans-serif;

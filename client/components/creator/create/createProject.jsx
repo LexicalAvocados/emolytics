@@ -67,7 +67,7 @@ class CreateProject extends React.Component {
           )}
           Project Name: <br />
           <div className="ProjectNameInput">
-            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+            <textarea type="text" pattern=".{3,}"  required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
           </div>
           Project Description: <br />
           <div className="ProjectDescriptionInput">
