@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { Button, Modal, Form, FormGroup, FormControl, Row, Col, ControlLabel, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Button, Modal, Form, FormGroup, FormControl, Row, Col, ControlLabel, OverlayTrigger, Popover, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import axios from 'axios';
 import OptionData from './OptionData.jsx';
@@ -27,7 +27,8 @@ class OptionListEntry extends React.Component {
       haveInvited: false,
       displayPanel: false,
       specificTesters: [],
-      totalNumberOfInvitedTesters: 0
+      totalNumberOfInvitedTesters: 0,
+      makePublic: false
     };
     this.revealAddOption = this.revealAddOption.bind(this);
     this.updateTotal = this.updateTotal.bind(this);
@@ -41,6 +42,8 @@ class OptionListEntry extends React.Component {
     this.filterTestersForOptions = this.filterTestersForOptions.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
     this.mount = this.mount.bind(this);
+    this.setPublic = this.setPublic.bind(this);
+    this.convertBoolToNumberForPublic = this.convertBoolToNumberForPublic.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +52,7 @@ class OptionListEntry extends React.Component {
   }
 
   mount(option) {
+    console.log('PUBLIC ? ', this.props.currentOption.isPublic)
     if (option !== 'End') {
       axios.get('/api/getTestersForOption', { params: { optionId: option.id }})
         .then((testerIds) => {
@@ -57,7 +61,8 @@ class OptionListEntry extends React.Component {
             specificTesters: testerIds.data,
             invitedByOption: false,
             displayPanel: false,
-            haveInvited: false
+            haveInvited: false,
+            makePublic: this.props.currentOption.isPublic
           }, () => this.filterTestersForOptions());
         })
         .catch((err) => {
@@ -106,7 +111,7 @@ class OptionListEntry extends React.Component {
   filterTestersForOptions() {
     let priorInvites = false;
     let uninvitedTesters = this.props.allTesters.filter((tester) => {
-      if (this.state.specificTesters.indexOf(tester.id) >= 0) { 
+      if (this.state.specificTesters.indexOf(tester.id) >= 0) {
         priorInvites = true;
       } else {
         return tester;
@@ -140,6 +145,23 @@ class OptionListEntry extends React.Component {
       perView: e.target.value
     })
   };
+
+  setPublic(num) {
+    var bool;
+    num === 1 ? bool = false : bool = true;
+    this.setState({
+      makePublic: bool
+    }, () => {
+      this.props.currentOption.isPublic = bool;
+      axios.post('/api/option/setPublicStatus', {
+        optionId: this.props.currentOption.id,
+        makePublic: this.state.makePublic
+      })
+      .then((res) => {
+        console.log('res from updating public status', res)
+      })
+    })
+  }
 
   submitCredits(e) {
     e.preventDefault();
@@ -198,6 +220,10 @@ class OptionListEntry extends React.Component {
 
   callBeginEdit(option) {
     this.props.beginEdit(option, this.state.testers, this.state.testersCopy)
+  }
+
+  convertBoolToNumberForPublic(bool) {
+  return bool ? 2 : 1;
   }
 
   render() {
@@ -318,7 +344,15 @@ class OptionListEntry extends React.Component {
           ) : ( null )}
             { !this.state.invitedByOption ? (
               !this.state.displayPanel ? (
+                <div>
                 <Button onClick={this.renderPanel}>Invite testers</Button>
+                <ButtonToolbar>
+                  <ToggleButtonGroup type="radio" name="public" defaultValue={this.convertBoolToNumberForPublic(this.state.makePublic)} onChange={this.setPublic}>
+                    <ToggleButton value={1}>Private</ToggleButton>
+                    <ToggleButton value={2}>Public</ToggleButton>
+                  </ToggleButtonGroup>
+                </ButtonToolbar>
+                </div>
               ) : (
                 <InvitationPanel
                   renderInvited={this.renderInvited}

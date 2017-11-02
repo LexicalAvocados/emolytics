@@ -54,7 +54,9 @@ const User = sequelize.define('user', {
   aboutme: Sequelize.STRING,
   showcasevideo: Sequelize.STRING,
   youtubeprofile: Sequelize.STRING,
-  twitterhandle: Sequelize.STRING
+  twitterhandle: Sequelize.STRING,
+  title: Sequelize.STRING,
+  website: Sequelize.STRING
 });
 
 User.sync({force: false});
@@ -173,6 +175,7 @@ const Option = sequelize.define('option', {
 });
 
 Option.belongsTo(Section);
+Option.belongsTo(User);
 
 Option.sync({force: false});
 

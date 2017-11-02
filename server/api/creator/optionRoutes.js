@@ -87,7 +87,8 @@ exports.addOption = (req, res) => {
     sectionId: req.body.sectionId,
     youtubeUrl: req.body.url,
     thumbnail: req.body.thumbnail,
-    length: req.body.length
+    length: req.body.length,
+    userId: req.body.userId
     // tags: req.body.tags
   })
     .then((newOption) => {
@@ -123,7 +124,7 @@ exports.deleteOption = (req, res) => {
       [req.query.toDelete]: req.query.id
     }
   })
-    .then((options) => { 
+    .then((options) => {
       var tables = ['TesterAndOption', 'Frame', 'OptionComments', 'OptionAndAnnotation'];
       options.forEach((option) => {
         option.update({
@@ -144,7 +145,7 @@ exports.deleteOption = (req, res) => {
 
 };
 
-const clearDataAssociatedWithOption = (tableArray, optionId) => { 
+const clearDataAssociatedWithOption = (tableArray, optionId) => {
   tableArray.forEach((table) => {
     table = db[table];
     table.findAll({

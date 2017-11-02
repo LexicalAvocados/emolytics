@@ -13,7 +13,7 @@ class ProjectHome extends React.Component {
     this.state = {
       rerenderOptions: false,
       open: true,
-      fromHome: true    
+      fromHome: true
     };
     this.onSectionClick = this.onSectionClick.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
@@ -68,7 +68,7 @@ class ProjectHome extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log('LOG WITHIN PROJECTHOME', state);
+  console.log('LOG WITHIN HOME', state);
   return ({
     router: state.router,
     currentProject: state.currentProject,
