@@ -153,7 +153,7 @@ class ProjectList extends React.Component {
               </div>
               <div>
                 <div style={titleDisplayStyle}>
-                  <h4>{this.props.project.name}</h4>
+                  <h4>{this.props.project.name.toUpperCase()}</h4>
                   <p>{this.props.project.description}</p>
                 </div>
               </div>

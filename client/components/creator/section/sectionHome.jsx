@@ -373,8 +373,8 @@ class SectionHome extends React.Component {
             ):(
               null
             )}
-            <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`}>
-              Description: {this.props.currentProject.description}
+            <Panel collapsible header={`${this.props.currentProject.name.toUpperCase()}`}>
+              {this.props.currentProject.description}
             </Panel>
           </div>
           <DisplaySections
