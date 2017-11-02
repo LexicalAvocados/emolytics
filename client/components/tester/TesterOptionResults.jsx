@@ -205,6 +205,7 @@ class TesterOptionResults extends React.Component {
         </Col>
 
           <Col md={4}>
+
             <div className='lightPurpleModule'>
               <h3>Personal Feedback</h3>
               You <span style={{'fontWeight': 'bold'}}>{this.state.finished ? 'finished' : 'did not finish'}</span> this video
@@ -216,6 +217,7 @@ class TesterOptionResults extends React.Component {
               :
                 null}
             </div>
+
             <div className='lightPurpleModule'>
               <h3> Emotions Breakdown </h3>
               <Emotion optionEmotionObj={this.state.optionEmotionObj} />
