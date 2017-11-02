@@ -46,9 +46,12 @@ class OptionListEntry extends React.Component {
     this.convertBoolToNumberForPublic = this.convertBoolToNumberForPublic.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.mount(this.props.option);
-    this.props.onRef(this)
+    this.props.onRef(this);
+    this.setState({
+      makePublic: this.props.currentOption.isPublic
+    })
   }
 
   mount(option) {

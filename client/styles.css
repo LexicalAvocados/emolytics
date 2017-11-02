@@ -496,12 +496,18 @@ h6 {
   color: black;
 }
 
+.TesterBrowseContainer a {
+  color: black;
+}
+
 .testerOptionListEntry {
-  margin-left: 6.2%;
+  margin-left: 3.1%;
+  margin-right: 3.1%;
   margin-bottom: 50px;
   padding-top: 25px;
   padding-bottom: 10px;
-  background-color: #d2dbdd;
+  /*background-color: #d2dbdd;*/
+  background-color: #93a9c054;
   border-color: #f2f2f2;
   border-width: 1px;
   border-radius: 8px;
@@ -510,6 +516,10 @@ h6 {
 
 .testerOptionListEntry:hover {
   border-color: #bec4c6;
+}
+
+.browseCreatorName:hover {
+  text-decoration: underline;
 }
 
 .promoButton {
@@ -1201,4 +1211,9 @@ button.list-group-item {
 .teamTitle {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.reactHeatmap canvas {
+  width: 80vw;
+  height: 65vh;
 }

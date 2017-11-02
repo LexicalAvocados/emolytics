@@ -77,8 +77,8 @@ class Browse extends React.Component {
         <Col md={2} style={center}>
           <SearchAutosuggest options={this.state.videos} filterResultsBasedOnSelecion={this.filterResultsBasedOnSelecion} style={autosuggestStyle}/>
           <br/>
-          <ButtonToolbar style={toggleButtonStyle}>
-            <ToggleButtonGroup type="radio" name='sort' defaultValue={1} onChange={this.handleSort}>
+          <ButtonToolbar>
+            <ToggleButtonGroup type="radio" name='sort' defaultValue={1} onChange={this.handleSort} style={toggleButtonStyle}>
               <ToggleButton value={1}>Credits</ToggleButton>
               <ToggleButton value={2}>Recent</ToggleButton>
             </ToggleButtonGroup>
@@ -87,16 +87,15 @@ class Browse extends React.Component {
       </Col>
         <Col md={5}></Col>
       </Row>
-
-
-
-        {this.state.videos.length > 0 ? (
-          this.state.videos.map((item, i) => (
-            <Col className='testerOptionListEntry' md={3} key={item.name}>
-              <BrowseListEntry item={item} key={item.name} handleWatch={this.redirectUser}/>
-            </Col>
-          ))
-        ) : ''}
+        <div className='allBrowseVideos' style={allBrowseVideosStyle}>
+          {this.state.videos.length > 0 ? (
+            this.state.videos.map((item, i) => (
+              <Col className='testerOptionListEntry' md={3} key={item.name}>
+                <BrowseListEntry item={item} key={item.name} handleWatch={this.redirectUser}/>
+              </Col>
+            ))
+          ) : ''}
+          </div>
       </div>
     )
   }
@@ -117,8 +116,8 @@ const center = {
 }
 
 const toggleButtonStyle = {
-  marginLeft: '16%',
-  zIndex: '999'
+  marginLeft: '20%',
+  zIndex: '1'
 }
 
 const mapStateToProps = (state) => {
@@ -126,6 +125,10 @@ const mapStateToProps = (state) => {
   return ({
     currentTesterOption: state.currentTesterOption
   })
+}
+
+const allBrowseVideosStyle = {
+  marginLeft: '5%'
 }
 
 const mapDispatchToProps = dispatch => ({

@@ -22,8 +22,8 @@ class SearchAutosuggest extends React.Component {
 
   renderSuggestion(suggestion){
     return (
-      <div onClick={() => this.props.filterResultsBasedOnSelecion(suggestion.name)}>
-        {suggestion.name}
+      <div onClick={() => this.props.filterResultsBasedOnSelecion(suggestion.name)} style={autosuggestStyle}>
+        <a onClick={() => this.props.filterResultsBasedOnSelecion(suggestion.name)} style={black}>{suggestion.name}</a>
       </div>
     )
   };
@@ -76,9 +76,18 @@ class SearchAutosuggest extends React.Component {
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.renderSuggestion}
         inputProps={inputProps}
+        style={autosuggestStyle}
       />
     );
   }
 };
+
+const autosuggestStyle = {
+  zIndex: '1001'
+}
+
+const black = {
+  color: 'black'
+}
 
 export default SearchAutosuggest;

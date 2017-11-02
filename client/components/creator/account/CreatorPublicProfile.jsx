@@ -249,8 +249,9 @@ class CreatorPublicProfile extends React.Component {
                     height={60} width={60}></img>
                 </a>
               </Col>
-              <Col md={3} style={emailStyle}>
-                {this.state.website !== '' ? this.state.website.slice(11) : ''}
+              <Col md={6} >
+                <br/>
+                <a style={websiteStyle} href={this.state.website}><u>Personal Website</u></a>
               </Col>
 
             </Row>
@@ -286,6 +287,7 @@ const black = {
 }
 
 const imgStyle = {
+  border: 'solid black 2px',
   borderRadius: '3px'
 }
 
@@ -375,6 +377,11 @@ const hrStyle = {
   borderWidth: '2px',
   borderTop: '1px solid rgba(0, 0, 0, 0.1)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.3)'
+}
+
+const websiteStyle = {
+  color: 'black',
+  marginTop: '50%'
 }
 
 export default CreatorPublicProfile;
