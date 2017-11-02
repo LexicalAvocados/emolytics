@@ -76,12 +76,12 @@ class TesterOptionResults extends React.Component {
     //     console.log('Error fetching Option Data from database:', err);
     //   })
     let frameData = axios.post('/api/getFrames', {
-      optionId: this.props.currentSection.option.id,
+      optionId: this.props.currentTesterOption.id,
       userId: this.props.loggedInUser.id
     })
 
     let optionData = axios.post('/api/tester/getOptionDataOnlyForTester', {
-      optionId: this.props.currentSection.option.id,
+      optionId: this.props.currentTesterOption.id,
       userId: this.props.loggedInUser.id      
     })
 
@@ -183,44 +183,49 @@ class TesterOptionResults extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='testerResultsPage'>
 
-        <Col lg={6}>
-          <ReactPlayer
-            className='optionPlayer'
-            url={this.props.currentTesterOption.youtubeUrl}
-            ref='player'
-            controls={true}
-            width='95%'
-            config={{
-              youtube: {
-                playerVars: { showinfo: 1 }
-              }
-            }}
-          />
+        <Col md={8}>
+          <div className='testerResultsPlayer'>
+            <ReactPlayer
+              url={this.props.currentTesterOption.youtubeUrl}
+              ref='player'
+              controls={true}
+              height='100%'
+              width='96%'
+              config={{
+                youtube: {
+                  playerVars: { showinfo: 1 }
+                }
+              }}
+            />
+          </div>
           <div className='optionChart'>
           </div>
         </Col>
 
-        <Col lg={6}>
-          <div className='personalFeedback'>
-            <h3 className='personalFeedbackLabel'>Your Personal Feedback</h3>
-            You <span style={{'fontWeight': 'bold'}}>{this.state.finished ? 'finished' : 'did not finish'}</span> this video
-            {this.state.finished ?
-              <div>
-                <div>You <span style={{'font-weight': 'bold'}}>{this.state.like ? 'liked' : 'did not like'}</span> this video</div>
-                <div>{this.state.comment ? `Your comment on this video: ${this.state.comment}` : null}</div>
-              </div>
-            :
-              null}
-          </div>
-          <Emotion optionEmotionObj={this.state.optionEmotionObj} />
-          <HeatMap
-            option={this.props.currentSection.option}
-            setting={this.state.heatmapSetting}
-            time={this.state.videoTime}
-          />
-        </Col>
+          <Col md={4}>
+            <div className='lightPurpleModule'>
+              <h3>Personal Feedback</h3>
+              You <span style={{'fontWeight': 'bold'}}>{this.state.finished ? 'finished' : 'did not finish'}</span> this video
+              {this.state.finished ?
+                <div>
+                  <div>You <span style={{'fontWeight': 'bold'}}>{this.state.like ? 'liked' : 'did not like'}</span> this video</div>
+                  <div>{this.state.comment ? `Your comment on this video: ${this.state.comment}` : null}</div>
+                </div>
+              :
+                null}
+            </div>
+            <div className='lightPurpleModule'>
+              <h3> Emotions Breakdown </h3>
+              <Emotion optionEmotionObj={this.state.optionEmotionObj} />
+            </div>
+            {/*<HeatMap
+              option={this.props.currentTesterOption}
+              setting={this.state.heatmapSetting}
+              time={this.state.videoTime}
+            />*/}
+          </Col>
 
       </div>
     )

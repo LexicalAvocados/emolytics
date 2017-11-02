@@ -33,6 +33,21 @@ h6 {
   width: 100vw;
 }
 
+.lightPurpleModule {
+  text-align: center;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
+  border-style: solid;
+  border-size: 1px;
+  padding: 20px 20px 40px 20px;
+  margin-bottom: 20px;
+}
+
+.standardHR {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .navBar {
   /*margin-top: 32px;*/
   width: 100vw;
@@ -226,6 +241,14 @@ h6 {
   padding-right: 1%;
 }
 
+.testerResultsPage {
+  height: 90vh;
+}
+
+.testerResultsPlayer {
+  height: 55vh;
+}
+
 .testerDetails {
   grid-column: 3;
   grid-row: 2;
@@ -296,15 +319,6 @@ h6 {
   display: grid;
   grid-template-columns: 50% 50%;
   text-align: center;
-}
-
-.personalFeedback {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.personalFeedbackLabel {
-  margin-top: 0px;
 }
 
 .rawValues {
@@ -797,30 +811,12 @@ h6 {
 
 }
 
-.focusGroupColumn {
-  text-align: center;
-  background-color: #f3edff;
-  border-color: #e5d8ff;
-  border-style: solid;
-  border-size: 1px;
-  padding: 10px 40px 20px 40px;
-}
-
-.focusGroupModule {
-  padding: 10px 0px 20px 0px;
-}
-
 .focusGroupNameEntry {
   margin: 15px 0px 15px 0px;
 }
 
 .focusGroupTesterEntry {
   margin: 15px 0px 15px 0px;
-}
-
-.focusGroupHR {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .focusGroupPatreonBtn {

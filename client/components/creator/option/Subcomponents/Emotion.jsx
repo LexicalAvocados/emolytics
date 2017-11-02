@@ -69,12 +69,7 @@ class Emotion extends React.Component {
 
     return (
       <div className="testerEmotion">
-        <div className="optionTitle">
-          <h4> <small> Emotions </small> </h4>
-        </div>
-        <hr/>
         <p style={center}> Most Prevalent Emotion: {this.calcMaxEmotion()}</p>
-        <p className='chartHeader'> Overall Emotion Breakdown: </p>
         <div className='emotionChart'></div>
       </div>
     )
