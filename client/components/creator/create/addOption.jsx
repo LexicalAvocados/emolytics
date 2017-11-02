@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Button, Row, Call } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
