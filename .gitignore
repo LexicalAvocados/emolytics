@@ -16,6 +16,7 @@ node_modules/
 
 # Secrets
 *key.js
+.env
 
 client/bundle.js
 package-lock.json
