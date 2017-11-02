@@ -194,11 +194,10 @@ h6 {
 }
 
 .optionHomeTop {
-
 }
 
 .optionHomeBottom {
-  clear: both;
+  clear: right;
 }
 
 .leftSide {
@@ -596,8 +595,8 @@ h6 {
 }
 
 .optionAnnotations {
-  background-color: #f7f7f7;
-  padding: 12px;
+  /*background-color: #f7f7f7;*/
+  /*padding: 12px;*/
 }
 
 .optionAnnotationsTitle {
@@ -605,14 +604,18 @@ h6 {
 }
 
 .optionListThumbnail{
-  height: 92px;
-  width: 122px;
+  height: auto;
+  width: 90%;
+}
+
+.optionHomeAnnotationsDiv {
+
 }
 
 .annotations {
   padding: 10px;
   background-color: white;
-  margin: 10px;
+  margin-top: 14px;
   border-radius: 3px;
   clear: right;
   clear: left;
@@ -632,7 +635,7 @@ h6 {
 .annotationForm {
   background-color: white;
   border-radius: 3px;
-  padding: 2%;
+  padding: 5%;
 }
 
 .annotationForm Button {
@@ -1217,4 +1220,9 @@ button.list-group-item {
 .reactHeatmap canvas {
   width: 80vw;
   height: 65vh;
+}
+
+.hrStyle {
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
