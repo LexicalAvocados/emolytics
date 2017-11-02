@@ -6,13 +6,22 @@ import { connect } from 'react-redux';
 class SectionCarousel extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
-      selected: {},
-      removed: {  backgroundColor: 'orange' },
-      prev: -1
+    this.state = {
+      carouselIndex: null
     };
+    this.carouselActiveIndex = this.carouselActiveIndex.bind(this);
   }
 
+  carouselActiveIndex(eventKey, fromProjectHome) {
+    if (fromProjectHome) {
+      this.props.currentProject.carousel = eventKey;
+    } else {
+      this.props.currentProject.carousel = null;
+      this.setState({
+        carouselIndex: eventKey
+      });
+    }
+  }
 
 
   render() {
@@ -31,13 +40,13 @@ class SectionCarousel extends React.Component {
       width: '20px'
     };
     return (
-      <Carousel interval={null}>
+      <Carousel interval={null} onSelect={(eventKey) => this.carouselActiveIndex(eventKey, this.props.fromProjectHome)} activeIndex={this.props.currentProject.carousel || this.state.carouselIndex }>
         { this.props.splitSections.map((sectionGroup, overI) => {
           if (sectionGroup.indexOf('End') === -1) {
             return (
               <Carousel.Item key={overI}>
                 { sectionGroup.map((section, i) => (
-                  <div onClick={() => this.props.highlightSelected(section.id)} key={i + section.name}>
+                  <div onClick={() => this.props.highlightSelected(section.id, this.props.fromSectionHome)} key={i + section.name}>
                     <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" id={section.id}>
                       <p></p>
                       <div style={notifDisplayStyle}>
@@ -119,7 +128,8 @@ class SectionCarousel extends React.Component {
 
 const mapStateToProps = (state) => ({
   router: state.router,
-  currentSection: state.currentSection
+  currentSection: state.currentSection,
+  currentProject: state.currentProject
 });
 
 export default connect(

@@ -13,7 +13,9 @@ class ProjectHome extends React.Component {
     this.state = {
       rerenderOptions: false,
       open: true,
-      fromHome: true
+      fromHome: true,
+      carouselIndex: 0
+
     };
     this.onSectionClick = this.onSectionClick.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
@@ -25,6 +27,8 @@ class ProjectHome extends React.Component {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
   }
+
+
 
   associateOptions() {
     this.setState({

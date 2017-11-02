@@ -20,8 +20,7 @@ class DisplaySections extends React.Component {
       showAddSection: false,
       showEdit: false,
       idOfClickedOnSection: null,
-      previous: null,
-      prev: -1
+      previous: null    
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
@@ -44,6 +43,7 @@ class DisplaySections extends React.Component {
       this.props.currentSection.hidden = {};
     }
   }
+
 
 
   onSectionClick(obj, fromProjectHome, fromSectionHome) { 
@@ -142,16 +142,18 @@ class DisplaySections extends React.Component {
     });
   }
 
-  highlightSelected(sectionId) {
-    if (this.state.prev >= 0) {
-      var prevHighlight = document.getElementById(this.state.prev);
-      prevHighlight.style.backgroundColor = 'white';
+  highlightSelected(sectionId, fromSectionHome) {
+    if (fromSectionHome) {
+      if (this.state.prev >= 0) {
+        var prevHighlight = document.getElementById(this.state.prev);
+        prevHighlight.style.backgroundColor = 'white';
+      }
+      var a = document.getElementById(sectionId);
+      this.setState({
+        prev: sectionId
+      });
+      a.style.backgroundColor = '#e1e4ea';
     }
-    var a = document.getElementById(sectionId);
-    this.setState({
-      prev: sectionId
-    });
-    a.style.backgroundColor = '#e1e4ea';
   }
 
   render() {
