@@ -409,7 +409,9 @@ body {
 .CreateProject {
   clear: right;
   border-radius: 5px;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
+  background-color: #f3edff ;
+  border-color: #e5d8ff ;
   padding: 10px 20px 20px 20px;
 }
 
@@ -428,13 +430,18 @@ body {
   box-sizing: border-box;
 }
 
-.SectionNameInput input{
+.SectionNameInput input {
   width: 50%;
 } 
 
-.SectionDescriptionInput textarea{
+.SectionDescriptionInput textarea {
   width: 50%;
   height: 50px;
+}
+
+.AddOption {
+  background-color: #f3edff ;
+  border-color: #e5d8ff ;
 }
 
 .inputDescription {
