@@ -126,11 +126,13 @@ class DisplaySections extends React.Component {
     });
   }
 
-  beginEdit(e, section) {
+  beginEdit(e, section, fromProjectHome) {
     e.stopPropagation();
     this.props.actions.changeCurrentSection(section);
-    this.onSectionClick(section, this.props.fromProjectHome, this.props.fromSectionHome);
-    this.highlightSelected(section.id, true);
+    if (!fromProjectHome) {
+      this.onSectionClick(section, this.props.fromProjectHome, this.props.fromSectionHome);
+      this.highlightSelected(section.id, true);
+    }
     this.setState({
       showEdit: !this.state.showEdit,
       idOfClickedOnSection: section.id
