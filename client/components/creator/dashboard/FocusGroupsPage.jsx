@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Col, Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton, Pagination } from 'react-bootstrap';
+import { Col, Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton, Pagination, ListGroup, ListGroupItem } from 'react-bootstrap';
 import FocusGroupsList from './FocusGroupsList.jsx';
 import FocusGroupsPatreonModule from './FocusGroupsPatreonModule.jsx';
 
@@ -141,24 +141,22 @@ class FocusGroupsPage extends React.Component {
     let appliedUsers = this.state.applyUsers.map((user, i) => {
       return (
         <div>
-          <Col md={3}>
+          <div>
             <p> {user.username} </p>
-          </Col>
-          <Col md={3}>
+          </div>
+          <div>
             <select onChange={this.handleChange}>
-                  <option name="addTo" value="none" > None </option>
-              {this.props.focusGroups.map((group, i) => {
-                return (
-                  <option name="addTo" value={group.name}>{group.name} </option>
-                  )
-              })}
+              <option name="addTo" value="none" > None </option>
+              {this.props.focusGroups.map((group, i) => (
+                <option name="addTo" value={group.name}>{group.name}</option>
+              ))}
             </select>
-          </Col>
-          <Col md={3}>
+          </div>
+          <div>
             <button onClick={() => {
               this.applyFocusGroup(user)
             }}> Add </button>
-          </Col>
+          </div>
         </div>
         )
     })
@@ -169,18 +167,23 @@ class FocusGroupsPage extends React.Component {
         <Col md={3}>
           <div className='focusGroupColumn'>
             <div className='focusGroupModule'>
-              <h3>New Group</h3>
+              <h2>New Group</h2>
               <form onSubmit={this.createNewFocusGroup}>
                 <Col>
                   <FormControl
                     className='focusGroupNameEntry'
+                    bsSize='large'
                     type='text'
                     value={this.state.typedFocusGroupName}
                     placeholder='Group Name'
                     onChange={this.updateTypedFocusGroupName}
                   />
                 </Col>
-                <Button bsStyle='primary' type='submit'>Create Group</Button>
+                <Button
+                  bsStyle='primary'
+                  bsSize='large'
+                  type='submit'
+                > Create Group </Button>
               </form>
             </div>
             <hr className='focusGroupHR'/>
@@ -188,7 +191,7 @@ class FocusGroupsPage extends React.Component {
               <FocusGroupsPatreonModule />
             :
               <div className='focusGroupModule'>
-                <h3>Connect Your Patreon</h3>
+                <h2>Connect Patreon</h2>
                 <p>You may use your Patreon campaign and pledge information to
                 quickly create & curate a Group.</p>
                 <img src='patreon.jpg' className='focusGroupPatreonBtn'></img>
@@ -198,29 +201,29 @@ class FocusGroupsPage extends React.Component {
 
         <Col md={6}>
           <div className='focusGroupColumn'>
-            <div className='focusGroupModule'>
 
+            <div className='focusGroupModule'>
               {focusGroups.length > 0 ?
                 <FocusGroupsList />
                 :
                 null}
-
-              {currentFocusGroup ?
-                <Button
-                  bsStyle='danger'
-                  onClick={this.deleteFocusGroup}
-                > Delete Group </Button>
-              :
-                null}
-
             </div>
 
+            {currentFocusGroup ? <hr className='focusGroupHR'/> : null}
+
             {currentFocusGroup ? (
-              <div>
-                <hr className='focusGroupHR'/>
-                <h3>{currentFocusGroup.name}</h3>
-                <div className='focusGroupModule'>
-                  <h4>Members</h4>
+              <div className='focusGroupModule'>
+                <div className='focusGroupSubsectionTitle'>
+                  <Button
+                    className='focusGroupDeleteBtn'
+                    bsStyle='danger'
+                    onClick={this.deleteFocusGroup}
+                  > Delete </Button>
+                  <h2 className='focusGroupName'>{currentFocusGroup.name}</h2>
+                </div>
+
+                <div className='focusGroupSubsection'>
+                  <h3>Members</h3>
 
                   {numOfPages > 1 ?
                     <div>
@@ -238,31 +241,36 @@ class FocusGroupsPage extends React.Component {
                   :
                     null}
 
-                  <div className='focusGroupSection'>
-                    {currentFocusGroup.testers.length > 0 ?
-                      <ul className='focusGroupTesterList'>
-                        {currentFocusGroup.testers.slice((numOfPages - 1) * 10, numOfPages * 10).map((tester, i) => (
-                          <li
-                            className='focusGroupTesterListEntry'
-                            key={i}
-                            onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
-                          > {tester} </li>
-                        ))}
-                      </ul>
-                    :
-                      <p>No members yet :&#40; Why don't you invite some below?</p>}
-                  </div>
+                  {currentFocusGroup.testers.length > 0 ?
+                    <ListGroup className='focusGroupTesterList'>
+                      {currentFocusGroup.testers.slice((numOfPages - 1) * 10, numOfPages * 10).map((tester, i) => (
+                        <ListGroupItem
+                          className='focusGroupTesterListEntry'
+                          key={i}
+                          onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
+                        > {tester} </ListGroupItem>
+                      ))}
+                    </ListGroup>
+                  :
+                    <p>No members yet :&#40; Why don't you invite some below?</p>}
+                </div>
 
-                  <h4>Invite Testers</h4>
+                <div className='focusGroupSubsection'>
+                  <h3>Invite Testers</h3>
                   <form onSubmit={this.addTesterToFocusGroup}>
                     <FormControl
                       className='focusGroupTesterEntry'
+                      bsSize='large'
                       type='text'
                       value={this.state.typedTesterUsername}
                       placeholder='Tester Username'
                       onChange={this.updateTypedTesterUsername}
                     />
-                    <Button bsStyle='primary' type='submit'> Add Tester </Button>
+                    <Button
+                      bsStyle='primary'
+                      bsSize='large'
+                      type='submit'
+                    > Invite Tester </Button>
                   </form>
                 </div>
 
@@ -274,8 +282,12 @@ class FocusGroupsPage extends React.Component {
 
         <Col md={3}>
           <div className='focusGroupColumn'>
-            <h3> Tester Requests </h3>
-            {appliedUsers}
+            <h2> Tester Requests </h2>
+            {this.state.applyUsers.length > 0 ?
+              {appliedUsers}
+            :
+              <p>You currently have no pending requests from
+              Testers to join one of your groups.</p>}
           </div>
         </Col>
 

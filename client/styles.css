@@ -754,20 +754,39 @@ body {
 .focusGroupPatreonBtn {
   max-height: 65%;
   max-width: 65%;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-.focusGroupSection {
-  margin-bottom: 30px;
+.focusGroupSubsection {
+  margin-bottom: 75px;
+  padding: 0px 100px;
+}
+
+.focusGroupSubsectionTitle {
+  margin-bottom: 75px;
+  position: relative;
+}
+
+/*.focusGroupName {
+  position
+}*/
+
+.focusGroupDeleteBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .focusGroupTesterList {
-  list-style: none;
-  padding: 0px;
+  text-align: center;
 }
 
 .focusGroupTesterListEntry {
+  font-size: 18px;
+}
 
+button.list-group-item {
+  text-align: center;
 }
 
 .focusGroupButtonToolbar{
