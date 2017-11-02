@@ -43,7 +43,8 @@ class SectionHome extends React.Component {
       testerToPassToOptionListEntry: [],
       noCreditsAlert: [],
       fromSectionHomeToInvitationPanel: true,
-      totalInvitedTesters: 0
+      totalInvitedTesters: 0,
+      active: -1
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);

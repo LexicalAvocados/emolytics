@@ -766,12 +766,17 @@ h6 {
 .currentSectionOptionListEntry {
   float: left;
   /* margin: 5%; */
-  width: 102%;
+  width: 90%;
   background-color: white;
-  padding: 3%;
-  border: 1px solid gray;
-  border-radius: 3px;
+  padding: 5% 0% 5% 0%;
+  text-align: center;
+  margin-bottom: 3px;
+  /*border-radius: 3px;*/
   /* padding-left: 1%; */
+}
+
+.currentSectionOptionListEntry:active {
+  border: 1px solid #e5d8ff;
 }
 
 .sectionsScrollContainer{

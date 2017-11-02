@@ -82,6 +82,35 @@ class OptionHome extends React.Component {
     this.props.actions.changeOption(this.props.currentSection.option);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.currentSection.option.youtubeUrl !== nextProps.currentSection.option.youtubeUrl) {
+      axios.post('/api/getFrames', {
+        optionId: nextProps.currentSection.option.id
+      })
+        .then((res) => {
+          console.log('GET FRAMES', res.data);
+
+          this.setState({
+            optionEmotionObj: res.data
+          }, () => {
+            console.log('run generate charts');
+            this.calculateCompletionPerc()
+            this.generateCharts();
+          })
+        })
+
+      axios.post('api/option/getAllAnnotations', {
+        option: nextProps.currentOption
+      })
+        .then(data => {
+          var temp = {
+            annotations: data.data
+          }
+          this.props.actions.changeAnnotations(temp);
+        })
+    }
+  }
+
 
 
   componentDidMount() {
