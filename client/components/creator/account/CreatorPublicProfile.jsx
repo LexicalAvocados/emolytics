@@ -141,10 +141,48 @@ class CreatorPublicProfile extends React.Component {
 
 
           <Row style={bodyStyle}>
+
+            <Col md={2}>
+
+              <br/>
+              <Row style={moreVideosStyle}>
+                <h4 style={centerStyle}> More videos from {this.state.name.split(' ')[0]}: </h4>
+                <hr/>
+                <div>
+                  {this.state.moreVideos.length > 0 ? (
+                    this.state.moreVideos.map((vid, i) => (
+                      <div>
+                      <Row>
+                      <Link to={'/video/:'+vid.id}>
+                        <div key={i}>
+                          <Col md={4}>
+                            <img height={100} width={100} src={vid.thumbnail} />
+                          </Col>
+                          <Col md={1}></Col>
+                          <Col md={6} style={black}>
+                            <br/>
+                            {vid.name}
+                            <br/>
+                            ({vid.creditsperview} credits)
+                          </Col>
+                        </div>
+                      </Link>
+                      </Row>
+                      <br/>
+                      </div>
+                    ))
+                  ) : (
+                    <p style={centerStyle}> {this.state.name.split(' ')[0]} has no public videos to display, but you can ask to join their focus group! </p>
+                  )}
+                </div>
+              </Row>
+
+            </Col>
+
           <Col md={6} style={bodyStyle}>
             <br/>
             <Row style={centerStyle}>
-              <div className="optionPlayer">
+              <div className="optionPlayer" style={reactPlayerStyle}>
                 <ReactPlayer url={this.state.video} height="100%" width='100%' style={centerStyle}/>
               </div>
             </Row>
@@ -153,43 +191,8 @@ class CreatorPublicProfile extends React.Component {
 
 
 
-          <Col md={3}>
 
-            <br/>
-            <Row style={moreVideosStyle}>
-              <h4 style={centerStyle}> More videos from {this.state.name}: </h4>
-              <hr/>
-              <div>
-                {this.state.moreVideos.length > 0 ? (
-                  this.state.moreVideos.map((vid, i) => (
-                    <div>
-                    <Row>
-                    <Link to={'/video/:'+vid.id}>
-                      <div key={i}>
-                        <Col md={4}>
-                          <img height={100} width={100} src={vid.thumbnail} />
-                        </Col>
-                        <Col md={1}></Col>
-                        <Col md={6} style={black}>
-                          <br/>
-                          {vid.name}
-                          <br/>
-                          ({vid.creditsperview} credits)
-                        </Col>
-                      </div>
-                    </Link>
-                    </Row>
-                    <br/>
-                    </div>
-                  ))
-                ) : (
-                  <p style={centerStyle}> {this.state.name.split(' ')[0]} has no public videos to display, but you can ask to join their focus group! </p>
-                )}
-              </div>
-            </Row>
-
-          </Col>
-
+          <Col md={1}></Col>
           <Col md={3}>
             <br/>
             <Row style={socialBoxStyle}>
@@ -246,8 +249,9 @@ class CreatorPublicProfile extends React.Component {
                     height={60} width={60}></img>
                 </a>
               </Col>
-              <Col md={3} style={emailStyle}>
-                {this.state.website !== '' ? this.state.website.slice(11) : ''}
+              <Col md={6} >
+                <br/>
+                <a style={websiteStyle} href={this.state.website}><u>Personal Website</u></a>
               </Col>
 
             </Row>
@@ -274,11 +278,16 @@ const header = {
   // borderRadius: '7px'
 }
 
+const reactPlayerStyle = {
+  marginLeft: '12%'
+}
+
 const black = {
   color: 'black'
 }
 
 const imgStyle = {
+  border: 'solid black 2px',
   borderRadius: '3px'
 }
 
@@ -368,6 +377,11 @@ const hrStyle = {
   borderWidth: '2px',
   borderTop: '1px solid rgba(0, 0, 0, 0.1)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.3)'
+}
+
+const websiteStyle = {
+  color: 'black',
+  marginTop: '50%'
 }
 
 export default CreatorPublicProfile;
