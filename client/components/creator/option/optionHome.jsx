@@ -279,39 +279,83 @@ class OptionHome extends React.Component {
   }
 
 
-  generateCharts(lineGraphData) {
-    console.log('run generate charts');
-      var lineData = {
-        data: lineGraphData
-      }
-      this.props.actions.changeLineGraphData(lineData);
-      // c3.select('.optionChart').unload();
-      var lineGraph = c3.generate({
-        bindto: '.optionChart',
-        selection: {
-          enabled: true
-        },
-        data: {
-          onclick: (d) => {
-            let clickedTimestamp = d.x.toString();
-            this.setState({
-              timestamp: clickedTimestamp
-            }, () => {
-              var player = this.refs.player;
-              console.log(player);
-              player.seekTo(this.state.timestamp)
-            })
+  generateCharts() {
+      // this.props.actions.changeLineGraphData(lineData);
+      
+      if (this.state.sideNavSelection === 'attention') {
+        var arr = []
+        this.state.optionEmotionObj.attention.forEach((elem, i) => {
+          i !== 0 ? arr.push(parseFloat(parseFloat(elem).toFixed(2))) : arr.push(elem);
+
+        })
+        console.log(this.state.sideNavSelection, arr);
+        var lineGraph = c3.generate({
+          bindto: '.optionChart',
+          selection: {
+            enabled: true
           },
-          columns: this.state.optionEmotionObj.emotionAvg,
-        },
-        axis: {
-          y: {
-            show: false
-          }
-        },
-      });
+          data: {
+            onclick: (d) => {
+              let clickedTimestamp = d.x.toString();
+              this.setState({
+                timestamp: clickedTimestamp
+              }, () => {
+                var player = this.refs.player;
+                console.log(player);
+                player.seekTo(this.state.timestamp)
+              })
+            },
+            columns: [arr],
+          },
+          axis: {
+            y: {
+              show: true
+            }
+          },
+        });
+
+      } else {
+        var lineGraph = c3.generate({
+          bindto: '.optionChart',
+          selection: {
+            enabled: true
+          },
+          data: {
+            onclick: (d) => {
+              let clickedTimestamp = d.x.toString();
+              this.setState({
+                timestamp: clickedTimestamp
+              }, () => {
+                var player = this.refs.player;
+                console.log(player);
+                player.seekTo(this.state.timestamp)
+              })
+            },
+            columns: this.state.optionEmotionObj.emotionAvg,
+          },
+          axis: {
+            y: {
+              show: false
+            }
+          },
+        });
+
+      }
+
       this.setState({
         graph: lineGraph
+      }, () => {
+        // if (this.state.sideNavSelection == 'annotations') {
+        //   var player = this.refs.player1;
+        //   this.setState({
+        //     player: player
+        //   })
+        // } else {
+        //   var player = this.refs.player;
+        //   this.setState({
+        //     player: player
+        //   })
+        // }
       })
       // this.forceUpdate();
   }
@@ -342,12 +386,17 @@ class OptionHome extends React.Component {
   };
 
   lineGraphDataSwitch() {
+
     if (this.state.sideNavSelection === 'attention') {
-      this.generateCharts(this.state.attention);
+      console.log('SWITCH');
+      this.generateCharts();
+
     }
     else if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
       this.generateCharts(this.state.emotionsArrForRender)
+
     }
+
   };
 
   recalculateChartsBasedOnUserSelect(userIdsArray){
@@ -486,7 +535,7 @@ class OptionHome extends React.Component {
             {(this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'attention' || this.state.sideNavSelection === 'annotations')  ?
               (
                 <div className='optionHomeTop'>
-                  <Col xs={12}>
+                  <Col xs={this.state.sideNavSelection === "annotations" ? 7 : 12 }>
                     <div className="optionHomeContainer">
                       <div className="optionPlayer">
                         <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
@@ -566,7 +615,14 @@ class OptionHome extends React.Component {
             ) : ''}
 
             {this.state.sideNavSelection === 'annotations' ? (
-                <Annotations optionEmotionObj={this.state.optionEmotionObj} graph={this.state.graph} player={this.state.player}/>
+                <div className="optionHomeAnnotationsDiv">
+
+                  <Col md={5}>
+                    <div className="optionHomeRight">
+                      <Annotations optionEmotionObj={this.state.optionEmotionObj} graph={this.state.graph} player={this.state.player}/>
+                    </div>
+                  </Col>
+                </div>
             ) : ''}
 
             {this.state.sideNavSelection === 'detailedDemographics' ? (
