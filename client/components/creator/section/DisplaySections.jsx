@@ -31,6 +31,9 @@ class DisplaySections extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({
+      previous: this.props.currentSection.id 
+    })
     this.splitSections();
     if (this.props.currentProject.id !== 0) { // Clear for all but demo
       this.props.currentSection.hidden = {display: 'none'};
@@ -63,6 +66,7 @@ class DisplaySections extends React.Component {
     if (fromProjectHome) {
       this.props.collapse();
     }
+    console.log(this.state.previous);
     if (fromSectionHome && obj.id !== this.state.previous) {
       this.props.clearOnNewSection();
     }
