@@ -253,14 +253,19 @@ class OptionListEntry extends React.Component {
     }
 
     const testers = {
-      gridColumn: '1',
-      gridRow: '1',
-      float: 'right'
+      position: 'relative',
+      top: '-5',
+      right: '-2',
+      zIndex: '5'
     }
 
     const testersIcon = {
       height: '20px',
       width: '20px'
+    }
+
+    const iconImg = {
+      
     }
 
     //optionListEntry is grid with 2 columns (80/20)
@@ -289,15 +294,15 @@ class OptionListEntry extends React.Component {
               </div>
 
               <div style={details}>
-                <img className="optionListThumbnail" src={this.props.option.thumbnail} alt=""/>
-                <p className="closerText">{this.props.option.name}</p>
-                <p className="closerText">{this.props.option.description}</p>
-                <p className="closerText">Balance: {this.props.option.totalcredits || 0}</p>
+                <img className="optionListThumbnail" src={this.props.option.thumbnail} style={iconImg} alt=""/>
+                <p className="closerText"> <b> {this.props.option.name} </b> </p>
+                <p className="closerText"> <small> {this.props.option.description} </small> </p>
+                <p className="closerText"> <small> Balance: {this.props.option.totalcredits || 0} </small> </p>
               </div>
               {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
             </div>
             {/* <OptionData data={this.props.optionData}/> */}
-            <Button onClick={() => this.props.beginEdit(this.props.option, this.state.testers, this.state.testersCopy)}>Option Settings</Button>
+            <Button bsSize="small" onClick={() => this.props.beginEdit(this.props.option, this.state.testers, this.state.testersCopy)}>Option Settings</Button>
           </div>
           </OverlayTrigger>
         ) : (
