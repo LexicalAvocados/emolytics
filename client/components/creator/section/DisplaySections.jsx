@@ -68,7 +68,6 @@ class DisplaySections extends React.Component {
     if (fromProjectHome) {
       this.props.collapse();
     }
-    console.log(this.state.previous);
     if (fromSectionHome && obj.id !== this.state.previous) {
       this.props.clearOnNewSection();
     }
@@ -152,7 +151,7 @@ class DisplaySections extends React.Component {
     this.setState({
       prev: sectionId
     });
-    a.style.backgroundColor = 'orange';
+    a.style.backgroundColor = '#e1e4ea';
   }
 
   render() {

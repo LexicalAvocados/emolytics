@@ -11,7 +11,6 @@ class SectionCarousel extends React.Component {
       removed: {  backgroundColor: 'orange' },
       prev: -1
     };
-    // this.highlightSelected = this.highlightSelected.bind(this);
   }
 
 
