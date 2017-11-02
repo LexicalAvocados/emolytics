@@ -48,58 +48,55 @@ export class App extends React.Component {
       <div className="app">
         <Navbar />
 
-        {
-          this.props.loggedInUser.username ? (
-            this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
-              <div className="appBody">
-              <Switch>
-                {/* routes for CREATOR */}
-                <Route exact path="/" component={DashboardHome}/>
-                <Route path="/new" component={DashboardHome}/>
-                <Route path='/groups' component={FocusGroupsPage}/>
-                <Route path="/testvideo" component={TesterVideo}/>
-                <Route path="/project:id" component={ProjectHome}/>
-                <Route path="/section:id" component={SectionHome}/>
-                <Route path="/option:id" component={OptionHome}/>
-                <Route path="/createProject" component={CreateProject}/>
-                <Route path="/addSection" component={AddSection}/>
-                <Route path="/addOption" component={AddOption}/>
-                <Route path="/account" component={CreatorAccount}/>
-                <Route path="/profiletest" component={CreatorPublicProfile}/>
-                <Route path="/cprofile:id" component={CreatorPublicProfile}/>
-              </Switch>
-              </div>
+        <div className="appBody">
+          {
+            this.props.loggedInUser.username ? (
+              this.props.loggedInUser.isCreator || this.props.role.isCreator ? (
+                <Switch>
+                  {/* routes for CREATOR */}
+                  <Route exact path="/" component={DashboardHome}/>
+                  <Route path="/new" component={DashboardHome}/>
+                  <Route path='/groups' component={FocusGroupsPage}/>
+                  <Route path="/testvideo" component={TesterVideo}/>
+                  <Route path="/project:id" component={ProjectHome}/>
+                  <Route path="/section:id" component={SectionHome}/>
+                  <Route path="/option:id" component={OptionHome}/>
+                  <Route path="/createProject" component={CreateProject}/>
+                  <Route path="/addSection" component={AddSection}/>
+                  <Route path="/addOption" component={AddOption}/>
+                  <Route path="/account" component={CreatorAccount}/>
+                  <Route path="/profiletest" component={CreatorPublicProfile}/>
+                  <Route path="/cprofile:id" component={CreatorPublicProfile}/>
+                </Switch>
+              ) : (
+                <Switch>
+                  {/* routes for TESTER */}
+                  <Route exact path="/" component={TesterHome}/>
+                  <Route exact path="/history" component={TesterHistoryPage}/>
+                  <Route path="/history/:id" component={TesterOptionResults}/>
+                  <Route path="/queue" component={TesterQueuePage}/>
+                  <Route path="/account" component={TesterAccount}/>
+                  <Route path="/video/:id" component={TesterVideo}/>
+                  <Route path="/browse" component={Browse}/>
+                  <Route path="/profile:id" component={CreatorPublicProfile}/>
+                  <Route path="/joinGroup" component={TesterJoinFocusGroup}/>
+                </Switch>
+              )
             ) : (
-              <div className="appBody">
               <Switch>
-                {/* routes for TESTER */}
-                <Route exact path="/" component={TesterHome}/>
-                <Route exact path="/history" component={TesterHistoryPage}/>
-                <Route path="/history/:id" component={TesterOptionResults}/>
-                <Route path="/queue" component={TesterQueuePage}/>
-                <Route path="/account" component={TesterAccount}/>
-                <Route path="/video/:id" component={TesterVideo}/>
-                <Route path="/browse" component={Browse}/>
-                <Route path="/profile:id" component={CreatorPublicProfile}/>
-                <Route path="/joinGroup" component={TesterJoinFocusGroup}/>
+                {/* routes for NOT LOGGED IN */}
+                <Route exact path="/" component={LandingPage}/>
+                <Route exact path="/loading" component={Loading}/>
+                <Route exact path="/vimeoloading" component={vimeoLoading}/>
+                <Route path="/loading/patreon" component={PatreonLoginLoading}/>
+                <Route path="/signup" component={Signup}/>
+                <Route path="/forgotPassword" component={ForgotPassword}/>
+                <Route path="/reset/:id" component={ResetPassword}/>
+                <Route path="*" component={Login}/>
               </Switch>
-              </div>
             )
-          ) : (
-            <Switch>
-              {/* routes for NOT LOGGED IN */}
-              <Route exact path="/" component={LandingPage}/>
-              <Route exact path="/loading" component={Loading}/>
-              <Route exact path="/vimeoloading" component={vimeoLoading}/>
-              <Route path="/loading/patreon" component={PatreonLoginLoading}/>
-              <Route path="/signup" component={Signup}/>
-              <Route path="/forgotPassword" component={ForgotPassword}/>
-              <Route path="/reset/:id" component={ResetPassword}/>
-              <Route path="*" component={Login}/>
-
-            </Switch>
-          )
-        }
+          }
+        </div>
 
       </div>
     );

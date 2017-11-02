@@ -83,57 +83,70 @@ export class Signup extends React.Component {
     const patreonOAuthLink = 
       `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
     return (
-      <div className='auth'>
-        <h2 className='signupHeader'>New Account</h2>
-        <Form horizontal onSubmit={this.submitNewAccount}>
-          <FormGroup>
-            <Col className='authInput'>
-              <FormControl
-                type='text'
-                value={this.state.typedUsername}
-                placeholder='Username'
-                onChange={this.updateTypedUsername}
-              />
-            </Col>
-            <Col className='authInput'>
-              <FormControl
-                type='password'
-                value={this.state.typedPassword}
-                placeholder='Password'
-                onChange={this.updateTypedPassword}
-              />
-            </Col>
-            <Col className='authInput'>
-              <FormControl
-                type='text'
-                value={this.state.typedEmail}
-                placeholder='Email'
-                onChange={this.updateTypedEmail}
-              />
-            </Col>
-            <ButtonToolbar>
-              <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={this.handleRoleSelect}>
-                <ToggleButton value={1}>Tester</ToggleButton>
-                <ToggleButton value={2}>Creator</ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
-            <br/>
-            <Button type='submit'>Create Account</Button>
-          </FormGroup>
-        </Form>
-        <hr/>
-        <div className='oauthButtons'>
-          <a href='/auth/facebook'>
-            <img className='fbLoginBtn' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
-          </a>
-          <a href={patreonOAuthLink}>
-            <img className='patreonLoginBtn' src='patreon.jpg'></img>
-          </a>
-          <a href='/auth/vimeo'>
-            <img className='vimeoLoginBtn' src='vimeo-logo.jpg'></img>
-          </a>
+      <div className='authBody'>
+        <div className='signupModule'>
+
+          <h2 className='signupHeader'>New Account</h2>
+
+          <Form horizontal onSubmit={this.submitNewAccount}>
+            <FormGroup>
+              <Col className='authInput'>
+                <FormControl
+                  type='text'
+                  value={this.state.typedUsername}
+                  placeholder='Username'
+                  onChange={this.updateTypedUsername}
+                />
+              </Col>
+              <Col className='authInput'>
+                <FormControl
+                  type='password'
+                  value={this.state.typedPassword}
+                  placeholder='Password'
+                  onChange={this.updateTypedPassword}
+                />
+              </Col>
+              <Col className='authInput'>
+                <FormControl
+                  type='text'
+                  value={this.state.typedEmail}
+                  placeholder='Email'
+                  onChange={this.updateTypedEmail}
+                />
+              </Col>
+              <ButtonToolbar className='authCreatorTesterToggle'>
+                <ToggleButtonGroup
+                  type="radio"
+                  name="options"
+                  defaultValue={1}
+                  onChange={this.handleRoleSelect}
+                >
+                  <ToggleButton value={1}>Tester</ToggleButton>
+                  <ToggleButton value={2}>Creator</ToggleButton>
+                </ToggleButtonGroup>
+              </ButtonToolbar>
+              <br/>
+              <Button type='submit'>Create Account</Button>
+            </FormGroup>
+          </Form>
+
+          <hr className='standardHR'/>
+
+          <p style={center}> Don't forget to select Tester/Creator!</p>
+
+          <div className='oauthButtons'>
+            <a href='/auth/facebook'>
+              <img className='fbLoginBtn' src='facebook-connect.png'></img>
+            </a>
+            <a href={patreonOAuthLink}>
+              <img className='patreonLoginBtn' src='patreon.jpg'></img>
+            </a>
+            <a href='/auth/vimeo'>
+              <img className='vimeoLoginBtn' src='vimeo-logo.jpg'></img>
+            </a>
+          </div>
+
         </div>
-        <p style={center}> Don't forget to select Tester/Creator!</p>
       </div>
     );
   }

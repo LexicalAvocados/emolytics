@@ -99,30 +99,35 @@ export class Login extends React.Component {
       `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/login`;
     return (
       <div className='authBody'>
-        <div className='authModule'>
+        <div className='loginModule'>
+
           <h2 className='loginHeader'>Log In</h2>
+
           <Form horizontal className='authForm' onSubmit={this.submitLogin}>
-              <Col className='authInput'>
-                <FormControl
-                  type='text'
-                  value={this.state.typedUsername}
-                  placeholder='Username'
-                  onChange={this.updateTypedUsername}
-                /></Col>
-              <Col className='authInput'>
-                <FormControl
-                  type='password'
-                  value={this.state.typedPassword}
-                  placeholder='Password'
-                  onChange={this.updateTypedPassword}
-                /></Col>
-              <Button className='authSubmit' type='submit'>Submit</Button>
-              {<div>this.state.loginError</div> && this.state.loginError}
+            <Col className='authInput'>
+              <FormControl
+                type='text'
+                value={this.state.typedUsername}
+                placeholder='Username'
+                onChange={this.updateTypedUsername}
+              /></Col>
+            <Col className='authInput'>
+              <FormControl
+                type='password'
+                value={this.state.typedPassword}
+                placeholder='Password'
+                onChange={this.updateTypedPassword}
+              /></Col>
+            <Button className='authSubmit' type='submit'>Submit</Button>
+            {<div>this.state.loginError</div> && this.state.loginError}
           </Form>
+
           <Link to='/forgotPassword' className='forgotPassword'>
             <small> Forgot Password? </small>
           </Link>
+
           <hr className='standardHR'/>
+
           <div className='oauthButtons'>
             <a href='/auth/facebook'>
               <img className='fbLoginBtn' src='facebook-login.png'></img>
@@ -134,6 +139,7 @@ export class Login extends React.Component {
               <img className='vimeoLoginBtn' src='vimeo-logo.jpg'></img>
             </a>
           </div>
+
         </div>
       </div>
     );
