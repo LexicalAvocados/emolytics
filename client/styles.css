@@ -703,15 +703,11 @@ body {
 }
 
 .sectionsScroll {
-  /* float: left; */
-  /* margin: 5%; */
-  /* width: 100%; */
+  width: 31.55%;
   background-color: white;
-  /* padding: 3%; */
   border: 1px solid gray;
   border-radius: 3px;
   display: inline-grid;
-  /* padding-left: 1%; */
   height: 135px;
 }
 
@@ -957,4 +953,39 @@ body {
   animation-name: reveal;
   animation-duration: 2s;
   /* font-weight: bold; */
+}
+
+
+.glyphicon-chevron-right {
+  color: white;
+}
+
+.glyphicon-chevron-left {
+  color: white;
+}
+
+.carousel-control.left {
+  width: 5%;
+  background-image: none; 
+  background-color: #7c519e;
+  border-radius: 8px 0px 0px 8px;
+}
+
+.carousel-control.right {
+  width: 5%;
+  background-image: none; 
+  background-color: #7c519e;
+  border-radius: 0px 8px 8px 0px;
+}
+
+.item.active {
+  /* margin-left: 8% */
+}
+
+.carousel-indicators {
+  display: none;
+}
+
+.carousel {
+  padding-left: 5%;
 }

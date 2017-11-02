@@ -3,49 +3,53 @@ import { Button, Col, Row, Carousel, Modal, Popover, OverlayTrigger } from 'reac
 import BellIcon from 'react-bell-icon';
 import { connect } from 'react-redux';
 
-const SectionCarousel = (props) => (
-  <Carousel>
-    { props.splitSections.map((sectionGroup, overI) => {
-      if (sectionGroup.indexOf('End') === -1) {
-        return (
-          <Carousel.Item key={overI}>
-            { sectionGroup.map((section, i) => (
-              <Col md={3} className="sectionsScroll" key={i}>
-                <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null, props.fromSectionHome || null)}>
-                  <p></p>
-                  <div style={notifDisplayStyle}>
-                    { section.notifications > 0 ? (
-                      <div>
-                        <BellIcon width='20' height='20' active={false} animate={false}/>
-                        <a>  {section.notifications}</a>
-                      </div>
-                    ) : '' }
-                    { props.fromSectionHome && props.currentSection.id === section.id ? (
-                      <div style={testers}>
-                        <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
-                        <a>{props.totalInvitedTesters}</a>
-                      </div>
-                    ) : (
-                      null
-                    )}
-                  </div>
-                  <p>{section.name}</p>
-                  <p>{section.description}</p>
-                </div>
-                <Button onClick={() => props.beginEdit(section)}>Edit</Button>
-                <br/>
-              </Col>
-            ))}
-          </Carousel.Item>
-        );
-      } else {
-        return (
-          <Carousel.Item key={overI}>
-            { sectionGroup.map((section, i) => {
-              if (section !== 'End') {
-                return (
-                  <Col md={3} className="sectionsScroll" key={i}>
-                    <div onClick={() => props.onSectionClick(section, props.fromProjectHome || null, props.fromSectionHome || null)}>
+class SectionCarousel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+      selected: {},
+      removed: {  backgroundColor: 'orange' },
+      prev: -1
+    };
+    this.highlightSelected = this.highlightSelected.bind(this);
+  }
+
+  highlightSelected(e, sectionId) {
+    if (this.state.prev >= 0) {
+      var prevHighlight = document.getElementById(this.state.prev);
+      prevHighlight.style.backgroundColor = 'white';
+    } 
+    var a = document.getElementById(sectionId);
+    this.setState({
+      prev: sectionId
+    });
+    a.style.backgroundColor = 'orange';    
+  }
+
+  render() {
+    const notifDisplayStyle = {
+      float: "right"
+    };
+
+    const testers = {
+      gridColumn: '1',
+      gridRow: '1',
+      float: 'right'
+    };
+
+    const testersIcon = {
+      height: '20px',
+      width: '20px'
+    };
+    return (
+      <Carousel interval={null}>
+        { this.props.splitSections.map((sectionGroup, overI) => {
+          if (sectionGroup.indexOf('End') === -1) {
+            return (
+              <Carousel.Item key={overI}>
+                { sectionGroup.map((section, i) => (
+                  <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" key={i + section.name} id={section.id}>
+                    <div onClick={(e) => this.highlightSelected(e, section.id)}>
                       <p></p>
                       <div style={notifDisplayStyle}>
                         { section.notifications > 0 ? (
@@ -54,55 +58,75 @@ const SectionCarousel = (props) => (
                             <a>  {section.notifications}</a>
                           </div>
                         ) : '' }
-                        { props.fromSectionHome && props.currentSection.id === section.id ? (
+                        { this.props.fromSectionHome && this.props.currentSection.id === section.id ? (
                           <div style={testers}>
                             <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
-                            <a>{props.totalInvitedTesters}</a>
+                            <a>{this.props.totalInvitedTesters}</a>
                           </div>
                         ) : (
                           null
                         )}
                       </div>
-
                       <p>{section.name}</p>
                       <p>{section.description}</p>
                     </div>
-                    <Button onClick={() => props.beginEdit(section)}>Edit</Button>
+                    <Button onClick={(e) => this.props.beginEdit(e, section)}>Edit</Button>
                     <br/>
                   </Col>
-                );
-              } else {
-                return (
-                  <OverlayTrigger placement="top" defaultOverlayShown={true} overlay={<Popover style={props.currentSection.hidden || {}} id="popover-trigger-hover" title="Bonjour!">You can click here to create a section! Or click on the dummy section to the left to see its options.</Popover>} key={i}>
-                    <Col md={3} className="sectionsScroll" onClick={props.revealAddSection}>
-                      <h2>+</h2>
-                    </Col>
-                  </OverlayTrigger>
-                );
-              }
-            })}
-          </Carousel.Item>
-        );
-      }
-    })}
-  </Carousel>
+                ))}
+              </Carousel.Item>
+            );
+          } else {
+            return (
+              <Carousel.Item key={overI}>
+                { sectionGroup.map((section, i) => {
+                  if (section !== 'End') {
+                    return (
+                      <Col md={3} className="sectionsScroll" key={i}>
+                        <div onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)}>
+                          <p></p>
+                          <div style={notifDisplayStyle}>
+                            { section.notifications > 0 ? (
+                              <div>
+                                <BellIcon width='20' height='20' active={false} animate={false}/>
+                                <a>  {section.notifications}</a>
+                              </div>
+                            ) : '' }
+                            { this.props.fromSectionHome && this.props.currentSection.id === section.id ? (
+                              <div style={testers}>
+                                <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
+                                <a>{this.props.totalInvitedTesters}</a>
+                              </div>
+                            ) : (
+                              null
+                            )}
+                          </div>
 
-);
-
-const notifDisplayStyle = {
-  float: "right"
+                          <p>{section.name}</p>
+                          <p>{section.description}</p>
+                        </div>
+                        <Button onClick={() => this.props.beginEdit(section)}>Edit</Button>
+                        <br/>
+                      </Col>
+                    );
+                  } else {
+                    return (
+                      <OverlayTrigger placement="top" defaultOverlayShown={true} overlay={<Popover style={this.props.currentSection.hidden || {}} id="popover-trigger-hover" title="Bonjour!">You can click here to create a section! Or click on the dummy section to the left to see its options.</Popover>} key={i}>
+                        <Col md={3} className="sectionsScroll" onClick={this.props.revealAddSection}>
+                          <h2>+</h2>
+                        </Col>
+                      </OverlayTrigger>
+                    );
+                  }
+                })}
+              </Carousel.Item>
+            );
+          }
+        })}
+      </Carousel>
+    );
+  }
 }
-
-const testers = {
-  gridColumn: '1',
-  gridRow: '1',
-  float: 'right'
-};
-
-const testersIcon = {
-  height: '20px',
-  width: '20px'
-};
 
 const mapStateToProps = (state) => ({
   router: state.router,
