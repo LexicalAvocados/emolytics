@@ -8,7 +8,8 @@ const db = require('./db');
 const auth = require('./server/auth');
 const patreon = require('./server/auth/patreon');
 const cron = require('./server/crontab.js');
-const secret = require('./key.js').sessions.secret;
+// const secret = require('./key.js').sessions.secret;
+const secret = process.env.SESSION_SECRET;
 const axios = require('axios');
 
 const passport = require('passport'),
