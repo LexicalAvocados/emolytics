@@ -85,14 +85,9 @@ class SectionHome extends React.Component {
   }
 
   incrementTotalInvitedTesters(count) {
-    // console.log(count);
-    
     this.setState({
       totalInvitedTesters: this.state.totalInvitedTesters += count
-    });
-    // this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters += count;
-    
-    // this.props.currentSection.totalInvited = count;
+    });    
   }
 
   resetToNull() {
@@ -158,7 +153,6 @@ class SectionHome extends React.Component {
       testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
     });
     if (index + 1 === this.props.currentSection.options.length - 1) { // This condition is bad
-      console.log('we should be within the stuff ehrerererere')
       this.state.testersForOptions.concat(testers);
       var priorInvites = true;
       var testersThatHaveNotBeenInvited = this.state.testers.filter((tester) => {
@@ -172,8 +166,7 @@ class SectionHome extends React.Component {
       this.setState({
         testers: testersThatHaveNotBeenInvited,
         testersCopy: testersThatHaveNotBeenInvited,
-        haveInvited: priorInvites,
-        // numberInPool: 
+        haveInvited: priorInvites
       });
     }
   }
