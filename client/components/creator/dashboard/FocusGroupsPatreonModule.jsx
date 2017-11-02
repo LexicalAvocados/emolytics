@@ -52,7 +52,7 @@ class FocusGroupsPatreonModule extends React.Component {
   render() {
     let campaign = this.props.patreonCampaign;
     return (
-      <div>
+      <div className='focusGroupModule'>
         <h2>Patreon Campaign</h2>
         <h3>{campaign.vanity}</h3>
         <ul>
