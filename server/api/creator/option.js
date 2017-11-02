@@ -93,7 +93,7 @@ router.get('/test', (req, res) => {
     FROM "frames"
     WHERE "optionId" = ${3} AND
     "userId" in (SELECT id FROM users
-    WHERE 
+    WHERE
     "age"=ANY('{${agesForQuery.join(", ")}}'::int[])
     )
     GROUP BY "time" ORDER BY "time" ASC`
@@ -149,7 +149,7 @@ router.post('/refreshDemographics', (req, res) => {
   AND "users"."id" in (SELECT id FROM "users"
   WHERE race in ${selectedRacesForQuery}
   AND sex in ${selectedGendersForQuery}
-  AND "age"=ANY('{${agesForQuery.join(", ")}}'::int[]) 
+  AND "age"=ANY('{${agesForQuery.join(", ")}}'::int[])
   )`
   , { type: sequelize.QueryTypes.SELECT})
     .then(data => {
@@ -182,6 +182,22 @@ router.post('/refreshDemographics', (req, res) => {
       // console.log(response);
       res.send(response);
     });
+})
+
+router.post('/setPublicStatus', (req, res) => {
+  Option.findOne({
+    where: {
+      id: req.body.optionId
+    }
+  })
+  .then((option) => {
+    option.update({
+      isPublic: req.body.makePublic
+    })
+  })
+  .then(() => {
+    res.send('public settings set!')
+  })
 })
 
 
