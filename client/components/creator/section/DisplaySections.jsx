@@ -116,7 +116,8 @@ class DisplaySections extends React.Component {
     });
   }
 
-  beginEdit(section) {
+  beginEdit(e, section) {
+    e.stopPropagation();
     this.props.actions.changeCurrentSection(section);
     this.setState({
       showEdit: !this.state.showEdit,

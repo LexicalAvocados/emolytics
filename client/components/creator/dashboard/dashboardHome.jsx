@@ -43,10 +43,8 @@ export class DashboardHome extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log(this.props.history);
     if (this.props.history.location.pathname === '/createProject' && this.state.projects.id === 0) {
-      alert('Nope!');
-      this.props.history.goBack(); // Would prefer to just block the redirect, but not sure how.
+      this.props.actions.changeCurrentProject(this.state.projects);
     }
   }
 
@@ -107,7 +105,8 @@ export class DashboardHome extends React.Component {
     });
   }
 
-  beginEdit(project) {
+  beginEdit(e, project) {
+    e.stopPropagation()
     this.setState({
       displayEdit: !this.state.displayEdit,
       idOfClickedOn: project.id,
@@ -185,7 +184,7 @@ export class DashboardHome extends React.Component {
         { this.state.retrieved ? (
       <div className="dashboardHomeContainer">
           { this.state.projects.id === 0 ? (
-            <h3 className="demoWelcomeHeader"> Welcome to Emolytics (new name forthcoming)! This page lists all your projects. Below you will find a demonstration project, and an accompanying tooltip that describes the project and how to interact with it.</h3> 
+            <h3 className="demoWelcomeHeader"> Welcome to Emolytics (new name forthcoming)! This page lists all your projects. Below you will find a demonstration project, hover over the project to learn more about it and how to interact with it.</h3> 
           ) : (
             null
           )}

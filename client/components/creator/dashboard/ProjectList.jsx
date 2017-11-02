@@ -131,8 +131,8 @@ class ProjectList extends React.Component {
 
 
     return (
-      <div>
-        <OverlayTrigger defaultOverlayShown={true} placement="right" overlay={this.props.popover}>
+      <div onClick={this.onClickCallback}>
+        <OverlayTrigger placement="right" overlay={this.props.popover}>
         {/* Fade this in? */}
           <div className='projectsContainer'>
             <div style={gridBoxForProject}>
@@ -151,7 +151,7 @@ class ProjectList extends React.Component {
                   <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
                 </div>
               </div>
-              <div onClick={this.onClickCallback}>
+              <div>
                 <div style={titleDisplayStyle}>
                   <h4>{this.props.project.name}</h4>
                   <p>{this.props.project.description}</p>
@@ -160,7 +160,7 @@ class ProjectList extends React.Component {
             </div>
             <div style={del}>
               <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
-              <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
+              <Button onClick={(e) => this.props.beginEdit(e, this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
             </div>
           </div>
         </OverlayTrigger>
