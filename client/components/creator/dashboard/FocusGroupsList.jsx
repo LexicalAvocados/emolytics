@@ -22,6 +22,8 @@ class FocusGroupsList extends React.Component {
         <h2>Your Groups</h2>
         <ButtonToolbar className="focusGroupButtonToolbar">
           <ToggleButtonGroup
+            justified
+            bsSize='large'
             type='radio'
             name='groups'
             onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
