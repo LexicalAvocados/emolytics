@@ -58,7 +58,9 @@ class TesterHome extends React.Component {
             </Link>
           )
         })}
-        <Button className="addEntityButton">Credits: {this.state.credits || 0}</Button>
+        <Link to='/account'>
+          <Button className="addEntityButton">Credits: {this.state.credits || 0}</Button>
+        </Link>
       </div>
     )
   }

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 import pad from 'array-pad';
-import {ButtonToolbar, ToggleButtonGroup, ToggleButton, Col}  from 'react-bootstrap';
+import {ButtonToolbar, ToggleButtonGroup, ToggleButton, Col, Row, Grid}  from 'react-bootstrap';
 import $ from 'jquery';
 import Slider, { Range } from 'rc-slider';
 import Select from 'react-select';
@@ -47,12 +47,12 @@ class OptionHome extends React.Component {
       heatmapSetting: 1,
       videoTime: 0,
       playVideoForHM: false,
-      optionEmotionObj: { 
+      optionEmotionObj: {
         emotionPerc: {
           Contempt: 0,
-        }, 
-        attention: ['Attention'], 
-        count:[0] 
+        },
+        attention: ['Attention'],
+        count:[0]
       },
       demographicStats: {},
       allDemographicsObj: {}
@@ -510,7 +510,7 @@ class OptionHome extends React.Component {
 
           <div className="optionHomeBottom">
             {this.state.sideNavSelection === 'overview' ?
-              
+
               (<Overview
                 optionEmotionObj={this.state.optionEmotionObj}
                 demographic={this.state.demographicStats}
@@ -579,40 +579,42 @@ class OptionHome extends React.Component {
 
             <div className='heatmapComponentContainer' style={heatmapComponentContainerStyle}>
 
-              <div className='videoPlayerUnder' style={videoPlayerUnderStyle}>
-                <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-                  ref="player"
-                  progressFrequency={1000} onProgress={this.updateProgress}
-                  playing={this.state.playVideoForHM}
-                  controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
-                  config={{
-                    youtube: {
-                      playerVars: { showinfo: 1}
-                    }
-                  }}/>
-              </div>
+                  <div className='videoPlayerUnder' style={videoPlayerUnderStyle}>
+                    <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
+                      ref="player"
+                      progressFrequency={1000} onProgress={this.updateProgress}
+                      playing={this.state.playVideoForHM}
+                      controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+                      config={{
+                        youtube: {
+                          playerVars: { showinfo: 1}
+                        }
+                      }}/>
+                    </div>
 
-              <div className='heatmapSuperimposed' style={heatmapSuperimposedStyle}>
-                <HeatMap option={this.props.currentSection.option} setting={this.state.heatmapSetting} time={this.state.videoTime}/>
-              </div>
+                    <div className='heatmapSuperimposed' style={heatmapSuperimposedStyle}>
+                      <HeatMap option={this.props.currentSection.option} setting={this.state.heatmapSetting} time={this.state.videoTime}/>
+                    </div>
 
-              <div className='buttons' style={buttonStyle}>
-                {this.state.heatmapSetting === 2 ? (
-                  <div style={sliderStyle}>
-                    <Slider max={this.state.duration} onChange={this.sliderCallback} value={Math.floor(this.state.videoTime)}/>
-                    <img src={this.playVideoButtonIcon()} height={20} width={20}
-                         style={iconStyle} onClick={this.playVideoButtonCallback} className='playPauseIcon'></img>
+                  <div className='buttons' style={buttonStyle}>
+                    {this.state.heatmapSetting === 2 ? (
+                      <div style={sliderStyle}>
+                        <Slider max={this.state.duration} onChange={this.sliderCallback} value={Math.floor(this.state.videoTime)}/>
+                        <img src={this.playVideoButtonIcon()} height={20} width={20}
+                          style={iconStyle} onClick={this.playVideoButtonCallback} className='playPauseIcon'></img>
+                      </div>
+                    ): ''}
+                    <br/><br/>
+                    <ButtonToolbar>
+                      <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
+                        <ToggleButton value={1}>Aggregate</ToggleButton>
+                        <ToggleButton value={2}>Over Time</ToggleButton>
+                      </ToggleButtonGroup>
+                    </ButtonToolbar>
                   </div>
-                ): ''}
-                <br/><br/>
-                <ButtonToolbar>
-                  <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
-                    <ToggleButton value={1}>Aggregate</ToggleButton>
-                    <ToggleButton value={2}>Over Time</ToggleButton>
-                  </ToggleButtonGroup>
-                </ButtonToolbar>
-              </div>
-              <br/><br/><br/><br/><br/><br/>
+                  <br/><br/><br/><br/><br/><br/>
+
+
           </div>
 
         )
@@ -639,35 +641,37 @@ const sliderStyle = {
 }
 
 const heatmapComponentContainerStyle = {
-  width: "86%",
+  width: "100%%",
   height: "100%",
   position: "relative",
-  marginLeft: '5%'
+  // marginLeft: '5%'
 }
 
 const videoPlayerUnderStyle = {
   width: "100%",
-  height: "100%",
+  height: "65vh",
   position: "absolute",
   top: '0',
   left: '0'
 }
 
 const heatmapSuperimposedStyle = {
-  width: "100%",
-  height: "100%",
+
+  height: "65vh",
   position: "absolute",
   top: '0',
   left: '0',
-  marginTop: '6%',
-  zIndex: "100"
+  // marginTop: '6%',
+  zIndex: "10",
+  width: "100%"
 }
 
 const buttonStyle = {
   position: 'absolute',
-  top: '84%',
+  top: '90%',
   left: '40%',
-  zIndex: '102'
+  marginTop: '32%',
+  zIndex: '30'
 }
 
 const mapStateToProps = (state) => {

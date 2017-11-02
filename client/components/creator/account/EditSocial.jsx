@@ -131,7 +131,7 @@ class EditSocial extends React.Component {
             <Row>
               <Col sm={2} md={2}>
                 <p> Your account was updated! </p>
-                  <Link to={'cprofile:'+this.props.loggedInUser.id}>
+                  <Link to={'profile:'+this.props.loggedInUser.id}>
                     <p> Check out your public profile</p>
                   </Link>
               </Col>

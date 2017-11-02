@@ -33,7 +33,7 @@ class HeatMap extends React.Component {
         acc[`${curr.x}_${curr.y}`].value += 1
       ) : (
         acc[`${curr.x}_${curr.y}`] = {
-          x: parseInt(+curr.x*140),
+          x: parseInt(+curr.x*110),
           y: parseInt(+curr.y*110),
           time: +curr.time,
           value: 1
@@ -75,7 +75,7 @@ class HeatMap extends React.Component {
     return (
       <div className='heatmapContainer' style={heatmapStyle}>
 
-          <ReactHeatmap max={2} data={this.state.heatmapArr || dummydata} />
+          <ReactHeatmap max={2} data={this.state.heatmapArr || dummydata} className='reactHeatmap'/>
 
       </div>
     )

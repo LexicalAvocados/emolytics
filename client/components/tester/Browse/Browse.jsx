@@ -35,13 +35,13 @@ class Browse extends React.Component {
   };
 
   handleSort(num) {
-    var sorted;
+    var sorted = [];
     if (num === 1) {
       let vidList = this.state.videos;
-      sorted = this.state.videos.sort((a,b)=> b.creditsperview - a.creditsperview)
+      sorted = sorted.concat(this.state.videos.sort((a,b)=> b.creditsperview - a.creditsperview))
     } else if (num === 2) {
       let vidList = this.state.videos;
-      sorted = this.state.videos.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt))
+      sorted = sorted.concat(this.state.videos.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)))
     }
     this.setState({
       videos: sorted
@@ -68,44 +68,67 @@ class Browse extends React.Component {
 
   render() {
     return (
-      <div className='browseContainer'>
-        <h3> Browse </h3>
+      <div className='TesterBrowseContainer'>
+        <h1> Browse </h1>
         <br/><br/>
 
-      <Row>
-
-        <Col md={3}>
-          <SearchAutosuggest options={this.state.videos} filterResultsBasedOnSelecion={this.filterResultsBasedOnSelecion}/>
-        </Col>
-
-        <Col md={2}>
+      <Row >
+        <Col md={5}></Col>
+        <Col md={2} style={center}>
+          <SearchAutosuggest options={this.state.videos} filterResultsBasedOnSelecion={this.filterResultsBasedOnSelecion} style={autosuggestStyle}/>
+          <br/>
           <ButtonToolbar>
-            <ToggleButtonGroup type="radio" name='sort' defaultValue={1} onChange={this.handleSort}>
+            <ToggleButtonGroup type="radio" name='sort' defaultValue={1} onChange={this.handleSort} style={toggleButtonStyle}>
               <ToggleButton value={1}>Credits</ToggleButton>
               <ToggleButton value={2}>Recent</ToggleButton>
             </ToggleButtonGroup>
           </ButtonToolbar>
           <br/><br/>
-        </Col>
+      </Col>
+        <Col md={5}></Col>
       </Row>
-
-
-
-        {this.state.videos.length > 0 ? (
-          this.state.videos.map((item, i) => (
-            <BrowseListEntry item={item} key={i} handleWatch={this.redirectUser}/>
-          ))
-        ) : ''}
+        <div className='allBrowseVideos' style={allBrowseVideosStyle}>
+          {this.state.videos.length > 0 ? (
+            this.state.videos.map((item, i) => (
+              <Col className='testerOptionListEntry' md={3} key={item.name}>
+                <BrowseListEntry item={item} key={item.name} handleWatch={this.redirectUser}/>
+              </Col>
+            ))
+          ) : ''}
+          </div>
       </div>
     )
   }
 };
+
+const autosuggestStyle = {
+  zIndex: '1001'
+}
+
+const browseHeaderStyle = {
+  textAlign: 'center'
+}
+
+const center = {
+  textAlign: 'center',
+  align: 'center'
+  // marginLeft: '3%'
+}
+
+const toggleButtonStyle = {
+  marginLeft: '20%',
+  zIndex: '1'
+}
 
 const mapStateToProps = (state) => {
   // console.log('state', state);
   return ({
     currentTesterOption: state.currentTesterOption
   })
+}
+
+const allBrowseVideosStyle = {
+  marginLeft: '5%'
 }
 
 const mapDispatchToProps = dispatch => ({
