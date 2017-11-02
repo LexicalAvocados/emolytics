@@ -14,8 +14,6 @@ class ProjectHome extends React.Component {
       rerenderOptions: false,
       open: true,
       fromHome: true,
-      carouselIndex: 0
-
     };
     this.onSectionClick = this.onSectionClick.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
