@@ -182,6 +182,21 @@ router.post('/getOptionResultsForTester', (req, res) => {
 
 });
 
+router.post('/getOptionDataOnlyForTester', (req, res) => {
+  TesterAndOption.findOne({
+    where: {
+      userId: req.body.userId,
+      optionId: req.body.optionId
+    }
+  })
+    .then(optionResults => {
+      res.send(optionResults);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+})
+
 router.post('/getVideo', (req, res) => {
   // console.log('req session', req.session);
   // console.log(req.body);

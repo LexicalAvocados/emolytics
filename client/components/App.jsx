@@ -80,7 +80,7 @@ export class App extends React.Component {
                 <Route path="/account" component={TesterAccount}/>
                 <Route path="/video/:id" component={TesterVideo}/>
                 <Route path="/browse" component={Browse}/>
-                <Route path="/cprofile:id" component={CreatorPublicProfile}/>
+                <Route path="/profile:id" component={CreatorPublicProfile}/>
                 <Route path="/joinGroup" component={TesterJoinFocusGroup}/>
               </Switch>
               </div>
