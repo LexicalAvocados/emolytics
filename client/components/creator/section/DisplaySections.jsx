@@ -19,7 +19,8 @@ class DisplaySections extends React.Component {
       splitSections: [],
       showAddSection: false,
       showEdit: false,
-      idOfClickedOnSection: null
+      idOfClickedOnSection: null,
+      previous: null
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
@@ -62,9 +63,12 @@ class DisplaySections extends React.Component {
     if (fromProjectHome) {
       this.props.collapse();
     }
-    if (fromSectionHome) {
+    if (fromSectionHome && obj.id !== this.state.previous) {
       this.props.clearOnNewSection();
     }
+    this.setState({
+      previous: obj.id
+    });
   }
 
   splitSections() {

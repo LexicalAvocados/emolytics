@@ -1,5 +1,7 @@
 const express = require('express');
 const router = require('express').Router();
+// const dot = require('dotenv').config({ path: '../.env' });
+const dot = require('dotenv').config();
 const testerRoutes = require('./api/tester');
 const creatorOptionRoutes = require('./api/creator/option.js');
 const creatorSectionRoutes = require('./api/creator/section.js');

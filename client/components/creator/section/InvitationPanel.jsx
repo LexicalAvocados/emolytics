@@ -69,6 +69,7 @@ class InvitationPanel extends React.Component {
       .then((success) => {
         console.log(success);
         this.props.renderInvited();
+        this.props.renderPanel();
       })
       .catch((failure) => {
         console.log('Invites NOT sent', failure);

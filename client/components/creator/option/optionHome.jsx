@@ -177,6 +177,14 @@ class OptionHome extends React.Component {
         })
       })
 
+    axios.get('/api/getFeedback', { params: { optionId: this.props.currentSection.option.id }})
+    .then((summary) =>  {
+      // console.log
+      this.props.currentSection.option.feedback = summary.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
 
     // Get all of the annotations associated with the selected option
@@ -663,6 +671,7 @@ const buttonStyle = {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return ({
     router: state.router,
     currentProject: state.currentProject,

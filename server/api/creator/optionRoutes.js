@@ -111,14 +111,13 @@ exports.getFeedback = (req, res) => {
       if (entry) {
         res.send(entry.summary);
       } else {
-        res.send('Sorry');
+        res.send('');
       }
     });
 };
 
 
 exports.deleteOption = (req, res) => {
-  // Delete from options table
   Options.findAll({
     where: {
       [req.query.toDelete]: req.query.id

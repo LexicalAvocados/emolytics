@@ -44,7 +44,8 @@ class SectionHome extends React.Component {
       noCreditsAlert: [],
       fromSectionHomeToInvitationPanel: true,
       totalInvitedTesters: 0,
-      active: -1
+      active: -1,
+      invitedByOption: false
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -64,6 +65,7 @@ class SectionHome extends React.Component {
     this.resetToNull = this.resetToNull.bind(this);
     this.onOptionClickCallbackForLowCredit = this.onOptionClickCallbackForLowCredit.bind(this);
     this.incrementTotalInvitedTesters = this.incrementTotalInvitedTesters.bind(this);
+    this.renderInvitedByOption = this.renderInvitedByOption.bind(this);
   }
 
   componentWillMount() {
@@ -84,19 +86,20 @@ class SectionHome extends React.Component {
   }
 
   incrementTotalInvitedTesters(count) {
-    // console.log(count);
-    
     this.setState({
       totalInvitedTesters: this.state.totalInvitedTesters += count
-    });
-    // this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters += count;
-    
-    // this.props.currentSection.totalInvited = count;
+    });    
   }
 
   resetToNull() {
     this.setState({
       showEdit: null
+    });
+  }
+
+  renderInvitedByOption() {
+    this.setState({
+      invitedByOption: !this.state.invitedByOption
     });
   }
 
@@ -151,7 +154,6 @@ class SectionHome extends React.Component {
       testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
     });
     if (index + 1 === this.props.currentSection.options.length - 1) { // This condition is bad
-      console.log('we should be within the stuff ehrerererere')
       this.state.testersForOptions.concat(testers);
       var priorInvites = true;
       var testersThatHaveNotBeenInvited = this.state.testers.filter((tester) => {
@@ -165,8 +167,7 @@ class SectionHome extends React.Component {
       this.setState({
         testers: testersThatHaveNotBeenInvited,
         testersCopy: testersThatHaveNotBeenInvited,
-        haveInvited: priorInvites,
-        // numberInPool: 
+        haveInvited: priorInvites
       });
     }
   }
@@ -200,7 +201,7 @@ class SectionHome extends React.Component {
     // need to get testers in option home state
 
     // create function in optionListEntry that returns the testers in state, call from here
-    this.oler.callBeginEdit(option)
+    this.oler.callBeginEdit(option);
     // call begin edit with those arguments
 
   }
@@ -223,7 +224,8 @@ class SectionHome extends React.Component {
     this.props.actions.changeOption(option);
     this.setState({
       showEdit: !this.state.showEdit,
-      idOfClickedOnOption: option.id
+      idOfClickedOnOption: option.id,
+      invitedByOption: false
     });
   }
 
@@ -391,11 +393,6 @@ class SectionHome extends React.Component {
             // No ability to cancel. Need to heavily change this
           )}
 
-
-          { this.state.haveInvited ? (
-            <p className="closerText">You have previously invited testers to view options within this section</p>
-            // Then list the options?
-          ) : ( null )}
           { !this.state.invited ? (
             !this.state.displayPanel ? (
               <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
@@ -445,28 +442,30 @@ class SectionHome extends React.Component {
 
         </div>
 
-          <Col className="currentSectionOptionsList" md={2}>
-            { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
-              <OptionListEntry
-                onRef={oler => (this.oler = oler)}
-                option={option}
-                notifications={this.getNotificationsForOption(option)}
-                key={i}
-                sectionId={this.props.currentSection.id}
-                index={i}
-                onOptionClick={this.onOptionClick}
-                concatTesters={this.concatTesters}
-                deleteOption={this.deleteOption}
-                beginEdit={this.beginEdit}
-                toggleEdit={this.toggleEdit}
-                showEdit={this.state.showEdit}
-                showNotifsCb={this.showNotifsCb}
-                allTesters={this.state.testerToPassToOptionListEntry}
-                resetToNull={this.resetToNull}
-                incrementTotalInvitedTesters={this.incrementTotalInvitedTesters}
-              />
-            ))}
-          </Col>
+        <Col className="currentSectionOptionsList" md={2}>
+          { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
+            <OptionListEntry
+              onRef={oler => (this.oler = oler)}
+              option={option}
+              notifications={this.getNotificationsForOption(option)}
+              key={i}
+              sectionId={this.props.currentSection.id}
+              index={i}
+              onOptionClick={this.onOptionClick}
+              concatTesters={this.concatTesters}
+              deleteOption={this.deleteOption}
+              beginEdit={this.beginEdit}
+              toggleEdit={this.toggleEdit}
+              showEdit={this.state.showEdit}
+              showNotifsCb={this.showNotifsCb}
+              allTesters={this.state.testerToPassToOptionListEntry}
+              resetToNull={this.resetToNull}
+              incrementTotalInvitedTesters={this.incrementTotalInvitedTesters}
+              renderInvitedByOption={this.renderInvitedByOption}
+              invitedByOption={this.state.invitedByOption}
+            />
+          ))}
+        </Col>
         { this.state.showData ? (
           <Col md={10}>
             <OptionHome />
