@@ -90,6 +90,7 @@ h6 {
 
 .vimeoLoginBtn {
   width: 97%;
+  height: 30%;
   margin-top:6px;
   margin-bottom: 6px;
 }
@@ -418,7 +419,9 @@ h6 {
 .CreateProject {
   clear: right;
   border-radius: 5px;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
+  background-color: #f3edff ;
+  border-color: #e5d8ff ;
   padding: 10px 20px 20px 20px;
 }
 
@@ -444,6 +447,11 @@ h6 {
 .SectionDescriptionInput textarea{
   width: 50%;
   height: 50px;
+}
+
+.AddOption {
+  background-color: #f3edff ;
+  border-color: #e5d8ff ;
 }
 
 .inputDescription {
