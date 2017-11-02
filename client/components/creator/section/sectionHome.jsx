@@ -44,7 +44,7 @@ class SectionHome extends React.Component {
       noCreditsAlert: [],
       fromSectionHomeToInvitationPanel: true,
       totalInvitedTesters: 0,
-      active: -1
+      active: -1,
       invitedByOption: false
     };
     this.onOptionClick = this.onOptionClick.bind(this);
