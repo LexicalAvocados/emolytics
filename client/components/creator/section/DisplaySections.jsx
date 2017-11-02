@@ -20,7 +20,8 @@ class DisplaySections extends React.Component {
       showAddSection: false,
       showEdit: false,
       idOfClickedOnSection: null,
-      previous: null
+      previous: null,
+      prev: -1
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
@@ -28,6 +29,7 @@ class DisplaySections extends React.Component {
     this.splitSections = this.splitSections.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
+    this.highlightSelected = this.highlightSelected.bind(this);
   }
 
   componentDidMount() {
@@ -127,6 +129,8 @@ class DisplaySections extends React.Component {
   beginEdit(e, section) {
     e.stopPropagation();
     this.props.actions.changeCurrentSection(section);
+    this.onSectionClick(section, this.props.fromProjectHome, this.props.fromSectionHome);
+    this.highlightSelected(section.id);
     this.setState({
       showEdit: !this.state.showEdit,
       idOfClickedOnSection: section.id
@@ -137,6 +141,18 @@ class DisplaySections extends React.Component {
     this.setState({
       showEdit: !this.state.showEdit,
     });
+  }
+
+  highlightSelected(sectionId) {
+    if (this.state.prev >= 0) {
+      var prevHighlight = document.getElementById(this.state.prev);
+      prevHighlight.style.backgroundColor = 'white';
+    }
+    var a = document.getElementById(sectionId);
+    this.setState({
+      prev: sectionId
+    });
+    a.style.backgroundColor = 'orange';
   }
 
   render() {
@@ -153,6 +169,7 @@ class DisplaySections extends React.Component {
           fromProjectHome={this.props.fromProjectHome}
           totalInvitedTesters={this.props.totalInvitedTesters}
           fromSectionHome={this.props.fromSectionHome}
+          highlightSelected={this.highlightSelected}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>

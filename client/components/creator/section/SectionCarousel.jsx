@@ -11,20 +11,10 @@ class SectionCarousel extends React.Component {
       removed: {  backgroundColor: 'orange' },
       prev: -1
     };
-    this.highlightSelected = this.highlightSelected.bind(this);
+    // this.highlightSelected = this.highlightSelected.bind(this);
   }
 
-  highlightSelected(e, sectionId) {
-    if (this.state.prev >= 0) {
-      var prevHighlight = document.getElementById(this.state.prev);
-      prevHighlight.style.backgroundColor = 'white';
-    } 
-    var a = document.getElementById(sectionId);
-    this.setState({
-      prev: sectionId
-    });
-    a.style.backgroundColor = 'orange';    
-  }
+
 
   render() {
     const notifDisplayStyle = {
@@ -48,8 +38,8 @@ class SectionCarousel extends React.Component {
             return (
               <Carousel.Item key={overI}>
                 { sectionGroup.map((section, i) => (
-                  <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" key={i + section.name} id={section.id}>
-                    <div onClick={(e) => this.highlightSelected(e, section.id)}>
+                  <div onClick={() => this.props.highlightSelected(section.id)} key={i + section.name}>
+                    <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" id={section.id}>
                       <p></p>
                       <div style={notifDisplayStyle}>
                         { section.notifications > 0 ? (
@@ -69,10 +59,10 @@ class SectionCarousel extends React.Component {
                       </div>
                       <p>{section.name}</p>
                       <p>{section.description}</p>
-                    </div>
-                    <Button onClick={(e) => this.props.beginEdit(e, section)}>Edit</Button>
-                    <br/>
-                  </Col>
+                      <Button onClick={(e) => this.props.beginEdit(e, section)}>Edit</Button>
+                      <br/>
+                    </Col>
+                  </div>
                 ))}
               </Carousel.Item>
             );
