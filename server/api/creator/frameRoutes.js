@@ -29,7 +29,16 @@ exports.getRelevantFrames = (req, res) => {
       Surprise: 0
     }
   };
-  sequelize.query(`SELECT "time", AVG("attention") AS "Attention", COUNT("id") AS "Count", AVG("anger") AS "Anger", AVG("contempt") AS "Contempt", AVG("disgust") AS "Disgust", AVG("fear") AS "Fear", AVG("happiness") AS "Happiness", AVG("neutral") AS "Neutral", AVG("sadness") AS "Sadness", AVG("surprise") AS "Surprise" FROM "frames" WHERE "optionId" = ${req.body.optionId} GROUP BY "time" ORDER BY "time" ASC`, { type: sequelize.QueryTypes.SELECT})
+  let singleUserParam = req.body.userId ? `AND ${req.body.userId} = "userId" ` : ``;
+  sequelize.query(`SELECT "time", AVG("attention") AS "Attention", COUNT("id") AS "Count", 
+                   AVG("anger") AS "Anger", AVG("contempt") AS "Contempt", AVG("disgust") AS "Disgust", 
+                   AVG("fear") AS "Fear", AVG("happiness") AS "Happiness", AVG("neutral") AS "Neutral", 
+                   AVG("sadness") AS "Sadness", AVG("surprise") AS "Surprise" 
+                   FROM "frames" 
+                   WHERE "optionId" = ${req.body.optionId} ${singleUserParam}
+                   GROUP BY "time" 
+                   ORDER BY "time" ASC`, 
+                   { type: sequelize.QueryTypes.SELECT})
     .then(emoData => {
       let total = emoData.length;
       emoData.forEach(data => {

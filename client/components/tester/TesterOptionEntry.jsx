@@ -12,11 +12,15 @@ import * as ChangeActions from '../../actions';
 class TesterOtionEntry extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props:', props);
+    this.goToCreatorProfile = this.goToCreatorProfile.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
+  }
+
+  goToCreatorProfile() {
+    this.props.history.push(`/profile/:${this.props.option.CrId}`);
   }
 
   render() {
@@ -26,9 +30,7 @@ class TesterOtionEntry extends React.Component {
         <p>Option Name: {this.props.option.name}</p>
         <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
         <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        <Link to={'/cprofile:'+this.props.option.CrId}>
-          <p> Created by: {this.props.option.CrName}</p>
-        </Link>
+        <span><p>Created by: </p><p onClick={this.goToCreatorProfile}>{this.props.option.CrName}</p></span>
       </div>
     )
   }
