@@ -431,20 +431,31 @@ body {
   box-sizing: border-box;
 }
 
+<<<<<<< HEAD
 .SectionNameInput input {
   width: 50%;
 } 
 
 .SectionDescriptionInput textarea {
+=======
+.SectionNameInput input{
+  width: 50%;
+} 
+
+.SectionDescriptionInput textarea{
+>>>>>>> 6bfda36ba7a67dc07db65760f3dbe8c696132e99
   width: 50%;
   height: 50px;
 }
 
+<<<<<<< HEAD
 .AddOption {
   background-color: #f3edff ;
   border-color: #e5d8ff ;
 }
 
+=======
+>>>>>>> 6bfda36ba7a67dc07db65760f3dbe8c696132e99
 .inputDescription {
   display: flex;
   width: 50%;
