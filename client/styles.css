@@ -655,9 +655,22 @@ h6 {
   background-color: #ad7ecf;
   background-image: url("https://images.unsplash.com/photo-1493946947703-a0e68b050bee?auto=format&fit=crop&w=1350&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D");
   opacity: .3;
+<<<<<<< HEAD
   position: absolute;
   margin-top: -2%;
 }*/
+/*.aBackground2 {
+  height: 82vh;
+  width: 100%;
+  z-index: -6;
+  /*background-color: #ad7ecf;*/
+/*  background-image: url("https://images.unsplash.com/photo-1493946947703-a0e68b050bee?auto=format&fit=crop&w=1350&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D");
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  position: absolute;
+  margin-top: -2%;*/
+/*}*/
 .aBackground2 {
   height: 82vh;
   width: 100%;
