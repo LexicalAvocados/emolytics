@@ -479,7 +479,7 @@ class SectionHome extends React.Component {
           ))}
         </Col>
         { this.state.showData ? (
-          <Col md={10}>
+          <Col md={10} style={col10Style}>
             <OptionHome />
           </Col>
         ):(
@@ -506,6 +506,10 @@ class SectionHome extends React.Component {
       </div>
     );
   }
+}
+
+const col10Style = {
+  marginBottom: "20px"
 }
 
 const notifContainerStyle = {

@@ -680,6 +680,10 @@ class OptionHome extends React.Component {
   }
 }
 
+const col10Style = {
+  marginBottom: "20px"
+}
+
 const iconStyle = {
   position: 'absolute',
   top: '-10%',
