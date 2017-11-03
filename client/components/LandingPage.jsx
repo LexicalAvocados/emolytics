@@ -27,10 +27,16 @@ class LandingPage extends React.Component {
 
   componentDidMount() {
     $(".navBar").css("background-color", "transparent");
+    $(".appBody").css("background-color", "unset");
+    $(".appBody").css("padding", "unset");
+    $(".appBody").css("height", "unset");
   }
 
   componentWillUnmount() {
     $(".navBar").css("background-color", "#7c519e");
+    $(".appBody").css("background-color", "#f7f7f7");
+    $(".appBody").css("padding", "3%");
+    $(".appBody").css("height", "93.7vh");
   }
 
   handleClick(e) {
