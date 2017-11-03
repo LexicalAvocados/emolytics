@@ -236,7 +236,7 @@ class OptionListEntry extends React.Component {
     const details =  {
       gridColumn: '1',
       gridRow: '1'
-    }
+    };
 
     const stats =  {
       gridColumn: '2',
@@ -244,66 +244,63 @@ class OptionListEntry extends React.Component {
       display: 'grid',
       gridTemplateColumns: '100%',
       gridTemplateRows: '50% 50%'
-    }
+    };
 
     const notifs = {
       gridColumn: '1',
       gridRow: '2',
       float: 'right'
-    }
+    };
 
     const testers = {
       position: 'relative',
       top: '-5',
       right: '-2',
       zIndex: '5'
-    }
+    };
 
     const testersIcon = {
       height: '20px',
       width: '20px'
-    }
+    };
 
     const iconImg = {
-      
-    }
-
-    //optionListEntry is grid with 2 columns (80/20)
-      // 1st div in column 1 (img, details)
-      // 2nd div in column 2 (jut BellIcon)
+      height: '10vh',
+      width: '14vh'
+    };
 
     return (
       <div>
         { this.props.option !== 'End'  ? (
           <OverlayTrigger placement="right" overlay={this.optionListPopover()}>
-          <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
-            <div className="optionListEntry" style={containerStyle}>
-              <div style={stats}>
-              { this.props.notifications.length > 0 ? (
-                <div onClick={() => {this.showNotifications(this.props.option)}} style={notifs}>
-                  <BellIcon height='20' width='20' />
-                  <a>{this.props.notifications[0].count || 0}</a>
+            <div className="currentSectionOptionListEntry" onClick={() => this.props.onOptionClick(this.props.index)}>
+              <div className="optionListEntry" style={containerStyle}>
+                <div style={stats}>
+                  { this.props.notifications.length > 0 ? (
+                    <div onClick={() => {this.showNotifications(this.props.option)}} style={notifs}>
+                      <BellIcon height='20' width='20' />
+                      <a>{this.props.notifications[0].count || 0}</a>
+                    </div>
+                  ) : ''}
+
+                  <div style={testers}>
+                    <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
+                    <a>{this.state.totalNumberOfInvitedTesters}</a>
+                  </div>
+
                 </div>
-              ) : ''}
 
-              <div style={testers}>
-                <img style={testersIcon} src="https://www.shareicon.net/data/512x512/2015/10/31/664827_users_512x512.png"/>
-                <a>{this.state.totalNumberOfInvitedTesters}</a>
+                <div style={details}>
+                  <img className="optionListThumbnail" src={this.props.option.thumbnail} style={iconImg} alt=""/>
+                  <p className="closerText"> <b> {this.props.option.name} </b> </p>
+                  <p className="closerText"> <small> {this.props.option.description} </small> </p>
+                  <p className="closerText"> <small> Balance: {this.props.option.totalcredits || 0} </small> </p>
+                </div>
+                {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
               </div>
-
-              </div>
-
-              <div style={details}>
-                <img className="optionListThumbnail" src={this.props.option.thumbnail} style={iconImg} alt=""/>
-                <p className="closerText"> <b> {this.props.option.name} </b> </p>
-                <p className="closerText"> <small> {this.props.option.description} </small> </p>
-                <p className="closerText"> <small> Balance: {this.props.option.totalcredits || 0} </small> </p>
-              </div>
-              {/* <p>Created On: {this.state.date = new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p> */}
+              {/* <OptionData data={this.props.optionData}/> */}
+              <Button bsSize="small" onClick={() => this.props.beginEdit(this.props.option, this.state.testers, this.state.testersCopy)}>Option Settings</Button>
             </div>
-            {/* <OptionData data={this.props.optionData}/> */}
-            <Button bsSize="small" onClick={() => this.props.beginEdit(this.props.option, this.state.testers, this.state.testersCopy)}>Option Settings</Button>
-          </div>
           </OverlayTrigger>
         ) : (
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">

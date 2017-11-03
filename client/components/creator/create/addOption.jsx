@@ -172,14 +172,16 @@ class AddOption extends React.Component {
         <div className="ThumbnailListInAddOption">
           <Row>
             { this.props.currentSection.options.map((option, i) => (
-              <Col md={4}>
-              <ThumbnailListInAddOption
-                option={option}
-                key={i}
-                index={i}
-              />
-              </Col>
-            ))}
+               i < this.props.currentSection.options.length - 1 ? (
+                <Col md={4}>
+                  <ThumbnailListInAddOption
+                    option={option}
+                    key={i}
+                    index={i}
+                  />
+                </Col>
+                ) : ''
+              ))}
           </Row>
         </div>
 
@@ -187,7 +189,6 @@ class AddOption extends React.Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => ({
   router: state.router,
