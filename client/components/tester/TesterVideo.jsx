@@ -282,8 +282,7 @@ class TesterVideo extends React.Component {
           <br/>
           <br/>
 
-          <h2> {this.state.video.name} </h2>
-          <h4> {this.state.video.desc} </h4>
+
 
 
         </div>
