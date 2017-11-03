@@ -407,7 +407,7 @@ class SectionHome extends React.Component {
 
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
+              null
             ) : (
               <div>
                 <Col md={6}>
