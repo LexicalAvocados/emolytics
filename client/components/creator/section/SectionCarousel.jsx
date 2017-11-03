@@ -30,10 +30,19 @@ class SectionCarousel extends React.Component {
     };
 
     const testers = {
-      gridColumn: '1',
-      gridRow: '1',
-      float: 'right',
+      // gridColumn: '1',
+      // gridRow: '1',
+      // float: 'right',
+      position: 'absolute',
+      right: '18px',
+      top: '13px'
     };
+
+    // const toTheRight = {
+    //   position: 'absolute',
+    //   right: '63px',
+    //   top: '13px'
+    // };
 
     const testersIcon = {
       height: '20px',
@@ -51,7 +60,7 @@ class SectionCarousel extends React.Component {
                       <p></p>
                       <div style={notifDisplayStyle}>
                         { section.notifications > 0 ? (
-                          <div>
+                          <div className="please">
                             <BellIcon width='20' height='20' active={false} animate={false}/>
                             <a>  {section.notifications}</a>
                           </div>
