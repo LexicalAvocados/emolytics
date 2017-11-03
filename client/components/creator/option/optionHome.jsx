@@ -281,7 +281,7 @@ class OptionHome extends React.Component {
 
   generateCharts() {
       // this.props.actions.changeLineGraphData(lineData);
-      
+
       if (this.state.sideNavSelection === 'attention') {
         var arr = []
         this.state.optionEmotionObj.attention.forEach((elem, i) => {
@@ -709,6 +709,8 @@ const heatmapComponentContainerStyle = {
 
 const videoPlayerUnderStyle = {
   width: "100%",
+  marginRight: "2.5%",
+  marginLeft: "2.5%",
   height: "65vh",
   position: "absolute",
   top: '0',
@@ -723,7 +725,8 @@ const heatmapSuperimposedStyle = {
   left: '0',
   // marginTop: '6%',
   zIndex: "10",
-  width: "100%"
+  width: "100%",
+  // marginLeft: ''
 }
 
 const buttonStyle = {
