@@ -21,7 +21,8 @@ class DisplaySections extends React.Component {
       showEdit: false,
       idOfClickedOnSection: null,
       previous: null,
-      prev: -1 
+      prev: -1,
+      transition: ''
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
@@ -33,6 +34,9 @@ class DisplaySections extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.onRef) {
+      this.props.onRef(this);
+    }
     this.setState({
       previous: this.props.currentSection.id 
     })
@@ -68,6 +72,10 @@ class DisplaySections extends React.Component {
       });
     if (fromProjectHome) {
       this.props.collapse();
+      // console.log(this.props.currentSection);
+      // var a = document.getElementById(this.props.currentSection.id);
+      // a.style.backgroundColor = '#e1e4ea';
+
     }
     if (fromSectionHome && obj.id !== this.state.previous) {
       this.props.clearOnNewSection();
@@ -145,7 +153,9 @@ class DisplaySections extends React.Component {
     });
   }
 
-  highlightSelected(sectionId, fromSectionHome) {
+  highlightSelected(sectionId, fromProjectHome, fromSectionHome) {
+    console.log('does this fire)')
+    console.log('passssed in section', sectionId);
     if (fromSectionHome) {
       if (this.state.prev >= 0) {
         var prevHighlight = document.getElementById(this.state.prev);
@@ -157,6 +167,13 @@ class DisplaySections extends React.Component {
       });
       a.style.backgroundColor = '#e1e4ea';
     }
+    // if (fromProjectHome) { // WORK ON THIS IF YOU HAVE TIME LATER 
+    //   var b = document.getElementById(sectionId);
+    //   this.setState({
+    //     prev: sectionId
+    //   });
+    //   b.style.backgroundColor = '#e1e4ea';
+    // }
   }
 
   render() {
@@ -174,6 +191,7 @@ class DisplaySections extends React.Component {
           totalInvitedTesters={this.props.totalInvitedTesters}
           fromSectionHome={this.props.fromSectionHome}
           highlightSelected={this.highlightSelected}
+          renderPanel={this.props.renderPanel}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>

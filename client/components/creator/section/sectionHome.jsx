@@ -45,7 +45,8 @@ class SectionHome extends React.Component {
       fromSectionHomeToInvitationPanel: true,
       totalInvitedTesters: 0,
       active: -1,
-      invitedByOption: false
+      invitedByOption: false,
+      fixedTesterPool: []
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -73,7 +74,8 @@ class SectionHome extends React.Component {
       .then((response) => {
         this.setState({
           testers: response.data,
-          testerToPassToOptionListEntry: response.data
+          testerToPassToOptionListEntry: response.data,
+          fixedTesterPool: response.data
         });
         // console.log('TESTERS BEFORE FILTER', this.state.teers)
       })
@@ -144,6 +146,9 @@ class SectionHome extends React.Component {
   }
 
   concatTesters(testers, index) {
+    this.setState({
+      testersForOptions: []
+    });
     var freeOfDuplicates = [];
     testers.forEach((tester) => {
       if (this.state.testersForOptions.indexOf(tester) === -1) {
@@ -154,14 +159,13 @@ class SectionHome extends React.Component {
       testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
     });
     if (index + 1 === this.props.currentSection.options.length - 1) { // This condition is bad
+      console.log('within the if', this.state.testersForOptions)
       this.state.testersForOptions.concat(testers);
       var priorInvites = true;
-      var testersThatHaveNotBeenInvited = this.state.testers.filter((tester) => {
+      var testersThatHaveNotBeenInvited = this.state.fixedTesterPool.filter((tester) => {
         if (this.state.testersForOptions.indexOf(tester.id) === -1) return tester;
       });
-      // console.log('Not invited', testersThatHaveNotBeenInvited);
-      // console.log('All', this.state.testers);
-      if (testersThatHaveNotBeenInvited.length === this.state.testers.length) {
+      if (testersThatHaveNotBeenInvited.length === this.state.fixedTesterPool.length) {
         priorInvites = false;
       }
       this.setState({
@@ -256,7 +260,11 @@ class SectionHome extends React.Component {
     }
   }
 
-  renderPanel(opening = false) {
+  renderPanel(e, opening = false, section) {
+    e.stopPropagation();
+    if (this.state.displayPanel === false) {
+      this.displaySecs.highlightSelected(section.id, true);
+    }
     if (opening) {
       var noCredits = this.props.currentSection.options.reduce((acc, option) => {
         if ((option.totalcredits === 0 || option.totalcredits <= (option.creditsperview * 2)) && option !== 'End') {
@@ -268,7 +276,7 @@ class SectionHome extends React.Component {
     this.setState({
       displayPanel: !this.state.displayPanel,
       noCreditsAlert: noCredits
-    });
+    })
   }
 
   assignFocusGroup() {
@@ -383,6 +391,8 @@ class SectionHome extends React.Component {
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
             totalInvitedTesters={this.state.totalInvitedTesters}
+            renderPanel={this.renderPanel}
+            onRef={displaySecs => (this.displaySecs = displaySecs)}
           />
         </div>
 
@@ -397,7 +407,7 @@ class SectionHome extends React.Component {
 
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
+              null
             ) : (
               <div>
                 <Col md={6}>
