@@ -1,6 +1,6 @@
 import React from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -204,8 +204,15 @@ class InvitationPanel extends React.Component {
   }
 
   render() {
+
+    var invitationPanelBorder = () => {
+      return this.props.displayBorder ? ({
+      border: '1px solid black',
+      borderRadius: '3px'
+    }) : null};
+
     return (
-      <div className="invitationPanel">
+      <div className="invitationPanel" style={invitationPanelBorder()}>
         { this.props.fromSectionHomeToInvitationPanel ? (
           this.props.noCreditsAlert.length ? (
             <div>
@@ -225,45 +232,72 @@ class InvitationPanel extends React.Component {
           null
         )}
         <div className="invitationPanelSelectors">
-          <p>Age:</p>
-          <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
-            <MenuItem eventKey="None">None</MenuItem>
-            <MenuItem eventKey="0-10">0-10</MenuItem>
-            <MenuItem eventKey="11-20">11-20</MenuItem>
-            <MenuItem eventKey="21-30">21-30</MenuItem>
-            <MenuItem eventKey="31-40">31-40</MenuItem>
-            <MenuItem eventKey="41-50">41-50</MenuItem>
-            <MenuItem eventKey="51-60">51-60</MenuItem>
-            <MenuItem eventKey="61-70">61-70</MenuItem>
-            <MenuItem eventKey="71-80">71-80</MenuItem>
-            <MenuItem eventKey="81-90">81-90</MenuItem>
-            <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
-          </DropdownButton>
+          <Row>
+            <Col md={3}>
+              <p style={verticalAlign}>Age:</p>
+            </Col>
+
+            <Col md={7}>
+              <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
+                <MenuItem eventKey="None">None</MenuItem>
+                <MenuItem eventKey="0-10">0-10</MenuItem>
+                <MenuItem eventKey="11-20">11-20</MenuItem>
+                <MenuItem eventKey="21-30">21-30</MenuItem>
+                <MenuItem eventKey="31-40">31-40</MenuItem>
+                <MenuItem eventKey="41-50">41-50</MenuItem>
+                <MenuItem eventKey="51-60">51-60</MenuItem>
+                <MenuItem eventKey="61-70">61-70</MenuItem>
+                <MenuItem eventKey="71-80">71-80</MenuItem>
+                <MenuItem eventKey="81-90">81-90</MenuItem>
+                <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
+              </DropdownButton>
+            </Col>
+          </Row>
+
         </div>
         <br/>
         <div className="invitationPanelSelectors">
-          <p>Sex:</p>
-          <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Select a sex'}>
-            <MenuItem eventKey="None">None</MenuItem>
-            <MenuItem eventKey="Male">Male</MenuItem>
-            <MenuItem eventKey="Female">Female</MenuItem>
-          </DropdownButton>
+          <Row>
+            <Col md={3}>
+              <p style={verticalAlign}>Sex:</p>
+            </Col>
+
+            <Col md={7}>
+              <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || ' Select  a sex '}>
+                <MenuItem eventKey="None">None</MenuItem>
+                <MenuItem eventKey="Male">Male</MenuItem>
+                <MenuItem eventKey="Female">Female</MenuItem>
+              </DropdownButton>
+            </Col>
+
+          </Row>
+
         </div>
         <br/>
         <div className="invitationPanelSelectors">
-          <p>Race:</p>
-          <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
-            <MenuItem eventKey="None">None</MenuItem>
-            <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
-            <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
-            <MenuItem eventKey="African American">African American</MenuItem>
-            <MenuItem eventKey="Asian">Asian</MenuItem>
-            <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
-            <MenuItem eventKey="Native American">Native American</MenuItem>
-            <MenuItem eventKey="Other">Other</MenuItem>
-          </DropdownButton>
+          <Row>
+            <Col md={3}>
+              <p style={verticalAlign}>Race:</p>
+            </Col>
+
+            <Col md={7}>
+              <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
+                <MenuItem eventKey="None">None</MenuItem>
+                <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
+                <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
+                <MenuItem eventKey="African American">African American</MenuItem>
+                <MenuItem eventKey="Asian">Asian</MenuItem>
+                <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
+                <MenuItem eventKey="Native American">Native American</MenuItem>
+                <MenuItem eventKey="Other">Other</MenuItem>
+              </DropdownButton>
+            </Col>
+          </Row>
+
+
         </div>
         <div className="testersList">
+          <br/>
           <p>Available testers: {this.state.testersCopy.length}</p>
           <Button onClick={this.inviteAll}>Invite Testers</Button>
           <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
@@ -273,6 +307,10 @@ class InvitationPanel extends React.Component {
   }
 
 };
+
+const verticalAlign = {
+  marginTop: '23%'
+}
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)

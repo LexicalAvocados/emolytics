@@ -247,9 +247,9 @@ const Key = sequelize.define('key', {
 
 Key.sync({force: false});
 
-Key.create({
-  key: "4fc26d1500d04025a699f1ae74597ab3"
-})
+// Key.create({
+//   key: "944c457282924dd38b770fc5d442d664"
+// })
 
 
 // ~~~~~~~~~~~~~~~~~~~ //

@@ -265,7 +265,12 @@ class OptionListEntry extends React.Component {
     }
 
     const iconImg = {
-      
+
+    }
+
+    const hrStyle = {
+      borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.3)'
     }
 
     //optionListEntry is grid with 2 columns (80/20)
@@ -326,55 +331,93 @@ class OptionListEntry extends React.Component {
           </Modal.Footer>
         </Modal>
 
-        <Modal bsSize="large" show={this.props.showEdit} onHide={this.props.toggleEdit}>
+        <Modal bsSize="large" show={this.props.showEdit} onHide={this.props.toggleEdit} onEntering={this.renderPanel} onExiting={this.renderPanel}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit this Option</Modal.Title>
+            <Modal.Title>Option Settings</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <EditPage
-              close={this.props.toggleEdit}
-              toEdit={'Option'}
-            />
-            <AddCredits
-              notEnoughCredits={this.state.notEnoughCredits}
-              submitCredits={this.submitCredits}
-              updateTotal={this.updateTotal}
-              updatePerView={this.updatePerView}
-              credits={this.props.loggedInUser.credits}
-              option={this.props.currentOption}
-            />
-            {!this.state.displayPanel ? (
-              <div>
-                {this.props.invitedByOption ? (
-                  <p>Testers Invited!</p> 
-                ) : (
-                  null
-                )}
-                <Button onClick={this.renderPanel}>Invite testers</Button>
+
+            <Row style={offset}>
+              <Col md={6}>
+                <EditPage
+                  close={this.props.toggleEdit}
+                  toEdit={'Option'}
+                  />
+              </Col>
+              <Col md={6}>
+                <AddCredits
+                  notEnoughCredits={this.state.notEnoughCredits}
+                  submitCredits={this.submitCredits}
+                  updateTotal={this.updateTotal}
+                  updatePerView={this.updatePerView}
+                  credits={this.props.loggedInUser.credits}
+                  option={this.props.currentOption}
+                  />
+              </Col>
+            </Row>
+
+          <hr style={hrStyle} />
+          <Row>
+            <Col md={6}>
+
+              <h3> Invite Testers </h3>
+              {!this.state.displayPanel ? (
+                <div>
+                  {this.props.invitedByOption ? (
+                    <p>Testers Invited!</p>
+                  ) : (
+                    null
+                  )}
+                  <Button onClick={this.renderPanel}>Invite testers</Button>
+
+                </div>
+              ) : (
+
+                <InvitationPanel
+                  renderInvited={this.props.renderInvitedByOption}
+                  changeTestersCopy={this.changeTestersCopy}
+                  renderPanel={this.renderPanel}
+                  style={optionInvitationPanelStyle}
+                  displayBorder={false}
+                  />
+
+              )}
+            </Col>
+
+            <Col md={6}>
+              <h3> Access </h3>
                 <ButtonToolbar>
                   <ToggleButtonGroup type="radio" name="public" defaultValue={this.convertBoolToNumberForPublic(this.state.makePublic)} onChange={this.setPublic}>
                     <ToggleButton value={1}>Private</ToggleButton>
                     <ToggleButton value={2}>Public</ToggleButton>
                   </ToggleButtonGroup>
                 </ButtonToolbar>
-              </div>
-            ) : (
-              <InvitationPanel
-                renderInvited={this.props.renderInvitedByOption}
-                changeTestersCopy={this.changeTestersCopy}
-                renderPanel={this.renderPanel}
-              />
-            )}
+            </Col>
+
+          </Row>
 
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.toggleEdit}>Close</Button>
-            <Button onClick={this.props.deleteOption}>Delete this Option</Button>
+            <Button onClick={this.props.toggleEdit}>Done</Button>
+            <Button onClick={this.props.deleteOption} style={fleft}>Delete this Option</Button>
           </Modal.Footer>
         </Modal>
       </div>
     );
   }
+}
+
+const optionInvitationPanelStyle = {
+  // width: ''
+  marginLeft: '20%'
+}
+
+const offset = {
+  marginLeft: '3%'
+}
+
+const fleft = {
+  float: 'left'
 }
 
 const mapStateToProps = (state) => ({

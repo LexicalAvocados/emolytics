@@ -528,6 +528,10 @@ h6 {
   border-style: solid;
 }
 
+.BrowseListItem {
+  background-color: #93a9c054;
+}
+
 .testerOptionListEntry:hover {
   border-color: #bec4c6;
 }
@@ -914,8 +918,7 @@ button.list-group-item {
 
 
 .invitationPanel {
-  border: 1px solid black;
-  border-radius: 3px;
+  
   padding: 2% 0% 2% 2%;
   background-color: white;
 }
