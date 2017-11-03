@@ -329,11 +329,11 @@ h6 {
 }
 
 .videoPlayer {
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 11%;
+  margin-right: 11%;
   margin-top: 4%;
   position: relative;
-  height: 55vh;
+  height: 65vh;
   /*width: 100%;*/
 }
 
@@ -1024,7 +1024,7 @@ button.list-group-item {
 }
 
 .optionListEntry {
-  width: 50%;
+  /*width: 50%;*/
   float: left;
 }
 

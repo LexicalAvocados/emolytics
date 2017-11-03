@@ -229,8 +229,8 @@ class OptionListEntry extends React.Component {
   render() {
     const containerStyle = {
       display: 'grid',
-      gridTemplateColumns: '16vh 4vh',
-      gridTemplateRows: '100%'
+      // gridTemplateColumns: '16vh 4vh',
+      // gridTemplateRows: '100%'
     };
 
     const details =  {
@@ -253,9 +253,9 @@ class OptionListEntry extends React.Component {
     };
 
     const testers = {
-      position: 'relative',
-      top: '-5',
-      right: '-2',
+      position: 'absolute',
+      top: '2',
+      right: '15',
       zIndex: '5'
     };
 
@@ -265,8 +265,8 @@ class OptionListEntry extends React.Component {
     };
 
     const iconImg = {
-      height: '10vh',
-      width: '14vh'
+      // height: '10vh',
+      width: '90%'
     };
 
     const hrStyle = {
@@ -296,7 +296,7 @@ class OptionListEntry extends React.Component {
                 </div>
 
                 <div style={details}>
-                  <img className="optionListThumbnail" src={this.props.option.thumbnail} style={iconImg} alt=""/>
+                  <img className="optionListThumbnail2" src={this.props.option.thumbnail} style={iconImg} alt=""/>
                   <p className="closerText"> <b> {this.props.option.name} </b> </p>
                   <p className="closerText"> <small> {this.props.option.description} </small> </p>
                   <p className="closerText"> <small> Balance: {this.props.option.totalcredits || 0} </small> </p>
