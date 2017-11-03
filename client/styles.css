@@ -13,6 +13,8 @@ body {
   font-family: 'Open Sans', sans-serif;
   color: #494949;
   margin: auto;
+  min-height: 100%;
+  background-color: #f7f7f7
 }
 
 h2,
@@ -31,6 +33,7 @@ h6 {
   background-color: #f7f7f7;
   padding: 3%;
   height: 93.7vh;
+  padding: 3%;
 }
 
 .lightPurpleModule {
@@ -873,6 +876,29 @@ h2.signupHeader {
   padding: 1% 2% 2% 2%;
 }
 
+.sectionHomeInviteModule {
+  background-color: #f3edff;
+  border-color: #e5d8ff;
+  border-style: solid;
+  border-width: 1px;
+  padding: 0px 20px 20px 20px;
+  min-height: 40vh;
+  text-align: center;
+}
+
+.sectionHomeAssignGroupBtn {
+  margin-bottom: 20px;
+}
+
+.lowCreditListItem {
+  height: 3.5vh;
+  padding: 0px 15px 0px 15px;
+}
+
+.lowCreditWarning {
+  color: #d83c3c;
+}
+
 .currentSectionOptionListEntry {
   float: left;
   /* margin: 5%; */
@@ -929,19 +955,39 @@ h2.signupHeader {
   border-width: 1px;
 }
 
-.focusGroupSubsection {
-  margin-bottom: 75px;
-  padding: 0px 100px;
+.focusGroupPatronList {
+  display: grid;
+  align-content: center;
+}
+
+.focusGroupPatronListEntry {
+  height: 4vh;
+  padding: 4px 15px 0px 15px;
+}
+
+.lightPurpleModuleCurrentGroup {
+  text-align: center;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
+  border-style: solid;
+  border-width: 1px;
+  padding: 20px 20px 20px 20px;
+  margin-bottom: 20px;
 }
 
 .focusGroupSubsectionTitle {
-  margin-bottom: 75px;
   position: relative;
+  margin-bottom: 30px;
 }
 
-/*.focusGroupName {
-  position
-}*/
+.focusGroupSubsection {
+  margin-bottom: 30px;
+  padding: 3px 100px 0px 100px;
+}
+
+.focusGroupSubsectionBottom {
+  padding: 3px 100px 0px 100px;
+}
 
 .focusGroupDeleteBtn {
   position: absolute;
@@ -950,19 +996,21 @@ h2.signupHeader {
 }
 
 .focusGroupTesterList {
-  text-align: center;
+
 }
 
 .focusGroupTesterListEntry {
-  font-size: 18px;
+  height: 4vh;
+  padding: 0px 15px 0px 15px;
 }
 
 button.list-group-item {
   text-align: center;
 }
 
-.focusGroupButtonToolbar{
-  margin: 15px 0px 15px 0px;
+.focusGroupButtonToolbar {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .addEntityButton {
@@ -1000,16 +1048,38 @@ button.list-group-item {
   left: 0;
 }
 
-
-
 .invitationPanel {
   
   padding: 2% 0% 2% 2%;
   background-color: white;
 }
 
-.invitationPanelSelectors {
-  display: inline-flex
+.invitationPanelSelectorContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.invitationPanelSelector1 {
+  padding: 0px;
+  grid-column: 1;
+  justify-self: start;
+}
+
+.invitationPanelSelector2 {
+  padding: 0px;
+  grid-column: 2;
+  justify-self: center;
+}
+
+.invitationPanelSelector3 {
+  padding: 0px;
+  grid-column: 3;
+  justify-self: end;
+}
+
+.invitationPanelSelectors p {
+  margin: auto 5px auto 0px;
+  font-size: 16px;
 }
 
 .testersList {
@@ -1205,6 +1275,11 @@ button.list-group-item {
 
 .carousel {
   padding-left: 5%;
+}
+
+.carouselBtn {
+  width: 100%;
+  background-color: #f7f7f7;
 }
 
 .overflowSectionX {

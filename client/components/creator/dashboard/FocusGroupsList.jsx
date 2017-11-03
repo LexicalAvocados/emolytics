@@ -19,7 +19,7 @@ class FocusGroupsList extends React.Component {
     let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
-        <h3>Your Groups</h3>
+        {this.props.location.pathname === '/groups' ? <h3>Your Groups</h3> : null}
         <ButtonToolbar className="focusGroupButtonToolbar">
           <ToggleButtonGroup
             justified
@@ -30,7 +30,7 @@ class FocusGroupsList extends React.Component {
             {focusGroups.map((group, i) => (
               <ToggleButton key={i} value={i}>
                 <span>{group.name + ' '}</span>
-                {group.patreonCampaignId ? <img src='patreon_badge.png' height={16} width={16}></img> : null}
+                {group.patreonCampaignId ? <img src='patreon_badge.png' height={20} width={20}></img> : null}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>

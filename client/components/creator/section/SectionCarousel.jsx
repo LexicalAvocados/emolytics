@@ -67,7 +67,25 @@ class SectionCarousel extends React.Component {
                       </div>
                       <p>{section.name}</p>
                       <p>{section.description}</p>
-                      <Button onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}>Edit</Button>
+
+                      <div>
+                        <Col md={6}>
+                          <Button
+                            className='carouselBtn'
+                            onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}
+                          >
+                            Edit
+                          </Button>
+                        </Col>
+                        <Col md={6}>
+                          <Button
+                            className='carouselBtn'
+                          >
+                            Invite Testers
+                          </Button>
+                        </Col>
+                      </div>
+
                       <br/>
                     </Col>
                   </div>
@@ -103,7 +121,25 @@ class SectionCarousel extends React.Component {
                           <h4><u>{section.name}</u></h4>
                           <p>{section.description}</p>
                         </div>
-                        <Button onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}>Edit</Button>
+
+                        <div>
+                          <Col md={6}>
+                            <Button
+                              className='carouselBtn'
+                              onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}
+                            >
+                              Edit
+                            </Button>
+                          </Col>
+                          <Col md={6}>
+                            <Button
+                              className='carouselBtn'
+                            >
+                              Invite Testers
+                            </Button>
+                          </Col>
+                        </div>
+
                         <br/>
                       </Col>
                     );
