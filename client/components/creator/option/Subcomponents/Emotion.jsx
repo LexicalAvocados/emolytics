@@ -58,7 +58,7 @@ class Emotion extends React.Component {
       let highest = { emotion: null, avg: 0 }
       for (var feeling in emotions) {
         // console.log('feeling', emotions[feeling])
-        if (emotions[feeling] > highest.avg && feeling != 'time') {
+        if (emotions[feeling] > highest.avg && feeling != 'time' && feeling != 'Attention' && feeling != 'Count') {
           highest.emotion = feeling;
           highest.avg = emotions[feeling];
         }
