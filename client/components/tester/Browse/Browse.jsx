@@ -90,7 +90,7 @@ class Browse extends React.Component {
         <div className='allBrowseVideos' style={allBrowseVideosStyle}>
           {this.state.videos.length > 0 ? (
             this.state.videos.map((item, i) => (
-              <Col className='testerOptionListEntry' md={3} key={item.name}>
+              <Col className='testerOptionListEntry BrowseListItem' md={3} key={item.name}>
                 <BrowseListEntry item={item} key={item.name} handleWatch={this.redirectUser}/>
               </Col>
             ))

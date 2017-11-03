@@ -125,20 +125,20 @@ class UserSelect extends React.Component {
 
   render() {
     return (
-      <div className='userSelect'>
-        <h3> Select viewers </h3>
-        <ButtonToolbar>
+      <div className='userSelect' style={containerStyle}>
+        <h3 style={headerStyle}> Select viewers </h3>
+        <ButtonToolbar style={toggleStyle}>
           <ToggleButtonGroup type='radio' name='userSelect' defaultValue={1} onChange={this.handleSelectTypeChange}>
             <ToggleButton value={1}>By Demographics</ToggleButton>
             <ToggleButton value={2}>By Individuals</ToggleButton>
           </ToggleButtonGroup>
         </ButtonToolbar>
-
+        <br/>
         { this.state.selectType === 1 && this.state.allDemographicsObj.ageRange ? (
           <div>
             <Row>
 
-            <Col sm={4} md={4}>
+            <Col sm={2} md={2}>
               <FormGroup>
                 <p>Race</p>
                 {Object.keys(this.state.allDemographicsObj.race).map((race, i) => (
@@ -153,7 +153,7 @@ class UserSelect extends React.Component {
               </FormGroup>
             </Col>
 
-            <Col sm={4} md={4}>
+            <Col sm={2} md={2}>
               <FormGroup>
                 <p>Age</p>
                 {Object.keys(this.state.allDemographicsObj.ageRange).map((ageRange, i) => (
@@ -168,7 +168,7 @@ class UserSelect extends React.Component {
               </FormGroup>
             </Col>
 
-            <Col sm={4} md={4}>
+            <Col sm={2} md={2}>
               <FormGroup>
                 <p>Sex</p>
                 {Object.keys(this.state.allDemographicsObj.sex).map((sex, i) => (
@@ -185,7 +185,7 @@ class UserSelect extends React.Component {
             </Row>
 
             <Row>
-              <Button onClick={this.handleDemographicChangeSubmit}>Done</Button>
+              <Button onClick={this.handleDemographicChangeSubmit} style={doneStyle}>Done</Button>
             </Row>
 
           </div>
@@ -213,6 +213,30 @@ class UserSelect extends React.Component {
     )
   }
 };
+
+const toggleStyle = {
+  marginLeft: '3%'
+}
+
+const headerStyle = {
+  marginLeft: '13%'
+}
+
+const doneStyle = {
+  marginLeft: '20%'
+}
+
+const centered = {
+  textAlign: 'center',
+  align: 'center'
+}
+
+const containerStyle = {
+    // backgroundColor: 'white',
+    // // paddingTop: '6px',
+    // boxShadow: 'rgba(0, 0, 0, 0.2) 0px 4px 8px 0px, rgba(0, 0, 0, 0.19) 0px 6px 20px 0px',
+    // borderRadius: '4px'
+}
 
 const mapStateToProps = (state) => {
   console.log('state in user select', state)

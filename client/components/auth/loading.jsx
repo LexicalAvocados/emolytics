@@ -34,10 +34,41 @@ class Loading extends React.Component {
             })
               .then( (res, err) => {
                 console.log('res from updating creator status of new user', res);
-              });
-            this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, this.props.role.isCreator);
+              })
+              .then(() => {
+                axios.get('/api/creator/getCreatorFocusGroups', {
+                  params: {
+                    id: user.id
+                  }
+                })
+                .then(res => {
+                  let focusGroups = res.data;
+                  console.log('focusGroups:', focusGroups);
+                  if (focusGroups.length > 0) this.props.actions.populateCreatorFocusGroups(focusGroups);
+                })
+                .catch(err => {
+                  console.log('Error fetching Creator\'s Focus Groups:', err);
+                });
+              })
+              .then(() => {
+                this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, this.props.role.isCreator);
+              })
           } else {
-            this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, user.isCreator);
+            axios.post('/api/tester/getOptionsForTester', {
+              id: user.id,
+              mode: 'queue'
+            })
+            .then(res => {
+              let queue = res.data;
+              console.log('queue:', queue);
+              if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+            })
+            .then(() => {
+              this.props.actions.setLoggedIn(user.id, user.username, user.name, user.age, user.sex, user.race, user.isCreator);
+            })
+            .catch(err => {
+              console.log('Error fetching Tester Queue from database:', err);
+            })
           }
         }
       })
