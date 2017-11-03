@@ -27,7 +27,8 @@ h6 {
 }*/
 
 .appBody {
-  background-color: #f7f7f7;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
   padding: 3%;
   overflow: auto;
   width: 100vw;
@@ -430,16 +431,16 @@ h6 {
 }
 
 .modal-body {
-  background-color: #f3edff ;
-  border-color: #e5d8ff ;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
 }
 
 .CreateProject {
   clear: right;
   /* border-radius: 5px; */
   /* background-color: #f7f7f7; */
-  background-color: #f3edff ;
-  border-color: #e5d8ff ;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
   padding: 10px 20px 20px 20px;
   font-weight: bold;
 }
@@ -789,6 +790,8 @@ h6 {
   padding-left: 2%;
   padding-right: 2%;
   border-radius: 6px;
+  /* background-color: #f3edff;
+  border-color: #e5d8ff; */
 }
 
 .projectHomeContainer {
