@@ -8,16 +8,16 @@ To run server: npm start <br/>
 To run webpack: npm run compile <br/>
 
 <h2>Screenshots</h2>
-This is the aggregated data available to the content producer after their viewers have watched their content.
-![](OverviewTop.png?raw=true)
-![](OverviewBottom.png?raw=true)
+This is the aggregated data available to the content producer after their viewers had watched their content.
+![](client/OverviewTop.png?raw=true) <br/>
+![](client/OverviewBottom.png?raw=true) <br/>
 
-This is an instance of how the data can be broken down. 22 seconds into the video, there was a spike in happiness. The producer can click on the happiness point on the graph and be brought instantaneously to the moment in the video where happiness went up.
-![](DetailedAnalytics.png?raw=true)
+This is an instance of how the data can be broken down. 22 seconds into the video, there was a spike in happiness. The producer can click on the specific point in the graph where happiness went up and be brought instantaneously to it's corresponding moment in the video.
+![](client/DetailedAnalytics.png?raw=true) <br/>
 
 
 <h2>Technology Stack</h2>
-![](TechStack.png?raw=true)
+![](client/TechStack.png?raw=true)
 
 <h2>Team Members</h2>
 Max Peng https://github.com/pengcheng95 <br/>
