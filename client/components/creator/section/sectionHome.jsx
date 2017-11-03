@@ -356,8 +356,8 @@ class SectionHome extends React.Component {
     axios.post('/api/markNotificationAsSeen', {
       optionName: optionNameToDelete
     })
-    .then((res) => {
-    })
+      .then((res) => {
+      })
   }
 
   render() {
