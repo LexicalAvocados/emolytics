@@ -93,19 +93,28 @@ class ProjectList extends React.Component {
 
     var edit = {
       width: '100%',
-      backgroundColor: 'whitesmoke'
+      backgroundColor: 'whitesmoke',
+      
     };
 
     const gridBoxForProject = {
       display: 'grid',
       gridTemplateColumns: '50% 50%',
       gridTemplateRows: '50% 50%',
+      overflow: 'hidden'
     };
 
     const titleDisplayStyle = {
       gridColumn: '1',
       gridRow: '1'
     };
+
+    const projectDescription = {
+      gridColumn: '1/2',
+      gridRow: '2',
+      width: '100%',
+      // overflow: 'hidden'
+    }
 
     const rightSideDisplay = {
       gridColumn: '2',
@@ -131,9 +140,8 @@ class ProjectList extends React.Component {
 
 
     return (
-      <div onClick={this.onClickCallback}>
+      <div className="projectListEntry" onClick={this.onClickCallback}>
         <OverlayTrigger placement="right" overlay={this.props.popover}>
-        {/* Fade this in? */}
           <div className='projectsContainer'>
             <div style={gridBoxForProject}>
 
@@ -153,8 +161,10 @@ class ProjectList extends React.Component {
               </div>
               <div>
                 <div style={titleDisplayStyle}>
-                  <h4>{this.props.project.name.toUpperCase()}</h4>
-                  <p>{this.props.project.description}</p>
+                  <h4 className="upperTextToTruncate">{this.props.project.name.toUpperCase()}</h4>
+                </div>
+                <div style={projectDescription}> 
+                  <p className="lowerTextToTruncate">{this.props.project.description}</p>
                 </div>
               </div>
             </div>

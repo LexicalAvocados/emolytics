@@ -32,7 +32,7 @@ class SectionCarousel extends React.Component {
     const testers = {
       gridColumn: '1',
       gridRow: '1',
-      float: 'right'
+      float: 'right',
     };
 
     const testersIcon = {
@@ -120,8 +120,6 @@ class SectionCarousel extends React.Component {
 
                           <h4><u>{section.name}</u></h4>
                           <p>{section.description}</p>
-                        </Col>
-
                         <div>
                           <Col md={6}>
                             <Button
@@ -137,10 +135,10 @@ class SectionCarousel extends React.Component {
                             ) : (
                               null
                             )}
+                        {/* <br /> */}
                           </Col>
                         </div>
-
-                        <br/>
+                        </Col>
                       </div>
                     );
                   } else {
