@@ -46,7 +46,7 @@ class SectionCarousel extends React.Component {
             return (
               <Carousel.Item key={overI}>
                 { sectionGroup.map((section, i) => (
-                  <div onClick={() => this.props.highlightSelected(section.id, this.props.fromSectionHome)} key={i + section.name}>
+                  <div onClick={() => this.props.highlightSelected(section.id, this.props.fromProjectHome, this.props.fromSectionHome)} key={i + section.name}>
                     <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" id={section.id}>
                       <p></p>
                       <div style={notifDisplayStyle}>
@@ -98,7 +98,7 @@ class SectionCarousel extends React.Component {
                 { sectionGroup.map((section, i) => {
                   if (section !== 'End') {
                     return (
-                      <div onClick={() => this.props.highlightSelected(section.id, this.props.fromSectionHome)} key={i + section.name}>
+                      <div onClick={() => this.props.highlightSelected(section.id, this.props.fromProjectHome, this.props.fromSectionHome)} key={i + section.name}>
                         <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" id={section.id}>
                           <p></p>
                           <div style={notifDisplayStyle}>
