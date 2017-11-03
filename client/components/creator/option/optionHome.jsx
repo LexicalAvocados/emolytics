@@ -725,8 +725,9 @@ const heatmapSuperimposedStyle = {
   left: '0',
   // marginTop: '6%',
   zIndex: "10",
-  width: "100%",
-  // marginLeft: ''
+  width: "85%",
+  marginLeft: '12%',
+  marginRight: '3%'
 }
 
 const buttonStyle = {
