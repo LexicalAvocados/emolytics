@@ -58,9 +58,9 @@ class LandingPage extends React.Component {
       marginRight: "15px"
     }
     return (
-      
+
       <div className='landingContainer'>
-        <div className='landingSectionA'> 
+        <div className='landingSectionA'>
           <div className='aInfo'>
             <h2> Throw Away the Guesswork  </h2>
             <h3> Find Out How Your Audience is Feeling </h3>
@@ -83,7 +83,7 @@ class LandingPage extends React.Component {
         </ScrollableAnchor>
         <hr/>
 
-        <div className="landingSectionC"> 
+        <div className="landingSectionC">
           <Col md={6} className="landingSectionSubLeft">
             <h3> <b> Customize Your Audience </b>  </h3>
             <br/>
@@ -91,7 +91,7 @@ class LandingPage extends React.Component {
           </Col>
 
           <Col md={6}>
-            <img height="200px" src="https://s3.us-east-2.amazonaws.com/reaction-sync/Screen+Shot+2017-11-01+at+5.05.48+PM.png" alt={"logo"}/> 
+            <img height="200px" src="https://s3.us-east-2.amazonaws.com/reaction-sync/Screen+Shot+2017-11-01+at+5.05.48+PM.png" alt={"logo"}/>
           </Col>
 
 
@@ -99,16 +99,16 @@ class LandingPage extends React.Component {
         <hr/>
 
         <ScrollableAnchor id={'section2'}>
-          <div className="landingSectionC"> 
+          <div className="landingSectionC">
             <Col md={6} className="landingSectionSubLeft">
               <h3> <b> Advanced Analytics </b> </h3>
               <br/>
               <h5> Every viewer who watches your videos generates emotional response data <b> 4 </b> times every second. On top of the emotions fo anger, contempt, disgust, fear, happiness, sadness and surprise, you can also see where on the screent the viewer is looking at at what time.  </h5>
-              
+
             </Col>
 
             <Col md={6}>
-              <img height="250px" src={'emo.png'} alt={"logo"}/> 
+              <img height="250px" src={'emo.png'} alt={"logo"}/>
             </Col>
 
 
@@ -118,9 +118,9 @@ class LandingPage extends React.Component {
         <hr/>
 
         <ScrollableAnchor id={'section3'}>
-          <div className='landingSectionC'> 
+          <div className='landingSectionC'>
             <Col md={2}>
-              
+
             </Col>
 
             <Col md={8} className="landingSectionSub">
@@ -129,7 +129,7 @@ class LandingPage extends React.Component {
               <h5> Turn passive viewing into income. Connect with creators you love and really show them how you feel about their content. Your feelings can help them improve their content and tailor their content for you. </h5>
             </Col>
             <Col md={2}>
-              
+
             </Col>
 
         </div>
@@ -138,7 +138,7 @@ class LandingPage extends React.Component {
         <hr/>
 
         <ScrollableAnchor id={'section4'}>
-          <div className='landingSectionC'> 
+          <div className='landingSectionC'>
 
             <div className='overflowSectionX'>
               <Col md={12} className="teamTitle">
@@ -173,7 +173,7 @@ class LandingPage extends React.Component {
                     <div className="cardImage3">
                     </div>
                     <div className="cardTitle">
-                      <h5> Nirvaan R. </h5>
+                      <h5> Nirvaan Ranga </h5>
                       <h5> <small> Software Engineer </small> </h5>
                     </div>
                   </div>
@@ -203,7 +203,7 @@ class LandingPage extends React.Component {
                 </Col>
 
 
-                
+
               </Col>
             </div>
         </div>
