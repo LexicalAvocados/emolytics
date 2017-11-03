@@ -211,19 +211,11 @@ exports.getCreatorFocusGroups = (req, res) => {
   // console.log('getCreatorFocusGroups req.query:', req.query);
   let creatorFocusGroups = [];
 
-  User.findOne({
+  FocusGroup.findAll({
     where: {
-      id: req.query.id
+      userId: req.query.id,
     }
   })
-    .then(creator => {
-      // console.log('1st then block');
-      return FocusGroup.findAll({
-        where: {
-          userId: creator.dataValues.id,
-        }
-      });
-    })
     .then(groups => {
       // console.log('2nd then block');
       groups = groups.map(group => {
@@ -241,8 +233,7 @@ exports.getCreatorFocusGroups = (req, res) => {
         return FocusGroupAndTester.findAll({
           where: {
             focusGroupId: group.id,
-            creatorInvited: true,
-            testerInvited: true
+            creatorInvited: true
           }
         });
       }));

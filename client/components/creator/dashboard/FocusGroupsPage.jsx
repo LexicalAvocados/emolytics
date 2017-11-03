@@ -44,6 +44,10 @@ class FocusGroupsPage extends React.Component {
       })
   }
 
+  componentWillUnmount() {
+    this.props.actions.setNoCurrentFocusGroup();
+  }
+
   updateTypedTesterUsername(e) {
     this.setState({typedTesterUsername: e.target.value});
   }

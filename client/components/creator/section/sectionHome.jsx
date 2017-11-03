@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover, ListGroup, ListGroupItem } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -397,48 +397,56 @@ class SectionHome extends React.Component {
             !this.state.displayPanel ? (
               <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
             ) : (
-              <InvitationPanel
-                options={this.props.currentSection.options}
-                renderInvited={this.renderInvited}
-                testers={this.state.testers}
-                testersCopy={this.state.testersCopy}
-                renderPanel={this.renderPanel}
-                noCreditsAlert={this.state.noCreditsAlert}
-                fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
-                onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
-              />
+              <div>
+                <Col md={6}>
+                  <InvitationPanel
+                    options={this.props.currentSection.options}
+                    renderInvited={this.renderInvited}
+                    testers={this.state.testers}
+                    testersCopy={this.state.testersCopy}
+                    renderPanel={this.renderPanel}
+                    noCreditsAlert={this.state.noCreditsAlert}
+                    fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
+                    onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
+                  />
+                </Col>
+                <Col md={6}>
+                  <div className='sectionHomeInviteModule'>
+                    <h3>Invite by Group</h3>
+                    
+                    <hr className='standardHR'/>
+
+                    {this.props.focusGroups.length > 0 ?
+                      <div>
+                        <FocusGroupsList />
+
+                        {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
+                          <div>
+
+                            <Button
+                              bsStyle='primary'
+                              onClick={this.assignFocusGroup}
+                            > Assign <i>{this.props.currentFocusGroup.name}</i> to Section </Button>
+
+                            {this.state.assigned ?
+                              'Group Assigned!'
+                            :
+                              null}
+
+                          </div>
+                        :
+                          null}
+
+                      </div>
+                    :
+                      null}
+                  </div>
+                </Col>
+              </div>
             )
           ) : (
             <p>Testers Invited!</p>
           )}
-
-          {this.props.focusGroups.length > 0 ?
-            <div>
-              <FocusGroupsList />
-              {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
-                <div>
-                  <h3>{this.props.currentFocusGroup.name} Members</h3>
-                  <div>
-                    <ul>
-                      {this.props.currentFocusGroup.testers.map((tester, i) => (
-                        <li key={i}>{tester}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Button
-                    bsStyle='primary'
-                    onClick={this.assignFocusGroup}
-                  >Assign Group to Section</Button>
-                  {this.state.assigned ?
-                    'Group Assigned!'
-                  :
-                    null}
-                </div>
-              :
-                null}
-            </div>
-          :
-            null}
 
         </div>
 

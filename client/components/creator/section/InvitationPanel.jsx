@@ -1,6 +1,5 @@
 import React from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { DropdownButton, MenuItem, Button, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -205,18 +204,38 @@ class InvitationPanel extends React.Component {
 
   render() {
     return (
-      <div className="invitationPanel">
+      <div className="sectionHomeInviteModule">
+        <h3>Invite by Demographic</h3>
+
+        <hr className='standardHR'/>
+
         { this.props.fromSectionHomeToInvitationPanel ? (
           this.props.noCreditsAlert.length ? (
             <div>
-              <p>The following options either have no credits or are low on credits:</p>
-              <ul>
+              <p>The following options are low on credits:</p>
+              <ListGroup>
                 {this.props.noCreditsAlert.map((option, i) => (
-                  <li key={i} onClick={() => this.handleLowCrediteOptionClick(option)}>
-                    <u>{option.name}</u>: {option.totalcredits} remaining ({Math.floor(option.totalcredits/option.creditsperview) || 0} views)
-                  </li>
+                  <ListGroupItem
+                    key={i}
+                    className='lowCreditListItem'
+                    onClick={() => this.handleLowCrediteOptionClick(option)}
+                  >
+                    <div>
+                      <Col md={4}>
+                        <b>
+                          {option.name}
+                        </b>
+                      </Col>
+                      <Col md={4}>
+                        {option.totalcredits} credits
+                      </Col>
+                      <Col md={4}>
+                        {Math.floor(option.totalcredits / option.creditsperview) || 0} views
+                      </Col>
+                    </div>
+                  </ListGroupItem>
                 ))}
-              </ul>
+              </ListGroup>
             </div>
           ) : (
             null
@@ -224,45 +243,46 @@ class InvitationPanel extends React.Component {
         ) : (
           null
         )}
-        <div className="invitationPanelSelectors">
-          <p>Age:</p>
-          <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Select an age'}>
-            <MenuItem eventKey="None">None</MenuItem>
-            <MenuItem eventKey="0-10">0-10</MenuItem>
-            <MenuItem eventKey="11-20">11-20</MenuItem>
-            <MenuItem eventKey="21-30">21-30</MenuItem>
-            <MenuItem eventKey="31-40">31-40</MenuItem>
-            <MenuItem eventKey="41-50">41-50</MenuItem>
-            <MenuItem eventKey="51-60">51-60</MenuItem>
-            <MenuItem eventKey="61-70">61-70</MenuItem>
-            <MenuItem eventKey="71-80">71-80</MenuItem>
-            <MenuItem eventKey="81-90">81-90</MenuItem>
-            <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
-          </DropdownButton>
+
+        <div className="invitationPanelSelectorContainer">
+          <div className="invitationPanelSelector1">
+            <DropdownButton onSelect={this.selectAge} id="dropdown-btn-menu" title={this.state.ageSelected || 'Filter by age'}>
+              <MenuItem eventKey="None">None</MenuItem>
+              <MenuItem eventKey="0-10">0-10</MenuItem>
+              <MenuItem eventKey="11-20">11-20</MenuItem>
+              <MenuItem eventKey="21-30">21-30</MenuItem>
+              <MenuItem eventKey="31-40">31-40</MenuItem>
+              <MenuItem eventKey="41-50">41-50</MenuItem>
+              <MenuItem eventKey="51-60">51-60</MenuItem>
+              <MenuItem eventKey="61-70">61-70</MenuItem>
+              <MenuItem eventKey="71-80">71-80</MenuItem>
+              <MenuItem eventKey="81-90">81-90</MenuItem>
+              <MenuItem eventKey="91-100">91-100 Impressive!</MenuItem>
+            </DropdownButton>
+          </div>
+
+          <div className="invitationPanelSelector2">
+            <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Filter by sex'}>
+              <MenuItem eventKey="None">None</MenuItem>
+              <MenuItem eventKey="Male">Male</MenuItem>
+              <MenuItem eventKey="Female">Female</MenuItem>
+            </DropdownButton>
+          </div>
+
+          <div className="invitationPanelSelector3">
+            <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Filter by race'}>
+              <MenuItem eventKey="None">None</MenuItem>
+              <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
+              <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
+              <MenuItem eventKey="African American">African American</MenuItem>
+              <MenuItem eventKey="Asian">Asian</MenuItem>
+              <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
+              <MenuItem eventKey="Native American">Native American</MenuItem>
+              <MenuItem eventKey="Other">Other</MenuItem>
+            </DropdownButton>
+          </div>
         </div>
-        <br/>
-        <div className="invitationPanelSelectors">
-          <p>Sex:</p>
-          <DropdownButton onSelect={this.selectSex} id="dropdown-btn-menu" title={this.state.sexSelected || 'Select a sex'}>
-            <MenuItem eventKey="None">None</MenuItem>
-            <MenuItem eventKey="Male">Male</MenuItem>
-            <MenuItem eventKey="Female">Female</MenuItem>
-          </DropdownButton>
-        </div>
-        <br/>
-        <div className="invitationPanelSelectors">
-          <p>Race:</p>
-          <DropdownButton onSelect={this.selectRace} id="dropdown-btn-menu" title={this.state.raceSelected || 'Select a race'}>
-            <MenuItem eventKey="None">None</MenuItem>
-            <MenuItem eventKey="Caucasian">Caucasian</MenuItem>
-            <MenuItem eventKey="Hispanic">Hispanic</MenuItem>
-            <MenuItem eventKey="African American">African American</MenuItem>
-            <MenuItem eventKey="Asian">Asian</MenuItem>
-            <MenuItem eventKey="Pacific Islander">Pacific Islander</MenuItem>
-            <MenuItem eventKey="Native American">Native American</MenuItem>
-            <MenuItem eventKey="Other">Other</MenuItem>
-          </DropdownButton>
-        </div>
+
         <div className="testersList">
           <p>Available testers: {this.state.testersCopy.length}</p>
           <Button onClick={this.inviteAll}>Invite Testers</Button>
