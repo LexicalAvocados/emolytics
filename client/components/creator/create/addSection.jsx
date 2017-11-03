@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 
@@ -63,7 +64,7 @@ class AddSection extends React.Component {
           <div className="SectionDescriptionInput">
             <textarea type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
           </div>
-          <input type="submit" value="Submit" />
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     );
