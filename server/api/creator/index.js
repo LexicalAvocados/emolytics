@@ -22,10 +22,11 @@ exports.sendEmails = function(req, res) {
 
   let options = req.body.options;
   let invitedArr = req.body.invitedArr;
-  console.log('OPTION BEIGNGS SENT TO THE BACKEND', req.body.options); // Logged end
+  console.log('OPTION BEING SENT TO THE BACKEND', req.body.options); // Logged end
   for (var i = 0; i < invitedArr.length; i++) {
+    console.log('i:', i, 'options.length:', options.length);
     TesterAndOptions.create({
-      optionId: options[i % options.length].id,
+      optionId: options[i % (options.length - 1)].id,
       userId: invitedArr[i].id
     })
     let mailOptions = {

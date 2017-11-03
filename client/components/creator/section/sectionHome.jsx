@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover, ListGroup, ListGroupItem, Fade, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -213,9 +213,11 @@ class SectionHome extends React.Component {
   }
 
   renderAssigned() {
+    console.log('inside renderAssigned');
     this.setState({
-      assigned: !this.state.assigned
+      assigned: true
     });
+    setTimeout(() => this.setState({assigned: false}), 3000);
   }
 
   beginEdit(option, testers, testersCopy) {
@@ -425,13 +427,15 @@ class SectionHome extends React.Component {
 
                             <Button
                               bsStyle='primary'
+                              className='sectionHomeAssignGroupBtn'
                               onClick={this.assignFocusGroup}
                             > Assign <i>{this.props.currentFocusGroup.name}</i> to Section </Button>
 
-                            {this.state.assigned ?
-                              'Group Assigned!'
-                            :
-                              null}
+                            <Fade in={this.state.assigned}>
+                              <Alert bsStyle='success'>
+                                Testers assigned!
+                              </Alert>
+                            </Fade>
 
                           </div>
                         :

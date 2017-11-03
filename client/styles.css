@@ -876,6 +876,10 @@ h2.signupHeader {
   text-align: center;
 }
 
+.sectionHomeAssignGroupBtn {
+  margin-bottom: 20px;
+}
+
 .lowCreditListItem {
   height: 3.5vh;
   padding: 0px 15px 0px 15px;

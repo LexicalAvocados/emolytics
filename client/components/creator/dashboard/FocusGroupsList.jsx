@@ -19,7 +19,7 @@ class FocusGroupsList extends React.Component {
     let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
-        <h3>Your Groups</h3>
+        {this.props.location.pathname === '/groups' ? <h3>Your Groups</h3> : null}
         <ButtonToolbar className="focusGroupButtonToolbar">
           <ToggleButtonGroup
             justified
