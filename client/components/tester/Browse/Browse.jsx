@@ -87,10 +87,10 @@ class Browse extends React.Component {
       </Col>
         <Col md={5}></Col>
       </Row>
-        <div className='allBrowseVideos' style={allBrowseVideosStyle}>
+        <div className='allBrowseVideos TesterBrowseContainer' style={allBrowseVideosStyle}>
           {this.state.videos.length > 0 ? (
             this.state.videos.map((item, i) => (
-              <Col className='testerOptionListEntry BrowseListItem' md={3} key={item.name}>
+              <Col className='BrowseListItem' md={3} key={item.name}>
                 <BrowseListEntry item={item} key={item.name} handleWatch={this.redirectUser}/>
               </Col>
             ))
@@ -106,7 +106,8 @@ const autosuggestStyle = {
 }
 
 const browseHeaderStyle = {
-  textAlign: 'center'
+  textAlign: 'center',
+  marginLeft: '2%'
 }
 
 const center = {
@@ -128,7 +129,9 @@ const mapStateToProps = (state) => {
 }
 
 const allBrowseVideosStyle = {
-  marginLeft: '5%'
+  width: '100%',
+  marginLeft: '11%'
+  // padding: '3%'
 }
 
 const mapDispatchToProps = dispatch => ({
