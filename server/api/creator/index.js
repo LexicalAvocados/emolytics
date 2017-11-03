@@ -2,6 +2,7 @@ const db = require('../../../db/index.js');
 const User = db.User;
 const FocusGroup = db.FocusGroup;
 const FocusGroupAndTester = db.FocusGroupAndTester;
+const PatreonCampaign = db.PatreonCampaign;
 const TesterAndOptions = db.TesterAndOption;
 const Notifications = db.Notification;
 const nodemailer = require('nodemailer');
@@ -51,16 +52,27 @@ exports.sendEmails = function(req, res) {
 
 exports.createNewFocusGroup = (req, res) => {
   // console.log('createNewFocusGroup req.body:', req.body);
-  User.findOne({
+
+  let user = User.findOne({
     where: {
       username: req.body.creatorUsername
     }
-  })
-    .then(creator => {
+  });
+
+  if (req.body.patrons) {
+    var campaign = PatreonCampaign.findOne({
+      where: {
+        campaignId: Number(req.body.campaignId)
+      }
+    });
+  }
+
+  Promise.all([user, campaign])
+    .then(data => {
       return FocusGroup.create({
         name: req.body.focusGroupName,
-        userId: creator.id,
-        patreonCampaignId: req.body.campaignId || null
+        userId: data[0].id,
+        patreonCampaignId: (data[1] ? data[1].id : null)
       });
     })
     .then(newFocusGroup => {
@@ -78,6 +90,7 @@ exports.createNewFocusGroup = (req, res) => {
       }
     })
     .catch(err => {
+      console.log('Create new Focus Group error:', err);
       res.send(err);
     });
 };

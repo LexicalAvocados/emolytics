@@ -945,6 +945,16 @@ h2.signupHeader {
   border-width: 1px;
 }
 
+.focusGroupPatronList {
+  display: grid;
+  align-content: center;
+}
+
+.focusGroupPatronListEntry {
+  height: 4vh;
+  padding: 4px 15px 0px 15px;
+}
+
 .lightPurpleModuleCurrentGroup {
   text-align: center;
   background-color: #f3edff;
@@ -976,7 +986,7 @@ h2.signupHeader {
 }
 
 .focusGroupTesterList {
-  text-align: center;
+
 }
 
 .focusGroupTesterListEntry {
@@ -988,7 +998,7 @@ button.list-group-item {
   text-align: center;
 }
 
-.focusGroupButtonToolbar{
+.focusGroupButtonToolbar {
   margin-top: 15px;
   margin-bottom: 15px;
 }
