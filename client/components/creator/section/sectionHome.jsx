@@ -379,7 +379,7 @@ class SectionHome extends React.Component {
         <div>
           <div>
             { this.props.currentSection.id === 0 ? (
-              <h3 className="demoWelcomeHeader">From this page you can see all the options associated with a specifc section! This is the best place to mnage your various sections and their options. You can invite testers to view the options within a section, and edit the options within a section.</h3>
+              <h3 className="demoWelcomeHeader">From this page you can see all the options associated with a specifc section! This is the best place to manage your various sections and their options. You can invite testers to view the options within a section, and edit the options within a section.</h3>
             ):(
               null
             )}
