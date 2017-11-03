@@ -237,7 +237,8 @@ class OptionListEntry extends React.Component {
       display: 'inline-block',
       position: 'absolute',
       float: 'right',
-      marginLeft: '36%'
+      // marginLeft: '36%'
+      right: '-4px'
     };
 
     const notifs = {

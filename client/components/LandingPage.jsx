@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../actions';
@@ -30,6 +30,7 @@ class LandingPage extends React.Component {
     $(".appBody").css("background-color", "unset");
     $(".appBody").css("padding", "unset");
     $(".appBody").css("height", "unset");
+    $("body").css("background-color", "unset");
   }
 
   componentWillUnmount() {
@@ -37,6 +38,7 @@ class LandingPage extends React.Component {
     $(".appBody").css("background-color", "#f7f7f7");
     $(".appBody").css("padding", "3%");
     $(".appBody").css("height", "93.7vh");
+    $("body").css("background-color", "#f7f7f7");
   }
 
   handleClick(e) {
@@ -66,7 +68,9 @@ class LandingPage extends React.Component {
             <h3> Find Out How Your Audience is Feeling </h3>
             <br/>
             <br/>
-            <a href='#section1'><Button bsSize="large" style={margin}> Sign Up </Button></a>
+            <Link to='/signup' >
+              <Button bsSize="large" style={margin}> Sign Up </Button>
+            </Link>
             <a href='#section1'><Button bsSize="large" style={color}>Try it out </Button></a>
 
           </div>
@@ -84,14 +88,18 @@ class LandingPage extends React.Component {
         <hr/>
 
         <div className="landingSectionC"> 
-          <Col md={6} className="landingSectionSubLeft">
+          <Col md={1} smHidden={true}>
+          </Col>
+          <Col md={5} className="landingSectionSubLeft">
             <h3> <b> Customize Your Audience </b>  </h3>
             <br/>
             <h5> Have an audience in mind? Filter your testers by age, sex or race to create your typical viewer. If you already have a following, create custom groups of viewers to watch your videos every time. </h5>
           </Col>
 
-          <Col md={6}>
+          <Col md={5}>
             <img height="200px" src="https://s3.us-east-2.amazonaws.com/reaction-sync/Screen+Shot+2017-11-01+at+5.05.48+PM.png" alt={"logo"}/> 
+          </Col>
+          <Col md={1} smHidden={true}>
           </Col>
 
 
@@ -100,15 +108,19 @@ class LandingPage extends React.Component {
 
         <ScrollableAnchor id={'section2'}>
           <div className="landingSectionC"> 
-            <Col md={6} className="landingSectionSubLeft">
+            <Col md={1} smHidden={true}>
+            </Col>
+            <Col md={5} className="landingSectionSubLeft">
               <h3> <b> Advanced Analytics </b> </h3>
               <br/>
               <h5> Every viewer who watches your videos generates emotional response data <b> 4 </b> times every second. On top of the emotions fo anger, contempt, disgust, fear, happiness, sadness and surprise, you can also see where on the screent the viewer is looking at at what time.  </h5>
               
             </Col>
 
-            <Col md={6}>
+            <Col md={5}>
               <img height="250px" src={'emo.png'} alt={"logo"}/> 
+            </Col>
+            <Col md={1} smHidden={true}>
             </Col>
 
 
@@ -119,7 +131,7 @@ class LandingPage extends React.Component {
 
         <ScrollableAnchor id={'section3'}>
           <div className='landingSectionC'> 
-            <Col md={2}>
+            <Col md={2} smHidden={true}>
               
             </Col>
 
@@ -128,7 +140,7 @@ class LandingPage extends React.Component {
               <br/>
               <h5> Turn passive viewing into income. Connect with creators you love and really show them how you feel about their content. Your feelings can help them improve their content and tailor their content for you. </h5>
             </Col>
-            <Col md={2}>
+            <Col md={2} smHidden={true}>
               
             </Col>
 
