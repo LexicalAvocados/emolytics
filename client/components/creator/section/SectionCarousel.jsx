@@ -78,11 +78,11 @@ class SectionCarousel extends React.Component {
                           </Button>
                         </Col>
                         <Col md={6}>
-                          <Button
-                            className='carouselBtn'
-                          >
-                            Invite Testers
-                          </Button>
+                          {this.props.renderPanel ? (
+                            <Button className='carouselBtn' onClick={(e) => this.props.renderPanel(e, true, section)}>Invite testers</Button>
+                          ) : (
+                            null
+                          )}
                         </Col>
                       </div>
 
@@ -99,7 +99,7 @@ class SectionCarousel extends React.Component {
                   if (section !== 'End') {
                     return (
                       <div onClick={() => this.props.highlightSelected(section.id, this.props.fromSectionHome)} key={i + section.name}>
-                        <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" key={i}>
+                        <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" id={section.id}>
                           <p></p>
                           <div style={notifDisplayStyle}>
                             { section.notifications > 0 ? (
@@ -132,11 +132,11 @@ class SectionCarousel extends React.Component {
                             </Button>
                           </Col>
                           <Col md={6}>
-                            <Button
-                              className='carouselBtn'
-                            >
-                              Invite Testers
-                            </Button>
+                            {this.props.renderPanel ? (
+                              <Button className='carouselBtn' onClick={(e) => this.props.renderPanel(e, true, section)}>Invite testers</Button>
+                            ) : (
+                              null
+                            )}
                           </Col>
                         </div>
 

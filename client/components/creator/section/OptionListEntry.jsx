@@ -47,11 +47,13 @@ class OptionListEntry extends React.Component {
   }
 
   componentWillMount() {
-    this.mount(this.props.option);
+    if (this.props.option !== 'End') {
+      this.mount(this.props.option);
+    }
     this.props.onRef(this);
     this.setState({
       makePublic: this.props.currentOption.isPublic
-    })
+    });
   }
 
   mount(option) {
@@ -59,6 +61,7 @@ class OptionListEntry extends React.Component {
     if (option !== 'End') {
       axios.get('/api/getTestersForOption', { params: { optionId: option.id }})
         .then((testerIds) => {
+          console.log(testerIds)
           this.props.concatTesters(testerIds.data, this.props.index);
           this.setState({
             specificTesters: testerIds.data,
@@ -76,12 +79,16 @@ class OptionListEntry extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.sectionId !== this.props.sectionId) {
-      this.mount(nextProps.option);
+      if (nextProps.option !== 'End') {
+        this.mount(nextProps.option);
+      }
       return true;
     }
     if (nextProps.showEdit === false) {
       this.props.resetToNull();
-      this.mount(nextProps.option); //Will have to check to make sure this works as intended.
+      if (nextProps.option !== null) {
+        this.mount(nextProps.option);
+      }
       return true;
     }
     return true;
