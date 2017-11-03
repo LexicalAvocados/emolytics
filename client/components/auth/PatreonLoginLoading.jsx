@@ -15,7 +15,7 @@ export class PatreonLoginLoading extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(this.fetchUserAndRedirect.bind(this), 3000);
+    setTimeout(this.fetchUserAndRedirect.bind(this), 2000);
   }
   
   fetchUserAndRedirect() {
