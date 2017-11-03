@@ -28,8 +28,7 @@ h6 {
 }*/
 
 .appBody {
-  background-color: #f3edff;
-  border-color: #e5d8ff;
+  background-color: #f7f7f7;
   padding: 3%;
   height: 93.7vh;
 }
@@ -469,6 +468,11 @@ h6 {
 
 .optionListEntry {
   padding: 10px 20px 20px 20px;
+}
+
+.ThumbnailListInAddOption img{
+  height: '20px';
+  width: '40px';
 }
 
 
