@@ -256,7 +256,9 @@ class SectionHome extends React.Component {
     }
   }
 
-  renderPanel(opening = false) {
+  renderPanel(e, opening = false, section) {
+    e.stopPropagation();
+    this.displaySecs.onSectionClick(section, false, true);
     if (opening) {
       var noCredits = this.props.currentSection.options.reduce((acc, option) => {
         if ((option.totalcredits === 0 || option.totalcredits <= (option.creditsperview * 2)) && option !== 'End') {
@@ -268,7 +270,7 @@ class SectionHome extends React.Component {
     this.setState({
       displayPanel: !this.state.displayPanel,
       noCreditsAlert: noCredits
-    });
+    })
   }
 
   assignFocusGroup() {
@@ -383,6 +385,8 @@ class SectionHome extends React.Component {
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
             totalInvitedTesters={this.state.totalInvitedTesters}
+            renderPanel={this.renderPanel}
+            onRef={displaySecs => (this.displaySecs = displaySecs)}
           />
         </div>
 
