@@ -34,14 +34,14 @@ class TesterQueuePage extends React.Component {
 
   render() {
     return (
-      <div className="TesterHomeContainer">
+      <div className="testerQueueContainer">
         <h1>Your Queue</h1><br/>
         {this.props.testerQueue.map((option, i) => {
           return (
             <Link onClick={() => {
               this.props.actions.changeTesterOption(option);
             }} key={JSON.stringify(option.name)+i} to={`/video/${option.id}`}>
-              <Col className='testerOptionListEntry' md={3}>
+              <Col md={3}>
                 <TesterOptionEntry
                   option={option}
                   index={i}
