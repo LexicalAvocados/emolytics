@@ -522,10 +522,10 @@ class OptionHome extends React.Component {
             <option value="attention">Attention</option>
             <option value="feedback">Feedback</option>
             <option value="emotions">Emotion</option>
-            <option value="settings">Settings</option>
             <option value="annotations">Annotations</option>
             <option value="detailedDemographics">Detailed Demographics</option>
             <option value="heatmap">Eye Tracking</option>
+            <option value="settings">Settings</option>
           </select>
         </div>
 

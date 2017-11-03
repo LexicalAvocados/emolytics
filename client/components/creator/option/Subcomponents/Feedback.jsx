@@ -23,7 +23,7 @@ const Feedback = (props) => {
       </div>
       <div className="testerFeedbackData">
         <div className="rawValues">
-          <p> Watched {completion() * 100}% of video</p>
+          <p> Watched {(completion() * 100).toFixed(2)}% of video</p>
           <p>Like: {props.demographic.liked}/{props.demographic.total}</p>
           {props.feedback ? (
             <p> Notable comments: {props.feedback}</p>

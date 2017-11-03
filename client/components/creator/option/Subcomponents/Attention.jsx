@@ -4,7 +4,7 @@ const Attention = (props) => {
 
   const calcAvgAtten = (arr) => {
     // console.log(props);
-    return (Math.floor(100*arr.reduce((sum, val) => sum += +val, 0)/(arr.length-1))*100)/100;
+    return ((Math.floor(100*arr.reduce((sum, val) => sum += +val, 0)/(arr.length-1))*100)/100).toFixed(2);
   }
 
   const timeClickCb = (e) => {
@@ -55,7 +55,7 @@ const Attention = (props) => {
               </a>
               <a> - </a>
               <a>
-                Avg Viewer Focus ({moment.value*100}%)
+                Avg Viewer Focus ({(moment.value*100).toFixed(2)}%)
               </a>
             </li>
           ))}

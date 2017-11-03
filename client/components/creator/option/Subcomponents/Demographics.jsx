@@ -26,7 +26,7 @@ const Demographics = (props) => {
         <div className='allUsers'>
           <p> Selected: All Viewers ({props.demographic.total})</p>
           <div className='averages'>
-            <p> Avg Age: {props.demographic.age}</p>
+            <p> Avg Age: {parseFloat(props.demographic.age).toFixed(2)}</p>
             <p> Gender Distribution: {`${props.demographic.male}M/${props.demographic.total - props.demographic.male}F (${(props.demographic.male/props.demographic.total*100).toFixed(2)}%/${((props.demographic.total-props.demographic.male)/props.demographic.total *100).toFixed(2)}%)`}</p>
           </div>
         </div>
