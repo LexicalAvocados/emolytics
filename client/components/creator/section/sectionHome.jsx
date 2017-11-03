@@ -263,7 +263,7 @@ class SectionHome extends React.Component {
   renderPanel(e, opening = false, section) {
     e.stopPropagation();
     if (this.state.displayPanel === false) {
-      this.displaySecs.highlightSelected(section.id, true);
+      this.displaySecs.highlightSelected(section.id, false, true);
     }
     if (opening) {
       var noCredits = this.props.currentSection.options.reduce((acc, option) => {
