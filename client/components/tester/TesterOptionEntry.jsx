@@ -26,7 +26,7 @@ class TesterOtionEntry extends React.Component {
   render() {
     return (
       <div>
-        <img src={this.props.option.thumbnail} alt=""/>
+        <img src={this.props.option.thumbnail} alt="" style={tempImgStyle}/>
         <p>Option Name: {this.props.option.name}</p>
         <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
         <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
@@ -34,6 +34,11 @@ class TesterOtionEntry extends React.Component {
       </div>
     )
   }
+}
+
+const tempImgStyle = {
+  height: '50%',
+  width: '50%'
 }
 
 // React-Redux connect() boilerplate
