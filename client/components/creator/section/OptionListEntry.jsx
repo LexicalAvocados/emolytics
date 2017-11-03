@@ -55,7 +55,7 @@ class OptionListEntry extends React.Component {
   }
 
   mount(option) {
-    console.log('PUBLIC ? ', this.props.currentOption.isPublic)
+    // console.log('PUBLIC ? ', this.props.currentOption.isPublic)
     if (option !== 'End') {
       axios.get('/api/getTestersForOption', { params: { optionId: option.id }})
         .then((testerIds) => {
@@ -228,35 +228,42 @@ class OptionListEntry extends React.Component {
 
   render() {
     const containerStyle = {
-      display: 'grid',
+      // display: 'grid',
       // gridTemplateColumns: '16vh 4vh',
       // gridTemplateRows: '100%'
     };
 
     const details =  {
-      gridColumn: '1',
-      gridRow: '1'
+      // gridColumn: '1',
+      // gridRow: '1'
     };
 
     const stats =  {
-      gridColumn: '2',
-      gridRow: '1',
-      display: 'grid',
-      gridTemplateColumns: '100%',
-      gridTemplateRows: '50% 50%'
+      // gridColumn: '2',
+      // gridRow: '1',
+      // display: 'grid',
+      // gridTemplateColumns: '100%',
+      // gridTemplateRows: '25% 25% 50%'
+      display: 'inline-block',
+      // float: 'right'
+      position: 'absolute',
+      float: 'right',
+      marginLeft: '36%'
     };
 
     const notifs = {
-      gridColumn: '1',
-      gridRow: '2',
-      float: 'right'
+      // gridColumn: '1',
+      // gridRow: '2',
+      // float: 'right'
     };
 
     const testers = {
-      position: 'absolute',
-      top: '2',
-      right: '15',
-      zIndex: '5'
+      // position: 'relative',
+      // top: '2',
+      // right: '15',
+      // zIndex: '5'
+      // gridColumn: '1',
+      // gridRow: '1'
     };
 
     const testersIcon = {
@@ -405,7 +412,7 @@ class OptionListEntry extends React.Component {
 }
 
 const plusStyle = {
-  marginLeft: '25%'
+  marginLeft: '30%'
 }
 
 const optionInvitationPanelStyle = {
