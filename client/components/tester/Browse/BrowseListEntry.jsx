@@ -5,7 +5,7 @@ import {Button, Col, Row} from 'react-bootstrap';
 const BrowseListEntry = (props) => {
 
   return (
-    <div className='BrowseListItem' style={BrowseListEntryStyle} onClick={() => props.handleWatch(props.item)}>
+    <div style={BrowseListEntryStyle} onClick={() => props.handleWatch(props.item)}>
       <Link to={'/video/'+props.item.id} style={black}>
 
         <Row>

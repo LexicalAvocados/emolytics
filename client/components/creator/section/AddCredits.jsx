@@ -17,28 +17,29 @@ class AddCredits extends React.Component {
       fontWeight: "bold"
     }
     return (
-      <div>
-        <h3>Add Credits To Option</h3>
+      <div style={leftAlign}>
+        <Row style={header}>
+          <Col sm={12}>
+            <h3>Add Credits To Option</h3>
+            <p>Credits available: {this.props.credits}</p>
+          </Col>
+        </Row>
+
         <Form onSubmit={this.props.submitCredits} horizontal>
-          <Row>
-            <Col sm={3}>
-              <p>Credits available: {this.props.credits}</p>
-            </Col>
-          </Row>
           <FormGroup controlId="amount">
             <Row>
               <Col sm={3}>
-                Total:
+                <p style={verticalAlign}>Total:</p>
               </Col>
-              <Col sm={3}>
+              <Col sm={6}>
                 <FormControl type="number" placeholder={"Balance: "+this.props.option.totalcredits} onChange={this.props.updateTotal}/>
               </Col>
             </Row>
             <Row>
               <Col sm={3}>
-                Per View:
+                <p style={verticalAlign}>Per View:</p>
               </Col>
-              <Col sm={3}>
+              <Col sm={6}>
                 <FormControl type="number" placeholder={"Currently: "+this.props.option.creditsperview} onChange={this.props.updatePerView}/>
               </Col>
             </Row>
@@ -49,7 +50,10 @@ class AddCredits extends React.Component {
                 </p>
               ) : ''}
             </Row>
-            <Button type="submit">Add</Button>
+            <Col sm={7}></Col>
+            <Col sm={2}>
+              <Button type="submit" style={right}>Add</Button>
+            </Col>
           </FormGroup>
         </Form>
       </div>
@@ -57,6 +61,23 @@ class AddCredits extends React.Component {
   }
 }
 
+const verticalAlign = {
+  // display: 'table-cell',
+  // verticalAlign: 'middle'
+  marginTop: '7%'
+}
+
+const header = {
+  marginLeft: '-8%'
+}
+
+const right = {
+  float: 'right'
+}
+
+const leftAlign = {
+  textAlign: 'left'
+}
 
 
 export default AddCredits;
