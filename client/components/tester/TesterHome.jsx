@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
 import TesterVideo from './TesterVideo.jsx';
 import TesterOptionEntry from './TesterOptionEntry.jsx';
-import { Button, FormControl, FormGroup, Col } from 'react-bootstrap';
+import { Button, FormControl, FormGroup, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Browse from './Browse/Browse.jsx';
 
@@ -30,7 +30,7 @@ class TesterHome extends React.Component {
       .catch(err => {
         console.log('Error fetching Tester Queue from database:', err);
       });
-
+      console.log('TESTER QUEUEU IN REDUX', this.props.testerQueue)
     axios.get('/api/getCreditBalance')
     .then((res) => {
       console.log('res from credit balance', res)
@@ -38,16 +38,18 @@ class TesterHome extends React.Component {
         credits: res.data
       })
     })
+
   }
 
   render() {
     return (
       <div className="TesterHomeContainer">
         <h1>Welcome Back to Emolytics!</h1><br/>
+        <Row>
         { this.props.testerQueue.length > 0 ? (
           <div>
           <h3>Queue Quick Look</h3><br/>
-          this.props.testerQueue.slice(0, 3).map((option, i) => (
+          {this.props.testerQueue.slice(0, 3).map((option, i) => (
             <Link onClick={() => {
               this.props.actions.changeTesterOption(option);
             }} key={JSON.stringify(option.name)+i} to={`/video/${option.id}`}>
@@ -58,7 +60,7 @@ class TesterHome extends React.Component {
                 />
               </Col>
             </Link>
-          ))
+          ))}
           </div>
         ) : (
           <div>
@@ -69,10 +71,13 @@ class TesterHome extends React.Component {
           </div>
 
         )}
-        <Browse />
+      </Row>
+        <hr style={hrStyle}></hr>
         <Link to='/account'>
           <Button className="addEntityButton">Credits: {this.state.credits || 0}</Button>
         </Link>
+        <br/>
+        <Browse />
       </div>
     )
   }

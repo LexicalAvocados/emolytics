@@ -309,8 +309,8 @@ class OptionListEntry extends React.Component {
           </OverlayTrigger>
         ) : (
           <div onClick={this.revealAddOption} className="currentSectionOptionListEntry">
-            <div className="optionListEntry">
-              <h1>+</h1> {/* Style this later */}
+            <div className="optionListEntry" style={plusStyle}>
+              <h1 >+</h1> {/* Style this later */}
             </div>
           </div>
         )}
@@ -402,6 +402,10 @@ class OptionListEntry extends React.Component {
       </div>
     );
   }
+}
+
+const plusStyle = {
+  marginLeft: '25%'
 }
 
 const optionInvitationPanelStyle = {
