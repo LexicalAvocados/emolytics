@@ -28,12 +28,14 @@ class EditPage extends React.Component {
   }
 
   handleChange(e) {
+    console.log('IN HANLE CHANGE', e)
     e.preventDefault();
     var name = e.target.name;
     var val = e.target.value;
+    console.log('NAME', name)
     this.setState({
       [name]: val
-    });
+    }, () => console.log('STATE AFTER CHANGE', this.state));
   }
 
   submitEdit(e) {
@@ -76,68 +78,81 @@ class EditPage extends React.Component {
     var width = {
       width: '80%'
     };
+    var lessWidth = {
+      lessWidth: '30%'
+    };
+    const verticalAlign = {
+    // display: 'table-cell',
+    // verticalAlign: 'middle'
+      marginTop: '7%'
+    }
+
+    const invisible = {
+      visibility: 'hidden'
+    }
+
+    const right = {
+      float: 'right',
+    }
+
+    const header = {
+      marginLeft: '-4%'
+    }
+
+    
     return (
       <div className="EditProject">
-        <div style={header}>
-          <h3>Edit {this.props.toEdit}</h3><p style={invisible}>No text</p>
+        <div>
+          {this.props.toEdit === 'Option' ? (
+            <div style={header}>
+              <h3>Edit {this.props.toEdit}</h3><p style={invisible}>No text</p>
+              <Form onSubmit={this.submitEdit} horizontal>
+                <FormGroup controlId="name">
+                  <Row>
+                    <Col sm={3} >
+                      <p style={verticalAlign}>Name:</p>
+                    </Col>
+                    <Col sm={6}>
+                      <FormControl type="text" value={this.state.name}  name="name" placeholder={this.props[this.state.currentReduxLocation].name} onChange={this.handleChange}/>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={3}>
+                      <p style={verticalAlign}>Description:</p>
+                    </Col>
+                    <Col sm={6}>
+                      <FormControl type="text" value={this.state.description} name="description" onChange={this.handleChange} placeholder={this.props[this.state.currentReduxLocation].description}/>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={7}></Col>
+                    <Col sm={2}>
+                      <Button type="submit" style={right}>Submit</Button>
+                    </Col>
+                  </Row>
+                </FormGroup>
+              </Form>
+            </div>
+          ) : 
+            <div className="EditProject">
+              <Form onSubmit={this.submitEdit}>
+                <FormGroup>
+                  {this.props.toEdit} Name: <br />
+                  <FormControl style={lessWidth} type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+                  {this.props.toEdit} Description: <br />
+                  <FormControl style={lessWidth} type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+                  <Button type="submit">Submit</Button>
+                </FormGroup>
+              </Form>
+            </div>
+          }
         </div>
-        {/*<form onSubmit={this.submitEdit}>
-          {this.props.toEdit} Name: <br />
-        <input style={width} type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} placeholder={this.props[this.state.currentReduxLocation].name}/><br />
-          {this.props.toEdit} Description: <br />
-        <input style={width} type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} placeholder={this.props[this.state.currentReduxLocation].description}/><br />
-          <Button type="submit">Submit</Button>
-        </form>*/}
-
-        <Form onSubmit={this.submitEdit} horizontal>
-          <FormGroup controlId="name">
-            <Row>
-              <Col sm={3} >
-                <p style={verticalAlign}>Name:</p>
-              </Col>
-              <Col sm={6}>
-                <FormControl type="text" value={this.state.name}  placeholder={this.props[this.state.currentReduxLocation].name} onChange={this.handleChange}/>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={3}>
-                <p style={verticalAlign}>Description:</p>
-              </Col>
-              <Col sm={6}>
-                <FormControl type="text" value={this.state.description} onChange={this.handleChange} placeholder={this.props[this.state.currentReduxLocation].description}/>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={7}></Col>
-              <Col sm={2}>
-                <Button type="submit" style={right}>Submit</Button>
-              </Col>
-            </Row>
-          </FormGroup>
-        </Form>
-
       </div>
     );
   }
 }
 
-const verticalAlign = {
-  // display: 'table-cell',
-  // verticalAlign: 'middle'
-  marginTop: '7%'
-}
 
-const invisible = {
-  visibility: 'hidden'
-}
-
-const right = {
-  float: 'right',
-}
-
-const header = {
-  marginLeft: '-4%'
-}
 
 const mapStateToProps = (state) => {
   return({
