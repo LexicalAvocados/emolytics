@@ -1,12 +1,14 @@
 import React from 'react';
 import { MemoryRouter as Router } from 'react-router-dom';
 import Enzyme from 'enzyme';
+import { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
 import { shallow } from 'enzyme';
 import { Signup } from '../client/components/auth/signup.jsx';
 import { Login } from '../client/components/auth/login.jsx';
 import { Navbar } from '../client/components/Navbar.jsx';
 import { DashboardHome } from '../client/components/creator/dashboard/dashboardHome.jsx';
+import { TesterVideo } from '../client/components/tester/TesterVideo.jsx';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -58,3 +60,7 @@ describe('<DashboardHome />', () => {
   });
 
 });
+
+describe('<TesterVideo />', () => {
+  const testerVideo = mount(<TesterVideo/>)
+})
