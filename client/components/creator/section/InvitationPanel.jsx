@@ -289,7 +289,7 @@ class InvitationPanel extends React.Component {
         <div className="testersList">
           <br/>
           <p>Available testers: {this.state.testersCopy.length}</p>
-          <Button onClick={this.inviteAll}>Invite Testers</Button>
+          <Button onClick={this.inviteAll}>Send the Invites</Button>
           <Button onClick={this.props.renderPanel}>Close Invites Panel</Button>
         </div>
       </div>
