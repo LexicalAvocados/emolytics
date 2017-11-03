@@ -33,6 +33,9 @@ class DisplaySections extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.onRef) {
+      this.props.onRef(this);
+    }
     this.setState({
       previous: this.props.currentSection.id 
     })
@@ -174,6 +177,7 @@ class DisplaySections extends React.Component {
           totalInvitedTesters={this.props.totalInvitedTesters}
           fromSectionHome={this.props.fromSectionHome}
           highlightSelected={this.highlightSelected}
+          renderPanel={this.props.renderPanel}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>
