@@ -2,6 +2,7 @@ const db = require('../../../db/index.js');
 const User = db.User;
 const FocusGroup = db.FocusGroup;
 const FocusGroupAndTester = db.FocusGroupAndTester;
+const PatreonCampaign = db.PatreonCampaign;
 const TesterAndOptions = db.TesterAndOption;
 const Notifications = db.Notification;
 const nodemailer = require('nodemailer');
@@ -22,10 +23,11 @@ exports.sendEmails = function(req, res) {
 
   let options = req.body.options;
   let invitedArr = req.body.invitedArr;
-  console.log('OPTION BEIGNGS SENT TO THE BACKEND', req.body.options); // Logged end
+  console.log('OPTION BEING SENT TO THE BACKEND', req.body.options); // Logged end
   for (var i = 0; i < invitedArr.length; i++) {
+    console.log('i:', i, 'options.length:', options.length);
     TesterAndOptions.create({
-      optionId: options[i % options.length].id,
+      optionId: options[i % (options.length - 1)].id,
       userId: invitedArr[i].id
     })
     let mailOptions = {
@@ -50,16 +52,27 @@ exports.sendEmails = function(req, res) {
 
 exports.createNewFocusGroup = (req, res) => {
   // console.log('createNewFocusGroup req.body:', req.body);
-  User.findOne({
+
+  let user = User.findOne({
     where: {
       username: req.body.creatorUsername
     }
-  })
-    .then(creator => {
+  });
+
+  if (req.body.patrons) {
+    var campaign = PatreonCampaign.findOne({
+      where: {
+        campaignId: Number(req.body.campaignId)
+      }
+    });
+  }
+
+  Promise.all([user, campaign])
+    .then(data => {
       return FocusGroup.create({
         name: req.body.focusGroupName,
-        userId: creator.id,
-        patreonCampaignId: req.body.campaignId || null
+        userId: data[0].id,
+        patreonCampaignId: (data[1] ? data[1].id : null)
       });
     })
     .then(newFocusGroup => {
@@ -77,6 +90,7 @@ exports.createNewFocusGroup = (req, res) => {
       }
     })
     .catch(err => {
+      console.log('Create new Focus Group error:', err);
       res.send(err);
     });
 };
@@ -97,7 +111,7 @@ exports.deleteFocusGroup = (req, res) => {
   FocusGroup.destroy({
     where: {
       name: req.body.focusGroup.name,
-      userId: req.body.creatorUsername
+      userId: req.body.userId
     }
   })
     .then(numOfDeletedRows => {
@@ -211,19 +225,11 @@ exports.getCreatorFocusGroups = (req, res) => {
   // console.log('getCreatorFocusGroups req.query:', req.query);
   let creatorFocusGroups = [];
 
-  User.findOne({
+  FocusGroup.findAll({
     where: {
-      id: req.query.id
+      userId: req.query.id,
     }
   })
-    .then(creator => {
-      // console.log('1st then block');
-      return FocusGroup.findAll({
-        where: {
-          userId: creator.dataValues.id,
-        }
-      });
-    })
     .then(groups => {
       // console.log('2nd then block');
       groups = groups.map(group => {
@@ -241,8 +247,7 @@ exports.getCreatorFocusGroups = (req, res) => {
         return FocusGroupAndTester.findAll({
           where: {
             focusGroupId: group.id,
-            creatorInvited: true,
-            testerInvited: true
+            creatorInvited: true
           }
         });
       }));

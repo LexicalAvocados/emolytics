@@ -40,6 +40,34 @@ export class PatreonLoginLoading extends React.Component {
           console.log('campaign:', campaign);
           this.props.actions.setPatreonCampaignInfo(campaign);
         }
+        if (isCreator) {
+          axios.get('/api/creator/getCreatorFocusGroups', {
+            params: {
+              id
+            }
+          })
+            .then(res => {
+              let focusGroups = res.data;
+              console.log('focusGroups:', focusGroups);
+              if (focusGroups.length > 0) this.props.actions.populateCreatorFocusGroups(focusGroups);
+            })
+            .catch(err => {
+              console.log('Error fetching Creator\'s Focus Groups:', err);
+            });
+        } else {
+          axios.post('/api/tester/getOptionsForTester', {
+            id,
+            mode: 'queue'
+          })
+            .then(res => {
+              let queue = res.data;
+              console.log('queue:', queue);
+              if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
+            })
+            .catch(err => {
+              console.log('Error fetching Tester Queue from database:', err);
+            })
+        }
         this.props.history.push('/');
       })
       .catch(err => {
@@ -56,14 +84,14 @@ export class PatreonLoginLoading extends React.Component {
 
     return (
       <div className='patreonLoginLoading'>
-        <h2>Thank you for {isLogin ? 'logging in' : 'signing up'} with Patreon.</h2>
+        <h2>Thank you for logging in with Patreon.</h2>
 
-        {hasExisting ?
+        {/*{hasExisting ?
           <h2>We merged your Patreon details with your existing account.</h2>
         :
-          <h2>We created a new account for you based on your Patreon details.</h2>}
+          <h2>We created a new account for you based on your Patreon details.</h2>}*/}
 
-        <h3>Your account type: {loginType === 'creator' ? 'Creator' : 'Tester'}</h3>
+        {/*<h3>Your account type: {loginType === 'creator' ? 'Creator' : 'Tester'}</h3>*/}
 
         <h3>Redirecting...</h3>
       </div>

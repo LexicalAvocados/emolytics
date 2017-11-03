@@ -44,6 +44,10 @@ class FocusGroupsPage extends React.Component {
       })
   }
 
+  componentWillUnmount() {
+    this.props.actions.setNoCurrentFocusGroup();
+  }
+
   updateTypedTesterUsername(e) {
     this.setState({typedTesterUsername: e.target.value});
   }
@@ -67,7 +71,7 @@ class FocusGroupsPage extends React.Component {
   deleteFocusGroup() {
     axios.put('/api/creator/deleteFocusGroup', {
       focusGroup: this.props.currentFocusGroup,
-      creatorUsername: this.props.loggedInUser.username
+      userId: this.props.loggedInUser.id
     })
       .then(res => {
         if (res.data) this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
@@ -190,8 +194,7 @@ class FocusGroupsPage extends React.Component {
           :
             <div className='lightPurpleModule'>
               <h3>Connect Patreon</h3>
-              <p>You may use your Patreon campaign and pledge information to
-              quickly create & curate a Group.</p>
+              <p>You may use your Patreon campaign information to quickly create & curate a Group.</p>
               <img src='patreon.jpg' className='focusGroupPatreonBtn'></img>
             </div>}
         </Col>
@@ -206,20 +209,39 @@ class FocusGroupsPage extends React.Component {
             </div>
 
             {currentFocusGroup ? (
-              <div className='lightPurpleModule'>
+              <div className='lightPurpleModuleCurrentGroup'>
                 <div className='focusGroupSubsectionTitle'>
                   <Button
                     className='focusGroupDeleteBtn'
                     bsStyle='danger'
                     onClick={this.deleteFocusGroup}
                   > Delete </Button>
-                  <h3 className='focusGroupName'>{currentFocusGroup.name}</h3>
+                  <h3>{currentFocusGroup.name}</h3>
                 </div>
 
                 <hr className='standardHR'/>
 
                 <div className='focusGroupSubsection'>
-                  <h3>Members</h3>
+                  <h4>Invite Testers</h4>
+                  <form onSubmit={this.addTesterToFocusGroup}>
+                    <FormControl
+                      className='focusGroupTesterEntry'
+                      type='text'
+                      value={this.state.typedTesterUsername}
+                      placeholder='Tester Username'
+                      onChange={this.updateTypedTesterUsername}
+                    />
+                    <Button
+                      bsStyle='primary'
+                      type='submit'
+                    > Invite Tester </Button>
+                  </form>
+                </div>
+
+                <hr className='standardHR'/>
+
+                <div className='focusGroupSubsectionBottom'>
+                  <h4>Members</h4>
 
                   {numOfPages > 1 ?
                     <div>
@@ -249,25 +271,6 @@ class FocusGroupsPage extends React.Component {
                     </ListGroup>
                   :
                     <p>No members yet :&#40; Why don't you invite some below?</p>}
-                </div>
-
-                <hr className='standardHR'/>
-
-                <div className='focusGroupSubsection'>
-                  <h3>Invite Testers</h3>
-                  <form onSubmit={this.addTesterToFocusGroup}>
-                    <FormControl
-                      className='focusGroupTesterEntry'
-                      type='text'
-                      value={this.state.typedTesterUsername}
-                      placeholder='Tester Username'
-                      onChange={this.updateTypedTesterUsername}
-                    />
-                    <Button
-                      bsStyle='primary'
-                      type='submit'
-                    > Invite Tester </Button>
-                  </form>
                 </div>
 
               </div>

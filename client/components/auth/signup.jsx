@@ -52,8 +52,8 @@ export class Signup extends React.Component {
       isCreator: this.state.isCreator
     })
       .then(res => {
-        let {username, name, age, sex, race, isCreator} = res.data.userData;
-        this.props.actions.setLoggedIn(username, name, age, sex, race, isCreator);
+        let {id, username, isCreator, credits} = res.data.userData;
+        this.props.actions.setLoggedIn(id, username, null, null, null, null, isCreator, credits);
         this.props.history.push('/');
       })
       .catch(err => {
@@ -132,7 +132,7 @@ export class Signup extends React.Component {
 
           <hr className='standardHR'/>
 
-          <p style={center}> Don't forget to select Tester/Creator!</p>
+          <p> Don't forget to select Tester/Creator!</p>
 
           <div className='oauthButtons'>
             <a href='/auth/facebook'>
@@ -152,22 +152,14 @@ export class Signup extends React.Component {
   }
 }
 
-const center = {
-  textAlign: 'center'
-};
-
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  console.log('state in signup', state)
-  return ({
-    example: state.example,
-    setLoggedIn: state.setLoggedIn,
-    router: state.router,
-    role: state.signupwithfb
-  });
-};
+const mapStateToProps = (state) => ({
+  setLoggedIn: state.setLoggedIn,
+  router: state.router,
+  role: state.signupwithfb
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)

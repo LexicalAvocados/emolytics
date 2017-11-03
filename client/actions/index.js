@@ -9,6 +9,7 @@ export const SET_CREDITS = 'SET_CREDITS';
 export const SET_PATREON_CAMPAIGN_INFO = 'SET_PATREON_CAMPAIGN_INFO';
 export const ADD_FOCUS_GROUP = 'ADD_FOCUS_GROUP';
 export const ADD_PATREON_FOCUS_GROUP = 'ADD_PATREON_FOCUS_GROUP';
+export const SET_NO_CURRENT_FOCUS_GROUP = 'SET_NO_CURRENT_FOCUS_GROUP';
 export const DELETE_FOCUS_GROUP = 'DELETE_FOCUS_GROUP';
 export const ADD_TESTER_TO_FOCUS_GROUP = 'ADD_TESTER_TO_FOCUS_GROUP';
 export const REMOVE_TESTER_FROM_FOCUS_GROUP = 'REMOVE_TESTER_FROM_FOCUS_GROUP';
@@ -95,6 +96,10 @@ export const addPatreonFocusGroup = (focusGroupName, patrons, patreonCampaignId)
   focusGroupName,
   patrons,
   patreonCampaignId
+});
+
+export const setNoCurrentFocusGroup = () => ({
+  type: SET_NO_CURRENT_FOCUS_GROUP
 });
 
 export const deleteFocusGroup = (focusGroupName) => ({
