@@ -3,7 +3,7 @@ import {Button, Row, Col} from 'react-bootstrap';
 
 const ThumbnailListInAddOption = ({ onOptionClick, option }) => (
   <div className="ThumbnailListInAddOption optionListEntry" onClick={onOptionClick} style={containerStyle}>
-      <img src={option.thumbnail} alt="" style={newOptionThumbnailStyle}/>
+      <img className="thumbnailImg" src={option.thumbnail} alt="" style={newOptionThumbnailStyle}/>
       <h4 className="closerTextLarger">{option.name}</h4>
       <p className="closerText">{option.description}</p>
   </div>
