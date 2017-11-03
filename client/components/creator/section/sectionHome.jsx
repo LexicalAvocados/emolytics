@@ -373,6 +373,12 @@ class SectionHome extends React.Component {
     var middleStyle = {
       clear: 'both'
     }
+    const top = {
+      marginTop: '10px',
+      marginBottom: '-10px',
+      marginRight: '5%',
+      float: 'right'
+    }
 
     return (
       <div className="sectionHomeContainer">
@@ -399,7 +405,7 @@ class SectionHome extends React.Component {
         <div style={middleStyle}>
 
           { !this.state.compare ? (
-            <Button onClick={this.compare}> Compare </Button>
+            <Button style={top} onClick={this.compare}> Compare </Button>
           ): (
             <p>Choose two options</p>
             // No ability to cancel. Need to heavily change this
