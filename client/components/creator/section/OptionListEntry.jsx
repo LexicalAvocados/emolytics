@@ -125,7 +125,6 @@ class OptionListEntry extends React.Component {
     this.props.incrementTotalInvitedTesters(this.state.specificTesters.length);
   }
 
-
   updateTotal(e) {
     if(e.target.value > this.props.loggedInUser.credits) {
       this.setState({
@@ -156,9 +155,9 @@ class OptionListEntry extends React.Component {
         optionId: this.props.currentOption.id,
         makePublic: this.state.makePublic
       })
-      .then((res) => {
-        console.log('res from updating public status', res)
-      })
+        .then((res) => {
+          console.log('res from updating public status', res)
+        })
     })
   }
 
@@ -174,27 +173,27 @@ class OptionListEntry extends React.Component {
       perView: this.state.perView
     };
     axios.post('/api/addCreditsToOption', body)
-    .then((res)=>{
-      // console.log('res from addCreditsToOption', res)
-      this.setState({
-        showAddCredits: false
-      })
-    })
-    .then(()=>{
-      //deduce points from user total
-      axios.post('/api/addCredits', {
-        amount: -this.state.total
-      })
       .then((res)=>{
-        // console.log('res from deducting credits from user', res);
-        let credits = this.props.loggedInUser.credits - this.state.total;
-        this.props.actions.setCredits(credits); // Redundant on first login
+        // console.log('res from addCreditsToOption', res)
         this.setState({
-          total: 0,
-          perView: 0
+          showAddCredits: false
         })
       })
-    })
+      .then(()=>{
+        //deduce points from user total
+        axios.post('/api/addCredits', {
+          amount: -this.state.total
+        })
+          .then((res)=>{
+            // console.log('res from deducting credits from user', res);
+            let credits = this.props.loggedInUser.credits - this.state.total;
+            this.props.actions.setCredits(credits); // Redundant on first login
+            this.setState({
+              total: 0,
+              perView: 0
+            })
+          })
+      })
   }
 
   showNotifications(option) {

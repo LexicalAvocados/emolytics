@@ -172,7 +172,7 @@ class AddOption extends React.Component {
         <div className="ThumbnailListInAddOption">
           <Row>
             { this.props.currentSection.options.map((option, i) => (
-               i < this.props.currentSection.options.length - 1 ? (
+              i < this.props.currentSection.options.length - 1 ? (
                 <Col md={4}>
                   <ThumbnailListInAddOption
                     option={option}
@@ -180,8 +180,8 @@ class AddOption extends React.Component {
                     index={i}
                   />
                 </Col>
-                ) : ''
-              ))}
+              ) : ''
+            ))}
           </Row>
         </div>
 
