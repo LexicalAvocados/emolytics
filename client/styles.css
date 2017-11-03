@@ -490,47 +490,58 @@ h6 {
   margin-top: 6px;
 }
 
-.TesterHomeContainer {
+.testerHomeContainer, .testerQueueContainer, .TesterBrowseContainer {
   clear: right;
   text-align: center;
   background-color: #f7f7f7;
-  padding: 3% 3% 3% 2%;
+  padding: 3% 3% 3% 3%;
   border-radius: 12px;
   overflow: auto;
-}
-
-.TesterHomeContainer a {
-  color: black;
-}
-
-.TesterQueueContainer, .TesterBrowseContainer {
-  text-align: center;
-  background-color: #f7f7f7;
-  padding: 3% 3% 3% 2%;
-  border-radius: 12px;
-  overflow: auto;
-}
-
-.TesterQueueContainer a {
-  color: black;
-}
-
-.TesterBrowseContainer a {
-  color: black;
 }
 
 .testerOptionListEntry {
-  margin-left: 3.1%;
-  margin-right: 3.1%;
   margin-bottom: 50px;
-  padding-top: 25px;
-  padding-bottom: 10px;
-  /*background-color: #d2dbdd;*/
-  background-color: #93a9c054;
-  border-color: #f2f2f2;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #e3eced;
+  border-color: #d9e0e2;
   border-width: 1px;
   border-radius: 8px;
   border-style: solid;
+  display: grid;
+  grid-template-columns: 1fr 80% 1fr;
+}
+
+.testerOptionListEntryContainer {
+  grid-column: 2 / 3;
+}
+
+.optionEntryText {
+  color: #5b5b5b;
+  text-align: left;
+}
+
+.optionEntryCreator {
+  color: #5b5b5b;
+  text-align: left;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.optionEntryCreator:hover {
+  color: #191919;
+}
+
+.optionEntryTime {
+  color: #5b5b5b;
+  text-align: left;
+  font-size: 13px;
+}
+
+.optionEntryImg {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 4px;
 }
 
 .BrowseListItem {

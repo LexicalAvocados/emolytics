@@ -42,23 +42,23 @@ class TesterHome extends React.Component {
 
   render() {
     return (
-      <div className="TesterHomeContainer">
+      <div className="testerHomeContainer">
         <h1>Welcome Back to Emolytics!</h1><br/>
         { this.props.testerQueue.length > 0 ? (
           <div>
           <h3>Queue Quick Look</h3><br/>
-          this.props.testerQueue.slice(0, 3).map((option, i) => (
+          {this.props.testerQueue.slice(0, 4).map((option, i) => (
             <Link onClick={() => {
               this.props.actions.changeTesterOption(option);
             }} key={JSON.stringify(option.name)+i} to={`/video/${option.id}`}>
-              <Col className='testerOptionListEntry' md={3}>
+              <Col md={3}>
                 <TesterOptionEntry
                   option={option}
                   index={i}
                 />
               </Col>
             </Link>
-          ))
+          ))}
           </div>
         ) : (
           <div>

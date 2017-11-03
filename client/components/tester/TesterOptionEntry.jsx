@@ -19,20 +19,43 @@ class TesterOtionEntry extends React.Component {
     window.scrollTo(0, 0);
   }
 
-  goToCreatorProfile() {
-    this.props.history.push(`/profile/:${this.props.option.CrId}`);
+  goToCreatorProfile(e) {
+    e.preventDefault();
+    this.props.history.push(`/profile${this.props.option.CrId}`);
   }
 
   render() {
-    return (
-      <div>
-        <img src={this.props.option.thumbnail} alt=""/>
-        <p>Option Name: {this.props.option.name}</p>
-        <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        <span><p>Created by: </p><p onClick={this.goToCreatorProfile}>{this.props.option.CrName}</p></span>
-      </div>
-    )
+    if (this.props.location.pathname === '/history') {
+      return (
+        <div className='testerOptionListEntry'>
+          <div className='testerOptionListEntryContainer'>
+            <img
+              src={this.props.option.thumbnail}
+              className='optionEntryImg'
+              alt=""
+            />
+            <b><div className='optionEntryText'>{this.props.option.name}</div></b>
+            <div className='optionEntryCreator' onClick={this.goToCreatorProfile}>
+              {this.props.option.CrName}
+            </div>
+            <div className='optionEntryTime'>Watched: {new Date(this.props.option.updatedAt.slice(0, 19)).toString().slice(4, 15)}</div>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className='testerOptionListEntry'>
+          <div className='testerOptionListEntryContainer'>
+            <img
+              src={this.props.option.thumbnail}
+              className='optionEntryImg'
+              alt=""
+            />
+            <div className='optionEntryText'>Assigned: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(4, 15)}</div>
+          </div>
+        </div>
+      )
+    }
   }
 }
 

@@ -1,10 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { Button, Row, Col } from 'react-bootstrap';
-=======
-import { DropdownButton, MenuItem, Button, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
->>>>>>> bugfixes
+import { DropdownButton, MenuItem, Button, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
