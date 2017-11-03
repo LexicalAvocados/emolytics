@@ -212,7 +212,6 @@ class InvitationPanel extends React.Component {
         { this.props.fromSectionHomeToInvitationPanel ? (
           this.props.noCreditsAlert.length ? (
             <div>
-              <p>The following options are low on credits:</p>
               <ListGroup>
                 {this.props.noCreditsAlert.map((option, i) => (
                   <ListGroupItem
@@ -227,7 +226,9 @@ class InvitationPanel extends React.Component {
                         </b>
                       </Col>
                       <Col md={4}>
-                        {option.totalcredits} credits
+                        <b className='lowCreditWarning'>
+                          {option.totalcredits} credits
+                        </b>
                       </Col>
                       <Col md={4}>
                         {Math.floor(option.totalcredits / option.creditsperview) || 0} views

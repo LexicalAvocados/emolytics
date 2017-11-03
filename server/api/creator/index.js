@@ -97,7 +97,7 @@ exports.deleteFocusGroup = (req, res) => {
   FocusGroup.destroy({
     where: {
       name: req.body.focusGroup.name,
-      userId: req.body.creatorUsername
+      userId: req.body.userId
     }
   })
     .then(numOfDeletedRows => {

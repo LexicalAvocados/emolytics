@@ -872,13 +872,17 @@ h2.signupHeader {
   border-style: solid;
   border-width: 1px;
   padding: 0px 20px 20px 20px;
-  margin-bottom: 20px;
   min-height: 40vh;
+  text-align: center;
 }
 
 .lowCreditListItem {
   height: 3.5vh;
   padding: 0px 15px 0px 15px;
+}
+
+.lowCreditWarning {
+  color: #d83c3c;
 }
 
 .currentSectionOptionListEntry {
@@ -937,19 +941,29 @@ h2.signupHeader {
   border-width: 1px;
 }
 
-.focusGroupSubsection {
-  margin-bottom: 75px;
-  padding: 0px 100px;
+.lightPurpleModuleCurrentGroup {
+  text-align: center;
+  background-color: #f3edff;
+  border-color: #e5d8ff;
+  border-style: solid;
+  border-width: 1px;
+  padding: 20px 20px 20px 20px;
+  margin-bottom: 20px;
 }
 
 .focusGroupSubsectionTitle {
-  margin-bottom: 75px;
   position: relative;
+  margin-bottom: 30px;
 }
 
-/*.focusGroupName {
-  position
-}*/
+.focusGroupSubsection {
+  margin-bottom: 30px;
+  padding: 3px 100px 0px 100px;
+}
+
+.focusGroupSubsectionBottom {
+  padding: 3px 100px 0px 100px;
+}
 
 .focusGroupDeleteBtn {
   position: absolute;
@@ -962,7 +976,8 @@ h2.signupHeader {
 }
 
 .focusGroupTesterListEntry {
-  font-size: 18px;
+  height: 4vh;
+  padding: 0px 15px 0px 15px;
 }
 
 button.list-group-item {
@@ -1237,6 +1252,11 @@ button.list-group-item {
 
 .carousel {
   padding-left: 5%;
+}
+
+.carouselBtn {
+  width: 100%;
+  background-color: #f7f7f7;
 }
 
 .overflowSectionX {
