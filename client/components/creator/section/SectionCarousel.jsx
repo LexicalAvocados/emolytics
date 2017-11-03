@@ -68,6 +68,11 @@ class SectionCarousel extends React.Component {
                       <p>{section.name}</p>
                       <p>{section.description}</p>
                       <Button onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}>Edit</Button>
+                      { this.props.renderPanel ? (
+                        <Button onClick={(e) => this.props.renderPanel(e, true, section)}>Invite testers</Button>
+                      ) : (
+                        null
+                      )}
                       <br/>
                     </Col>
                   </div>
@@ -80,8 +85,8 @@ class SectionCarousel extends React.Component {
                 { sectionGroup.map((section, i) => {
                   if (section !== 'End') {
                     return (
-                      <Col md={3} className="sectionsScroll" key={i}>
-                        <div onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)}>
+                      <div onClick={() => this.props.highlightSelected(section.id, this.props.fromSectionHome)} key={i + section.name}>
+                        <Col onClick={() => this.props.onSectionClick(section, this.props.fromProjectHome || null, this.props.fromSectionHome || null)} md={3} className="sectionsScroll" key={i}>
                           <p></p>
                           <div style={notifDisplayStyle}>
                             { section.notifications > 0 ? (
@@ -102,10 +107,10 @@ class SectionCarousel extends React.Component {
 
                           <h4><u>{section.name}</u></h4>
                           <p>{section.description}</p>
-                        </div>
-                        <Button onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}>Edit</Button>
-                        <br/>
-                      </Col>
+                          <Button onClick={(e) => this.props.beginEdit(e, section, this.props.fromProjectHome)}>Edit</Button>
+                          <br/>
+                        </Col>
+                      </div>
                     );
                   } else {
                     return (

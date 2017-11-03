@@ -254,7 +254,9 @@ class SectionHome extends React.Component {
     }
   }
 
-  renderPanel(opening = false) {
+  renderPanel(e, opening = false, section) {
+    e.stopPropagation();
+    this.displaySecs.onSectionClick(section, false, true);
     if (opening) {
       var noCredits = this.props.currentSection.options.reduce((acc, option) => {
         if ((option.totalcredits === 0 || option.totalcredits <= (option.creditsperview * 2)) && option !== 'End') {
@@ -266,7 +268,7 @@ class SectionHome extends React.Component {
     this.setState({
       displayPanel: !this.state.displayPanel,
       noCreditsAlert: noCredits
-    });
+    })
   }
 
   assignFocusGroup() {
@@ -381,6 +383,8 @@ class SectionHome extends React.Component {
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
             totalInvitedTesters={this.state.totalInvitedTesters}
+            renderPanel={this.renderPanel}
+            onRef={displaySecs => (this.displaySecs = displaySecs)}
           />
         </div>
 
@@ -394,9 +398,7 @@ class SectionHome extends React.Component {
           )}
 
           { !this.state.invited ? (
-            !this.state.displayPanel ? (
-              <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
-            ) : (
+            this.state.displayPanel ? (
               <InvitationPanel
                 options={this.props.currentSection.options}
                 renderInvited={this.renderInvited}
@@ -407,6 +409,8 @@ class SectionHome extends React.Component {
                 fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
                 onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
               />
+            ) : (
+              null
             )
           ) : (
             <p>Testers Invited!</p>
