@@ -716,6 +716,12 @@ h2.signupHeader {
   right: 30px;
 }
 
+.please {
+  position: absolute;
+  right: 63px;
+  top: 13px
+}
+
 .optionAnnotationsTitle {
   text-align: center;
 }

@@ -154,8 +154,6 @@ class DisplaySections extends React.Component {
   }
 
   highlightSelected(sectionId, fromProjectHome, fromSectionHome) {
-    console.log('does this fire)')
-    console.log('passssed in section', sectionId);
     if (fromSectionHome) {
       if (this.state.prev >= 0) {
         var prevHighlight = document.getElementById(this.state.prev);
