@@ -37,7 +37,6 @@ class AddOption extends React.Component {
   //   var vidUrl = this.state.url;
   //   axios.get('https://api.vimeo.com/oauth/authorize', {
   //     params: {
-
   //     }
   //   });
   // }
@@ -166,18 +165,20 @@ class AddOption extends React.Component {
               <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
             </Row>
             <Row>
-              <input type="submit" value="Upload" /><br />
+              <Button type="submit">Upload</Button><br />
             </Row>
           </form>
         </div>
         <div className="ThumbnailListInAddOption">
           <Row>
             { this.props.currentSection.options.map((option, i) => (
+              <Col md={4}>
               <ThumbnailListInAddOption
                 option={option}
                 key={i}
                 index={i}
               />
+              </Col>
             ))}
           </Row>
         </div>
