@@ -19,7 +19,8 @@ class FocusGroupsPage extends React.Component {
       typedTesterUsername: '',
       applyUsers: [],
       addTo: 'none',
-      activePage: 1
+      activePage: 1,
+      currGroupIdx: null
     };
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
@@ -30,6 +31,8 @@ class FocusGroupsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.applyFocusGroup = this.applyFocusGroup.bind(this);
     this.changeActivePage = this.changeActivePage.bind(this);
+    this.changeCurrIdx = this.changeCurrIdx.bind(this);
+    this.setCurrIdxToNewGroup = this.setCurrIdxToNewGroup.bind(this);
   }
 
   componentDidMount() {
@@ -63,8 +66,10 @@ class FocusGroupsPage extends React.Component {
       creatorUsername: this.props.loggedInUser.username
     })
       .then(res => {
-        this.props.actions.addFocusGroup(res.data.name);
         this.setState({typedFocusGroupName: ''});
+        let idx = this.setCurrIdxToNewGroup();
+        this.props.actions.addFocusGroup(res.data.name);
+        setTimeout(() => this.props.actions.changeCurrentFocusGroup(idx, this.props.focusGroups), 10);
       });
   }
 
@@ -74,8 +79,12 @@ class FocusGroupsPage extends React.Component {
       userId: this.props.loggedInUser.id
     })
       .then(res => {
-        if (res.data) this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
-        else console.log('Error deleting Group');
+        if (res.data) {
+          this.setState({currGroupIdx: null});
+          this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
+        } else {
+          console.log('Error deleting Group');
+        }
       })
       .catch(err => {
         console.log('Error deleting Group:', err);
@@ -138,6 +147,16 @@ class FocusGroupsPage extends React.Component {
     this.setState({activePage: e});
   }
 
+  changeCurrIdx(e) {
+    console.log('e:', e);
+    this.setState({currGroupIdx: e})
+  }
+
+  setCurrIdxToNewGroup() {
+    this.setState({currGroupIdx: this.props.focusGroups.length});
+    return this.props.focusGroups.length;
+  }
+
   render() {
     let focusGroups = this.props.focusGroups;
     let currentFocusGroup = this.props.currentFocusGroup;
@@ -190,7 +209,7 @@ class FocusGroupsPage extends React.Component {
           </div>
 
           {this.props.patreonCampaign.id ?
-            <FocusGroupsPatreonModule />
+            <FocusGroupsPatreonModule setCurrIdxToNewGroup={this.setCurrIdxToNewGroup}/>
           :
             <div className='lightPurpleModule'>
               <h3>Connect Patreon</h3>
@@ -203,7 +222,7 @@ class FocusGroupsPage extends React.Component {
 
             <div className='lightPurpleModule'>
               {focusGroups.length > 0 ?
-                <FocusGroupsList />
+                <FocusGroupsList changeCurrIdx={this.changeCurrIdx} currGroupIdx={this.state.currGroupIdx}/>
                 :
                 null}
             </div>

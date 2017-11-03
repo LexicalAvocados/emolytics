@@ -42,7 +42,9 @@ class FocusGroupsPatreonModule extends React.Component {
       .then(res => {
         let data = res.data;
         console.log('data:', data);
+        let idx = this.props.setCurrIdxToNewGroup();
         this.props.actions.addPatreonFocusGroup(data.group.name, data.patrons.map(patron => patron.username), data.patreonCampaignId);
+        setTimeout(() => this.props.actions.changeCurrentFocusGroup(idx, this.props.focusGroups), 10);
       })
       .catch(err => {
         console.log('Error creating Focus Group from Patreon Campaign:', err);

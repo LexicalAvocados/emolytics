@@ -57,7 +57,7 @@ class AddOption extends React.Component {
     })
       .then((data) => {
         // console.log('response from youtube', data);
-        youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.maxres.url;
+        youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.high.url;
         youTubeData.tags = data.data.items[0].snippet.tags;
 
         var unitsOfTime = ['H', 'M', 'S'];

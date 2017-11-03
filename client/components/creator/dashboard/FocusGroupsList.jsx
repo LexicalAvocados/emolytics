@@ -14,6 +14,11 @@ class FocusGroupsList extends React.Component {
     super(props);
   }
 
+  changeCurrIdx(e) {
+    console.log('e:', e);
+    this.setState({currIdx: e})
+  }
+
   render() {
     let focusGroups = this.props.focusGroups;
     let currentFocusGroup = this.props.currentFocusGroup;
@@ -25,7 +30,11 @@ class FocusGroupsList extends React.Component {
             justified
             type='radio'
             name='groups'
-            onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
+            value={this.props.currGroupIdx}
+            onChange={(e) => {
+              this.props.actions.changeCurrentFocusGroup(e, focusGroups);
+              this.props.changeCurrIdx(e);
+            }}
           >
             {focusGroups.map((group, i) => (
               <ToggleButton key={i} value={i}>
