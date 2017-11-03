@@ -696,6 +696,13 @@ h2.signupHeader {
   /*padding: 12px;*/
 }
 
+.timeAndNotifs {
+  align-items: self-end;
+  position: absolute;
+  top: 6px;
+  right: 30px;
+}
+
 .optionAnnotationsTitle {
   text-align: center;
 }
@@ -1380,4 +1387,26 @@ button.list-group-item {
 .hrStyle {
   margin-top: 4px;
   margin-bottom: 4px;
+}
+
+.projectListEntry{
+  height: 100%
+}
+
+.lowerTextToTruncate{
+  margin: 0 0 10px;
+  overflow: hidden;
+  /* height: 20px; */
+  width: 200%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upperTextToTruncate {
+  margin: 0 0 10px;
+  overflow: hidden;
+  /* height: 20px; */
+  /* width: 200%; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
