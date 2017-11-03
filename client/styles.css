@@ -441,7 +441,7 @@ h6 {
 }
 
 .AddSection {
-  padding: 0px 20px 20px 20px;    
+  padding: 0px 20px 20px 20px;
 }
 
 .CurrentProjectName {
@@ -458,7 +458,7 @@ h6 {
 }
 
 .AddOption {
-  padding: 10px 20px 20px 20px;    
+  padding: 10px 20px 20px 20px;
   background-color: #f3edff;
   border-color: #e5d8ff;
 }
@@ -514,6 +514,23 @@ h6 {
   grid-template-columns: 1fr 80% 1fr;
 }
 
+.BrowseListItem {
+  background-color: #93a9c054;
+  margin-bottom: 50px;
+  margin-right: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #e3eced;
+  border-color: #d9e0e2;
+  border-width: 1px;
+  border-radius: 8px;
+  border-style: solid;
+}
+
+.BrowseListItem:hover {
+  border-color: #bec4c6;
+}
+
 .testerOptionListEntryContainer {
   grid-column: 2 / 3;
 }
@@ -544,10 +561,6 @@ h6 {
   width: 100%;
   height: 100%;
   margin-bottom: 4px;
-}
-
-.BrowseListItem {
-  background-color: #93a9c054;
 }
 
 .testerOptionListEntry:hover {
@@ -1062,7 +1075,7 @@ button.list-group-item {
 }
 
 .invitationPanel {
-  
+
   padding: 2% 0% 2% 2%;
   background-color: white;
 }

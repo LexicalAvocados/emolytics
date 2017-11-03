@@ -23,10 +23,10 @@ const BrowseListEntry = (props) => {
         </Row>
 
         <Row>
-          <Col md={9}>
+          <Col md={8}>
             <p style={descriptionStyle}> {props.item.description} </p>
           </Col>
-          <Col md={3}>
+          <Col md={4} style={credits}>
             <a style={black}> {props.item.creditsperview} </a>
             <img src='https://image.flaticon.com/icons/svg/33/33701.svg' height={20} width={20} />
           </Col>
@@ -55,9 +55,10 @@ const creatorNameStyle = {
 const BrowseListEntryStyle = {
   height: '34vh',
   // width: '20vw',
-  width: '100%',
+  // width: '85%',
   overflow: 'scroll',
   color: 'black'
+  // margin: '3%'
   // backgroundColor: '#93a9c054'
   // textAlign: 'center'
 }
@@ -76,6 +77,11 @@ const hrStyle = {
 
 const black = {
   color: 'black'
+}
+
+const credits = {
+  color: 'black',
+  float: 'right'
 }
 
 export default BrowseListEntry
