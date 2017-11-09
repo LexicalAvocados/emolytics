@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --verbose",
     "watch": "jest --verbose --watchAll",
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "compile": "webpack -w"
   },
   "jest": {
