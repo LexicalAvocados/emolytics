@@ -11,13 +11,14 @@ const cron = require('./server/crontab.js');
 // const secret = require('./key.js').sessions.secret;
 const secret = process.env.SESSION_SECRET;
 const axios = require('axios');
+const compression = require('compression');
 
 const passport = require('passport'),
 FacebookStrategy = require('passport-facebook').Strategy;
 const User = db.User;
 
 const app = express();
-app.use(express.compress());
+app.use(compression());
 const PORT = process.env.PORT || 3000;
 
 passport.use(new FacebookStrategy({
