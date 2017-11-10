@@ -58,6 +58,7 @@
     "atob": "^2.0.3",
     "aws-sdk": "^2.133.0",
     "axios": "^0.16.2",
+    "babel-preset-minify": "^0.2.0",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.1",
