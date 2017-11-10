@@ -23,21 +23,24 @@ const Feedback = (props) => {
       </div>
       <div className="testerFeedbackData">
         <div className="rawValues">
-          <p> Watched {completion() * 100}% of video</p>
+          <p> Watched {(completion() * 100).toFixed(2)}% of video</p>
           <p>Like: {props.demographic.liked}/{props.demographic.total}</p>
+          {props.feedback ? (
+            <p> Notable comments: {props.feedback}</p>
+          ) : (
+              null
+            )}
         </div>
 
         <div className="progressBars">
           <progress max={1} value={completion()}></progress>
           <br/><br/>
           <progress max={1} value={props.demographic.liked/props.demographic.total}></progress>
+          <br />
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default Feedback;
-
-
-//          <p> Summarized comments: {props.feedback}</p>

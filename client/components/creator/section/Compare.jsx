@@ -37,7 +37,7 @@ class CompareOptions extends React.Component {
     };
 
     var heading = {
-      clear: 'right',
+      textAlign: 'center',
 
     }
 
@@ -45,22 +45,24 @@ class CompareOptions extends React.Component {
       <div>
         <div>
           <div className="sectionComparison">
-          <div style={heading}>
-            <h3>Comparison</h3>
-          </div>
-          <br/>
-          <div>
-          <Col md={6}>
-            <p>{this.props.optionsToCompare[0].name}</p>
-            <CompareCharts idx={1} option={this.props.optionsToCompare[0]}/>
-          </Col>
+            <div>
+              <Col md={6}>
+                <Col sm={12} style={heading}>
+                  <p>{this.props.optionsToCompare[0].name}</p>
+                </Col>
+                <br/>
+                <CompareCharts idx={1} option={this.props.optionsToCompare[0]}/>
+              </Col>
 
-          <Col md={6} style={divStyle}>
-            <p>{this.props.optionsToCompare[1].name}</p>
-            <CompareCharts idx={2} option={this.props.optionsToCompare[1]}/>
-          </Col>
+              <Col md={6} style={divStyle}>
+                <Col sm={12} style={heading}>
+                  <p>{this.props.optionsToCompare[1].name}</p>
+                </Col>
+                <br/>
+                <CompareCharts idx={2} option={this.props.optionsToCompare[1]}/>
+              </Col>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 

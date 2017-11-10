@@ -12,26 +12,56 @@ import * as ChangeActions from '../../actions';
 class TesterOtionEntry extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props:', props);
+    this.goToCreatorProfile = this.goToCreatorProfile.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
   }
 
-  render() {
-    return (
-      <div>
-        <img src={this.props.option.thumbnail} alt=""/>
-        <p>Option Name: {this.props.option.name}</p>
-        <p>Assigned On: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        <p>Created On: {new Date(this.props.option.createdAt.slice(0, 19)).toString().slice(0, 24)}</p>
-        <Link to={'/cprofile:'+this.props.option.CrId}>
-          <p> Created by: {this.props.option.CrName}</p>
-        </Link>
-      </div>
-    )
+  goToCreatorProfile(e) {
+    e.preventDefault();
+    this.props.history.push(`/profile${this.props.option.CrId}`);
   }
+
+  render() {
+    if (this.props.location.pathname === '/history') {
+      return (
+        <div className='testerOptionListEntry'>
+          <div className='testerOptionListEntryContainer'>
+            <img
+              src={this.props.option.thumbnail}
+              className='optionEntryImg'
+              alt=""
+            />
+            <b><div className='optionEntryText'>{this.props.option.name}</div></b>
+            <div className='optionEntryCreator' onClick={this.goToCreatorProfile}>
+              {this.props.option.CrName}
+            </div>
+            <div className='optionEntryTime'>Watched: {new Date(this.props.option.updatedAt.slice(0, 19)).toString().slice(4, 15)}</div>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className='testerOptionListEntry'>
+          <div className='testerOptionListEntryContainer'>
+            <img
+              src={this.props.option.thumbnail}
+              className='optionEntryImg'
+              alt=""
+            />
+            <div className='optionEntryText'>Assigned: {new Date(this.props.option.assignedAt.slice(0, 19)).toString().slice(4, 15)}</div>
+          </div>
+        </div>
+      )
+    }
+  }
+}
+
+const tempImgStyle = {
+  height: '50%',
+  width: '50%'
 }
 
 // React-Redux connect() boilerplate

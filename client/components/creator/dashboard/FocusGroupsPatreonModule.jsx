@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -42,7 +42,9 @@ class FocusGroupsPatreonModule extends React.Component {
       .then(res => {
         let data = res.data;
         console.log('data:', data);
+        let idx = this.props.setCurrIdxToNewGroup();
         this.props.actions.addPatreonFocusGroup(data.group.name, data.patrons.map(patron => patron.username), data.patreonCampaignId);
+        setTimeout(() => this.props.actions.changeCurrentFocusGroup(idx, this.props.focusGroups), 10);
       })
       .catch(err => {
         console.log('Error creating Focus Group from Patreon Campaign:', err);
@@ -52,13 +54,20 @@ class FocusGroupsPatreonModule extends React.Component {
   render() {
     let campaign = this.props.patreonCampaign;
     return (
-      <div>
+      <div className='lightPurpleModule'>
         <h2>Patreon Campaign</h2>
         <h3>{campaign.vanity}</h3>
-        <ul>
-          {this.state.patrons.map((patron, i) => <li key={i}>{patron.username || patron.fullName}</li>)}
-        </ul>
-        <Button bsStyle='primary' onClick={this.createFocusGroupFromCampaign}>Create Group from Campaign</Button>
+        <ListGroup>
+          {this.state.patrons.map((patron, i) => (
+            <ListGroupItem 
+              key={i}
+              className='focusGroupPatronListEntry'
+            >
+              {patron.username || patron.fullName}
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+        <Button bsStyle='primary' onClick={this.createFocusGroupFromCampaign}>Create Group</Button>
       </div>
     );
   }

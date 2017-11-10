@@ -1,5 +1,7 @@
 const express = require('express');
 const router = require('express').Router();
+// const dot = require('dotenv').config({ path: '../.env' });
+const dot = require('dotenv').config();
 const testerRoutes = require('./api/tester');
 const creatorOptionRoutes = require('./api/creator/option.js');
 const creatorSectionRoutes = require('./api/creator/section.js');
@@ -13,7 +15,7 @@ const detailedDemographicsRoutes = require('./api/creator/detailedDemographicsRo
 const creditRoutes = require('./api/tester/creditRoutes.js');
 const eyeTrackingRoutes = require('./api/creator/eyeTrackingRoutes.js');
 const optionHomeUtilityRoutes = require('./api/creator/optionHomeUtilityRoutes.js');
-const authRoutes = require('./auth/auth.js')
+const authRoutes = require('./auth/auth.js');
 const AccountInfoRoutes = require('./api/creator/updateAccountInfoRoutes.js');
 const FocusGroups = require('./api/creator/focusGroup.js');
 
@@ -105,6 +107,8 @@ router.post('/markNotificationAsSeen', indexRoutes.markNotificationAsSeen);
 
 router.get('/tester/getCreatorData', AccountInfoRoutes.getCreatorDataForPublicProfile);
 
-router.post('/generateAgeRangeObjForUserIdsArray', detailedDemographicsRoutes.generateAgeRangeObjForUserIdsArray)
+router.get('/getCreatorVideosForPublicProfile', AccountInfoRoutes.getCreatorVideosForPublicProfile)
+
+router.post('/generateAgeRangeObjForUserIdsArray', detailedDemographicsRoutes.generateAgeRangeObjForUserIdsArray);
 
 module.exports = router;

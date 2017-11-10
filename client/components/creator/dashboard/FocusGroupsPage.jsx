@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Col, Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Col, Form, FormControl, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton, Pagination, ListGroup, ListGroupItem } from 'react-bootstrap';
 import FocusGroupsList from './FocusGroupsList.jsx';
 import FocusGroupsPatreonModule from './FocusGroupsPatreonModule.jsx';
 
@@ -18,7 +18,9 @@ class FocusGroupsPage extends React.Component {
       typedFocusGroupName: '',
       typedTesterUsername: '',
       applyUsers: [],
-      addTo: 'none'
+      addTo: 'none',
+      activePage: 1,
+      currGroupIdx: null
     };
     this.updateTypedTesterUsername = this.updateTypedTesterUsername.bind(this);
     this.updateTypedFocusGroupName = this.updateTypedFocusGroupName.bind(this);
@@ -28,7 +30,9 @@ class FocusGroupsPage extends React.Component {
     this.removeTesterFromFocusGroup = this.removeTesterFromFocusGroup.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.applyFocusGroup = this.applyFocusGroup.bind(this);
-    console.log(this);
+    this.changeActivePage = this.changeActivePage.bind(this);
+    this.changeCurrIdx = this.changeCurrIdx.bind(this);
+    this.setCurrIdxToNewGroup = this.setCurrIdxToNewGroup.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +45,10 @@ class FocusGroupsPage extends React.Component {
           console.log(this);
         })
       })
+  }
+
+  componentWillUnmount() {
+    this.props.actions.setNoCurrentFocusGroup();
   }
 
   updateTypedTesterUsername(e) {
@@ -58,19 +66,25 @@ class FocusGroupsPage extends React.Component {
       creatorUsername: this.props.loggedInUser.username
     })
       .then(res => {
-        this.props.actions.addFocusGroup(res.data.name);
         this.setState({typedFocusGroupName: ''});
+        let idx = this.setCurrIdxToNewGroup();
+        this.props.actions.addFocusGroup(res.data.name);
+        setTimeout(() => this.props.actions.changeCurrentFocusGroup(idx, this.props.focusGroups), 10);
       });
   }
 
   deleteFocusGroup() {
     axios.put('/api/creator/deleteFocusGroup', {
       focusGroup: this.props.currentFocusGroup,
-      creatorUsername: this.props.loggedInUser.username
+      userId: this.props.loggedInUser.id
     })
       .then(res => {
-        if (res.data) this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
-        else console.log('Error deleting Group');
+        if (res.data) {
+          this.setState({currGroupIdx: null});
+          this.props.actions.deleteFocusGroup(this.props.currentFocusGroup.name);
+        } else {
+          console.log('Error deleting Group');
+        }
       })
       .catch(err => {
         console.log('Error deleting Group:', err);
@@ -129,97 +143,170 @@ class FocusGroupsPage extends React.Component {
       })
   }
 
+  changeActivePage(e) {
+    this.setState({activePage: e});
+  }
+
+  changeCurrIdx(e) {
+    console.log('e:', e);
+    this.setState({currGroupIdx: e})
+  }
+
+  setCurrIdxToNewGroup() {
+    this.setState({currGroupIdx: this.props.focusGroups.length});
+    return this.props.focusGroups.length;
+  }
+
   render() {
     let focusGroups = this.props.focusGroups;
     let currentFocusGroup = this.props.currentFocusGroup;
+    if (currentFocusGroup) var numOfPages = Math.ceil(currentFocusGroup.testers.length / 10) || 1;
     let appliedUsers = this.state.applyUsers.map((user, i) => {
       return (
         <div>
-          <Col md={3}>
+          <div>
             <p> {user.username} </p>
-          </Col>
-          <Col md={3}>
+          </div>
+          <div>
             <select onChange={this.handleChange}>
-                  <option name="addTo" value="none" > None </option>
-              {this.props.focusGroups.map((group, i) => {
-                return (
-                  <option name="addTo" value={group.name}>{group.name} </option>
-                  )
-              })}
+              <option name="addTo" value="none" > None </option>
+              {this.props.focusGroups.map((group, i) => (
+                <option name="addTo" value={group.name}>{group.name}</option>
+              ))}
             </select>
-          </Col>
-          <Col md={3}>
+          </div>
+          <div>
             <button onClick={() => {
               this.applyFocusGroup(user)
             }}> Add </button>
-          </Col>
+          </div>
         </div>
         )
     })
 
     return (
-      <div>
-        {this.props.patreonCampaign.id ? <FocusGroupsPatreonModule /> : null}
-        <h2>New Group</h2>
-        <form onSubmit={this.createNewFocusGroup}>
-          <FormControl
-            type='text'
-            value={this.state.typedFocusGroupName}
-            placeholder='Group Name'
-            onChange={this.updateTypedFocusGroupName}
-          />
-          <Button bsStyle='primary' type='submit'>Create Group</Button>
-        </form>
-        <div>
-          <h2> Applied People </h2>
-          {appliedUsers}
-        </div>
-        <br/>
+      <div className='focusGroupPage'>
 
-        {focusGroups.length > 0 ?
-          <FocusGroupsList />
-          :
-          null}
+        <Col md={3}>
 
-        {currentFocusGroup ?
-          <div>
-
-            <Button
-              bsSize='xsmall'
-              bsStyle='danger'
-              onClick={this.deleteFocusGroup}
-            > Delete Group </Button>
-
-            <h2>Add Tester to {currentFocusGroup.name}</h2>
-
-            <form onSubmit={this.addTesterToFocusGroup}>
-              <FormControl
-                type='text'
-                value={this.state.typedTesterUsername}
-                placeholder='Tester Username'
-                onChange={this.updateTypedTesterUsername}
-              />
-              <Button bsStyle='primary' type='submit'>Add Tester</Button>
+          <div className='lightPurpleModule'>
+            <h3>New Group</h3>
+            <form onSubmit={this.createNewFocusGroup}>
+              <Col>
+                <FormControl
+                  className='focusGroupNameEntry'
+                  type='text'
+                  value={this.state.typedFocusGroupName}
+                  placeholder='Group Name'
+                  onChange={this.updateTypedFocusGroupName}
+                />
+              </Col>
+              <Button
+                bsStyle='primary'
+                type='submit'
+              > Create Group </Button>
             </form>
-
-            <h2>{currentFocusGroup.name} Members</h2>
-
-            {currentFocusGroup.testers.length > 0 ?
-              <ul className='focusGroupTesterList'>
-                {currentFocusGroup.testers.map((tester, i) => (
-                  <li
-                    className='focusGroupTesterListEntry'
-                    key={i}
-                    onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
-                  > {tester} </li>
-                ))}
-              </ul>
-              :
-              'none'}
-
           </div>
+
+          {this.props.patreonCampaign.id ?
+            <FocusGroupsPatreonModule setCurrIdxToNewGroup={this.setCurrIdxToNewGroup}/>
           :
-          null}
+            <div className='lightPurpleModule'>
+              <h3>Connect Patreon</h3>
+              <p>You may use your Patreon campaign information to quickly create & curate a Group.</p>
+              <img src='patreon.jpg' className='focusGroupPatreonBtn'></img>
+            </div>}
+        </Col>
+
+        <Col md={6}>
+
+            <div className='lightPurpleModule'>
+              {focusGroups.length > 0 ?
+                <FocusGroupsList changeCurrIdx={this.changeCurrIdx} currGroupIdx={this.state.currGroupIdx}/>
+                :
+                null}
+            </div>
+
+            {currentFocusGroup ? (
+              <div className='lightPurpleModuleCurrentGroup'>
+                <div className='focusGroupSubsectionTitle'>
+                  <Button
+                    className='focusGroupDeleteBtn'
+                    bsStyle='danger'
+                    onClick={this.deleteFocusGroup}
+                  > Delete </Button>
+                  <h3>{currentFocusGroup.name}</h3>
+                </div>
+
+                <hr className='standardHR'/>
+
+                <div className='focusGroupSubsection'>
+                  <h4>Invite Testers</h4>
+                  <form onSubmit={this.addTesterToFocusGroup}>
+                    <FormControl
+                      className='focusGroupTesterEntry'
+                      type='text'
+                      value={this.state.typedTesterUsername}
+                      placeholder='Tester Username'
+                      onChange={this.updateTypedTesterUsername}
+                    />
+                    <Button
+                      bsStyle='primary'
+                      type='submit'
+                    > Invite Tester </Button>
+                  </form>
+                </div>
+
+                <hr className='standardHR'/>
+
+                <div className='focusGroupSubsectionBottom'>
+                  <h4>Members</h4>
+
+                  {numOfPages > 1 ?
+                    <div>
+                      <Pagination
+                        prev
+                        next
+                        ellipsis
+                        boundaryLinks
+                        items={numOfPages}
+                        maxButtons={10}
+                        activePage={this.state.activePage}
+                        onSelect={this.changeActivePage}
+                      />
+                    </div>
+                  :
+                    null}
+
+                  {currentFocusGroup.testers.length > 0 ?
+                    <ListGroup className='focusGroupTesterList'>
+                      {currentFocusGroup.testers.slice((numOfPages - 1) * 10, numOfPages * 10).map((tester, i) => (
+                        <ListGroupItem
+                          className='focusGroupTesterListEntry'
+                          key={i}
+                          onClick={this.removeTesterFromFocusGroup.bind(null, tester)}
+                        > {tester} </ListGroupItem>
+                      ))}
+                    </ListGroup>
+                  :
+                    <p>No members yet :&#40; Why don't you invite some below?</p>}
+                </div>
+
+              </div>
+            ) : null}
+
+        </Col>
+
+        <Col md={3}>
+          <div className='lightPurpleModule'>
+            <h3> Tester Requests </h3>
+            {this.state.applyUsers.length > 0 ?
+              {appliedUsers}
+            :
+              <p>You currently have no pending requests from
+              Testers to join one of your groups.</p>}
+          </div>
+        </Col>
 
       </div>
     );

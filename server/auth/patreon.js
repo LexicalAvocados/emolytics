@@ -6,9 +6,8 @@ const PatreonCampaign = require('../../db').PatreonCampaign;
 const patreon = require('patreon');
 const patreonAPI = patreon.patreon;
 const patreonOAuth = patreon.oauth;
-const patreonKeys = require('../../key.js').patreon;
 
-const oauthClient = patreonOAuth(patreonKeys.clientId, patreonKeys.clientSecret);
+const oauthClient = patreonOAuth(process.env.PATREON_CLIENTID, process.env.PATREON_CLIENTSECRET);
 
 exports.handleOAuth = (req, res, mode) => {
   console.log('req.url:', req.url);
@@ -42,7 +41,7 @@ exports.handleOAuth = (req, res, mode) => {
       console.log('data store received from patreon:', store.graph);
       let patreonAccount = store.graph.user[Object.keys(store.graph.user)[0]];
       if (hasCampaign) var patreonCampaign = store.graph.campaign[Object.keys(store.graph.campaign)[0]];
-      
+
       return User.findOne({
         where: {
           email: patreonAccount.email
@@ -88,12 +87,12 @@ exports.handleOAuth = (req, res, mode) => {
 };
 
 exports.getUserInfoAfterOAuth = (req, res) => {
-  sequelize.query(`SELECT "users"."id", "users"."username", "users"."name", "users"."age", 
-                  "users"."sex", "users"."race", "users"."isCreator", "users"."credits", 
-                  "users"."patreonId", "patreonCampaigns"."campaignId", 
-                  "users"."patreonAbout", "users"."patreonVanity", "patreonCampaigns"."creationName", 
-                  "patreonCampaigns"."isPlural", "patreonCampaigns"."mainVideoUrl", "patreonCampaigns"."patronCount", 
-                  "patreonCampaigns"."pledgeUrl", "patreonCampaigns"."publishedAt", "patreonCampaigns"."summary" 
+  sequelize.query(`SELECT "users"."id", "users"."username", "users"."name", "users"."age",
+                  "users"."sex", "users"."race", "users"."isCreator", "users"."credits",
+                  "users"."patreonId", "patreonCampaigns"."campaignId",
+                  "users"."patreonAbout", "users"."patreonVanity", "patreonCampaigns"."creationName",
+                  "patreonCampaigns"."isPlural", "patreonCampaigns"."mainVideoUrl", "patreonCampaigns"."patronCount",
+                  "patreonCampaigns"."pledgeUrl", "patreonCampaigns"."publishedAt", "patreonCampaigns"."summary"
                   FROM "users" LEFT OUTER JOIN "patreonCampaigns"
                   ON "users"."id" = "patreonCampaigns"."userId"
                   WHERE "users"."username" = '${req.session.username}';`)

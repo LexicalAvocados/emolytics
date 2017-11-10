@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import axios from 'axios';
 import pad from 'array-pad';
-import {ButtonToolbar, ToggleButtonGroup, ToggleButton, Col}  from 'react-bootstrap';
+import {ButtonToolbar, ToggleButtonGroup, ToggleButton, Col, Row, Grid}  from 'react-bootstrap';
 import $ from 'jquery';
 import Slider, { Range } from 'rc-slider';
 import Select from 'react-select';
@@ -47,12 +47,12 @@ class OptionHome extends React.Component {
       heatmapSetting: 1,
       videoTime: 0,
       playVideoForHM: false,
-      optionEmotionObj: { 
+      optionEmotionObj: {
         emotionPerc: {
           Contempt: 0,
-        }, 
-        attention: ['Attention'], 
-        count:[0] 
+        },
+        attention: ['Attention'],
+        count:[0]
       },
       demographicStats: {},
       allDemographicsObj: {}
@@ -80,6 +80,35 @@ class OptionHome extends React.Component {
   componentWillMount() {
     // Change the Option to display
     this.props.actions.changeOption(this.props.currentSection.option);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.currentSection.option.youtubeUrl !== nextProps.currentSection.option.youtubeUrl) {
+      axios.post('/api/getFrames', {
+        optionId: nextProps.currentSection.option.id
+      })
+        .then((res) => {
+          console.log('GET FRAMES', res.data);
+
+          this.setState({
+            optionEmotionObj: res.data
+          }, () => {
+            console.log('run generate charts');
+            this.calculateCompletionPerc()
+            this.generateCharts();
+          })
+        })
+
+      axios.post('api/option/getAllAnnotations', {
+        option: nextProps.currentOption
+      })
+        .then(data => {
+          var temp = {
+            annotations: data.data
+          }
+          this.props.actions.changeAnnotations(temp);
+        })
+    }
   }
 
 
@@ -148,6 +177,14 @@ class OptionHome extends React.Component {
         })
       })
 
+    axios.get('/api/getFeedback', { params: { optionId: this.props.currentSection.option.id }})
+    .then((summary) =>  {
+      // console.log
+      this.props.currentSection.option.feedback = summary.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
 
     // Get all of the annotations associated with the selected option
@@ -242,39 +279,83 @@ class OptionHome extends React.Component {
   }
 
 
-  generateCharts(lineGraphData) {
-    console.log('run generate charts');
-      var lineData = {
-        data: lineGraphData
-      }
-      this.props.actions.changeLineGraphData(lineData);
-      // c3.select('.optionChart').unload();
-      var lineGraph = c3.generate({
-        bindto: '.optionChart',
-        selection: {
-          enabled: true
-        },
-        data: {
-          onclick: (d) => {
-            let clickedTimestamp = d.x.toString();
-            this.setState({
-              timestamp: clickedTimestamp
-            }, () => {
-              var player = this.refs.player;
-              console.log(player);
-              player.seekTo(this.state.timestamp)
-            })
+  generateCharts() {
+      // this.props.actions.changeLineGraphData(lineData);
+
+      if (this.state.sideNavSelection === 'attention') {
+        var arr = []
+        this.state.optionEmotionObj.attention.forEach((elem, i) => {
+          i !== 0 ? arr.push(parseFloat(parseFloat(elem).toFixed(2))) : arr.push(elem);
+
+        })
+        console.log(this.state.sideNavSelection, arr);
+        var lineGraph = c3.generate({
+          bindto: '.optionChart',
+          selection: {
+            enabled: true
           },
-          columns: this.state.optionEmotionObj.emotionAvg,
-        },
-        axis: {
-          y: {
-            show: false
-          }
-        },
-      });
+          data: {
+            onclick: (d) => {
+              let clickedTimestamp = d.x.toString();
+              this.setState({
+                timestamp: clickedTimestamp
+              }, () => {
+                var player = this.refs.player;
+                console.log(player);
+                player.seekTo(this.state.timestamp)
+              })
+            },
+            columns: [arr],
+          },
+          axis: {
+            y: {
+              show: true
+            }
+          },
+        });
+
+      } else {
+        var lineGraph = c3.generate({
+          bindto: '.optionChart',
+          selection: {
+            enabled: true
+          },
+          data: {
+            onclick: (d) => {
+              let clickedTimestamp = d.x.toString();
+              this.setState({
+                timestamp: clickedTimestamp
+              }, () => {
+                var player = this.refs.player;
+                console.log(player);
+                player.seekTo(this.state.timestamp)
+              })
+            },
+            columns: this.state.optionEmotionObj.emotionAvg,
+          },
+          axis: {
+            y: {
+              show: false
+            }
+          },
+        });
+
+      }
+
       this.setState({
         graph: lineGraph
+      }, () => {
+        // if (this.state.sideNavSelection == 'annotations') {
+        //   var player = this.refs.player1;
+        //   this.setState({
+        //     player: player
+        //   })
+        // } else {
+        //   var player = this.refs.player;
+        //   this.setState({
+        //     player: player
+        //   })
+        // }
       })
       // this.forceUpdate();
   }
@@ -305,12 +386,17 @@ class OptionHome extends React.Component {
   };
 
   lineGraphDataSwitch() {
+
     if (this.state.sideNavSelection === 'attention') {
-      this.generateCharts(this.state.attention);
+      console.log('SWITCH');
+      this.generateCharts();
+
     }
     else if (this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'emotions' || this.state.sideNavSelection == 'annotations') {
       this.generateCharts(this.state.emotionsArrForRender)
+
     }
+
   };
 
   recalculateChartsBasedOnUserSelect(userIdsArray){
@@ -426,7 +512,7 @@ class OptionHome extends React.Component {
 
       <div className='optionAnalyticsContainer'>
         { this.props.currentSection.id === 0 ? (
-          <p>This is an option! Yay. Now try to compare stuff</p>
+          <h4 className="demoWelcomeHeader">Below you can find all the data we've collected for the option you just clicked on. Using the dropdown to the right, you can filter the information being displayed. When your done looking at the analytics for this video, try clicking the compare button to the left.</h4>
         ) : (
           null
         )}
@@ -436,10 +522,10 @@ class OptionHome extends React.Component {
             <option value="attention">Attention</option>
             <option value="feedback">Feedback</option>
             <option value="emotions">Emotion</option>
-            <option value="settings">Settings</option>
             <option value="annotations">Annotations</option>
             <option value="detailedDemographics">Detailed Demographics</option>
             <option value="heatmap">Eye Tracking</option>
+            <option value="settings">Settings</option>
           </select>
         </div>
 
@@ -449,7 +535,7 @@ class OptionHome extends React.Component {
             {(this.state.sideNavSelection === 'overview' || this.state.sideNavSelection === 'attention' || this.state.sideNavSelection === 'annotations')  ?
               (
                 <div className='optionHomeTop'>
-                  <Col xs={12}>
+                  <Col xs={this.state.sideNavSelection === "annotations" ? 7 : 12 }>
                     <div className="optionHomeContainer">
                       <div className="optionPlayer">
                         <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
@@ -473,7 +559,7 @@ class OptionHome extends React.Component {
 
           <div className="optionHomeBottom">
             {this.state.sideNavSelection === 'overview' ?
-              
+
               (<Overview
                 optionEmotionObj={this.state.optionEmotionObj}
                 demographic={this.state.demographicStats}
@@ -529,7 +615,14 @@ class OptionHome extends React.Component {
             ) : ''}
 
             {this.state.sideNavSelection === 'annotations' ? (
-                <Annotations optionEmotionObj={this.state.optionEmotionObj} graph={this.state.graph} player={this.state.player}/>
+                <div className="optionHomeAnnotationsDiv">
+
+                  <Col md={5}>
+                    <div className="optionHomeRight">
+                      <Annotations optionEmotionObj={this.state.optionEmotionObj} graph={this.state.graph} player={this.state.player}/>
+                    </div>
+                  </Col>
+                </div>
             ) : ''}
 
             {this.state.sideNavSelection === 'detailedDemographics' ? (
@@ -542,40 +635,42 @@ class OptionHome extends React.Component {
 
             <div className='heatmapComponentContainer' style={heatmapComponentContainerStyle}>
 
-              <div className='videoPlayerUnder' style={videoPlayerUnderStyle}>
-                <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
-                  ref="player"
-                  progressFrequency={1000} onProgress={this.updateProgress}
-                  playing={this.state.playVideoForHM}
-                  controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
-                  config={{
-                    youtube: {
-                      playerVars: { showinfo: 1}
-                    }
-                  }}/>
-              </div>
+                  <div className='videoPlayerUnder' style={videoPlayerUnderStyle}>
+                    <ReactPlayer url={this.props.currentSection.option.youtubeUrl}
+                      ref="player"
+                      progressFrequency={1000} onProgress={this.updateProgress}
+                      playing={this.state.playVideoForHM}
+                      controls={true} height="90%" width='95%' className='optionPlayer' onDuration={this.setDuration}
+                      config={{
+                        youtube: {
+                          playerVars: { showinfo: 1}
+                        }
+                      }}/>
+                    </div>
 
-              <div className='heatmapSuperimposed' style={heatmapSuperimposedStyle}>
-                <HeatMap option={this.props.currentSection.option} setting={this.state.heatmapSetting} time={this.state.videoTime}/>
-              </div>
+                    <div className='heatmapSuperimposed' style={heatmapSuperimposedStyle}>
+                      <HeatMap option={this.props.currentSection.option} setting={this.state.heatmapSetting} time={this.state.videoTime}/>
+                    </div>
 
-              <div className='buttons' style={buttonStyle}>
-                {this.state.heatmapSetting === 2 ? (
-                  <div style={sliderStyle}>
-                    <Slider max={this.state.duration} onChange={this.sliderCallback} value={Math.floor(this.state.videoTime)}/>
-                    <img src={this.playVideoButtonIcon()} height={20} width={20}
-                         style={iconStyle} onClick={this.playVideoButtonCallback} className='playPauseIcon'></img>
+                  <div className='buttons' style={buttonStyle}>
+                    {this.state.heatmapSetting === 2 ? (
+                      <div style={sliderStyle}>
+                        <Slider max={this.state.duration} onChange={this.sliderCallback} value={Math.floor(this.state.videoTime)}/>
+                        <img src={this.playVideoButtonIcon()} height={20} width={20}
+                          style={iconStyle} onClick={this.playVideoButtonCallback} className='playPauseIcon'></img>
+                      </div>
+                    ): ''}
+                    <br/><br/>
+                    <ButtonToolbar>
+                      <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
+                        <ToggleButton value={1}>Aggregate</ToggleButton>
+                        <ToggleButton value={2}>Over Time</ToggleButton>
+                      </ToggleButtonGroup>
+                    </ButtonToolbar>
                   </div>
-                ): ''}
-                <br/><br/>
-                <ButtonToolbar>
-                  <ToggleButtonGroup type="radio" name='aggtime' defaultValue={1} onChange={this.handleHeatmapData}>
-                    <ToggleButton value={1}>Aggregate</ToggleButton>
-                    <ToggleButton value={2}>Over Time</ToggleButton>
-                  </ToggleButtonGroup>
-                </ButtonToolbar>
-              </div>
-              <br/><br/><br/><br/><br/><br/>
+                  <br/><br/><br/><br/><br/><br/>
+
+
           </div>
 
         )
@@ -583,6 +678,10 @@ class OptionHome extends React.Component {
       </div>
     )
   }
+}
+
+const col10Style = {
+  marginBottom: "20px"
 }
 
 const iconStyle = {
@@ -602,38 +701,45 @@ const sliderStyle = {
 }
 
 const heatmapComponentContainerStyle = {
-  width: "86%",
+  width: "100%%",
   height: "100%",
   position: "relative",
-  marginLeft: '5%'
+  // marginLeft: '5%'
 }
 
 const videoPlayerUnderStyle = {
   width: "100%",
-  height: "100%",
+  marginRight: "2.5%",
+  marginLeft: "2.5%",
+  height: "65vh",
   position: "absolute",
   top: '0',
   left: '0'
 }
 
 const heatmapSuperimposedStyle = {
-  width: "100%",
-  height: "100%",
+
+  height: "65vh",
   position: "absolute",
   top: '0',
   left: '0',
-  marginTop: '6%',
-  zIndex: "100"
+  // marginTop: '6%',
+  zIndex: "10",
+  width: "85%",
+  marginLeft: '12%',
+  marginRight: '3%'
 }
 
 const buttonStyle = {
   position: 'absolute',
-  top: '84%',
+  top: '90%',
   left: '40%',
-  zIndex: '102'
+  marginTop: '32%',
+  zIndex: '30'
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return ({
     router: state.router,
     currentProject: state.currentProject,

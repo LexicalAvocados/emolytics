@@ -14,22 +14,32 @@ class FocusGroupsList extends React.Component {
     super(props);
   }
 
+  changeCurrIdx(e) {
+    console.log('e:', e);
+    this.setState({currIdx: e})
+  }
+
   render() {
     let focusGroups = this.props.focusGroups;
     let currentFocusGroup = this.props.currentFocusGroup;
     return (
       <div>
-        <h2>Your Groups</h2>
+        {this.props.location.pathname === '/groups' ? <h3>Your Groups</h3> : null}
         <ButtonToolbar className="focusGroupButtonToolbar">
           <ToggleButtonGroup
+            justified
             type='radio'
             name='groups'
-            onChange={(e) => this.props.actions.changeCurrentFocusGroup(e, focusGroups)}
+            value={this.props.currGroupIdx}
+            onChange={(e) => {
+              this.props.actions.changeCurrentFocusGroup(e, focusGroups);
+              this.props.changeCurrIdx(e);
+            }}
           >
             {focusGroups.map((group, i) => (
               <ToggleButton key={i} value={i}>
                 <span>{group.name + ' '}</span>
-                {group.patreonCampaignId ? <img src='patreon_badge.png' height={16} width={16}></img> : null}
+                {group.patreonCampaignId ? <img src='patreon_badge.png' height={20} width={20}></img> : null}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>

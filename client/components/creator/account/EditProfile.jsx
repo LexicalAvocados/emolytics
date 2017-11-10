@@ -16,15 +16,18 @@ class EditProfile extends React.Component {
       picture: '',
       bio: '',
       video: '',
+      title: '',
       submitted: false
     };
     this.handlePictureChange = this.handlePictureChange.bind(this);
     this.handleBioChange = this.handleBioChange.bind(this);
     this.handleVideoChange = this.handleVideoChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
   }
 
   componentDidMount() {
+    console.log('LOGGED IN USER')
     axios.get('/api/tester/getCreatorData', {
       params: {
         uid: this.props.loggedInUser.id
@@ -37,6 +40,7 @@ class EditProfile extends React.Component {
         bio: res.data.aboutme,
         name: res.data.name || res.data.username,
         video: res.data.showcasevideo,
+        title: res.data.title
       })
     })
   }
@@ -59,12 +63,19 @@ class EditProfile extends React.Component {
     })
   }
 
+  handleTitleChange(e) {
+    this.setState({
+      title: e.target.value
+    })
+  }
+
   handleSubmit() {
     //axios call to do to update
     axios.post('/api/creator/updateCreatorBio', {
       picture: this.state.picture,
       aboutme: this.state.bio,
-      video: this.state.video
+      video: this.state.video,
+      title: this.state.title
     })
     .then( (res) => {
       console.log('res from updating creator profile info', res)
@@ -89,6 +100,16 @@ class EditProfile extends React.Component {
               </Col>
               <Col sm={4} md={4}>
                 <FormControl type='text' value={this.state.picture} onChange={this.handlePictureChange} placeholder='Publicly accessible url'/>
+              </Col>
+            </Row>
+
+            <br/><br/>
+            <Row>
+              <Col sm={1} md={1}>
+                <ControlLabel> Title </ControlLabel>
+              </Col>
+              <Col sm={4} md={4}>
+                <FormControl type='text' value={this.state.title} onChange={this.handleTitleChange} placeholder='eg. Ad producer'/>
               </Col>
             </Row>
 
@@ -126,7 +147,7 @@ class EditProfile extends React.Component {
                 <Row>
                   <Col sm={2} md={2}>
                     <p> Your account was updated! </p>
-                    <Link to={'cprofile:'+this.props.loggedInUser.id}>
+                    <Link to={'profile:'+this.props.loggedInUser.id}>
                       <p> Check out your public profile</p>
                     </Link>
                   </Col>

@@ -19,7 +19,10 @@ class DisplaySections extends React.Component {
       splitSections: [],
       showAddSection: false,
       showEdit: false,
-      idOfClickedOnSection: null
+      idOfClickedOnSection: null,
+      previous: null,
+      prev: -1,
+      transition: ''
     };
     this.revealEdit = this.revealEdit.bind(this);
     this.revealAddSection = this.revealAddSection.bind(this);
@@ -27,9 +30,16 @@ class DisplaySections extends React.Component {
     this.splitSections = this.splitSections.bind(this);
     this.deleteSection = this.deleteSection.bind(this);
     this.beginEdit = this.beginEdit.bind(this);
+    this.highlightSelected = this.highlightSelected.bind(this);
   }
 
   componentDidMount() {
+    if (this.props.onRef) {
+      this.props.onRef(this);
+    }
+    this.setState({
+      previous: this.props.currentSection.id 
+    })
     this.splitSections();
     if (this.props.currentProject.id !== 0) { // Clear for all but demo
       this.props.currentSection.hidden = {display: 'none'};
@@ -38,6 +48,7 @@ class DisplaySections extends React.Component {
       this.props.currentSection.hidden = {};
     }
   }
+
 
 
   onSectionClick(obj, fromProjectHome, fromSectionHome) { 
@@ -61,10 +72,17 @@ class DisplaySections extends React.Component {
       });
     if (fromProjectHome) {
       this.props.collapse();
+      // console.log(this.props.currentSection);
+      // var a = document.getElementById(this.props.currentSection.id);
+      // a.style.backgroundColor = '#e1e4ea';
+
     }
-    if (fromSectionHome) {
+    if (fromSectionHome && obj.id !== this.state.previous) {
       this.props.clearOnNewSection();
     }
+    this.setState({
+      previous: obj.id
+    });
   }
 
   splitSections() {
@@ -116,8 +134,13 @@ class DisplaySections extends React.Component {
     });
   }
 
-  beginEdit(section) {
+  beginEdit(e, section, fromProjectHome) {
+    e.stopPropagation();
     this.props.actions.changeCurrentSection(section);
+    if (!fromProjectHome) {
+      this.onSectionClick(section, this.props.fromProjectHome, this.props.fromSectionHome);
+      this.highlightSelected(section.id, true);
+    }
     this.setState({
       showEdit: !this.state.showEdit,
       idOfClickedOnSection: section.id
@@ -128,6 +151,27 @@ class DisplaySections extends React.Component {
     this.setState({
       showEdit: !this.state.showEdit,
     });
+  }
+
+  highlightSelected(sectionId, fromProjectHome, fromSectionHome) {
+    if (fromSectionHome) {
+      if (this.state.prev >= 0) {
+        var prevHighlight = document.getElementById(this.state.prev);
+        prevHighlight.style.backgroundColor = 'white';
+      }
+      var a = document.getElementById(sectionId);
+      this.setState({
+        prev: sectionId
+      });
+      a.style.backgroundColor = '#e1e4ea';
+    }
+    // if (fromProjectHome) { // WORK ON THIS IF YOU HAVE TIME LATER 
+    //   var b = document.getElementById(sectionId);
+    //   this.setState({
+    //     prev: sectionId
+    //   });
+    //   b.style.backgroundColor = '#e1e4ea';
+    // }
   }
 
   render() {
@@ -144,6 +188,8 @@ class DisplaySections extends React.Component {
           fromProjectHome={this.props.fromProjectHome}
           totalInvitedTesters={this.props.totalInvitedTesters}
           fromSectionHome={this.props.fromSectionHome}
+          highlightSelected={this.highlightSelected}
+          renderPanel={this.props.renderPanel}
         />
 
         <Modal bsSize="large" show={this.state.showAddSection} onHide={this.revealAddSection}>

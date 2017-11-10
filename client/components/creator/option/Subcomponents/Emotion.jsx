@@ -1,5 +1,9 @@
 import React from 'react';
 import c3 from 'c3';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ChangeActions from '../../../../actions';
 
 class Emotion extends React.Component {
   constructor(props) {
@@ -10,11 +14,13 @@ class Emotion extends React.Component {
     }
     this.generateCharts = this.generateCharts.bind(this);
     this.calcMaxEmotion = this.calcMaxEmotion.bind(this);
-
+    console.log('Emotion', this);
   }
 
   componentDidMount() {
     this.generateCharts();
+    console.log('match params', this.props.match);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,7 +58,7 @@ class Emotion extends React.Component {
       let highest = { emotion: null, avg: 0 }
       for (var feeling in emotions) {
         // console.log('feeling', emotions[feeling])
-        if (emotions[feeling] > highest.avg && feeling != 'time') {
+        if (emotions[feeling] > highest.avg && feeling != 'time' && feeling != 'Attention' && feeling != 'Count') {
           highest.emotion = feeling;
           highest.avg = emotions[feeling];
         }
@@ -69,12 +75,16 @@ class Emotion extends React.Component {
 
     return (
       <div className="testerEmotion">
+        { this.props.match.path === "/section:id" ? (
+          <div>
         <div className="optionTitle">
-          <h4> <small> Emotions </small> </h4>
+          <h4> <small> Demographics </small> </h4>
         </div>
         <hr/>
+        </div>
+        ) : ""
+        }
         <p style={center}> Most Prevalent Emotion: {this.calcMaxEmotion()}</p>
-        <p className='chartHeader'> Overall Emotion Breakdown: </p>
         <div className='emotionChart'></div>
       </div>
     )
@@ -86,4 +96,16 @@ class Emotion extends React.Component {
 
 
 
-export default Emotion;
+const mapStateToProps = (state) => ({
+  loggedInUser: state.loggedInUser,
+  router: state.router
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(ChangeActions, dispatch)
+});
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Emotion));

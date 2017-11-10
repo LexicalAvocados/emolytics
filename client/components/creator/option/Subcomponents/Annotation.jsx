@@ -120,7 +120,7 @@ class Annotations extends React.Component {
       // console.log(test, emotion)
       if (emotion) {
         return (
-          <p> {emotion}: {test} </p>
+          <p> {emotion}: {test.toFixed(3)} </p>
         );
       } else {
         return (
@@ -140,7 +140,7 @@ class Annotations extends React.Component {
       });
       if (emotion) {
         return (
-          <p> {emotion}: {test} </p>
+          <p> {emotion}: {test.toFixed(3)} </p>
         );
       } else {
         return (
@@ -153,6 +153,7 @@ class Annotations extends React.Component {
 
   preview(e) {
     e.preventDefault();
+    console.log(this.props.player, this.state.time);
     this.props.player.seekTo(this.state.time);
   }
 
@@ -166,20 +167,13 @@ class Annotations extends React.Component {
         <div onClick={() => {
           this.zoom(ann);
         }} className="annotations">
-          <Col md={6}>
-            <p> Start: {Math.floor(ann.time/60)}:{ann.time%60 < 10 ? '0' + ann.time%60 : ann.time%60}  </p>
-            {ann.end ? (<p> End: {Math.floor(ann.end/60)}:{ann.end%60 < 10 ? '0' + ann.end%60 : ann.end%60} </p>)  : null}
-            <p> Emotion: {ann.emotion} </p>
-            <p> Description: {ann.desc} </p>
-
-          </Col>
-          <Col md={6}>
-
-            <p> {`Expected Emotion Score: ${(this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time] + this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time])/2}`} </p>
-
+          <Col sm={12}>
+            <p> <b> {ann.emotion} </b> [{Math.floor(ann.time/60)}:{ann.time%60 < 10 ? '0' + ann.time%60 : ann.time%60} {ann.end ? `- ${Math.floor(ann.end/60)}:${ann.end%60 < 10 ? '0' + ann.end%60 : ann.end%60}` : ""}] </p>
+            <p> <small> {ann.desc} </small> </p>
+            <hr className="hrStyle"/>
+            <p> {`Expected Emotion: ${((this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time] + this.props.optionEmotionObj.emotionAvg[this.state[ann.emotion]][ann.time])/2).toFixed(3)}`} </p>
             <p> {`Highest Emotion:`} </p>
             {this.findLargest(ann)}
-            
           </Col>
         </div>
       );
@@ -188,11 +182,18 @@ class Annotations extends React.Component {
       float: 'right',
       marginRight: '16px'
     };
+    var hrStyle = {
+      border: '0',
+      height: '1px',
+      backgroundImage: 'linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0))',
+      marginTop: '0px',
+      marginBottom: '0px'
+    }
     return (
       <Col md={12}>
-        <h3 className="optionAnnotationsTitle"> Annotations </h3>
+        
         <div className="optionAnnotations">
-          <div className="annotationForm">
+          <div className="annotationForm optionContainer">
             <h5> Add Annoation </h5>
             <form>
               <label> 
@@ -223,9 +224,9 @@ class Annotations extends React.Component {
                 <input name="desc" value={this.state.desc} onChange={this.handleChange}/>
               </label>
               <br/>
-              <Button onClick={this.preview}> Preview </Button>
-              <Button onClick={this.addAnnotation}> Add </Button>
-              <Button style={unselect} onClick={this.deSelect}> Unselect </Button>
+              <Button onClick={this.preview} bsSize="small"> Preview </Button>
+              <Button onClick={this.addAnnotation} bsSize="small"> Add </Button>
+              <Button style={unselect} onClick={this.deSelect} bsSize="small"> Unselect </Button>
             </form>
           </div>
 

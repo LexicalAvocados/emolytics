@@ -266,20 +266,23 @@ class TesterVideo extends React.Component {
       opacity: 0
     }
 
+    var style = {
+      height: "75vh"
+    }
+
     return (
-      <div>
+      <div style={style}>
         <ToggleDisplay className="overlay"  show={this.state.show}>
           <TesterFinishedVideo />
         </ToggleDisplay>
 
         <div className="videoPlayer">
 
-          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} playing />
+          <ReactPlayer  className="videoWrapper" onStart={this.videoStart} onEnded={this.showOverlay} width='100%' height='100%' controls={false} ref="video" url={this.state.video.url} playing />
           <br/>
           <br/>
 
-          <h2> {this.state.video.name} </h2>
-          <h4> {this.state.video.desc} </h4>
+
 
 
         </div>

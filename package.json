@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --verbose",
     "watch": "jest --verbose --watchAll",
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "compile": "webpack -w"
   },
   "jest": {
@@ -58,7 +58,7 @@
     "atob": "^2.0.3",
     "aws-sdk": "^2.133.0",
     "axios": "^0.16.2",
-    "base64-img": "^1.0.3",
+    "babel-preset-minify": "^0.2.0",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.1",
@@ -67,6 +67,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
+    "dotenv-webpack": "^1.5.4",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "history": "^4.7.2",

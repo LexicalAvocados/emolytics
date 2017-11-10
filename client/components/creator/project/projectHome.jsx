@@ -13,7 +13,7 @@ class ProjectHome extends React.Component {
     this.state = {
       rerenderOptions: false,
       open: true,
-      fromHome: true    
+      fromHome: true,
     };
     this.onSectionClick = this.onSectionClick.bind(this);
     this.associateOptions = this.associateOptions.bind(this);
@@ -25,6 +25,8 @@ class ProjectHome extends React.Component {
     obj['options'] = options;
     this.props.actions.changeCurrentSection(obj, options);
   }
+
+
 
   associateOptions() {
     this.setState({
@@ -49,12 +51,12 @@ class ProjectHome extends React.Component {
     return (
       <div className="projectHomeContainer">
         { this.props.currentProject.id === 0 ? (
-          <p>Welcome to the project home! From here you can view all of the sections associated with a project. Sections are associated with options! Yay!</p>
+          <h3 className="demoWelcomeHeader">This is the Project Home! From here you can view all of the sections associated with a project. Sections themselves are associated with options! Yay!</h3>
         ) : (
           null
         )}
-        <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`} expanded={this.state.open} onExited={this.redirectToSection}>
-            <p style={height}>Description: {this.props.currentProject.description}</p>
+        <Panel collapsible header={`${this.props.currentProject.name.toUpperCase()}`} expanded={this.state.open} onExited={this.redirectToSection}>
+            <p style={height}>{this.props.currentProject.description}</p>
         </Panel>
         <div>
           <DisplaySections
@@ -68,7 +70,7 @@ class ProjectHome extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  // console.log('LOG WITHIN PROJECTHOME', state);
+  console.log('LOG WITHIN HOME', state);
   return ({
     router: state.router,
     currentProject: state.currentProject,

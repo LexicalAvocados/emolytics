@@ -1,11 +1,10 @@
 import React from 'react';
 import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import axios from 'axios';
-import { patreon } from '../../../key.js';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../actions';
@@ -23,7 +22,6 @@ export class Login extends React.Component {
     this.submitLogin = this.submitLogin.bind(this);
     this.submitPatreonLogin = this.submitPatreonLogin.bind(this);
     this.resetInputForms = this.resetInputForms.bind(this);
-    this.forgotPassword = this.forgotPassword.bind(this);
   }
 
   updateTypedUsername(e) {
@@ -59,12 +57,13 @@ export class Login extends React.Component {
                 console.log('Error fetching Creator\'s Focus Groups:', err);
               });
           } else {
-            axios.post('/api/tester/getTesterQueue', {
-              id
+            axios.post('/api/tester/getOptionsForTester', {
+              id,
+              mode: 'queue'
             })
               .then(res => {
                 let queue = res.data;
-                // console.log('queue:', queue);
+                console.log('queue:', queue);
                 if (queue.length > 0) this.props.actions.populateTesterQueue(queue);
               })
               .catch(err => {
@@ -91,22 +90,19 @@ export class Login extends React.Component {
     this.setState({typedUsername: '', typedPassword: ''});
   }
 
-  forgotPassword(e) {
-    e.preventDefault();
-    this.props.history.push('/forgotPassword');
-  }
-
   render() {
     var forgotPassword = {
       textAlign: 'center'
     }
     const patreonOAuthLink =
-      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/login`;
+      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${process.env.PATREON_CLIENTID}&redirect_uri=http://localhost:3000/oauth/patreon/login`;
     return (
-      <div className='auth'>
-        <h2 className='loginHeader'>Log In</h2>
-        <Form horizontal className='authForm' onSubmit={this.submitLogin}>
-          <FormGroup>
+      <div className='authBody'>
+        <div className='loginModule'>
+
+          <h2 className='loginHeader'>Log In</h2>
+
+          <Form horizontal className='authForm' onSubmit={this.submitLogin}>
             <Col className='authInput'>
               <FormControl
                 type='text'
@@ -121,25 +117,28 @@ export class Login extends React.Component {
                 placeholder='Password'
                 onChange={this.updateTypedPassword}
               /></Col>
-            <Button className='authSubmit' type='submit'>Submit</Button><br/>
-            <br/>
-            <div style={forgotPassword}>
-              <p onClick={this.forgotPassword}> <small> Forgot Password </small> </p>
-            </div>
+            <Button className='authSubmit' type='submit'>Submit</Button>
             {<div>this.state.loginError</div> && this.state.loginError}
-          </FormGroup>
-        </Form>
-        <hr/>
-        <div className='oauthButtons'>
-          <a href='/auth/facebook'>
-            <img className='fbLoginBtn' src='https://jstarpass.com/resources/img/default/facebook-login.png'></img>
-          </a>
-          <a href={patreonOAuthLink}>
-            <img className='patreonLoginBtn' src='patreon.jpg'></img>
-          </a>
-          <a href='/auth/vimeo'>
-            <img className='vimeoLoginBtn' src='https://prowly-uploads.s3.amazonaws.com/uploads/press_rooms/company_logos/563/preview_indeks.png'></img>
-          </a>
+          </Form>
+
+          <Link to='/forgotPassword' className='forgotPassword'>
+            <small> Forgot Password? </small>
+          </Link>
+
+          <hr className='standardHR'/>
+
+          <div className='oauthButtons'>
+            <a href='/auth/facebook'>
+              <img className='fbLoginBtn' src='facebook-login.png'></img>
+            </a>
+            <a href={patreonOAuthLink}>
+              <img className='patreonLoginBtn' src='patreon.jpg'></img>
+            </a>
+            <a href='/auth/vimeo'>
+              <img className='vimeoLoginBtn' src='vimeo-logo.jpg'></img>
+            </a>
+          </div>
+
         </div>
       </div>
     );

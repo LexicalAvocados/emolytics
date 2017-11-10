@@ -1,15 +1,23 @@
 import React from 'react';
+import {Button, Row, Col} from 'react-bootstrap';
 
 const ThumbnailListInAddOption = ({ onOptionClick, option }) => (
-  <div className="ThumbnailListInAddOption">
-    <div className="optionListEntry" onClick={onOptionClick}>
-      <img src={option.thumbnail} alt=""/>
-      <p className="closerTextLarger">Option Name: {option.name}</p>
-      <p className="closerText">Option Description: {option.description}</p>
-    </div>
+  <div className="ThumbnailListInAddOption optionListEntry" onClick={onOptionClick} style={containerStyle}>
+    <img className="thumbnailImg" src={option.thumbnail} alt="" style={newOptionThumbnailStyle}/>
+    <h4 className="closerTextLarger">{option.name}</h4>
+    <p className="closerText">{option.description}</p>
   </div>
-  );
+);
+
+const newOptionThumbnailStyle = {
+  height: '10vh',
+  width: '14vh'
+};
+
+const containerStyle = {
+  height: '100%',
+  width: '100%'
+};
 
 export default ThumbnailListInAddOption;
 
-      // {(()=>{console.log("THIS IS OPTION", option)})()}

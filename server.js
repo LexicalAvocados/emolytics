@@ -8,7 +8,8 @@ const db = require('./db');
 const auth = require('./server/auth');
 const patreon = require('./server/auth/patreon');
 const cron = require('./server/crontab.js');
-const secret = require('./key.js').sessions.secret;
+// const secret = require('./key.js').sessions.secret;
+const secret = process.env.SESSION_SECRET;
 const axios = require('axios');
 
 const passport = require('passport'),
@@ -142,8 +143,23 @@ var config = {
       redirect_uri: 'http://localhost:3000/auth/vimeo/callback'
     }, config)
     .then((response) => {
-      // console.log('RESPONSE FROM VIMEO ACCESS TOKEN', res)
+      // console.log('RESPONSE FROM VIMEO ACCESS TOKEN', response.data.access_token)
       var vimUser = response.data.user;
+      var videosEndpoint = vimUser.metadata.connections.shared;
+      var accessToken = response.data.access_token;
+      // console.log('VIDEOS ENDPOINT', videosEndpoint)
+
+      var configForUser = {
+        'Authorization' : `Bearer ${accessToken}`
+      }
+      
+      // axios.get(`https://api.vimeo.com${videosEndpoint}`, configForUser)
+      // .then((data) => {
+      //   console.log('RESPONSE FROM USER VIMEO VIDEOS', data)
+      // })
+      // .catch((err) => {
+      //   console.log('ERROR WITH VIMEO ACCESS', err)
+      // })
       return User.findOne({
         where:{ username: vimUser.name}
       })
@@ -159,9 +175,11 @@ var config = {
         }
       })
       .then((actualUser) => {
+        req.session.username = actualUser.username;
+        req.session.save();
         // console.log('ACTUAL USER', actualUser)
         // console.log('RES', res)
-        res.redirect('/vimeoloading')
+        res.redirect('/vimeoloading');
       })
     })
     .catch((err) => {
@@ -174,7 +192,7 @@ app.get('/userdata', (req, res) => {
 });
 
 app.get('/vimeouserdata', (req, res) => {
-  console.log('REQUEST FROM VIMEO USER', req)
+  // console.log('REQUEST FROM VIMEO USER', req)
   res.send(JSON.stringify(req.session));
 });
 

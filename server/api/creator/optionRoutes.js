@@ -3,7 +3,7 @@ const Options = db.Option;
 const Likes = db.TesterAndOption;
 const Users = db.User;
 const Frames = db.Frame;
-const SectionComments = db.SectionComments;
+const OptionComments = db.OptionComments;
 const OptionAndAnnotations = db.OptionAndAnnotation;
 
 exports.getRelatedOptions = (req, res) => {
@@ -87,7 +87,8 @@ exports.addOption = (req, res) => {
     sectionId: req.body.sectionId,
     youtubeUrl: req.body.url,
     thumbnail: req.body.thumbnail,
-    length: req.body.length
+    length: req.body.length,
+    userId: req.body.userId
     // tags: req.body.tags
   })
     .then((newOption) => {
@@ -101,7 +102,7 @@ exports.addOption = (req, res) => {
 };
 
 exports.getFeedback = (req, res) => {
-  SectionComments.findOne({
+  OptionComments.findOne({
     where: {
       optionId: req.query.optionId
     }
@@ -110,21 +111,20 @@ exports.getFeedback = (req, res) => {
       if (entry) {
         res.send(entry.summary);
       } else {
-        res.send('Sorry');
+        res.send('');
       }
     });
 };
 
 
 exports.deleteOption = (req, res) => {
-  // Delete from options table
   Options.findAll({
     where: {
       [req.query.toDelete]: req.query.id
     }
   })
-    .then((options) => { 
-      var tables = ['TesterAndOption', 'Frame', 'SectionComments', 'OptionAndAnnotation'];
+    .then((options) => {
+      var tables = ['TesterAndOption', 'Frame', 'OptionComments', 'OptionAndAnnotation'];
       options.forEach((option) => {
         option.update({
           deleted: true
@@ -144,7 +144,7 @@ exports.deleteOption = (req, res) => {
 
 };
 
-const clearDataAssociatedWithOption = (tableArray, optionId) => { 
+const clearDataAssociatedWithOption = (tableArray, optionId) => {
   tableArray.forEach((table) => {
     table = db[table];
     table.findAll({

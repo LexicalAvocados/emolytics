@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
-import { patreon } from '../../../key.js';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -52,8 +51,8 @@ export class Signup extends React.Component {
       isCreator: this.state.isCreator
     })
       .then(res => {
-        let {username, name, age, sex, race, isCreator} = res.data.userData;
-        this.props.actions.setLoggedIn(username, name, age, sex, race, isCreator);
+        let {id, username, isCreator, credits} = res.data.userData;
+        this.props.actions.setLoggedIn(id, username, null, null, null, null, isCreator, credits);
         this.props.history.push('/');
       })
       .catch(err => {
@@ -80,81 +79,86 @@ export class Signup extends React.Component {
   }
 
   render() {
-    const patreonOAuthLink = 
-      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
+    const patreonOAuthLink =
+      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${process.env.PATREON_CLIENTID}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
     return (
-      <div className='auth'>
-        <h2 className='signupHeader'>New Account</h2>
-        <Form horizontal onSubmit={this.submitNewAccount}>
-          <FormGroup>
-            <Col className='authInput'>
-              <FormControl
-                type='text'
-                value={this.state.typedUsername}
-                placeholder='Username'
-                onChange={this.updateTypedUsername}
-              />
-            </Col>
-            <Col className='authInput'>
-              <FormControl
-                type='password'
-                value={this.state.typedPassword}
-                placeholder='Password'
-                onChange={this.updateTypedPassword}
-              />
-            </Col>
-            <Col className='authInput'>
-              <FormControl
-                type='text'
-                value={this.state.typedEmail}
-                placeholder='Email'
-                onChange={this.updateTypedEmail}
-              />
-            </Col>
-            <ButtonToolbar>
-              <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={this.handleRoleSelect}>
-                <ToggleButton value={1}>Tester</ToggleButton>
-                <ToggleButton value={2}>Creator</ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
-            <br/>
-            <Button type='submit'>Create Account</Button>
-          </FormGroup>
-        </Form>
-        <hr/>
-        <div className='oauthButtons'>
-          <a href='/auth/facebook'>
-            <img className='fbLoginBtn' src='https://www.promotevideoonline.com/style/images/facebook-login.png'></img>
-          </a>
-          <a href={patreonOAuthLink}>
-            <img className='patreonLoginBtn' src='patreon.jpg'></img>
-          </a>
-          <a href='/auth/vimeo'>
-            <img className='vimeoLoginBtn' src='https://prowly-uploads.s3.amazonaws.com/uploads/press_rooms/company_logos/563/preview_indeks.png'></img>
-          </a>
+      <div className='authBody'>
+        <div className='signupModule'>
+
+          <h2 className='signupHeader'>New Account</h2>
+
+          <Form horizontal onSubmit={this.submitNewAccount}>
+            <FormGroup>
+              <Col className='authInput'>
+                <FormControl
+                  type='text'
+                  value={this.state.typedUsername}
+                  placeholder='Username'
+                  onChange={this.updateTypedUsername}
+                />
+              </Col>
+              <Col className='authInput'>
+                <FormControl
+                  type='password'
+                  value={this.state.typedPassword}
+                  placeholder='Password'
+                  onChange={this.updateTypedPassword}
+                />
+              </Col>
+              <Col className='authInput'>
+                <FormControl
+                  type='text'
+                  value={this.state.typedEmail}
+                  placeholder='Email'
+                  onChange={this.updateTypedEmail}
+                />
+              </Col>
+              <ButtonToolbar className='authCreatorTesterToggle'>
+                <ToggleButtonGroup
+                  type="radio"
+                  name="options"
+                  defaultValue={1}
+                  onChange={this.handleRoleSelect}
+                >
+                  <ToggleButton value={1}>Tester</ToggleButton>
+                  <ToggleButton value={2}>Creator</ToggleButton>
+                </ToggleButtonGroup>
+              </ButtonToolbar>
+              <br/>
+              <Button type='submit'>Create Account</Button>
+            </FormGroup>
+          </Form>
+
+          <hr className='standardHR'/>
+
+          <p> Don't forget to select Tester/Creator!</p>
+
+          <div className='oauthButtons'>
+            <a href='/auth/facebook'>
+              <img className='fbLoginBtn' src='facebook-connect.png'></img>
+            </a>
+            <a href={patreonOAuthLink}>
+              <img className='patreonLoginBtn' src='patreon.jpg'></img>
+            </a>
+            <a href='/auth/vimeo'>
+              <img className='vimeoLoginBtn' src='vimeo-logo.jpg'></img>
+            </a>
+          </div>
+
         </div>
-        <p style={center}> Don't forget to select Tester/Creator!</p>
       </div>
     );
   }
 }
 
-const center = {
-  textAlign: 'center'
-};
-
 // React-Redux connect() boilerplate
 // 1. Include the properties in the Store you want this component to have access to
 // 2. Change the Component name at the very end to the one in the current file
-const mapStateToProps = (state) => {
-  console.log('state in signup', state)
-  return ({
-    example: state.example,
-    setLoggedIn: state.setLoggedIn,
-    router: state.router,
-    role: state.signupwithfb
-  });
-};
+const mapStateToProps = (state) => ({
+  setLoggedIn: state.setLoggedIn,
+  router: state.router,
+  role: state.signupwithfb
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)

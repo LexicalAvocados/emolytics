@@ -14,7 +14,6 @@ class ProjectList extends React.Component {
     };
     this.onClickCallback = this.onClickCallback.bind(this);
     this.getRelatedSections = this.getRelatedSections.bind(this);
-    // this.projectPopover = this.projectPopover.bind(this);
   }
 
   componentDidMount() {
@@ -94,19 +93,28 @@ class ProjectList extends React.Component {
 
     var edit = {
       width: '100%',
-      backgroundColor: 'whitesmoke'
+      backgroundColor: 'whitesmoke',
+      
     };
 
     const gridBoxForProject = {
       display: 'grid',
       gridTemplateColumns: '50% 50%',
       gridTemplateRows: '50% 50%',
+      overflow: 'hidden'
     };
 
     const titleDisplayStyle = {
       gridColumn: '1',
       gridRow: '1'
     };
+
+    const projectDescription = {
+      gridColumn: '1/2',
+      gridRow: '2',
+      width: '100%',
+      // overflow: 'hidden'
+    }
 
     const rightSideDisplay = {
       gridColumn: '2',
@@ -132,7 +140,7 @@ class ProjectList extends React.Component {
 
 
     return (
-      <div>
+      <div className="projectListEntry" onClick={this.onClickCallback}>
         <OverlayTrigger placement="right" overlay={this.props.popover}>
           <div className='projectsContainer'>
             <div style={gridBoxForProject}>
@@ -151,16 +159,18 @@ class ProjectList extends React.Component {
                   <p><small>Created On: {this.state.date = new Date(this.props.project.createdAt.slice(0, 19)).toString().slice(0, 15)} </small></p>
                 </div>
               </div>
-              <div onClick={this.onClickCallback}>
+              <div>
                 <div style={titleDisplayStyle}>
-                  <h4>{this.props.project.name}</h4>
-                  <p>{this.props.project.description}</p>
+                  <h4 className="upperTextToTruncate">{this.props.project.name.toUpperCase()}</h4>
+                </div>
+                <div style={projectDescription}> 
+                  <p className="lowerTextToTruncate">{this.props.project.description}</p>
                 </div>
               </div>
             </div>
             <div style={del}>
               <p> <u> Number of Sections:</u>  {this.state.sections.length} </p>
-              <Button onClick={() => this.props.beginEdit(this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
+              <Button onClick={(e) => this.props.beginEdit(e, this.props.project)} style={edit}>Edit</Button> {/* Finish the styling on this later */}
             </div>
           </div>
         </OverlayTrigger>

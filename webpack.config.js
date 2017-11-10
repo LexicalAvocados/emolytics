@@ -56,6 +56,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 var config = {
   entry: './client/index.jsx',
@@ -65,22 +66,33 @@ var config = {
     loaders: [
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        loader: 'style-loader!css-loader',
+        options: {
+          minify: true
+        }
       }, {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react'],
-          plugins: ['transform-object-rest-spread']
+          presets: ['es2015', 'react', 'minify'],
+          plugins: [
+            'transform-object-rest-spread'
+          ]
         }
-      }, 
+      },
       // {
       //   test: /\.(png|jpg)$/,
       //   loader: 'url?limit=25000'
       // }
       ]
   },
+  plugins: [
+    new Dotenv({
+      path: './.env',
+      safe: false
+    })
+  ],
   node: {
     fs: 'empty'
   },

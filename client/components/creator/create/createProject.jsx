@@ -60,10 +60,19 @@ class CreateProject extends React.Component {
       <div className="CreateProject">
         <form onSubmit={this.submitProjectClick}>
           {header}
+          { this.props.currentProject.id === 0 && !fromDashboard ? (
+            <p>Creating a project will end the demo. Make sure you have checked out sections and options before creating a project</p>
+          ) : (
+            null
+          )}
           Project Name: <br />
-          <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+          <div className="ProjectNameInput">
+            <textarea type="text" pattern=".{3,}"  required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+          </div>
           Project Description: <br />
-          <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+          <div className="ProjectDescriptionInput">
+            <textarea type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+          </div>
           <Button type="submit">Submit</Button>
         </form>
       </div>

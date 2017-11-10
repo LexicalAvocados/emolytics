@@ -1,13 +1,14 @@
 const express = require('express');
 const db = require('../../../db');
 const Sequelize = require('sequelize');
+const axios = require('axios');
 const Option = db.Option;
 const User = db.User;
 const Frame = db.Frame;
 const Key = db.Key;
 const sequelize = db.sequelize;
 const TesterAndOption = db.TesterAndOption;
-const SectionComments = db.SectionComments;
+const OptionComments = db.OptionComments;
 const Notifications = db.Notification;
 const Section = db.Section;
 const Project = db.Project;
@@ -182,6 +183,21 @@ router.post('/getOptionResultsForTester', (req, res) => {
 
 });
 
+router.post('/getOptionDataOnlyForTester', (req, res) => {
+  TesterAndOption.findOne({
+    where: {
+      userId: req.body.userId,
+      optionId: req.body.optionId
+    }
+  })
+    .then(optionResults => {
+      res.send(optionResults);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+})
+
 router.post('/getVideo', (req, res) => {
   // console.log('req session', req.session);
   // console.log(req.body);
@@ -203,7 +219,7 @@ router.post('/sendFrame', (req, res) => {
   // console.log('FRAMES', req.body);
   User.findAll({
     where: {
-      username: req.session.username
+      username: req.session.username || req.session.passport.user.username
     }
   })
 	  .then(user => {
@@ -592,13 +608,13 @@ const aggregateComments = (option, res) => {
       }
     })
     .then((toApiString) => {
-      axios.post('http://api.smmry.com/&SM_API_KEY=5D5C4B6642&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
+      axios.post('http://api.smmry.com/&SM_API_KEY=' + process.env.SMMRY_API_KEY + '&SM_LENGTH=2&SM_KEYWORD_COUNT=20', "sm_api_input=" + toApiString)
         .then((summary) => {
           // console.log('API summary request success', summary);
           return summary.data;
         })
         .then((summary) => {
-          SectionComments.findOne({
+          OptionComments.findOne({
             where: {
               optionId: option.id
             }
@@ -610,7 +626,7 @@ const aggregateComments = (option, res) => {
                   summary: summary.sm_api_content // Will default to null in failure.
                 });
               } else {
-                SectionComments.create({
+                OptionComments.create({
                   optionId: option.id,
                   aggregateComments: toApiString,
                   summary: summary.sm_api_content // Will default to null in failure.

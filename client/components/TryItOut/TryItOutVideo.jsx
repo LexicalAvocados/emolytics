@@ -46,7 +46,7 @@ class TryItOutVideo extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.state.timer);
-    var list = document.getElementById("video"); 
+    var list = document.getElementById("video");
     list.removeChild(list.childNodes[0])
   }
 
@@ -68,7 +68,7 @@ class TryItOutVideo extends React.Component {
     }, () => {
       this.state.timer();
     })
-    
+
   }
 
   getWebcam() {
@@ -159,7 +159,7 @@ class TryItOutVideo extends React.Component {
     return (
       <div>
 
-        <div className="videoPlayer">
+        <div style={TryItOutVideoPlayerStyle} >
           <ReactPlayer  className="videoWrapper" onStart={this.videoStart} width='100%' height='100%' controls={true} ref="video" url={this.state.video.url} />
           <br/><br/>
         </div>
@@ -176,7 +176,14 @@ class TryItOutVideo extends React.Component {
   }
 }
 
-
+const TryItOutVideoPlayerStyle = {
+  marginLeft: '15%',
+  marginRight: '15%',
+  marginTop: '4%',
+  position: 'relative',
+  height: '40vh',
+  width: '90%'
+}
 
 const mapStateToProps = (state) => {
   return ({

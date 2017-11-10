@@ -15,10 +15,12 @@ class EditSocial extends React.Component {
       youtube: '',
       twitter: '',
       patreon: '',
+      website: '',
       subitted: false
     };
     this.handleYouTubeChange = this.handleYouTubeChange.bind(this);
     this.handleTwitterChange = this.handleTwitterChange.bind(this);
+    this.handleWebsiteChange = this.handleWebsiteChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -49,10 +51,17 @@ class EditSocial extends React.Component {
     })
   }
 
+  handleWebsiteChange(e) {
+    this.setState({
+      website: e.target.value
+    })
+  }
+
   handleSubmit() {
     axios.post('/api/creator/updateCreatorSocial', {
       youtubeprofile: this.state.youtube,
-      twitterhandle: this.state.twitter
+      twitterhandle: this.state.twitter,
+      website: this.state.website
     })
     .then( (res) => {
       console.log('res from updating creator profile info', res)
@@ -90,6 +99,16 @@ class EditSocial extends React.Component {
               </Col>
             </Row>
 
+            <br/><br/>
+            <Row>
+              <Col sm={1} md={1}>
+                <ControlLabel> Website </ControlLabel>
+              </Col>
+              <Col sm={4} md={4}>
+                <FormControl type='text' value={this.state.website} onChange={this.handleWebsiteChange} placeholder='Your Personal Website'/>
+              </Col>
+            </Row>
+
           </FormGroup>
         </Form>
         <Row>
@@ -112,7 +131,7 @@ class EditSocial extends React.Component {
             <Row>
               <Col sm={2} md={2}>
                 <p> Your account was updated! </p>
-                  <Link to={'cprofile:'+this.props.loggedInUser.id}>
+                  <Link to={'profile:'+this.props.loggedInUser.id}>
                     <p> Check out your public profile</p>
                   </Link>
               </Col>

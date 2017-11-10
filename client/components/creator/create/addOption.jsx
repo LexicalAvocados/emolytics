@@ -2,11 +2,10 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
-import key from './key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -19,7 +18,7 @@ class AddOption extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.submitOptionClick = this.submitOptionClick.bind(this);
-    this.completeSubmitionsClick = this.completeSubmitionsClick.bind(this);
+    this.completeSubmissionsClick = this.completeSubmissionsClick.bind(this);
     this.retrieveYouTubeData = this.retrieveYouTubeData.bind(this);
   }
 
@@ -37,7 +36,6 @@ class AddOption extends React.Component {
   //   var vidUrl = this.state.url;
   //   axios.get('https://api.vimeo.com/oauth/authorize', {
   //     params: {
-        
   //     }
   //   });
   // }
@@ -53,15 +51,14 @@ class AddOption extends React.Component {
         id: vidId,
         part: 'snippet, contentDetails',
         type: 'video',
-        key: key
+        key: process.env.YOUTUBE_APIKEY
       }
     })
       .then((data) => {
-        console.log('response from youtube', data);
-        youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.default.url;
+        // console.log('response from youtube', data);
+        youTubeData.thumbnail = data.data.items[0].snippet.thumbnails.high.url;
         youTubeData.tags = data.data.items[0].snippet.tags;
-        console.log('youtubeData>>>>>>', youTubeData);
-        console.log('youtubeData.tags>>>>>>', youTubeData.tags);
+
         var unitsOfTime = ['H', 'M', 'S'];
         var nums = [];
         for (var i = 0; i < unitsOfTime.length; i++) {
@@ -90,7 +87,7 @@ class AddOption extends React.Component {
     if (this.props.currentProject.id === 0) {
       alert('You cannot create new options within the demo. If you\'d like to leave the demo please create a project.');
       return;
-    } 
+    }
 
     // conditional: if this.state.url === 'vimeo' => use retrieveVimeoData
     // need to change: how link is generated, thumbnails, tags...
@@ -104,7 +101,8 @@ class AddOption extends React.Component {
         sectionId: this.props.currentSection.id,
         thumbnail: youTubeData.thumbnail,
         length: youTubeData.length,
-        tags: youTubeData.tags
+        tags: youTubeData.tags,
+        userId: this.props.loggedInUser.id
       })
         .then((response) => {
           this.setState({
@@ -122,7 +120,7 @@ class AddOption extends React.Component {
     });
   }
 
-  completeSubmitionsClick(e) {
+  completeSubmissionsClick(e) {
     e.preventDefault();
     // this.props.history.push('/project' + `${this.props.currentProject.id}`);
     this.props.close();
@@ -147,40 +145,56 @@ class AddOption extends React.Component {
     return (
       <div>
         <div className="AddOption">
-          <h2>Section Name: {this.props.currentSection.name}</h2>
-          <h4>Section Description: {this.props.currentSection.description}</h4>
+          <Row className="AddOptionHeader">
+            <h2><u>{this.props.currentSection.name}</u></h2>
+            <h5>{this.props.currentSection.description}</h5>
+            <br />
+          </Row>
           <form id="optionForm" onSubmit={this.submitOptionClick}>
+            <Row className="OptionNameInput">
             New Option Name: <br />
-            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+              <input type="text" pattern=".{3,}" required title="3 characters minimum" name="name" value={this.state.name} onChange={this.handleChange} /><br />
+            </Row>
+            <Row className="OptionDescriptionInput">
             Option Description: <br />
-            <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+              <input type="text" pattern=".{3,}" required title="3 characters minimum" name="description" value={this.state.description} onChange={this.handleChange} /><br />
+            </Row>
+            <Row className="OptionUrlInput">
             Url: <br />
-            <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
-            <input type="submit" value="Submit New Option" /><br />
+              <input type="url" pattern=".{15,}" required title="15 characters minimum" name="url" placeholder="https://www.example.com" value={this.state.url} onChange={this.handleChange} /><br />
+            </Row>
+            <Row>
+              <Button type="submit">Upload</Button><br />
+            </Row>
           </form>
-          <Button onClick={this.completeSubmitionsClick}>Complete Submitions</Button><br />
         </div>
         <div className="ThumbnailListInAddOption">
-          { this.props.currentSection.options.map((option, i) => (
-            <ThumbnailListInAddOption
-              option={option}
-              key={i}
-              index={i}
-            />
-          ))}
+          <Row>
+            { this.props.currentSection.options.map((option, i) => (
+              i < this.props.currentSection.options.length - 1 ? (
+                <Col md={4}>
+                  <ThumbnailListInAddOption
+                    option={option}
+                    key={i}
+                    index={i}
+                  />
+                </Col>
+              ) : ''
+            ))}
+          </Row>
         </div>
+
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return({
-    router: state.router,
-    currentProject: state.currentProject,
-    currentSection: state.currentSection
-  });
-};
+const mapStateToProps = (state) => ({
+  router: state.router,
+  currentProject: state.currentProject,
+  currentSection: state.currentSection,
+  loggedInUser: state.loggedInUser
+});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(ChangeActions, dispatch)
@@ -189,4 +203,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-) (AddOption));
+)(AddOption));

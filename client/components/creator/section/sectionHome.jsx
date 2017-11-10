@@ -6,7 +6,7 @@ import OptionListEntry from './OptionListEntry.jsx';
 import FocusGroupsList from '../dashboard/FocusGroupsList.jsx';
 import InvitationPanel from './InvitationPanel.jsx';
 import { Link, withRouter } from 'react-router-dom';
-import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Button, Col, Row, Carousel, Modal, Panel, OverlayTrigger, Popover, ListGroup, ListGroupItem, Fade, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import Compare from './Compare.jsx';
 import ToggleDisplay from 'react-toggle-display';
@@ -43,7 +43,10 @@ class SectionHome extends React.Component {
       testerToPassToOptionListEntry: [],
       noCreditsAlert: [],
       fromSectionHomeToInvitationPanel: true,
-      totalInvitedTesters: 0
+      totalInvitedTesters: 0,
+      active: -1,
+      invitedByOption: false,
+      fixedTesterPool: []
     };
     this.onOptionClick = this.onOptionClick.bind(this);
     this.renderInvited = this.renderInvited.bind(this);
@@ -63,6 +66,7 @@ class SectionHome extends React.Component {
     this.resetToNull = this.resetToNull.bind(this);
     this.onOptionClickCallbackForLowCredit = this.onOptionClickCallbackForLowCredit.bind(this);
     this.incrementTotalInvitedTesters = this.incrementTotalInvitedTesters.bind(this);
+    this.renderInvitedByOption = this.renderInvitedByOption.bind(this);
   }
 
   componentWillMount() {
@@ -70,7 +74,8 @@ class SectionHome extends React.Component {
       .then((response) => {
         this.setState({
           testers: response.data,
-          testerToPassToOptionListEntry: response.data
+          testerToPassToOptionListEntry: response.data,
+          fixedTesterPool: response.data
         });
         // console.log('TESTERS BEFORE FILTER', this.state.teers)
       })
@@ -83,19 +88,20 @@ class SectionHome extends React.Component {
   }
 
   incrementTotalInvitedTesters(count) {
-    // console.log(count);
-    
     this.setState({
       totalInvitedTesters: this.state.totalInvitedTesters += count
-    });
-    // this.props.currentSection.totalInvitedTesters = this.state.totalInvitedTesters += count;
-    
-    // this.props.currentSection.totalInvited = count;
+    });    
   }
 
   resetToNull() {
     this.setState({
       showEdit: null
+    });
+  }
+
+  renderInvitedByOption() {
+    this.setState({
+      invitedByOption: !this.state.invitedByOption
     });
   }
 
@@ -140,8 +146,9 @@ class SectionHome extends React.Component {
   }
 
   concatTesters(testers, index) {
-    console.log(index);
-    console.log(this.props.currentSection.options);
+    this.setState({
+      testersForOptions: []
+    });
     var freeOfDuplicates = [];
     testers.forEach((tester) => {
       if (this.state.testersForOptions.indexOf(tester) === -1) {
@@ -152,28 +159,21 @@ class SectionHome extends React.Component {
       testersForOptions: [ ...this.state.testersForOptions, ...freeOfDuplicates ]
     });
     if (index + 1 === this.props.currentSection.options.length - 1) { // This condition is bad
-      console.log('we should be within the stuff ehrerererere')
+      console.log('within the if', this.state.testersForOptions)
       this.state.testersForOptions.concat(testers);
       var priorInvites = true;
-      var testersThatHaveNotBeenInvited = this.state.testers.filter((tester) => {
+      var testersThatHaveNotBeenInvited = this.state.fixedTesterPool.filter((tester) => {
         if (this.state.testersForOptions.indexOf(tester.id) === -1) return tester;
       });
-      // console.log('Not invited', testersThatHaveNotBeenInvited);
-      // console.log('All', this.state.testers);
-      if (testersThatHaveNotBeenInvited.length === this.state.testers.length) {
+      if (testersThatHaveNotBeenInvited.length === this.state.fixedTesterPool.length) {
         priorInvites = false;
       }
       this.setState({
         testers: testersThatHaveNotBeenInvited,
         testersCopy: testersThatHaveNotBeenInvited,
-        haveInvited: priorInvites,
-        // numberInPool: 
+        haveInvited: priorInvites
       });
     }
-    console.log('these should be the boys', this.state.testersForOptions)
-    console.log('these should be the boys', this.state.testerToPassToOptionListEntry)
-    console.log('these should be the boys', testersThatHaveNotBeenInvited)
-
   }
 
   onOptionClick(index) { // Functional
@@ -205,7 +205,7 @@ class SectionHome extends React.Component {
     // need to get testers in option home state
 
     // create function in optionListEntry that returns the testers in state, call from here
-    this.oler.callBeginEdit(option)
+    this.oler.callBeginEdit(option);
     // call begin edit with those arguments
 
   }
@@ -217,9 +217,11 @@ class SectionHome extends React.Component {
   }
 
   renderAssigned() {
+    console.log('inside renderAssigned');
     this.setState({
-      assigned: !this.state.assigned
+      assigned: true
     });
+    setTimeout(() => this.setState({assigned: false}), 3000);
   }
 
   beginEdit(option, testers, testersCopy) {
@@ -228,7 +230,8 @@ class SectionHome extends React.Component {
     this.props.actions.changeOption(option);
     this.setState({
       showEdit: !this.state.showEdit,
-      idOfClickedOnOption: option.id
+      idOfClickedOnOption: option.id,
+      invitedByOption: false
     });
   }
 
@@ -257,7 +260,11 @@ class SectionHome extends React.Component {
     }
   }
 
-  renderPanel(opening = false) {
+  renderPanel(e, opening = false, section) {
+    e.stopPropagation();
+    if (this.state.displayPanel === false) {
+      this.displaySecs.highlightSelected(section.id, false, true);
+    }
     if (opening) {
       var noCredits = this.props.currentSection.options.reduce((acc, option) => {
         if ((option.totalcredits === 0 || option.totalcredits <= (option.creditsperview * 2)) && option !== 'End') {
@@ -269,7 +276,7 @@ class SectionHome extends React.Component {
     this.setState({
       displayPanel: !this.state.displayPanel,
       noCreditsAlert: noCredits
-    });
+    })
   }
 
   assignFocusGroup() {
@@ -357,8 +364,8 @@ class SectionHome extends React.Component {
     axios.post('/api/markNotificationAsSeen', {
       optionName: optionNameToDelete
     })
-    .then((res) => {
-    })
+      .then((res) => {
+      })
   }
 
   render() {
@@ -366,113 +373,129 @@ class SectionHome extends React.Component {
     var middleStyle = {
       clear: 'both'
     }
+    const top = {
+      marginTop: '10px',
+      marginBottom: '-10px',
+      marginRight: '5%',
+      float: 'right'
+    }
 
     return (
       <div className="sectionHomeContainer">
         <div>
           <div>
             { this.props.currentSection.id === 0 ? (
-              <p>Welcome to the section home! From here you can see all the options associated with a section. Explain inviting testers to section</p>
+              <h3 className="demoWelcomeHeader">From this page you can see all the options associated with a specifc section! This is the best place to manage your various sections and their options. You can invite testers to view the options within a section, and edit the options within a section.</h3>
             ):(
               null
             )}
-            <Panel collapsible header={`Project Name: ${this.props.currentProject.name}`}>
-              Description: {this.props.currentProject.description}
+            <Panel collapsible header={`${this.props.currentProject.name.toUpperCase()}`}>
+              {this.props.currentProject.description}
             </Panel>
           </div>
           <DisplaySections
             clearOnNewSection={this.clearOnNewSection}
             fromSectionHome={this.state.fromSectionHome}
             totalInvitedTesters={this.state.totalInvitedTesters}
+            renderPanel={this.renderPanel}
+            onRef={displaySecs => (this.displaySecs = displaySecs)}
           />
         </div>
 
         <div style={middleStyle}>
 
           { !this.state.compare ? (
-            <Button onClick={this.compare}> Compare </Button>
+            <Button style={top} onClick={this.compare}> Compare </Button>
           ): (
             <p>Choose two options</p>
+            // No ability to cancel. Need to heavily change this
           )}
 
-
-          { this.state.haveInvited ? (
-            <p className="closerText">You have previously invited testers to view options within this section</p>
-            // Then list the options?
-          ) : ( null )}
           { !this.state.invited ? (
             !this.state.displayPanel ? (
-              <Button onClick={() => this.renderPanel(true)}>Invite testers</Button>
+              null
             ) : (
-              <InvitationPanel
-                options={this.props.currentSection.options}
-                renderInvited={this.renderInvited}
-                testers={this.state.testers}
-                testersCopy={this.state.testersCopy}
-                renderPanel={this.renderPanel}
-                noCreditsAlert={this.state.noCreditsAlert}
-                fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
-                onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
-              />
+              <div>
+                <Col md={6}>
+                  <InvitationPanel
+                    options={this.props.currentSection.options}
+                    renderInvited={this.renderInvited}
+                    testers={this.state.testers}
+                    testersCopy={this.state.testersCopy}
+                    renderPanel={this.renderPanel}
+                    noCreditsAlert={this.state.noCreditsAlert}
+                    fromSectionHomeToInvitationPanel={this.state.fromSectionHomeToInvitationPanel}
+                    onOptionClickCallbackForLowCredit={this.onOptionClickCallbackForLowCredit}
+                  />
+                </Col>
+                <Col md={6}>
+                  <div className='sectionHomeInviteModule'>
+                    <h3>Invite by Group</h3>
+                    
+                    <hr className='standardHR'/>
+
+                    {this.props.focusGroups.length > 0 ?
+                      <div>
+                        <FocusGroupsList />
+
+                        {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
+                          <div>
+
+                            <Button
+                              bsStyle='primary'
+                              className='sectionHomeAssignGroupBtn'
+                              onClick={this.assignFocusGroup}
+                            > Assign <i>{this.props.currentFocusGroup.name}</i> to Section </Button>
+
+                            <Fade in={this.state.assigned}>
+                              <Alert bsStyle='success'>
+                                Testers assigned!
+                              </Alert>
+                            </Fade>
+
+                          </div>
+                        :
+                          null}
+
+                      </div>
+                    :
+                      null}
+                  </div>
+                </Col>
+              </div>
             )
           ) : (
             <p>Testers Invited!</p>
           )}
 
-          {this.props.focusGroups.length > 0 ?
-            <div>
-              <FocusGroupsList />
-              {this.props.currentFocusGroup && this.props.currentFocusGroup.testers.length > 0 ?
-                <div>
-                  <h3>{this.props.currentFocusGroup.name} Members</h3>
-                  <div>
-                    <ul>
-                      {this.props.currentFocusGroup.testers.map((tester, i) => (
-                        <li key={i}>{tester}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Button
-                    bsStyle='primary'
-                    onClick={this.assignFocusGroup}
-                  >Assign Group to Section</Button>
-                  {this.state.assigned ?
-                    'Group Assigned!'
-                  :
-                    null}
-                </div>
-              :
-                null}
-            </div>
-          :
-            null}
-
         </div>
 
-          <Col className="currentSectionOptionsList" md={2}>
-            { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
-              <OptionListEntry
-                onRef={oler => (this.oler = oler)}
-                option={option}
-                notifications={this.getNotificationsForOption(option)}
-                key={i}
-                sectionId={this.props.currentSection.id}
-                index={i}
-                onOptionClick={this.onOptionClick}
-                concatTesters={this.concatTesters}
-                deleteOption={this.deleteOption}
-                beginEdit={this.beginEdit}
-                toggleEdit={this.toggleEdit}
-                showEdit={this.state.showEdit}
-                showNotifsCb={this.showNotifsCb}
-                allTesters={this.state.testerToPassToOptionListEntry}
-                resetToNull={this.resetToNull}
-                incrementTotalInvitedTesters={this.incrementTotalInvitedTesters}
-              />
-            ))}
-          </Col>
+        <Col className="currentSectionOptionsList" md={2}>
+          { this.props.currentSection.options.map((option, i) => ( // Scrolling will have to be fine tuned later
+            <OptionListEntry
+              onRef={oler => (this.oler = oler)}
+              option={option}
+              notifications={this.getNotificationsForOption(option)}
+              key={i}
+              sectionId={this.props.currentSection.id}
+              index={i}
+              onOptionClick={this.onOptionClick}
+              concatTesters={this.concatTesters}
+              deleteOption={this.deleteOption}
+              beginEdit={this.beginEdit}
+              toggleEdit={this.toggleEdit}
+              showEdit={this.state.showEdit}
+              showNotifsCb={this.showNotifsCb}
+              allTesters={this.state.testerToPassToOptionListEntry}
+              resetToNull={this.resetToNull}
+              incrementTotalInvitedTesters={this.incrementTotalInvitedTesters}
+              renderInvitedByOption={this.renderInvitedByOption}
+              invitedByOption={this.state.invitedByOption}
+            />
+          ))}
+        </Col>
         { this.state.showData ? (
-          <Col md={10}>
+          <Col md={10} style={col10Style}>
             <OptionHome />
           </Col>
         ):(
@@ -499,6 +522,10 @@ class SectionHome extends React.Component {
       </div>
     );
   }
+}
+
+const col10Style = {
+  marginBottom: "20px"
 }
 
 const notifContainerStyle = {
