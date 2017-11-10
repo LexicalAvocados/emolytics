@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, FieldGroup, FormControl, ControlLabel, Checkbox, Button, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import axios from 'axios';
-import { patreon } from '../../../key.js';
 
 // React-Redux connect() boilerplate
 // NOTE: you may have to modify the filepath for ChangeActions
@@ -80,8 +79,8 @@ export class Signup extends React.Component {
   }
 
   render() {
-    const patreonOAuthLink = 
-      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${patreon.clientId}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
+    const patreonOAuthLink =
+      `https://patreon.com/oauth2/authorize?response_type=code&client_id=${process.env.PATREON_CLIENTID}&redirect_uri=http://localhost:3000/oauth/patreon/signup/${this.state.isCreator ? 'creator' : 'tester'}`;
     return (
       <div className='authBody'>
         <div className='signupModule'>

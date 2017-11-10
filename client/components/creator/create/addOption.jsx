@@ -6,7 +6,6 @@ import { Button, Row, Col } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import * as ChangeActions from '../../../actions';
 import ThumbnailListInAddOption from '../option/thumbnail/ThumbnailListInAddOption.jsx';
-import { youtube } from '../../../../key.js';
 
 class AddOption extends React.Component {
   constructor(props) {
@@ -52,7 +51,7 @@ class AddOption extends React.Component {
         id: vidId,
         part: 'snippet, contentDetails',
         type: 'video',
-        key: youtube.APIKey
+        key: process.env.YOUTUBE_APIKEY
       }
     })
       .then((data) => {
