@@ -17,7 +17,6 @@ node_modules/
 # Secrets
 .env
 
-client/bundle.js
 package-lock.json
 
 photos
