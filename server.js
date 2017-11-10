@@ -17,6 +17,7 @@ FacebookStrategy = require('passport-facebook').Strategy;
 const User = db.User;
 
 const app = express();
+app.use(express.compress());
 const PORT = process.env.PORT || 3000;
 
 passport.use(new FacebookStrategy({
@@ -152,7 +153,7 @@ var config = {
       var configForUser = {
         'Authorization' : `Bearer ${accessToken}`
       }
-      
+
       // axios.get(`https://api.vimeo.com${videosEndpoint}`, configForUser)
       // .then((data) => {
       //   console.log('RESPONSE FROM USER VIMEO VIDEOS', data)
